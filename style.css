@@ -1,0 +1,122 @@
+.title
+{
+    text-align: center;
+    background-color: #CFF3F5;
+    text-shadow: grey 1px 1px 1px;
+    font-size: 35px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: 3px solid #cacaca;
+    border-right: 3px solid #cacaca;
+    border-bottom: 3px solid #cacaca;
+    padding: 10px;
+    color: #A4CFF2;
+}
+.successbox
+{
+	color: green;
+	font-weight: bold;
+}
+.small
+{
+	font-size: small;
+}
+
+fieldset
+{
+	margin-top: 20px;
+}
+.alone_title
+{
+    color:white;
+    text-shadow: grey 3px 3px 3px;
+}
+
+.alone_body
+{
+    text-align: center;
+}
+
+.alone_container table
+{
+    width: 100%;
+    text-align: center;
+}
+#operation
+{
+    display: none;
+    padding: 5px;
+    position: fixed;
+    right: 3%;
+    top: 0%;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: 3px solid #cacaca;
+    border-right: 3px solid #cacaca;
+    border-bottom: 3px solid #cacaca;
+    background-color: lightgrey;
+    z-index: 1001;
+}
+.operation_options
+{
+    text-align: center;
+    display: inline-block;
+    border-right: solid 1px #b1b1b1;
+    padding:10px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #cbe8f3;
+    color: #1494c0;
+    font-size:12px;
+    border-radius: 3px;
+}
+#vanshavali_user
+{
+    padding: 5px;
+    position: fixed;
+    left: 3%;
+    top: 0%;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: 3px solid #cacaca;
+    border-right: 3px solid #cacaca;
+    border-bottom: 3px solid #cacaca;
+    z-index: 1002;
+    background-color: lightgrey;
+}
+
+#feedback
+{
+    position: fixed;
+    bottom: 0%;
+    right:0%;
+    padding: 5px;
+    background-color: #e6e6e6;
+    font-weight: bold;
+    z-index: 1000;
+    border-radius: 2px;
+    text-decoration: none;
+    color: #616161;
+    
+    
+}
+#login
+{
+    display:none;
+}
+#search
+{
+    display:none;
+}
+.operation_options:hover
+{
+    background-color: #c2eefd;
+}
+
+.pagination
+{
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    line-height: 25px;
+}
