@@ -6,6 +6,9 @@
  */
 //Global Variables
 // this will contain all the information of the current loged in user.
+$host=null; //set these variables according to your configuration
+$username=null;
+$password=null;
 session_start();
 $_SESSION['profilepic'] = "common.jpg";
 $_SESSION['authenticated'] = is_authenticated(); // will set to true if the user has loged in..
@@ -16,7 +19,7 @@ $_SESSION['signeduser'] = array();
 function connecttodatabase()
 {
     global $data;
-    $data = mysql_connect("localhost:3306", "root", "piyush");
+    $data = mysql_connect($host, $username, $password);
     if ($data == false) {
         echo "Error Connecting to the database";
         exit();
