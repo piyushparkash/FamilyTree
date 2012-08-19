@@ -6,9 +6,9 @@
  */
 //Global Variables
 // this will contain all the information of the current loged in user.
-$host=null; //set these variables according to your configuration
-$username=null;
-$password=null;
+$host="localhost"; //set these variables according to your configuration
+$username="root";
+$password="piyush";
 session_start();
 $_SESSION['profilepic'] = "common.jpg";
 $_SESSION['authenticated'] = is_authenticated(); // will set to true if the user has loged in..
