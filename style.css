@@ -21,11 +21,6 @@
 {
 	font-size: small;
 }
-
-fieldset
-{
-	margin-top: 20px;
-}
 .alone_title
 {
     color:white;
@@ -85,38 +80,23 @@ fieldset
     background-color: lightgrey;
 }
 
-#feedback
-{
-    position: fixed;
-    bottom: 0%;
-    right:0%;
-    padding: 5px;
-    background-color: #e6e6e6;
-    font-weight: bold;
-    z-index: 1000;
-    border-radius: 2px;
-    text-decoration: none;
-    color: #616161;
-    
-    
-}
-#login
-{
-    display:none;
-}
-#search
-{
-    display:none;
-}
-.operation_options:hover
-{
-    background-color: #c2eefd;
+#infovis {
+    position:relative;
+    width:600px;
+    height:600px;
+    margin:0px;
+    overflow:hidden;
+    border-right: 1px solid #cac
 }
 
-.pagination
-{
-    list-style-type: none;
-    margin: 0px;
-    padding: 0px;
-    line-height: 25px;
+
+#right-container {
+    right:0;
+    border-right:1px solid #ddd;
+    color:#686c70;
+    text-align: left;
+    overflow: auto;
+    position:absolute;
+    top:10%;
+    width: 25%;
 }

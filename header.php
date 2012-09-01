@@ -18,7 +18,7 @@ $_SESSION['signeduser'] = array();
 
 function connecttodatabase()
 {
-    global $data;
+    global $data, $host, $username, $password;
     $data = mysql_connect($host, $username, $password);
     if ($data == false) {
         echo "Error Connecting to the database";
