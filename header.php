@@ -4,12 +4,65 @@
  * @author Piyush
  * @copyright 2011
  */
-//Global Variables
+
+
 // this will contain all the information of the current loged in user.
-$host="localhost"; //set these variables according to your configuration
-$username="root";
-$password="piyush";
 session_start();
+
+global $db, $template, $config;
+
+//Initialize template as we will be needing it right away
+require_once 'template/template.php';
+$template=new template();
+
+//Initialize error handler
+function vanshavali_error($level,$message,$file,$line,$context)
+{
+    global $template;
+    switch ($level)
+    {
+        case E_USER_ERROR:
+        case E_USER_WARNING:
+            $template->assign("message",$message);
+            $template->assign("lineno",$line);
+            $template->assign("file",$file);
+            $template->assign("context",$context);
+            $template->display("error_high.tpl");
+            exit(); //exit the file as error level is high
+            break;
+        case E_USER_NOTICE:
+            $template->assign("message",$message);
+            $template->assign("lineno",$line);
+            $template->assign("file",$file);
+            $template->assign("context",$context);
+            $template->display("error_low.tpl");
+    }
+}
+
+set_error_handler("vanshavali_error");  //Set the custom error handler
+
+
+if (!file_exists("config.php") || empty($config))
+{
+    //There is something wrong!
+    //Either the database is not installed or there is something wrong with ccnfig.php
+    //So Lets start from the beginning asking user all the question or probably this is the beginning... :P
+    require_once("install/install.php");
+    $install=new install();
+    $install->install(); //Run the setup wizard
+    
+}
+else
+{
+    //Acquire the basic database related information
+    require_once 'config.php';
+}
+
+
+//Now that vanshavali is installed and database is installed
+//Init database package
+$db=new db();
+
 $_SESSION['profilepic'] = "common.jpg";
 $_SESSION['authenticated'] = is_authenticated(); // will set to true if the user has loged in..
 $_SESSION['signeduser'] = array();
