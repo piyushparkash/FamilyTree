@@ -20,6 +20,14 @@ class db {
     public function __construct() {
         
     }
+    /**
+     * Connects to a database
+     * @param string $host
+     * @param string $username
+     * @param string $password
+     * @param string $database
+     * @return boolean
+     */
 
     public function connect($host = null, $username = null, $password = null,$database=null) {
 
@@ -35,12 +43,33 @@ class db {
                 return false;
             }
         }
-        if (!mysql_select_db($database)) {
-            trigger_error("Cannot select database. Probably Database is not installed or something else", E_USER_ERROR);
-            return false;
+        if (!is_null($database)) {
+            if (!mysql_select_db($database))
+            {
+                trigger_error("Cannot Select database.",E_USER_ERROR);
+                return false;
+            }
         }
         return true;
     }
+    /**
+     * Select Database
+     * @param string $name
+     * @return boolean
+     */
+    function select_db($name)
+    {
+        if (!mysql_select_db($name))
+        {
+            trigger_error("Cannot Select Database",E_USER_ERROR);
+            return false;
+        }
+    }
+    /**
+     * Executes a SQL Query
+     * @param string $sql
+     * @return boolean
+     */
 
     function query($sql) {
         //Check if it is connected to database
@@ -60,7 +89,11 @@ class db {
             return false;
         }
     }
-    
+    /**
+     * Fetches a row from the query resource
+     * @param resource $query
+     * @return boolean
+     */
     function fetch($query)
     {
         if ($query!=false)
