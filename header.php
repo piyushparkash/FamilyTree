@@ -13,9 +13,11 @@ global $db, $template, $config;
 
 //Initialize template as we will be needing it right away
 require_once 'template/template.php';
+require_once 'db.db.php';
 $template=new template();
+$db=new db();
 
-//Initialize error handler
+//Initialize custom error handler
 function vanshavali_error($level,$message,$file,$line,$context)
 {
     global $template;
@@ -59,9 +61,7 @@ else
 }
 
 
-//Now that vanshavali is installed and database is installed
-//Init database package
-$db=new db();
+
 
 $_SESSION['profilepic'] = "common.jpg";
 $_SESSION['authenticated'] = is_authenticated(); // will set to true if the user has loged in..
