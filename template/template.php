@@ -17,9 +17,9 @@ class template extends Smarty {
     //The Constructor
     function __construct() {
         parent::__construct(); //Calls the smarty constructor
-        $this->setCacheDir("cache/");
-        $this->setCompileDir("compile/");
-        $this->setTemplateDir("../html/");
+        $this->setCacheDir("cache");
+        $this->setCompileDir("compile");
+        $this->setTemplateDir("html");
         
         //Check here for the permissions of the above folder and report error
     }
