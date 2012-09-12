@@ -8,7 +8,7 @@
 
 // this will contain all the information of the current loged in user.
 session_start();
-
+error_reporting(E_ALL & ~E_NOTICE);
 global $db, $template, $config;
 
 //Initialize template as we will be needing it right away
