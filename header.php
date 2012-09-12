@@ -13,7 +13,7 @@ global $db, $template, $config;
 
 //Initialize template as we will be needing it right away
 require_once 'template/template.php';
-require_once 'db.db.php';
+require_once 'db/db.php';
 $template=new template();
 $db=new db();
 
