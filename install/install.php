@@ -42,7 +42,8 @@ class install {
 
     /**
      * Asks for database name from the user where to install vanshavali
-     * 
+     * @param string $mode Describes which phase is currently running
+     * @param string $sub Describes which part is running of the phase
      */
     function ask_database_name($mode, $sub) {
         global $template, $db;
@@ -53,16 +54,19 @@ class install {
             $username = $_POST['database_username'];
             $password = $_POST['database_password'];
             $database = $_POST['database_name'];
+            
             //Connect to database
             $db->connect($host, $username, $password);
+            
             //Create Database
             $db->query("CREATE DATABASE $database");
+            
             //Select The given database
             $db->select_db($database);
-
-
-            //Read the basic structure schema and execute it.
-            //Read the basic data and execute it
+            
+            //Setup basic database
+            $this->setup_database();
+            
             //Now create the config.php file save it
             $file = fopen("config.php", "w+");
             $data = '<?php\n$config["host"]=' . $host .
@@ -70,8 +74,10 @@ class install {
                     ';\n$config["password"]=' . $password .
                     ';\n$config["database"]=' . $database .
                     ';\n?>';
+            
             fwrite($file, $data);
             fclose($file);
+            
             $template->display("database_success.tpl");
         }
     }
@@ -79,7 +85,7 @@ class install {
     /**
      * Function to setup the database
      */
-    private function setup_database($host, $username, $password) {
+    private function setup_database() {
         //Read the basic table schema and execute it
         //now enter the data that we have
     }
