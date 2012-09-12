@@ -10,8 +10,10 @@
  * @package install
  * @author piyush
  */
-$mode = $_GET['mode'];
-$sub = $_GET['sub'];
+$mode = @$_GET['mode'];
+$sub = @$_GET['sub'];
+require_once 'template/template.php';
+$template=new template();
 
 class install {
     /*
