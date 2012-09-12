@@ -44,21 +44,7 @@ function vanshavali_error($level,$message,$file,$line,$context)
 set_error_handler("vanshavali_error");  //Set the custom error handler
 
 
-if (!file_exists("config.php") || empty($config))
-{
-    //There is something wrong!
-    //Either the database is not installed or there is something wrong with ccnfig.php
-    //So Lets start from the beginning asking user all the question or probably this is the beginning... :P
-    require_once("install/install.php");
-    $install=new install();
-    $install->install(); //Run the setup wizard
-    
-}
-else
-{
-    //Acquire the basic database related information
-    require_once 'config.php';
-}
+
 
 
 
