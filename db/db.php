@@ -10,7 +10,6 @@
  * @package db
  * @author piyush
  */
-require_once '../header.php';
 global $config, $template;
 
 class db {
@@ -42,13 +41,14 @@ class db {
                 trigger_error("Cannot connect to database", E_USER_ERROR); //report error in case of failure
                 return false;
             }
-        }
+        
         if (!is_null($database)) {
             if (!mysql_select_db($database))
             {
                 trigger_error("Cannot Select database.",E_USER_ERROR);
                 return false;
             }
+        }
         }
         return true;
     }
