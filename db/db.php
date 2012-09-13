@@ -10,15 +10,8 @@
  * @package db
  * @author piyush
  */
-global $template,$config;
-if (!file_exists("config.php") || empty($config)) {
-    //There is something wrong!
-    //Either the database is not installed or there is something wrong with ccnfig.php
-    //So Lets start from the beginning asking user all the question or probably this is the beginning... :P
-    require_once("install/install.php");
-    $install = new install();
-    $install->install(); //Run the setup wizard
-} else {
+
+if (file_exists("config.php")) {
     //Acquire the basic database related information
     require_once 'config.php';
 }
@@ -28,7 +21,7 @@ class db {
     public $connection = false;
 
     public function __construct() {
-        
+        $this->connect();
     }
 
     /**
@@ -40,12 +33,15 @@ class db {
      * @return boolean
      */
     public function connect($host = null, $username = null, $password = null, $database = null) {
-
+        global $config;
+        
         //if null then assign the defualt
         $host = ($host == NULL) ? $config['host'] : $host;
         $username = $username == null ? $config['username'] : $username;
         $password = $password == null ? $config['password'] : $password;
         $database = $database == null ? $config['database'] : $database;
+        
+        //Check if connection is established
         if ($this->connection != false) {
             $this->connection = mysql_connect($host, $username, $password);
             if ($this->connection == false) {
