@@ -1,6 +1,15 @@
 <?php
+
 require 'header.php';
-connecttodatabase();
+//If config.php doesn't exist, probably not installed
+if (!file_exists("config.php")) {
+    require_once("install/install.php");
+    $install = new install();
+    exit();
+}
+
+//Now that the things are installed
+global $db;
 
 // Global variable to test if user has filled registration form
 $posted = false;
@@ -64,16 +73,16 @@ if (isset($_POST['register_submit'])) {
 
 
 
-        
-
-        
-        
 
 
-        
 
 
-        
 
-        
-        
+
+
+
+
+
+
+
+
