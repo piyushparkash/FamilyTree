@@ -11,8 +11,6 @@
 
 $mode = @$_GET['mode'];
 $sub = @$_GET['sub'];
-require_once 'template/template.php';
-$template=new template();
 
 class install {
     /*
@@ -20,6 +18,7 @@ class install {
      */
 
     function install() {
+        
         //make sure to run this only if database is not installed
         //So check if database is installed
         if (!empty($config) and file_exists("../config.php")) {
@@ -46,8 +45,8 @@ class install {
      * @param string $sub Describes which part is running of the phase
      */
     function ask_database_name($mode, $sub) {
+        global $template, $config, $db;
         $sub = ($sub == null) ? 1 : $sub;
-        global $template, $db;
         if ($sub == 1) {
             $template->display("install.ask_database_details.tpl");
         } elseif ($sub == 2) {
