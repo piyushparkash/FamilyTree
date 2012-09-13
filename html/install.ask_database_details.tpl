@@ -1,5 +1,5 @@
 {include file="header.tpl"}
-<form name="ask_database_name" method="post" class="well form-horizontal" action="install.php">
+<form name="ask_database_name" method="post" class="well form-horizontal" action="index.php?mode=ask_database_name&sub=2">
     <div class="control-group">
         <label for="database_name" class="control_label">Database name:</label>
         <div class=controls>

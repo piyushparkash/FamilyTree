@@ -10,38 +10,72 @@
  * @package db
  * @author piyush
  */
-require_once '../header.php';
-global $config, $template;
+
+if (file_exists("config.php")) {
+    //Acquire the basic database related information
+    require_once 'config.php';
+}
 
 class db {
 
     public $connection = false;
 
     public function __construct() {
-        
+        $this->connect();
     }
 
-    public function connect($host = null, $username = null, $password = null,$database=null) {
-
+    /**
+     * Connects to a database
+     * @param string $host
+     * @param string $username
+     * @param string $password
+     * @param string $database
+     * @return boolean
+     */
+    public function connect($host = null, $username = null, $password = null, $database = null) {
+        global $config;
+        
         //if null then assign the defualt
-        $host=$host==NULL ? $config['host'] : $host;
-        $username=$username==null ? $config['username'] : $username;
-        $password=$password==null ? $config['password'] : $password;
-        $database=$database==null ? $config['database'] : $database;
+        $host = ($host == NULL) ? $config['host'] : $host;
+        $username = $username == null ? $config['username'] : $username;
+        $password = $password == null ? $config['password'] : $password;
+        $database = $database == null ? $config['database'] : $database;
+        
+        //Check if connection is established
         if ($this->connection != false) {
             $this->connection = mysql_connect($host, $username, $password);
             if ($this->connection == false) {
                 trigger_error("Cannot connect to database", E_USER_ERROR); //report error in case of failure
                 return false;
             }
-        }
-        if (!mysql_select_db($database)) {
-            trigger_error("Cannot select database. Probably Database is not installed or something else", E_USER_ERROR);
-            return false;
+
+            if (!is_null($database)) {
+                if (!mysql_select_db($database)) {
+                    trigger_error("Cannot Select database.", E_USER_ERROR);
+                    return false;
+                }
+            }
         }
         return true;
     }
 
+    /**
+     * Select Database
+     * @param string $name
+     * @return boolean
+     */
+    function select_db($name) {
+        if (!mysql_select_db($name)) {
+            trigger_error("Cannot Select Database", E_USER_ERROR);
+            return false;
+        }
+    }
+
+    /**
+     * Executes a SQL Query
+     * @param string $sql
+     * @return boolean
+     */
     function query($sql) {
         //Check if it is connected to database
         if ($this->connection != false) {
@@ -60,16 +94,17 @@ class db {
             return false;
         }
     }
-    
-    function fetch($query)
-    {
-        if ($query!=false)
-        {
+
+    /**
+     * Fetches a row from the query resource
+     * @param resource $query
+     * @return boolean
+     */
+    function fetch($query) {
+        if ($query != false) {
             return mysql_fetch_array($query);
-        }
-        else
-        {
-            trigger_error("Invalid Query resource provided",E_USER_ERROR);
+        } else {
+            trigger_error("Invalid Query resource provided", E_USER_ERROR);
             return false;
         }
     }
