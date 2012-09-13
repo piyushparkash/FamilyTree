@@ -1,15 +1,14 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Script to install vanshavali
  * @package install
  * @author piyush
  */
+
+
+
+
 $mode = @$_GET['mode'];
 $sub = @$_GET['sub'];
 require_once 'template/template.php';
