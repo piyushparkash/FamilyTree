@@ -1,5 +1,7 @@
-{include file="header.tpl"}
 <form name="ask_database_name" method="post" class="single-dialog form-horizontal well" action="index.php?mode=ask_database_name&sub=2">
+    {if $error eq 1}
+        {include file="error_low.tpl"}
+    {/if}
     <div class="control-group">
         <label for="database_name" class="control-label">Database name:</label>
         <div class=controls>
