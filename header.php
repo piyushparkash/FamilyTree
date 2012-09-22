@@ -29,6 +29,7 @@ function vanshavali_error($level,$message,$file,$line,$context)
             $template->assign("lineno",$line);
             $template->assign("file",$file);
             $template->assign("context",$context);
+            $template->header();
             $template->display("error_high.tpl");
             exit(); //exit the file as error level is high
             break;
