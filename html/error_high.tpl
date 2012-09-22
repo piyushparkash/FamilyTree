@@ -1,6 +1,6 @@
-<div class="alert alert-error">
+<div class="single-dialog alert alert-error">
     <button type="button" class="close" data-dismiss="alert">x</button>
-    <strong>Error!</strong>Something went wrong! We'll get this fixed soon
+    <strong>Error!</strong> Something went wrong! We'll get this fixed soon
     <br /><h4>Error Details</h4>
     Message:{$message}<br />
     File:{$file}<br />
