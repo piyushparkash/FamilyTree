@@ -11,10 +11,6 @@
  * @author piyush
  */
 
-if (file_exists("config.php")) {
-    //Acquire the basic database related information
-    require_once 'config.php';
-}
 
 class db {
 
@@ -41,13 +37,10 @@ class db {
         $password = $password == null ? $config['password'] : $password;
         $database = $database == null ? $config['database'] : $database;
         
-        //Check if connection is established
-        if ($this->connection != false) {
             $this->connection = mysql_connect($host, $username, $password);
             if ($this->connection == false) {
                 trigger_error("Cannot connect to database", E_USER_ERROR); //report error in case of failure
                 return false;
-            }
 
             if (!is_null($database)) {
                 if (!mysql_select_db($database)) {
