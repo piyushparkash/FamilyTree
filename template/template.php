@@ -23,6 +23,16 @@ class template extends Smarty {
         
         //Check here for the permissions of the above folder and report error
     }
+    
+    function header()
+    {
+        $this->display("header.tpl");
+    }
+    
+    function footer()
+    {
+        $this->display("footer.tpl");
+    }
 }
 
 ?>
