@@ -4,40 +4,44 @@
  * @author Piyush
  * @copyright 2011
  */
-
-
 // this will contain all the information of the current loged in user.
 session_start();
 error_reporting(E_ALL & ~E_NOTICE);
+
+//If config file exists then include it else leave it
+if (file_exists("config.php")) {
+    if (is_readable("config.php")) {
+        require_once("config.php");
+    }
+}
+
 global $db, $template;
 
 //Initialize Global variables
 require_once 'template/template.php';
 require_once 'db/db.php';
-$template=new template();
-$db=new db();
+$template = new template();
+$db = new db();
 
 //Initialize custom error handler
-function vanshavali_error($level,$message,$file,$line,$context)
-{
+function vanshavali_error($level, $message, $file, $line, $context) {
     global $template;
-    switch ($level)
-    {
+    switch ($level) {
         case E_USER_ERROR:
         case E_USER_WARNING:
-            $template->assign("message",$message);
-            $template->assign("lineno",$line);
-            $template->assign("file",$file);
-            $template->assign("context",$context);
+            $template->assign("message", $message);
+            $template->assign("lineno", $line);
+            $template->assign("file", $file);
+            $template->assign("context", $context);
             $template->header();
             $template->display("error_high.tpl");
             exit(); //exit the file as error level is high
             break;
         case E_USER_NOTICE:
-            $template->assign("message",$message);
-            $template->assign("lineno",$line);
-            $template->assign("file",$file);
-            $template->assign("context",$context);
+            $template->assign("message", $message);
+            $template->assign("lineno", $line);
+            $template->assign("file", $file);
+            $template->assign("context", $context);
             $template->display("error_low.tpl");
     }
 }
@@ -53,11 +57,11 @@ set_error_handler("vanshavali_error");  //Set the custom error handler
 $_SESSION['profilepic'] = "common.jpg";
 $_SESSION['authenticated'] = is_authenticated(); // will set to true if the user has loged in..
 $_SESSION['signeduser'] = array();
+
 //$query = executequery("select * from member where id=".$_COOKIE['id']);
 //$_SESSION["signeduser"] = mysql_fetch_array($query);
 
-function connecttodatabase()
-{
+function connecttodatabase() {
     global $data, $host, $username, $password;
     $data = mysql_connect($host, $username, $password);
     if ($data == false) {
@@ -67,8 +71,7 @@ function connecttodatabase()
     mysql_select_db("bansavali");
 }
 
-function is_authenticated()
-{
+function is_authenticated() {
     global $_SESSION;
 
     if (!isset($_COOKIE['token'], $_COOKIE['membername'], $_COOKIE['id'])) {
@@ -79,7 +82,7 @@ function is_authenticated()
     //$_SESSION["signeduser"] = mysql_fetch_array($query);
     $token = $_COOKIE['token'];
     $numtoken = preg_replace("/[^0-9]/", "", $token);
-    $numtoken = (int)$numtoken;
+    $numtoken = (int) $numtoken;
     if ($numtoken == $_COOKIE['id']) {
 
         return true;
@@ -88,8 +91,8 @@ function is_authenticated()
         return false;
     }
 }
-function vanshavali_mail($to, $subject, $body)
-{
+
+function vanshavali_mail($to, $subject, $body) {
     $user_email = "me@vanshavali.co.cc"; // valid POST email address
 
     $headers = "From: $user_email\r\n";
@@ -98,24 +101,21 @@ function vanshavali_mail($to, $subject, $body)
     $headers .= 'MIME-Version: 1.0' . "\n";
     $headers .= 'Content-type: text/html; UTF-8' . "\r\n";
 
-    if (!mail($to, $subject, $body, $headers))
-    {
-    	die("Some error occured!");
+    if (!mail($to, $subject, $body, $headers)) {
+        die("Some error occured!");
     }
 }
-function authenticateuser($id, $membername)
-{
+
+function authenticateuser($id, $membername) {
     global $_SESSION;
     $token = generate_token($id);
     setcookie("membername", $membername, 0, "/");
     setcookie("id", $id, 0, "/");
     setcookie("token", $token, 0, "/");
     $_SESSION['authenticated'] = true;
-
 }
 
-function generate_token($id = "")
-{
+function generate_token($id = "") {
     $codelenght = 20;
     for ($newcode = "", $newcode_length = 0; $newcode_length < $codelenght; $newcode_length++) {
         if ($newcode_length == 5) {
@@ -137,8 +137,7 @@ function generate_token($id = "")
     return $newcode;
 }
 
-function executequery($sql)
-{
+function executequery($sql) {
     $data = mysql_query($sql);
     if ($data == false) {
         echo mysql_error();
@@ -148,8 +147,7 @@ function executequery($sql)
     }
 }
 
-function hassons($memberid)
-{
+function hassons($memberid) {
     $query = executequery("select * from member where sonof=" . $memberid);
     if (mysql_fetch_row($query) == false) {
         return false;
@@ -158,20 +156,17 @@ function hassons($memberid)
     }
 }
 
-function deletesons($memberid)
-{
+function deletesons($memberid) {
     $query = executequery("delete from member where sonof=" . $memberid);
     return $query;
 }
 
-function fatherid($memberid)
-{
+function fatherid($memberid) {
     $query = executequery("select* from member where id=" . $memberid);
     return mysql_result($query, 0, "sonof");
 }
 
-function navigationstring($memberid)
-{
+function navigationstring($memberid) {
     $current = $memberid;
     $temp = $current;
     $father = "";
@@ -179,7 +174,7 @@ function navigationstring($memberid)
     while (1) {
         $father = mysql_fetch_array(executequery("select * from member where ID=" . $temp));
         $resultantstring = "<a href='index.php?showmember=" . $father['ID'] . "'>" . $father['membername'] .
-            "</a>>" . $resultantstring;
+                "</a>>" . $resultantstring;
         $temp = $father['sonof'];
         if ($temp == null) {
             break;
@@ -188,8 +183,7 @@ function navigationstring($memberid)
     echo $resultantstring;
 }
 
-function fileext($filename, $ext = true)
-{
+function fileext($filename, $ext = true) {
     $filename = basename($filename);
     $arr = explode(".", $filename);
     $count = count($arr);
