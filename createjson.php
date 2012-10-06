@@ -1,13 +1,13 @@
 <?php
 
 require "header.php";
-connecttodatabase();
+global $db;
 
 function getchild($id)
 {
     $finalarray = array();
-    $query = executequery("select * from member where sonof=$id");
-    while ($row = mysql_fetch_array($query)) {
+    $query = $db->query("select * from member where sonof=$id");
+    while ($row = $db->fetch($query)) {
         $obj = array();
         $obj['id'] = $row["id"];
         $obj['name'] = $row['membername'];
@@ -22,8 +22,8 @@ function getchild($id)
     return $finalarray;
 }
 
-$query = executequery("select * from member where sonof=-1");
-$row = mysql_fetch_array($query);
+$query = $db->query("select * from member where sonof=-1");
+$row = $db->fetch($query);
 $finalkey = array();
 $finalkey['id'] = $row['id'];
 $finalkey['name'] = $row['membername'];
