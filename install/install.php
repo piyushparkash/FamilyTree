@@ -64,7 +64,7 @@ class install {
             $db->connect($host, $username, $password);
 
             //Create Database
-            $db->query("CREATE DATABASE $database");
+            $db->query("CREATE DATABASE if not exists $database");
 
             //Select The given database
             $db->select_db($database);
@@ -74,14 +74,32 @@ class install {
 
             //Now create the config.php file save it
             $file = fopen("config.php", "w+");
-            $data = '<?php\n$config["host"]=' . $host .
-                    ';\n$config["username"]=' . $username .
-                    ';\n$config["password"]=' . $password .
-                    ';\n$config["database"]=' . $database .
-                    ';\n?>';
+            if (!$file)
+            {
+                trigger_error("Error opening or creating config.php file",E_USER_ERROR);
+            }
+            
+            $data = "<?php\n\$config['host']=$host
+                    ;\n\$config['username']=$username
+                    ;\n\$config['password']=$password
+                    ;\n\$config['database']=$database
+                    ;\n?>";
 
-            fwrite($file, $data);
+            $wr=fwrite($file, $data);
             fclose($file);
+            
+            //Set file permission to 644
+            if (!chmod("config.php", 644))
+            {
+                //Read and write for the owner and read for everyone else
+                trigger_error("Cannot set config.php permissions",E_USER_ERROR);
+                
+                //Check if permissions have been successfull applied or not
+                if (!is_readable("config.php"))
+                {
+                trigger_error("Wrong config.php permissions. Please give config.php file 644 permission. <br> Use the Following command<br>$ chmod 644 config.php",E_USER_ERROR);
+                }
+            }
 
             $template->display("database_success.tpl");
         }
@@ -95,12 +113,15 @@ class install {
         //Read the basic table schema and execute it
         $scheme_file = fopen("schema.sql", "r");
         $data = fread($scheme_file, filesize("schema.sql"));
-        $db->query($data);
+        
+        //$db->query($data);
+        
         fclose($scheme_file);
+        
         //now enter the data that we have
         $member_data = fopen("member_data.sql", "r");
         $data = fread($member_data, filesize("member_data.sql"));
-        $db->query($data);
+        //$db->query($data);
         fclose($member_data);
     }
 
