@@ -1,10 +1,12 @@
 <?php
 
 require "header.php";
+
 global $db;
 
 function getchild($id)
 {
+    global $db;
     $finalarray = array();
     $query = $db->query("select * from member where sonof=$id");
     while ($row = $db->fetch($query)) {
