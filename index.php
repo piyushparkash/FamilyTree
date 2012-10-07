@@ -9,7 +9,15 @@ if (!file_exists("config.php")) {
 }
 
 //Now that the things are installed
-global $db;
+global $db,$template;
+
+//Check if config.php is readable if not then tell user to set the permissions manually
+if (!is_readable("config.php")) 
+{
+    $template->header();
+    $template->display("config.error.tpl");
+    exit();
+}
 
 // Global variable to test if user has filled registration form
 $posted = false;
@@ -61,4 +69,9 @@ if (isset($_POST['register_submit'])) {
         die("Some error occurred.Please try again");
     }
 }
+//Display the header and basic contents
+$template->header();
+$template->display("firsttimeinfo.tpl");
+$template->display("infovis.tpl");
+$template->display("right-container.tpl");
 ?>
