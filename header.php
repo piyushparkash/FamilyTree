@@ -22,6 +22,10 @@ require_once 'template/template.php';
 require_once 'db/db.php';
 $template = new template();
 $db = new db();
+if (isset($config['database']) and !empty($config['database']))
+{
+    $db->select_db($config['database']);
+}
 
 //Initialize custom error handler
 function vanshavali_error($level, $message, $file, $line, $context) {
