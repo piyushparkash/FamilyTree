@@ -1,6 +1,5 @@
-create table member
-{
-id int(11) auto_increment,
+create table member (
+id int(11) auto_increment primary key,
 membername mediumtext not null,
 username mediumtext default null,
 password mediumtext default null,
@@ -17,45 +16,42 @@ aboutme longtext default null,
 lastlogin int(11) default null,
 joined int(11) default null,
 approved int(1) default 0,
-tokenforact mediumtext,
-primary key (id)
-}
+tokenforact mediumtext default null
+)
 
-create table joinrequest
-{
-id int(11) auto_increment not null,
+create table joinrequest (
+id int(11) auto_increment primary key,
 formember int(11) not null,
 pic mediumtext default null,
 personalmessage longtext default null,
 emailid mediumtext not null,
 tokenforact mediumtext not null,
-approved int(1) default 0,
-primary key (id)
-}
+approved int(1) default 0
+)
 
 create table feedback
-{
+(
 id int(11) auto_increment,
 user_name mediumtext not null,
 user_emailid mediumtext not null,
 feedback_text longtext not null,
 seen int(1) default 0,
 primary key (id)
-}
+);
 
 create table suggested_table
-{
+(
 id int(11) auto_increment,
 typesuggest mediumtext not null,
 suggested_value mediumtext not null,
 suggested_by int(11) not null,
 ts int(11) not null,
 primary key (id)
-}
+);
 
 
 create table talking
-{
+(
 id int(11) auto_increment,
 touser int(11) not null,
 fromuser int(11) not null,
@@ -63,4 +59,4 @@ attime int(11) not null,
 replyto int(11) not null,
 themessage longtext not null,
 primary key (id)
-}
+);
