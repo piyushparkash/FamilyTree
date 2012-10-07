@@ -24,14 +24,24 @@ class template extends Smarty {
         //Check here for the permissions of the above folder and report error
     }
     
+    /**
+     * Function to show the global header
+     * @return \template
+     */
     function header()
     {
         $this->display("header.tpl");
+        return $this;
     }
     
+    /**
+     * Function to show the global footer
+     * @return \template 
+     */
     function footer()
     {
         $this->display("footer.tpl");
+        return $this;
     }
 }
 
