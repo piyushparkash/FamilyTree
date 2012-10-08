@@ -4,8 +4,7 @@
  * @author Piyush
  * @copyright 2011
  */
-// this will contain all the information of the current loged in user.
-session_start();
+
 error_reporting(E_ALL & ~E_NOTICE);
 
 //If config file exists then include it else leave it
