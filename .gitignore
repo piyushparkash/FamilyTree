@@ -1,5 +1,8 @@
-nbproject/
-compile/
+nbproject/*
+compile/*
+config.php
+template/cache/*
+template/compile/*
 # Build results
 [Dd]ebug/
 [Rr]elease/
