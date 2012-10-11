@@ -12,7 +12,6 @@
  */
 class auth {
 
-
     public function __construct() {
         session_start();
     }
@@ -22,9 +21,11 @@ class auth {
         $query = $db->query("select * from member where username='$username' and password='$password'");
         $row = $db->fetch($query);
 
-        //if no row found then return false
+        //if no row found or if user's account is not activated yet then
         if ($row == false) {
             return false;
+        } elseif ($row['approved']==0) {
+            return array('error' => 2);
         }
 
         //Start the session and start storing data about user
@@ -37,6 +38,22 @@ class auth {
 
         //if everything is alright then return true
         return true;
+    }
+
+    function user_account_activated($id) {
+
+        $data = $this->get_user($id);
+        if ($data['approved'] == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function get_user($id) {
+        global $db;
+        $row = $db->fetch($db->query("select * from member where id=$id"));
+        return $row;
     }
 
     function check_session() {
@@ -65,7 +82,7 @@ class auth {
     }
 
     function is_authenticated() {
-        if ($status == 1) {
+        if ($this->check_token($_SESSION['id'], $_SESSION['token']) && $_SESSION['authenticated']) {
             return true;
         } else {
             return false;
