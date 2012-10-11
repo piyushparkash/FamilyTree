@@ -9,11 +9,10 @@ if (!file_exists("config.php")) {
 }
 
 //Now that the things are installed
-global $db,$template;
+global $db, $template;
 
 //Check if config.php is readable if not then tell user to set the permissions manually
-if (!is_readable("config.php")) 
-{
+if (!is_readable("config.php")) {
     $template->header();
     $template->display("config.error.tpl");
     exit();
@@ -71,7 +70,13 @@ if (isset($_POST['register_submit'])) {
 }
 //Display the header and basic contents
 $template->header();
+$template->assign(array(
+    'authenticated' => $user->is_authenticated(),
+    'membername' => $_SESSION['membername']
+));
+$template->display("user.main.tpl");
 $template->display("firsttimeinfo.tpl");
 $template->display("infovis.tpl");
 $template->display("right-container.tpl");
+$template->display("login.form.tpl");
 ?>
