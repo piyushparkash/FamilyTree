@@ -4,7 +4,6 @@
  * @author Piyush
  * @copyright 2011
  */
-
 error_reporting(E_ALL & ~E_NOTICE);
 
 //If config file exists then include it else leave it
@@ -14,16 +13,21 @@ if (file_exists("config.php")) {
     }
 }
 
-global $db, $template;
+global $db, $template, $user;
 
 //Initialize Global variables
 require_once 'template/template.php';
 require_once 'db/db.php';
+require_once 'user/user.php';
 $template = new template();
 $db = new db();
+
+//Select the defualt database
 if (isset($config['database']) and !empty($config['database'])) {
     $db->select_db($config['database']);
 }
+
+$user=new user();
 
 //Initialize custom error handler
 function vanshavali_error($level, $message, $file, $line, $context) {
@@ -50,10 +54,6 @@ function vanshavali_error($level, $message, $file, $line, $context) {
 
 set_error_handler("vanshavali_error");  //Set the custom error handler
 
-
-
-
-
 function vanshavali_mail($to, $subject, $body) {
     $user_email = "me@vanshavali.co.cc"; // valid POST email address
 
@@ -67,8 +67,6 @@ function vanshavali_mail($to, $subject, $body) {
         die("Some error occured!");
     }
 }
-
-
 
 function hassons($memberid) {
     $query = executequery("select * from member where sonof=" . $memberid);
