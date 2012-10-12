@@ -1,17 +1,18 @@
 <?php
 
 /**
- * @author lolkittens
+ * @author Piyush
  * @copyright 2012
  */
 require ("header.php");
-connecttodatabase();
+global $db;
+
 $partial = $_GET['pt'];
 switch ($_GET['action']) {
     case "register":
-        $query = executequery("select * from member where membername like '%$partial%' and username='' and password=''");
+        $query = $db->query("select * from member where membername like '%$partial%' and username='' and password=''");
         $usernames = array();
-        while ($row = mysql_fetch_array($query)) {
+        while ($row = $db->fetch($query)) {
             $usernames[$row["id"]] = $row['membername'];
 
         }
@@ -19,9 +20,9 @@ switch ($_GET['action']) {
         echo json_encode($usernames);
         break;
     case "search":
-        $query = executequery("select * from member where membername like '%$partial%'");
+        $query = $db->query("select * from member where membername like '%$partial%'");
         $usernames = array();
-        while ($row = mysql_fetch_array($query)) {
+        while ($row = $db->fetch($query)) {
             $usernames[$row["id"]] = $row['membername'];
 
         }
