@@ -20,6 +20,7 @@
         <script type="text/javascript" src="../ajax/jquery-ui.js">
         </script>
         <script type="text/javascript" src="assets/js/bootstrap-modal.js"></script>
+        <script type="text/javascript" src="assets/js/bootstrap-dropdown.js"></script>
         <script type="text/javascript" src="jit.js">
         </script>
         <script type="text/javascript" src="working.js">
