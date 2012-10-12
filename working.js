@@ -83,22 +83,22 @@ function register()
         $.post("getdata.php",{
             action:"username_check",
             username:this.value
-            },function (data)
+        },function (data)
 
-            {
-            var json=$.parseJSON(data);
-            if (json.yes) //if reply is yes the username is already used 
-            {
-                alert("Username is already used. Try something else");
-                $(this).focus();
-                //hide any previous success message
-                success_hide("register_username");
-            }
-            else //else not used and can be used
-            {
-                success_display("register_username","Valid Username");
-            }
-        });
+        {
+                var json=$.parseJSON(data);
+                if (json.yes) //if reply is yes the username is already used 
+                {
+                    alert("Username is already used. Try something else");
+                    $(this).focus();
+                    //hide any previous success message
+                    success_hide("register_username");
+                }
+                else //else not used and can be used
+                {
+                    success_display("register_username","Valid Username");
+                }
+            });
     });
     //end of username related checks
 	
@@ -242,9 +242,13 @@ function login_submit() {
             $("#login_error").html("Login Failed! Please check your username and password and try again!");
             $("#login_username").removeAttr("disabled").val("");
             $("#login_password").removeAttr("disabled").val("");
+            
+            //Show the error block which is hidden
+            $("#login_error").removeClass("hide");
+            
             //positon the dialog in the center as #login_error is now visible
             $("#login").modal();
-            
+            return false;
             
         // if successfull login
         }
@@ -256,13 +260,11 @@ function login_submit() {
             $("#login_password").removeAttr("disabled").val("");
             //positon the dialog in the center as #login_error is now visible
             $("#login").dialog();
-        } else {
-            if (selected_member) { //if member is selected
-                window.location.assign("index.php#" + selected_member);
-            } else { //else if no member is selected ie selected_memberis null
-                window.location = "index.php";
-            }
+            return false;
         }
+            
+            window.location = "index.php";
+        
     });
     
     //Stop form submit and remain on the same page
