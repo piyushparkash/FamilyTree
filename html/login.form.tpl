@@ -21,7 +21,7 @@
                 </div>
                 <div class="form-actions">
                     <button class="btn btn-primary" type="submit">Login</button>
-                    <button class="btn" onclick="register()">Join Family</button>
+                    <button class="btn" onclick="$('#login').modal('hide'); register()">Join Family</button>
                 </div>
             </fieldset>
         </form>
