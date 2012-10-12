@@ -111,6 +111,28 @@ class auth {
         }
         return $newcode;
     }
+    
+    function destroy_session()
+    {
+        session_unset();
+    }
+    
+    function unauthenticate()
+    {
+        if (!$this->is_authenticated())
+        {
+            return false;
+        }
+        
+        //Unset all the session values
+        $this->destroy_session();
+        if ($this->is_authenticated())
+        {
+            trigger_error("Error Ending Session",E_USER_ERROR);
+            return false;
+        }
+        return true;
+    }
 
 }
 
