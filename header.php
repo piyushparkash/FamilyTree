@@ -13,14 +13,16 @@ if (file_exists("config.php")) {
     }
 }
 
-global $db, $template, $user;
+global $db, $template, $user, $vanshavali;
 
 //Initialize Global variables
 require_once 'template/template.php';
 require_once 'db/db.php';
 require_once 'user/user.php';
+require_once 'vanshavali/vanshavali.php';
 $template = new template();
 $db = new db();
+$vanshavali=new vanshavali();
 
 //Select the defualt database
 if (isset($config['database']) and !empty($config['database'])) {
@@ -54,19 +56,6 @@ function vanshavali_error($level, $message, $file, $line, $context) {
 
 set_error_handler("vanshavali_error");  //Set the custom error handler
 
-function vanshavali_mail($to, $subject, $body) {
-    $user_email = "me@vanshavali.co.cc"; // valid POST email address
-
-    $headers = "From: $user_email\r\n";
-    $headers .= "Return-Path: $to\r\n";
-    $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
-    $headers .= 'MIME-Version: 1.0' . "\n";
-    $headers .= 'Content-type: text/html; UTF-8' . "\r\n";
-
-    if (!mail($to, $subject, $body, $headers)) {
-        die("Some error occured!");
-    }
-}
 
 function hassons($memberid) {
     $query = executequery("select * from member where sonof=" . $memberid);
