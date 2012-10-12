@@ -8,19 +8,18 @@
 
 //connect to database
 require "header.php";
-connecttodatabase();
-
+global $db;
 //get the type of data to be extracted
 switch ($_POST['action']) {
 	
 	//when to check whether a given username already exists or not
 	case "username_check":
 		$username=$_POST['username'];
-		$query=executequery("select count(*) as no from member where username='$username'");
-		$row=mysql_fetch_array($query);
+		$query=$db->query("select count(*) as no from member where username='$username'");
+		$row=$db->fetch($query);
 		
 		//if count is >1 then there are user with that username
-    	if ($row['no']>1)
+    	if ($row['no']>0)
     	{
     		echo json_encode(array("yes" => 1));
     	}
