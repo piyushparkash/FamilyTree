@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @author lolkittens
+ * @author Piyush
  * @copyright 2012
  * getdata.php used to get certain data from database
  */
