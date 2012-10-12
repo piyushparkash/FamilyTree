@@ -79,4 +79,10 @@ $template->display("firsttimeinfo.tpl");
 $template->display("infovis.tpl");
 $template->display("right-container.tpl");
 $template->display("login.form.tpl");
+$template->display("register.form.tpl");
+
+if ($user->is_authenticated())
+{
+    $template->display('operations.tpl');
+}
 ?>
