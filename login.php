@@ -8,14 +8,19 @@ require "header.php";
 global $user;
 
 if (isset($_POST['username'], $_POST['password'])) {
-    $username = $_POST['username'];
+    $username = strtolower($_POST['username']);
     $pass = $_POST['password'];
     
+    //Authenticate the user
     $ret = $user->login($username, $pass);
+    
+    
     if ($ret['error'] == 2) { //If user hasn't activated his account
         echo json_encode(array("error" => 2)); //The error code is 2
         exit();
     }
+    
+        //If user is still not authenticated then...There may be some error
         if (!$user->is_authenticated()) {
             $finalarray['error'] = 1;
             echo json_encode($finalarray);
@@ -28,6 +33,8 @@ if (isset($_POST['username'], $_POST['password'])) {
         echo json_encode($finalarray);
     
 } else {
+    
+    //if nothing is sent the send them back to index.php
     header("Location:index.php");
 }
 ?>
