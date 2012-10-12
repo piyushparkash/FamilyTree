@@ -36,18 +36,20 @@ class db {
         $username = $username == null ? $config['username'] : $username;
         $password = $password == null ? $config['password'] : $password;
         $database = $database == null ? $config['database'] : $database;
-        
+        if (!empty($host) && !empty($username) && !empty($password))
+        {
             $this->connection = mysql_connect($host, $username, $password);
             if ($this->connection == false) {
                 trigger_error("Cannot connect to database", E_USER_ERROR); //report error in case of failure
                 return false;
-
+                
             if (!is_null($database)) {
                 if (!mysql_select_db($database)) {
                     trigger_error("Cannot Select database.", E_USER_ERROR);
                     return false;
                 }
             }
+        }
         }
         return true;
     }
