@@ -9,11 +9,10 @@
 require_once 'suggest.php';
 class member extends suggest {
 
-    public $id, $data;
+    public $data;
 
     public function __construct($memberid) {
         parent::__construct($memberid);
-        $id = $memberid;
         $this->populate_data($memberid);
     }
     
