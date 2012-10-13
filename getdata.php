@@ -40,7 +40,16 @@ switch ($_POST['action']) {
         break;
         
         case "operation_remove":
-            
+            global $vanshavali;
+            if (!empty($_POST['memberid']) && !empty($_POST['type']))
+            {
+                //get the member to be deleted
+                $member=$vanshavali->getmember($_POST['memberid']);
+                
+                //add removal suggestion
+                $member->remove();
+            }
+            break;
     default: //when nothing matches
         break;
 }
