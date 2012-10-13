@@ -98,7 +98,8 @@
     overflow: auto;
     position:absolute;
     top:10%;
-    width: 25%;
+    width: 30%;
+    height: 88%;
 }
 .single-dialog{
     margin-left: 3%;
