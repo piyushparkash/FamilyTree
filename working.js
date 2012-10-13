@@ -134,23 +134,15 @@ function submit_feedback() {
 ////////////////////////////////////////////////////////
 // Member Operation functions
 function operation_addmember() {
-    if (!is_authenticated) {
-        login(); //on authenticated members allowed
-        return;
-    }
-    
+    $("#operation_add").slideDown();
     //name and id of parent from tree.graph instance
     father_name=(tree.graph.getNode(selected_member)).name;
     father_id=(tree.graph.getNode(selected_member)).id;
-    v=document.createTextNode(father_name);
     
     //add to the form
-    $("#operation_add_sonof_name").append(v);
+    //alert($("#operation_add_sonof_id").length);
+    $("#operation_add_sonof_name").html(father_name);
     $("#operation_add_sonof_id").val(father_id);
-    
-    //show the dialog
-    $("#operation_add").modal();
-	
 }
 function operation_addmember_submit() {
     //get the values and disable the controls
@@ -159,16 +151,13 @@ function operation_addmember_submit() {
     var sonof = $("#operation_add_sonof_id");
     
     //post the information in the suggestion table
-    $.post("suggestion/suggest.php", {
+    $.post("getdata.php", {
+        action:"operation_add",
         type: "child",
         name: name.val(),
         gender: gender.val(),
         sonof: sonof.val()
     }, function() {
-	   
-       
-        //close the dialog
-        $("#operation_add").modal("hide");
         
         //enable the controls and set the value to ""
         $("#operation_add_name").removeAttr("disabled").val("");
@@ -178,8 +167,8 @@ function operation_addmember_submit() {
         $("#operation_add_sonof_name").html("<input type='hidden' id='operation_add_sonof_id' />");
         
         
-        alert("The changes will be viewed permanently in the Family Tree once it is confirmed by other members. Thanks for contributing");
-    
+        alert("The changes will be viewed permanently in the Family Tree once it is confirmed by other members. Thankyou for your contribution");
+        $("#operation_add").slideUp();
     });
     
     //stop the form from redirecting
