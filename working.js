@@ -106,7 +106,7 @@ function login_submit() {
             return false;
         }
             
-            window.location = "index.php";
+        window.location = "index.php";
         
     });
     
@@ -135,6 +135,7 @@ function submit_feedback() {
 // Member Operation functions
 function operation_addmember() {
     $("#operation_add").slideDown();
+    
     //name and id of parent from tree.graph instance
     father_name=(tree.graph.getNode(selected_member)).name;
     father_id=(tree.graph.getNode(selected_member)).id;
@@ -185,9 +186,35 @@ function editmember() {
     
 }
 function deletemember() {
-    if (!is_authenticated) {
-        login();
+    //Details of member
+    member=(tree.graph.getNode(selected_member));
+    //Details of father
+    father=member.getParents();
+    
+    if (father.length==0)
+    {
+        //No Parent huh? I am Root!!
+        alert("This member cannot be removed");
         return;
     }
+        
+    $("#operation_remove_son").text(member.name);
+    $("#operation_remove_father").text(father[0].name);
+    $("#operation_remove_son_id").val(member.id);
     $("#operation_remove").modal();
+}
+
+function deletemember_submit()
+{
+    $("#operation_remove").modal("hide");
+    member_id=$("#operation_remove_son_id").val();
+    alert(member_id);
+    $.post("getdata.php",{
+        action:"operation_remove",
+        type:"remove",
+        "memberid":member_id
+    },
+    function () {
+            alert("Member will be removed once it is confirmed by other members");
+        });
 }
