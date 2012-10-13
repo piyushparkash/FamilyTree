@@ -41,7 +41,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="javascript:operation_addmember()">Add Son</a></li>
-                            <li><a>Remove Member</a></li>
+                            <li><a href="javascript:deletemember()">Remove Member</a></li>
                             <li><a >Edit Member</a></li>
                         </ul>
                     </div>
