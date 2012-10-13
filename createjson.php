@@ -4,8 +4,7 @@ require "header.php";
 
 global $db;
 
-function getchild($id)
-{
+function getchild($id) {
     global $db;
     $finalarray = array();
     $query = $db->query("select * from member where sonof=$id");
@@ -16,8 +15,9 @@ function getchild($id)
         $obj['data'] = array(
             "dob" => ($row['dob'] ? $row['dob'] : "unknown"),
             "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
-                "Married"),
-            "alive" => ($row['alive'] == 0 ? "No" : "Yes"));
+                    "Married"),
+            "alive" => ($row['alive'] == 0 ? "No" : "Yes"),
+            'image' => $row['profilepic']);
         $obj['children'] = getchild($row['id']);
         array_push($finalarray, $obj);
     }
@@ -30,10 +30,10 @@ $finalkey = array();
 $finalkey['id'] = $row['id'];
 $finalkey['name'] = $row['membername'];
 $finalkey['data'] = array(
-            "dob" => ($row['dob'] ? $row['dob'] : "unknown"),
-            "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
-                "Married"),
-            "alive" => ($row['alive'] == 0 ? "No" : "Yes"));
+    "dob" => ($row['dob'] ? $row['dob'] : "unknown"),
+    "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
+            "Married"),
+    "alive" => ($row['alive'] == 0 ? "No" : "Yes"));
 $finalkey['children'] = getchild($row['id']);
 
 echo json_encode($finalkey);
