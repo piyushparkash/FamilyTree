@@ -11,9 +11,9 @@
  * @author piyush
  */
 class suggest {
-
+    public $id;
     public function __construct($memberid) {
-        
+        $this->id = $memberid;
     }
 
     function add_son($name,$gender,$sonof) {
@@ -30,12 +30,15 @@ class suggest {
                 json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")");
     }
 
-    function remove_son() {
+    function remove() {
+        global $db,$user;
         
+        $query=$db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
+            ('remove', '$this->id',". $user->user['id'].",".time().")");
     }
 
-    function edit_member($type) {
-        
+    function edit($type) {
+        global $db,$user;
     }
 
 }
