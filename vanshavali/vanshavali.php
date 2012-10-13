@@ -5,10 +5,20 @@
  *
  * @author piyush
  */
+require_once 'member.php';
+
 class vanshavali {
 
     public function __construct() {
         
+    }
+
+    function getmember($id) {
+        global $db;
+        $query = $db->query("select * from member where id=$id");
+        $ret = $db->fetch($query);
+        $member = new member($ret['id']);
+        return $member;
     }
 
     function register($details) {
@@ -25,8 +35,7 @@ class vanshavali {
         $ret = $db->query($sql);
 
         if ($ret != false) {
-            $this->mail("mail.register.confirm.tpl",array('username' => $details[0],'token' => $token, 'email' => $details[6]),
-                    $details[6],'Welcome to Vanshavali | Email Confirmation');
+            $this->mail("mail.register.confirm.tpl", array('username' => $details[0], 'token' => $token, 'email' => $details[6]), $details[6], 'Welcome to Vanshavali | Email Confirmation');
             return true;
         }
     }
@@ -35,11 +44,11 @@ class vanshavali {
         global $template;
         //Add Global variable of domain
         $user_email = "me@vanshavali.co.cc";
-        
+
         //Fetch body from template
         $template->assign($data);
-        $body=$template->fetch($template_name);
-        
+        $body = $template->fetch($template_name);
+
         //Mail Headers
         $headers = "From: $user_email\r\n";
         $headers .= "Return-Path: $to\r\n";
@@ -48,7 +57,7 @@ class vanshavali {
         $headers .= 'Content-type: text/html; UTF-8' . "\r\n";
 
         if (!mail($to, $subject, $body, $headers)) {
-            trigger_error("Error Occured while sending Mail",E_USER_ERROR);
+            trigger_error("Error Occured while sending Mail", E_USER_ERROR);
         }
     }
 
