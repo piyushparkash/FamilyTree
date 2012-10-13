@@ -26,7 +26,7 @@ function display_clear_data()
 }
 
 //Function to display data in the right container of the current selected_member
-function display_data(name,dob,relationship_status,alive)
+function display_data(name,dob,relationship_status,alive,image)
 {
     //Remove all previous data
     display_clear_data();
@@ -35,6 +35,7 @@ function display_data(name,dob,relationship_status,alive)
     $("#display_dob").html(dob);
     $("#display_relationship").html(relationship_status);
     $("#display_alive").html(alive);
+    $("#display_image").src=image;
 }
 function init(){
     var json;
@@ -93,7 +94,7 @@ function init(){
                 st.onClick(node.id);
                 
                 //display data on right container
-                display_data(node.name,node.data.dob,node.data.relationship_status,node.data.alive);    
+                display_data(node.name,node.data.dob,node.data.relationship_status,node.data.alive,node.image);    
             };
             //set label styles
             var style = label.style;
