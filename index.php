@@ -29,12 +29,16 @@ $template->assign(array(
 $template->display("user.main.tpl");
 $template->display("firsttimeinfo.tpl");
 $template->display("infovis.tpl");
+$template->assign(array(
+    'authenticated' => $user->is_authenticated()
+));
 $template->display("right-container.tpl");
 $template->display("login.form.tpl");
-$template->display("register.form.tpl");
-
+$template->display('search.form.tpl');
+$template->display('operations.tpl');
 if ($user->is_authenticated())
 {
-    $template->display('operations.tpl');
+    $template->display('operations.add.form.tpl');
+    $template->display('operations.remove.tpl');
 }
 ?>
