@@ -42,7 +42,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="javascript:operation_addmember()">Add Son</a></li>
                             <li><a href="javascript:deletemember()">Remove Member</a></li>
-                            <li><a >Edit Member</a></li>
+                            <li><a href="javascript:editmember()">Edit Member</a></li>
                         </ul>
                     </div>
                 </div>
@@ -71,6 +71,44 @@
             <button class="btn btn-success" type="submit">Add</button>
             <button class="btn" onclick="$('#operation_add').slideUp()" type="button">Cancel</button>
             <button class="btn" type="reset">Reset</button>
+        </form>
+
+        <form method="post" onsubmit="return editmember_submit()" class="well hide" style='margin:10px' id="operation_edit" >
+            <label for="operation_edit_name" class="control-label">Name:</label>
+            <input type="text" id="operation_edit_name" />
+            <input type="hidden" id="operation_edit_id" />
+            <label for="operation_edit_gender" class="control-label">Gender:</label>
+            <select id="operation_edit_gender">
+                <option value="0">
+                    Male
+                </option>
+                <option value="1">
+                    Female
+                </option>
+            </select>
+            <label for="operation_edit_relationship" class="control-label">Relationship Status:</label>
+            <select id="operation_edit_relationship">
+                <option value="0">
+                    Single
+                </option>
+                <option value="1">
+                    Married
+                </option>
+            </select>
+            <label for="operation_edit_dob" class="control-label">Date of Birth</label>
+            <input type="text" id="operation_edit_dob" />
+            <label for="operation_edit_alive" class="control-label">Alive</label>
+            <select id="operation_edit_alive">
+                <option value="1">
+                    Yes
+                </option>
+                <option value="0">
+                    No
+                </option>
+            </select>
+            <br>
+            <button class="btn btn-success" type="submit">Add</button>
+            <button class="btn" onclick="$('#operation_edit').slideUp()" type="button">Cancel</button>
         </form>
     {/if}
 </div>
