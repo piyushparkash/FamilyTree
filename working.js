@@ -176,15 +176,134 @@ function operation_addmember_submit() {
     return false;
 }
 function editmember() {
-    if (!is_authenticated)
+    //get the member from the tree to retreive data
+    member=tree.graph.getNode(selected_member);
+    
+    //Collect all the members
+    x=$("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
+        #operation_edit_dob,#operation_edit_alive");
+    
+    //Set their default values
+    x[0].value=member.name;
+    x[3].value=member.data.dob;
+    
+    //Find from values and select the given element
+    options=x[1].options;
+    for (var i=0; i<x[1].options.length; i++ )
     {
-        //if not authenticated return login form
-        login();
-        return;
+        if (options[i].value==parseInt(member.data.gender))
+        {
+            x[1].selectedIndex=i;
+        }
+    }
+    options=x[2].options;
+    for (i=0; i<x[2].options.length; i++ )
+    {
+        if (options[i].value==parseInt(member.data.relationship_status_id))
+        {
+            x[2].selectedIndex=i;
+        }
     }
     
+    $("#operation_edit_dob").datepicker(
+    {
+        dateFormat:"dd/mm/yy",
+        maxDate:'-10y'
+    });
     
+    options=x[4].options;
+    for (i=0; i<x[4].options.length; i++ )
+    {
+        if (options[i].value==parseInt(member.data.alive_id))
+        {
+            x[4].selectedIndex=i;
+        }
+    }
+    
+    $("#operation_edit_id").val(parseInt(member.id));
+    $("#operation_edit").slideDown();
 }
+
+function editmember_submit()
+{
+    //Collect variables values
+    x=$("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
+        #operation_edit_dob,#operation_edit_alive,#operation_edit_id");
+    
+    if (x[0].value=="")
+    {
+        alert("Name cannot be left blank");
+        x[0].focus();
+        return false;
+    }
+    if (x[4].value=="")
+    {
+        alert("Date of birth not valid");
+        x[4].focus();
+        return false;
+    }
+    else
+    {
+        regex= /([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})/.test(x[4].value);
+        if (!regex)
+        {
+            alert("Please enter a valid Date of Birth");
+            return false;
+        }
+    }
+
+    //post the data
+    $.post("getdata.php",{
+        type:"edit",
+        action:"operation_edit",
+        "name":x[0].value,
+        "gender":x[2].value,
+        "relationship":x[3].value,
+        "dob":x[4].value,
+        "alive":x[5].value,
+        memberid:x[1].value
+        
+    },function ()
+    {
+        var x=$("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
+        #operation_edit_dob,#operation_edit_alive,#operation_edit_id");
+        
+        //Set the canvas variables
+        member=tree.graph.getNode($("#operation_edit_id").val());
+        member.name=x[0].value;
+        member.data.relationship_status_id=x[3].value;
+        member.data.alive_id=x[5].value;
+        member.data.gender=x[2].value;
+        member.data.dob=x[4].value;
+        
+        //Change the displayed data on the screen
+        member.data.relationship_status=member.data.relationship_status_id==0 ? "Single" : "Married";
+        member.data.alive=member.data.alive_id==0 ?"No" :"Yes";
+        
+        display_data(member.name,member.data.dob,member.data.relationship_status,member.data.alive,"");
+        
+        //hide the form
+        $("#operation_edit").slideUp();
+        
+        alert("This information will be displayed once it is accepted by other members.");
+    }
+    
+    );
+    
+    //Stop redirect
+    return false;
+}
+
+function modify_details(id,name,dob,gender,relationship,alive)
+{
+    member=tree.graph.getNode(parseInt(id));
+    member.name=name;
+    member.data.dob=dob;
+    member.data.gender=gender;
+    member.data.relationship_status_id=relationship;
+    member.data.alive_id=alive;
+}
+
 function deletemember() {
     //Details of member
     member=(tree.graph.getNode(selected_member));
@@ -215,6 +334,6 @@ function deletemember_submit()
         "memberid":member_id
     },
     function () {
-            alert("Member will be removed once it is confirmed by other members");
-        });
+        alert("Member will be removed once it is confirmed by other members");
+    });
 }
