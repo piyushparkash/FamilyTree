@@ -50,6 +50,14 @@ switch ($_POST['action']) {
                 $member->remove();
             }
             break;
+         case "operation_edit":
+             global $vanshavali;
+             if (isset($_POST['type']) && isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['relationship']) && isset($_POST['dob']) && isset($_POST['alive']))
+             {
+                 $member = $vanshavali->getmember($_POST['memberid']);
+                 $member->edit($_POST['name'],$_POST['gender'],$_POST['relationship'],$_POST['dob'],$_POST['alive']);
+             }
+             break;
     default: //when nothing matches
         break;
 }
