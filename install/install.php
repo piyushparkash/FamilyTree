@@ -88,8 +88,8 @@ class install {
             $wr=fwrite($file, $data);
             fclose($file);
             
-            //Set file permission to 644
-            if (!chmod("config.php", 644))
+            //Set file permission to 0644, Never leave this 0
+            if (!chmod("config.php", 0644))
             {
                 //Read and write for the owner and read for everyone else
                 trigger_error("Cannot set config.php permissions",E_USER_ERROR);
