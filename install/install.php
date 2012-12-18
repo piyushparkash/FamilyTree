@@ -79,11 +79,11 @@ class install {
                 trigger_error("Error opening or creating config.php file",E_USER_ERROR);
             }
             
-            $data = "<?php\n\$config['host']=$host
-                    ;\n\$config['username']=$username
-                    ;\n\$config['password']=$password
-                    ;\n\$config['database']=$database
-                    ;\n?>";
+            $data = "<?php\n\$config['host']='$host';
+                    \n\$config['username']='$username';
+                    \n\$config['password']='$password';
+                    \n\$config['database']='$database';
+                    \n?>";
 
             $wr=fwrite($file, $data);
             fclose($file);
