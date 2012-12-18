@@ -49,7 +49,8 @@ class suggest {
             'gender' => $gender,
             'relationship' => $relationship,
             'dob' => $dob,
-            'alive' => $alive);
+            'alive' => $alive,
+            'id' => $this->id);
 
         $db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
             ('edit', '" . json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")");
