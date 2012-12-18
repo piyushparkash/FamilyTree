@@ -337,3 +337,12 @@ function deletemember_submit()
         alert("Member will be removed once it is confirmed by other members");
     });
 }
+
+function suggest()
+{
+    $.post("getdata.php",{action:"getsuggestions"},function (data)
+{
+    $("#suggest").modal().children(".modal-body").html(data);
+});
+    
+}
