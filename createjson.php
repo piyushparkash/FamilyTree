@@ -19,8 +19,9 @@ function getchild($id) {
             "relationship_status_id" => $row['relationship_status'],
             "alive" => ($row['alive'] == 0 ? "No" : "Yes"),
             "gender"=> $row['gender'],
-            "alive_id" => $row['gender'],
-            'image' => $row['profilepic']);
+            "alive_id" => $row['alive'],
+            'image' => is_null($row['profilepic']) ? "common.png" : $row['profilepic']
+            );
         $obj['children'] = getchild($row['id']);
         array_push($finalarray, $obj);
     }
@@ -39,8 +40,9 @@ $finalkey['data'] = array(
             "relationship_status_id" => $row['relationship_status'],
             "alive" => ($row['alive'] == 0 ? "No" : "Yes"),
             "gender"=> $row['gender'],
-            "alive_id" => $row['gender'],
-            'image' => $row['profilepic']);
+            "alive_id" => $row['alive'],
+            'image' => is_null($row['profilepic']) ? "common.png" : $row['profilepic']
+    );
 $finalkey['children'] = getchild($row['id']);
 
 echo json_encode($finalkey);
