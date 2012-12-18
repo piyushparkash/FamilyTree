@@ -36,9 +36,9 @@ $template->display("right-container.tpl");
 $template->display("login.form.tpl");
 $template->display('search.form.tpl');
 $template->display('operations.tpl');
-if ($user->is_authenticated())
-{
+if ($user->is_authenticated()) {
     $template->display('operations.add.form.tpl');
     $template->display('operations.remove.tpl');
+    $template->display("suggest.tpl");
 }
 ?>
