@@ -16,6 +16,7 @@
 
                 <ul class="dropdown-menu">
                     <a href="logout.php">Logout</a>
+                    <a href="#" onclick="suggest()">Complete Family!</a>
                 </ul>
             
 
