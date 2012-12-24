@@ -5,7 +5,6 @@
  * @copyright 2012
  * getdata.php used to get certain data from database
  */
-//connect to database
 require "header.php";
 global $db;
 
@@ -25,6 +24,8 @@ switch ($_POST['action']) {
             echo json_encode(array("yes" => 0));
         }
         break;
+
+    //When to get suggestions for approval
     case "getsuggestions":
         $query = $db->query("select * from suggested_info");
         while ($row = $db->fetch($query)) {
@@ -32,7 +33,7 @@ switch ($_POST['action']) {
                 //Dialog to be printed if typesuggest is remove
                 case "remove":
                     global $template;
-
+                    $template->assign("suggestid", $row['id']);
                     //Get the name of the member to be removed, His father and Member who suggested this...
                     $query2 = $db->query("select * from member where id=" . $row['suggested_by']);
                     $row2 = $db->fetch($query2);
@@ -51,6 +52,7 @@ switch ($_POST['action']) {
                     break;
                 case "child";
                     global $template;
+                    $template->assign("suggestid", $row['id']);
                     //Decode the given json value
                     $suggested_value = json_decode($row['suggested_value'], true);
 
@@ -68,6 +70,7 @@ switch ($_POST['action']) {
                     $template->display('suggest.confirmaddmember.tpl');
                     break;
                 case "edit":
+                    $template->assign("suggestid", $row['id']);
                     //Decode the suggested information
                     $suggested_value = json_decode($row['suggested_value'], true);
 
@@ -97,7 +100,7 @@ switch ($_POST['action']) {
 
                     //Constants are all set...now update the values
                     $template->assign(array(
-                        "membername"=> $row2['membername'],
+                        "membername" => $row2['membername'],
                         "old_name" => $row2['membername'],
                         "old_relationship" => ($row2['relationship_status'] == 0 ? "Single" : "Married"),
                         "old_dob" => strftime("%d/%b/%G", $row2['dob']),
@@ -116,6 +119,17 @@ switch ($_POST['action']) {
             }
         }
         break;
+
+    //When to approve suggestions
+    case "suggestion_approval":
+        //Retreive the values
+        $suggest_id = $_POST['id'];
+        $action = $_POST['suggest_action'];
+        //make the current suggestion class an abstract class...only functions
+        //make a suggest class that handles function of suggestion tables in database
+        //change the previous suggest class usage to :: scope operator
+
+        break;
     case "operation_add":
         global $vanshavali;
 
@@ -126,7 +140,7 @@ switch ($_POST['action']) {
             $member = $vanshavali->getmember($_POST['sonof']);
 
             //add son suggestion to it
-            $member->add_son($_POST['name'], $_POST['gender'], $_POST['sonof']);
+            $member->add_son($_POST['name'], $_POST['gender'], TRUE);
         }
         break;
 
@@ -137,16 +151,18 @@ switch ($_POST['action']) {
             $member = $vanshavali->getmember($_POST['memberid']);
 
             //add removal suggestion
-            $member->remove();
+            $member->remove(TRUE);
         }
         break;
     case "operation_edit":
         global $vanshavali;
         if (isset($_POST['type']) && isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['relationship']) && isset($_POST['dob']) && isset($_POST['alive']) && isset($_POST['memberid'])) {
             $member = $vanshavali->getmember($_POST['memberid']);
-            $member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive']);
+            $member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive'], TRUE);
         }
         break;
+
+
     default: //when nothing matches
         break;
 }
