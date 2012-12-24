@@ -340,9 +340,42 @@ function deletemember_submit()
 
 function suggest()
 {
-    $.post("getdata.php",{action:"getsuggestions"},function (data)
+    $.post("getdata.php",{
+        action:"getsuggestions"
+    },function (data)
+
+    {
+            $("#suggest").modal().children(".modal-body").html(data);
+        });
+    
+}
+
+function suggest_action(e,actionid)
 {
-    $("#suggest").modal().children(".modal-body").html(data);
-});
+    var x=$(e).parents("div");
+    
+    //Get the id of the suggest
+    var id=parseInt(x[1].id);
+    //perform the suggestion ajax action
+    $.post("getdata.php",{
+        action:"suggestionapproval",
+        suggestid:id,
+        suggest_action:actionid
+    },function (data)
+
+    {
+            var json=$.parseJSON(data);
+            if (json.success==1)
+            {
+                //Success now hide the suggestion
+                $(x[1]).hide("medium");
+            }
+            else if(json.success==0)
+            {
+                //Something went wrong alert the user
+                alert("Something went wrong. Please try again");
+            }
+        });
+
     
 }
