@@ -7,7 +7,7 @@ global $db;
 function getchild($id) {
     global $db;
     $finalarray = array();
-    $query = $db->query("select * from member where sonof=$id");
+    $query = $db->query("select * from member where sonof=$id and dontshow=0");
     while ($row = $db->fetch($query)) {
         $obj = array();
         $obj['id'] = $row["id"];
@@ -28,7 +28,7 @@ function getchild($id) {
     return $finalarray;
 }
 
-$query = $db->query("select * from member where sonof=-1");
+$query = $db->query("select * from member where sonof=-1 and dontshow=0");
 $row = $db->fetch($query);
 $finalkey = array();
 $finalkey['id'] = $row['id'];
