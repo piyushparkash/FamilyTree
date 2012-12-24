@@ -1,12 +1,7 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of suggest
+ * Suggestion Class
  *
  * @author piyush
  */
@@ -14,17 +9,17 @@ class suggest {
 
     public $id;
 
-    public function __construct($memberid) {
-        $this->id = $memberid;
+    function __construct($suggestid) {
+        $this->id = $suggestid;
     }
 
-    function add_son($name, $gender, $sonof) {
+    function add_son_suggest($name, $gender, $id) {
         global $db, $user;
 
         //fill array with data
-        $finalarray = array('name' => $name, 'gender' => $gender, 'sonof' => $sonof);
+        $finalarray = array('name' => $name, 'gender' => $gender, 'sonof' => $id);
 
-        //put in the database
+        //Put it in database
         //echo "insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values('child', '" .
         //  json_encode($finalarray) . "'," . $_COOKIE['id'] . "," . time();
 
@@ -32,14 +27,14 @@ class suggest {
                 json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")");
     }
 
-    function remove() {
+    function remove_suggest($id) {
         global $db, $user;
 
         $query = $db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
-            ('remove', '$this->id'," . $user->user['id'] . "," . time() . ")");
+            ('remove', '$id'," . $user->user['id'] . "," . time() . ")");
     }
 
-    function edit($name, $gender, $relationship, $dob, $alive) {
+    function edit_suggest($name, $gender, $relationship, $dob, $alive, $id) {
         global $db, $user;
 
         preg_match("/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})/", $dob, $matches);
@@ -50,10 +45,25 @@ class suggest {
             'relationship' => $relationship,
             'dob' => $dob,
             'alive' => $alive,
-            'id' => $this->id);
+            'id' => $id);
 
         $db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
             ('edit', '" . json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")");
+    }
+    
+    function approve()
+    {
+        //Approves the $id provided in the constructor
+    }
+    
+    function reject()
+    {
+        //Rejects the $id provided in the constructor
+    }
+    
+    function dontknow()
+    {
+        //Marks suggestion as don'tknow
     }
 
 }
