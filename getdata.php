@@ -6,6 +6,7 @@
  * getdata.php used to get certain data from database
  */
 require "header.php";
+require "vanshavali/suggest.php";
 global $db;
 
 //get the type of data to be extracted
@@ -125,10 +126,23 @@ switch ($_POST['action']) {
         //Retreive the values
         $suggest_id = $_POST['id'];
         $action = $_POST['suggest_action'];
-        //make the current suggestion class an abstract class...only functions
-        //make a suggest class that handles function of suggestion tables in database
-        //change the previous suggest class usage to :: scope operator
-
+        
+        $suggest= new $suggest($suggest_id);
+        switch ($action)
+        {
+            case 0:
+                //Reject the suggestion
+                $suggest->reject();
+                break;
+            case 1:
+                //Accept the suggestion
+                $suggest->approve();
+                break;
+            case 2:
+                //Mark the suggestion as don't know
+                $suggest->dontknow();
+                break;
+        }
         break;
     case "operation_add":
         global $vanshavali;
