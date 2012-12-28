@@ -19,7 +19,7 @@ abstract class member_operation_suggest {
         //echo "insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values('child', '" .
         //  json_encode($finalarray) . "'," . $_COOKIE['id'] . "," . time();
 
-        $db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values('child', '" .
+        return $db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values('child', '" .
                 json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")");
     }
 
@@ -28,6 +28,7 @@ abstract class member_operation_suggest {
 
         $query = $db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
             ('remove', '$id'," . $user->user['id'] . "," . time() . ")");
+        return $query;
     }
 
     function edit_suggest($name, $gender, $relationship, $dob, $alive, $id) {
@@ -43,7 +44,7 @@ abstract class member_operation_suggest {
             'alive' => $alive,
             'id' => $id);
 
-        $db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
+        return $db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
             ('edit', '" . json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")");
     }
 }
