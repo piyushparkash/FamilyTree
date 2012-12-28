@@ -62,7 +62,7 @@ switch ($_POST['action']) {
                     $row2 = $db->fetch($query2);
                     $template->assign("suggestedby", $row2['membername']);
 
-                    $query2 = $db->query("select * from member where id=" . $suggested_value['sonof']);
+                    $query2 = $db->query("select * from member where id=" . $suggested_value['id']);
                     $row2 = $db->fetch($query2);
                     $template->assign(array('membername' => $suggested_value['name']));
 
