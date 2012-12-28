@@ -8,7 +8,7 @@
  */
 require 'member_operation_suggest.php';
 
-class member_operation extends member_operation_suggest {
+abstract class member_operation extends member_operation_suggest {
     
     public $id;
     public function __construct($memberid) {
