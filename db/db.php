@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Description of db
  * @package db
@@ -70,7 +69,7 @@ class db {
             $query = mysql_query($sql);
             if ($query == false) {
                 //Some error occured while querying
-                trigger_error(mysql_error(), E_USER_ERROR);
+                trigger_error(mysql_error(), E_USER_NOTICE);
                 return false;
             } else {
                 //return the resource
@@ -92,7 +91,7 @@ class db {
         if ($query != false) {
             return mysql_fetch_array($query);
         } else {
-            trigger_error("Invalid Query resource provided", E_USER_ERROR);
+            trigger_error("Invalid Query resource provided", E_USER_NOTICE);
             return false;
         }
     }
@@ -105,7 +104,7 @@ class db {
         if ($query != false) {
             return ($this->fetch($this->query($query)));
         } else {
-            trigger_error("Invalid SQL Query String", E_USER_ERROR);
+            trigger_error("Invalid SQL Query String", E_USER_NOTICE);
             return false;
         }
     }
