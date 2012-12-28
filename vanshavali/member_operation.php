@@ -26,7 +26,8 @@ class member_operation extends member_operation_suggest {
 
             //Execute the sql
             if (!$db->get($sql)) {
-                trigger_error("Cannot add member. Error executing the query",E_USER_ERROR);
+                trigger_error("Cannot add member. Error executing the query");
+                return false;
             }
         }
     }
@@ -40,7 +41,8 @@ class member_operation extends member_operation_suggest {
 
             //Prepare the sql
             if (!$db->get("Update member set dontshow=1 where id=" . $this->data['id'])) {
-                trigger_error("Cannot delete member. Error Executing the query",E_USER_ERROR);
+                trigger_error("Cannot delete member. Error Executing the query");
+                return false;
             }
         }
     }
@@ -56,7 +58,8 @@ class member_operation extends member_operation_suggest {
             if (!$db->get("Update member set membername='$name',gender=$gender,
                 relationship_status=$relationship,dob=$dob, alive=$alive where id=".$this->data['id']))
             {
-                trigger_error("Error Editing member. Error Executing query", E_USER_ERROR);
+                trigger_error("Error Editing member. Error Executing query");
+                return FALSE;
             }
         }
     }
