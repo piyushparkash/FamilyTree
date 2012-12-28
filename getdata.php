@@ -148,13 +148,16 @@ switch ($_POST['action']) {
         global $vanshavali;
 
         //Variables should have some value
-        if (!empty($_POST['name']) && !empty($_POST['gender']) && !empty($_POST['sonof'])) {
+        if (isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['sonof'])) {
 
             //get the member to be modified
             $member = $vanshavali->getmember($_POST['sonof']);
 
             //add son suggestion to it
-            $member->add_son($_POST['name'], $_POST['gender'], TRUE);
+            if (!$member->add_son($_POST['name'], $_POST['gender'], TRUE))
+            {
+                trigger_error("Cannot add member. Some error Occured.");
+            }
         }
         break;
 
@@ -165,14 +168,23 @@ switch ($_POST['action']) {
             $member = $vanshavali->getmember($_POST['memberid']);
 
             //add removal suggestion
-            $member->remove(TRUE);
+            if (!$member->remove(TRUE))
+            {
+                trigger_error("Cannot add member. Some error occured");
+            }
         }
         break;
     case "operation_edit":
         global $vanshavali;
         if (isset($_POST['type']) && isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['relationship']) && isset($_POST['dob']) && isset($_POST['alive']) && isset($_POST['memberid'])) {
+            //Get the member
             $member = $vanshavali->getmember($_POST['memberid']);
-            $member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive'], TRUE);
+            
+            //Now add the suggestion
+            if (!$member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive'], TRUE))
+            {
+                trigger_error("Cannot Edit Member. Some error occured");
+            }
         }
         break;
 
