@@ -16,7 +16,7 @@ abstract class member_operation extends member_operation_suggest {
     }
     function add_son($name, $gender, $suggest) {
         if ($suggest) {
-            parent::add_son_suggest($name, $gender, $this->data['id']);
+            return parent::add_son_suggest($name, $gender, $this->data['id']);
         } else {
             //Add son directly to the Member database
             global $db;
@@ -34,7 +34,7 @@ abstract class member_operation extends member_operation_suggest {
 
     function remove($suggest) {
         if ($suggest) {
-            parent::remove_suggest($this->data['id']);
+            return parent::remove_suggest($this->data['id']);
         } else {
             //Remove the member completely
             global $db;
@@ -49,7 +49,7 @@ abstract class member_operation extends member_operation_suggest {
 
     function edit($name, $gender, $relationship, $dob, $alive, $suggest) {
         if ($suggest) {
-            parent::edit_suggest($name, $gender, $relationship, $dob, $alive, $this->data['id']);
+            return parent::edit_suggest($name, $gender, $relationship, $dob, $alive, $this->data['id']);
         } else {
             //Change the details directly...
             global $db;
