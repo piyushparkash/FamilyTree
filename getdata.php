@@ -126,21 +126,27 @@ switch ($_POST['action']) {
         //Retreive the values
         $suggest_id = $_POST['id'];
         $action = $_POST['suggest_action'];
-        
-        $suggest= new $suggest($suggest_id);
-        switch ($action)
-        {
+
+        $suggest = new $suggest($suggest_id);
+        switch ($action) {
             case 0:
                 //Reject the suggestion
-                $suggest->reject();
+                if (!$suggest->reject()) {
+                    trigger_error("Cannot reject suggestion. Error Executing query", E_USER_NOTICE);
+                }
                 break;
             case 1:
                 //Accept the suggestion
-                $suggest->approve();
+                if (!$suggest->approve()) {
+                    trigger_error("Cannot approved the Suggestion. Error Executing query", E_USER_NOTICE);
+                }
+
                 break;
             case 2:
                 //Mark the suggestion as don't know
-                $suggest->dontknow();
+                if (!$suggest->dontknow()) {
+                    trigger_error("Cannot reject suggestion. Error Executing query", E_USER_NOTICE);
+                }
                 break;
         }
         break;
@@ -154,8 +160,7 @@ switch ($_POST['action']) {
             $member = $vanshavali->getmember($_POST['sonof']);
 
             //add son suggestion to it
-            if (!$member->add_son($_POST['name'], $_POST['gender'], TRUE))
-            {
+            if (!$member->add_son($_POST['name'], $_POST['gender'], TRUE)) {
                 trigger_error("Cannot add member. Some error Occured.");
             }
         }
@@ -168,8 +173,7 @@ switch ($_POST['action']) {
             $member = $vanshavali->getmember($_POST['memberid']);
 
             //add removal suggestion
-            if (!$member->remove(TRUE))
-            {
+            if (!$member->remove(TRUE)) {
                 trigger_error("Cannot add member. Some error occured");
             }
         }
@@ -179,10 +183,9 @@ switch ($_POST['action']) {
         if (isset($_POST['type']) && isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['relationship']) && isset($_POST['dob']) && isset($_POST['alive']) && isset($_POST['memberid'])) {
             //Get the member
             $member = $vanshavali->getmember($_POST['memberid']);
-            
+
             //Now add the suggestion
-            if (!$member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive'], TRUE))
-            {
+            if (!$member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive'], TRUE)) {
                 trigger_error("Cannot Edit Member. Some error occured");
             }
         }
