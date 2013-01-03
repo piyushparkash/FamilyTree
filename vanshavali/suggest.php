@@ -29,13 +29,10 @@ class suggest extends member_operation_suggest {
     }
 
     protected function approve() {
-        //Approves the $id provided in the constructor
-        //Procedure
-        //--Add approval to the suggested_info table
         global $db, $user;
         if (!$db->get("Insert into suggest_approved(suggest_id,user_id,action) values($this->id, 
                 " . $user->data['id'] . ",1")) {
-            trigger_error("Cannot approved the Suggestion. Error Executing query", E_USER_ERROR);
+            return false;
         }
 
         //Check if suggestion has crossed 50% Mark
@@ -46,20 +43,24 @@ class suggest extends member_operation_suggest {
         //Rejects the $id provided in the constructor
         global $db, $user;
         if (!$db->get("Insert into suggest_approved (suggest_id,user_id,action) values
-            ($this->id,$user->data[0],0"))
-        {
-            trigger_error("Cannot reject suggestion. Error Executing query", E_USER_ERROR);
+            ($this->id,$user->data[0],0")) {
+            return false;
         }
+
+        //Check if suggestion has crossed 50% mark
+        $this->check_decision();
     }
 
     protected function dontknow() {
         //Marks suggestion as don'tknow
-        global $db,$user;
+        global $db, $user;
         if ($db->get("Insert into suggest_approved (suggest_id,user_id,action)
-            values($this->id,$user->data[0],2"))
-        {
-            trigger_error("Cannot Mark Suggestion. Error Executing query", E_USER_ERROR);
+            values($this->id,$user->data[0],2")) {
+            return false;
         }
+
+        //Check if suggestion has crossed 50% mark
+        $this->check_decision();
     }
 
     private function checkpercent() {
