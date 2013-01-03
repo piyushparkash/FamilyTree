@@ -162,6 +162,8 @@ switch ($_POST['action']) {
             //add son suggestion to it
             if (!$member->add_son($_POST['name'], $_POST['gender'], TRUE)) {
                 trigger_error("Cannot add member. Some error Occured.");
+            } else {
+                ajaxSuccess();
             }
         }
         break;
@@ -175,6 +177,8 @@ switch ($_POST['action']) {
             //add removal suggestion
             if (!$member->remove(TRUE)) {
                 trigger_error("Cannot add member. Some error occured");
+            } else {
+                ajaxSuccess();
             }
         }
         break;
@@ -187,6 +191,8 @@ switch ($_POST['action']) {
             //Now add the suggestion
             if (!$member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive'], TRUE)) {
                 trigger_error("Cannot Edit Member. Some error occured");
+            } else {
+                ajaxSuccess();
             }
         }
         break;
