@@ -28,7 +28,7 @@ function getchild($id) {
     return $finalarray;
 }
 
-$query = $db->query("select * from member where sonof=-1 and dontshow=0");
+$query = $db->query("select * from member where sonof is null and dontshow=0");
 $row = $db->fetch($query);
 $finalkey = array();
 $finalkey['id'] = $row['id'];
