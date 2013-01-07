@@ -76,12 +76,12 @@ function fileext($filename, $ext = true) {
     }
 }
 
-function ajaxSuccess()
+function ajaxSuccess($data)
 {
-    echo json_encode(array("success" => 1));
+    echo json_encode(array("success" => 1, "data" => $data));
 }
 
-function ajaxError()
+function ajaxError($data)
 {
-    echo json_encode(array("success" => 0));
+    echo json_encode(array("success" => 0, "data" => $data));
 }
