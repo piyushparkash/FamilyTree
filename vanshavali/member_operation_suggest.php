@@ -7,8 +7,7 @@
  * @author piyush
  */
 abstract class member_operation_suggest {
-    
-    
+
     function add_son_suggest($name, $gender, $id) {
         global $db, $user;
 
@@ -16,19 +15,35 @@ abstract class member_operation_suggest {
         $finalarray = array('name' => $name, 'gender' => $gender, 'id' => $id);
 
         //Put it in database
-        //echo "insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values('child', '" .
-        //  json_encode($finalarray) . "'," . $_COOKIE['id'] . "," . time();
 
-        return $db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values('child', '" .
-                json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")");
+        if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values('child', '" .
+                        json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")"))
+        {
+            //Put the approval suggestion of user that has created the suggestion
+            return ($db->query("insert into suggest_approved (suggest_id,user_id,action) values(".mysql_insert_id().",
+                ".$user->user['id'].",1)"));
+        }
+        else
+        {
+            return false;
+        }
+        
     }
 
     function remove_suggest($id) {
         global $db, $user;
 
-        $query = $db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
-            ('remove', '$id'," . $user->user['id'] . "," . time() . ")");
-        return $query;
+        if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
+            ('remove', '$id'," . $user->user['id'] . "," . time() . ")"))
+        {
+            return ($db->query("insert into suggest_approved (suggest_id,user_id,action) values(".mysql_insert_id().",
+                ".$user->user['id'].",1)"));
+        }
+        else
+        {
+            return false;
+        }
+        
     }
 
     function edit_suggest($name, $gender, $relationship, $dob, $alive, $id) {
@@ -44,9 +59,18 @@ abstract class member_operation_suggest {
             'alive' => $alive,
             'id' => $id);
 
-        return $db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
-            ('edit', '" . json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")");
+        if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
+            ('edit', '" . json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")"))
+        {
+            return ($db->query("insert into suggest_approved (suggest_id,user_id,action) values(".mysql_insert_id().",
+                ".$user->user['id'].",1)"));
+        }
+        else
+        {
+            return false;
+        }
     }
+
 }
 
 ?>
