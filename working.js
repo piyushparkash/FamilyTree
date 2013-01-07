@@ -158,18 +158,31 @@ function operation_addmember_submit() {
         name: name.val(),
         gender: gender.val(),
         sonof: sonof.val()
-    }, function() {
+    }, function(data) {
+        //Check if AJAX error occured
+        if (ajaxError(data))
+        {
+            alert("Some Error Occured. Please try again");
+            $("#operation_add_name").removeAttr("disabled").val("");
+            $("#operation_add_gender").removeAttr("disabled");
+            $("#operation_add").slideUp();
+            return false;
+        }
+        else if (ajaxSuccess(data))
+        {
+            //enable the controls and set the value to ""
+            $("#operation_add_name").removeAttr("disabled").val("");
+            $("#operation_add_gender").removeAttr("disabled");
         
-        //enable the controls and set the value to ""
-        $("#operation_add_name").removeAttr("disabled").val("");
-        $("#operation_add_gender").removeAttr("disabled");
-        
-        //remove any previous text node from #operation_add_sonof_name and reset
-        $("#operation_add_sonof_name").html("<input type='hidden' id='operation_add_sonof_id' />");
+            //remove any previous text node from #operation_add_sonof_name and reset
+            $("#operation_add_sonof_name").html("<input type='hidden' id='operation_add_sonof_id' />");
         
         
-        alert("The changes will be viewed permanently in the Family Tree once it is confirmed by other members. Thankyou for your contribution");
-        $("#operation_add").slideUp();
+            alert("The changes will be viewed permanently in the Family Tree once it is confirmed by other members. Thankyou for your contribution");
+            $("#operation_add").slideUp();
+        }
+        
+        
     });
     
     //stop the form from redirecting
@@ -263,29 +276,39 @@ function editmember_submit()
         "alive":x[5].value,
         memberid:x[1].value
         
-    },function ()
+    },function (data)
     {
-        var x=$("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
+        //Check for AJAX Error
+        if (ajaxError(data))
+        {
+            alert("Some Error Occured. Please try again.");
+            return false;
+        }
+        else if (ajaxSuccess(data))
+        {
+            var x=$("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
         #operation_edit_dob,#operation_edit_alive,#operation_edit_id");
         
-        //Set the canvas variables
-        member=tree.graph.getNode($("#operation_edit_id").val());
-        member.name=x[0].value;
-        member.data.relationship_status_id=x[3].value;
-        member.data.alive_id=x[5].value;
-        member.data.gender=x[2].value;
-        member.data.dob=x[4].value;
+            //Set the canvas variables
+            member=tree.graph.getNode($("#operation_edit_id").val());
+            member.name=x[0].value;
+            member.data.relationship_status_id=x[3].value;
+            member.data.alive_id=x[5].value;
+            member.data.gender=x[2].value;
+            member.data.dob=x[4].value;
         
-        //Change the displayed data on the screen
-        member.data.relationship_status=member.data.relationship_status_id==0 ? "Single" : "Married";
-        member.data.alive=member.data.alive_id==0 ?"No" :"Yes";
+            //Change the displayed data on the screen
+            member.data.relationship_status=member.data.relationship_status_id==0 ? "Single" : "Married";
+            member.data.alive=member.data.alive_id==0 ?"No" :"Yes";
         
-        display_data(member.name,member.data.dob,member.data.relationship_status,member.data.alive,"");
+            display_data(member.name,member.data.dob,member.data.relationship_status,member.data.alive,"");
         
-        //hide the form
-        $("#operation_edit").slideUp();
+            //hide the form
+            $("#operation_edit").slideUp();
         
-        alert("This information will be displayed once it is accepted by other members.");
+            alert("This information will be displayed once it is accepted by other members.");
+
+        }
     }
     
     );
@@ -333,8 +356,19 @@ function deletemember_submit()
         type:"remove",
         "memberid":member_id
     },
-    function () {
-        alert("Member will be removed once it is confirmed by other members");
+    function (data) {
+        //Check for Ajax Error
+        if (ajaxError(data))
+        {
+            alert("Some Error Occured. Please try again");
+            return false;
+        }
+        else if (ajaxSuccess(data))
+        {
+            alert("Member will be removed once it is confirmed by other members");
+            return true;
+        }
+        
     });
 }
 
@@ -364,18 +398,60 @@ function suggest_action(e,actionid)
     },function (data)
 
     {
-            var json=$.parseJSON(data);
-            if (json.success==1)
+            //Check for Ajax error
+            if (ajaxError(data))
             {
-                //Success now hide the suggestion
-                $(x[1]).hide("medium");
+                alert("Some error occured. Please try again");
+                return false;
             }
-            else if(json.success==0)
+            else if (ajaxSuccess(data))
             {
-                //Something went wrong alert the user
-                alert("Something went wrong. Please try again");
+                data=$.parseJSON(data);
+                //Success now hide the suggestion
+                $("#"+data.data.suggestid+"suggest").hide("medium");
             }
         });
 
     
+}
+function ajaxSuccess(response)
+{
+    var json;
+    if (!(json=$.parseJSON(response)))
+    {
+        alert("Error Occured while parsing response JSON");
+        return false;
+    }
+    else
+    {
+        if (json.success==1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+function ajaxError(response)
+{
+    var json;
+    if (!(json=$.parseJSON(response)))
+    {
+        alert("Error Occured while parsing response JSON");
+        return false;
+    }
+    else
+    {
+        if (json.success==0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
