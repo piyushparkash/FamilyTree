@@ -88,7 +88,10 @@ class db {
      * @return boolean
      */
     function fetch($query) {
-        if ($query != false) {
+        if ($query === true) {
+            return true;
+        }
+        else if ($query != false) {
             return mysql_fetch_array($query);
         } else {
             trigger_error("Invalid Query resource provided", E_USER_NOTICE);
