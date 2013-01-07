@@ -1,4 +1,4 @@
-<div id="suggest{$suggestid}">
+<div id="{$suggestid}suggest" class="suggest-box">
     {$suggestedby} changed the following details of {$membername}<br>
     {if $changed_name}
         Name:&nbsp;{$old_name}&nbsp;&nbsp;=>&nbsp;&nbsp;{$new_name}<br>
@@ -16,7 +16,7 @@
         Alive:&nbsp;{$old_alive}&nbsp;&nbsp;=>&nbsp;&nbsp;{$new_alive}<br>
     {/if}
     Is this change correct?&nbsp;&nbsp;&nbsp;
-    <div style="float:right"><button class="btn btn-success" onclick="suggest_action(this,1)">Yes</button>&nbsp;&nbsp;&nbsp;
+    <div ><button class="btn btn-success" onclick="suggest_action(this,1)">Yes</button>&nbsp;&nbsp;&nbsp;
         <button class="btn btn-danger" onclick="suggest_action(this,0)">No</button>
         <button class="btn" onclick="suggest_action(this,2)">Don't Know</button>
     </div>
