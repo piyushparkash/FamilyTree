@@ -28,7 +28,9 @@ switch ($_POST['action']) {
 
     //When to get suggestions for approval
     case "getsuggestions":
-        $query = $db->query("select * from suggested_info");
+        global $user;
+        $query = $db->query("select * from suggested_info where approved=0 and id not in 
+            (select suggest_id from suggest_approved where user_id=".$user->user['id'].")");
         while ($row = $db->fetch($query)) {
             switch ($row['typesuggest']) {
                 //Dialog to be printed if typesuggest is remove
@@ -122,23 +124,30 @@ switch ($_POST['action']) {
         break;
 
     //When to approve suggestions
-    case "suggestion_approval":
+    case "suggestionapproval":
         //Retreive the values
-        $suggest_id = $_POST['id'];
+        $suggest_id = $_POST['suggestid'];
         $action = $_POST['suggest_action'];
 
-        $suggest = new $suggest($suggest_id);
+        $suggest = new suggest($suggest_id);
         switch ($action) {
             case 0:
                 //Reject the suggestion
                 if (!$suggest->reject()) {
                     trigger_error("Cannot reject suggestion. Error Executing query", E_USER_NOTICE);
+                } else {
+
+                    //Pass the id of the suggest so that proper HTML element can be made disappear
+                    ajaxSuccess(array("suggestid" => $suggest_id));
                 }
                 break;
             case 1:
                 //Accept the suggestion
                 if (!$suggest->approve()) {
                     trigger_error("Cannot approved the Suggestion. Error Executing query", E_USER_NOTICE);
+                } else {
+                    //Pass the id of the suggest so that proper HTML element can be made disappear
+                    ajaxSuccess(array("suggestid" => $suggest_id));
                 }
 
                 break;
@@ -146,6 +155,10 @@ switch ($_POST['action']) {
                 //Mark the suggestion as don't know
                 if (!$suggest->dontknow()) {
                     trigger_error("Cannot reject suggestion. Error Executing query", E_USER_NOTICE);
+                } else {
+
+                    //Pass the id of the suggest so that proper HMTL element can be made disappear
+                    ajaxSuccess(array('suggestid' => $suggest_id));
                 }
                 break;
         }
