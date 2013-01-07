@@ -28,55 +28,58 @@ class suggest extends member_operation_suggest {
         }
     }
 
-    protected function approve() {
+    function approve() {
         global $db, $user;
         if (!$db->get("Insert into suggest_approved(suggest_id,user_id,action) values($this->id, 
-                " . $user->data['id'] . ",1")) {
+                " . $user->user['id'] . ",1)")) {
             return false;
         }
 
         //Check if suggestion has crossed 50% Mark
         $this->check_decision();
+        return true;
     }
 
-    protected function reject() {
+    function reject() {
         //Rejects the $id provided in the constructor
         global $db, $user;
         if (!$db->get("Insert into suggest_approved (suggest_id,user_id,action) values
-            ($this->id,$user->data[0],0")) {
+            ($this->id,".$user->user[0].",0)")) {
             return false;
         }
 
         //Check if suggestion has crossed 50% mark
         $this->check_decision();
+        return TRUE;
     }
 
-    protected function dontknow() {
+    function dontknow() {
         //Marks suggestion as don'tknow
         global $db, $user;
-        if ($db->get("Insert into suggest_approved (suggest_id,user_id,action)
-            values($this->id,$user->data[0],2")) {
+        if (!$db->get("Insert into suggest_approved (suggest_id,user_id,action)
+            values($this->id,".$user->user[0].",2)")) {
             return false;
         }
 
         //Check if suggestion has crossed 50% mark
         $this->check_decision();
+        return true;
     }
 
     private function checkpercent() {
         global $db;
 
         //Get all Rejections, Approvals, Dontknow's
-        $row = $db->query("select *,count(*) as totalno from suggest_approved where suggest_id=" . $this->id);
-        $row2 = $db->get("select count(*) as totaluser from member where username!='' and password!=''");
-        $total = 0;
+        $query = $db->query("select * from suggest_approved where suggest_id=" . $this->id);
+        $row2 = $db->get('select count(*) as totaluser from member where username!="" and password!=""');
+        $total = mysql_num_rows($query);
         $noapproved = 0;
         $norejected = 0;
         $nodontknow = 0;
 
         //Count the no of approvals/Rejections
         while ($row = $db->fetch($query)) {
-            switch ($row['action']) {
+            switch (intval($row['action'])) {
                 case 0:$norejected++;
                     break;
                 case 1:$noapproved++;
@@ -87,7 +90,6 @@ class suggest extends member_operation_suggest {
                     break;
             }
         }
-        $total = $row['totalno'];
         $noapproved = ($noapproved / $total) * 100;
         $nodontknow = ($nodontknow / $total) * 100;
         $norejected = ($norejected / $total) * 100;
@@ -102,7 +104,7 @@ class suggest extends member_operation_suggest {
         }
     }
 
-    function check_decision() {
+    private function check_decision() {
         $percent = $this->checkpercent();
 
         if ($percent) {
@@ -120,7 +122,7 @@ class suggest extends member_operation_suggest {
         }
     }
 
-    function apply() {
+    private function apply() {
         global $vanshavali, $db;
 
         //Check if suggested_value was JSON or not
@@ -154,7 +156,7 @@ class suggest extends member_operation_suggest {
     function approval_delete() {
         global $db;
 
-        if ($db->get("Delete from suggest_approval where suggest_id=$this->id")) {
+        if ($db->get("Delete from suggest_approved where suggest_id=$this->id")) {
             return TRUE;
         } else {
             return false;
