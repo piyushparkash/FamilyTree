@@ -14,6 +14,7 @@ class member extends member_operation {
     public function __construct($memberid) {
         parent::__construct($memberid);
         $this->populate_data($memberid);
+        $this->autofix();
     }
 
     function getparent() {
@@ -43,6 +44,24 @@ class member extends member_operation {
         $query = $db->query("Select * from member where id=$memberid");
         $row = $db->fetch($query);
         $this->data = $row;
+    }
+
+    function autofix() {
+        global $db;
+        $nosons = $this->has_sons();
+        if ($nosons > 0) {
+            // If the memeber has sons Change the status to married
+            $this->set_relationship(1);
+        }
+    }
+
+    function set_relationship($relationship_id) {
+        global $db;
+        if (!$db->query("update member set relationship_status=$relationship_id where id=$this->id")) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }
