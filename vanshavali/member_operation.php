@@ -9,12 +9,14 @@
 require 'member_operation_suggest.php';
 
 abstract class member_operation extends member_operation_suggest {
-    
+
     public $id;
+
     public function __construct($memberid) {
-        $this->id=$memberid;
+        $this->id = $memberid;
     }
-    function add_son($name, $gender, $suggest) {
+
+    function add_son($name, $gender, $suggest = false) {
         if ($suggest) {
             return parent::add_son_suggest($name, $gender, $this->data['id']);
         } else {
@@ -32,7 +34,7 @@ abstract class member_operation extends member_operation_suggest {
         }
     }
 
-    function remove($suggest) {
+    function remove($suggest = false) {
         if ($suggest) {
             return parent::remove_suggest($this->data['id']);
         } else {
@@ -47,22 +49,22 @@ abstract class member_operation extends member_operation_suggest {
         }
     }
 
-    function edit($name, $gender, $relationship, $dob, $alive, $suggest) {
+    function edit($name, $gender, $relationship, $dob, $alive, $suggest = FALSE) {
         if ($suggest) {
             return parent::edit_suggest($name, $gender, $relationship, $dob, $alive, $this->data['id']);
         } else {
             //Change the details directly...
             global $db;
-            
+
             //Prepare the sql and execute it...
             if (!$db->get("Update member set membername='$name',gender=$gender,
-                relationship_status=$relationship,dob=$dob, alive=$alive where id=".$this->data['id']))
-            {
+                relationship_status=$relationship,dob=$dob, alive=$alive where id=" . $this->data['id'])) {
                 trigger_error("Error Editing member. Error Executing query");
                 return FALSE;
             }
         }
     }
+
 }
 
 ?>
