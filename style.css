@@ -106,3 +106,12 @@
     margin-top: 5%;
     margin-right: 3%;
 }
+
+.suggest-box
+{
+    border-bottom: 5px solid #5bc0de;
+    padding: 10px;
+    background-color: #ddd;
+    border-radius: 3px;
+    margin-bottom: 5px;
+}
