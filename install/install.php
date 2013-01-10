@@ -122,7 +122,7 @@ class install {
             username mediumtext default null,
             password mediumtext default null,
             sonof int(11) null default null,
-            profilepic varchar(255) default null,
+            profilepic varchar(255) default 'common.png',
             dob int(11) default null,
             gender int(1) default 0,
             relationship_status int(11) default 0,

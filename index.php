@@ -35,9 +35,14 @@ $template->assign(array(
 
 if ($user->is_authenticated()) {
     if (is_null($user->user['sonof'])) {
-        $template->assign(array("user_not_connected" => true));
+        $template->assign(array("user_not_connected" => true,
+            "userimage" => $user->user['profilepic']));
     }
+} else {
+    $template->assign(array("userimage" => "common.png"));
 }
+
+
 
 
 $template->display("right-container.tpl");

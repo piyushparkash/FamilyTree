@@ -3,7 +3,7 @@
     <fieldset>
         <div class="row" >
             <div class="span4" style="text-align: center;" >
-                <img src="" style="width: 50px; height: 50px;" id="display_image"/>
+                <img src="assets/user_images/{$userimage}" style="width: 50px; height: 50px;" id="display_image"/>
             </div>
             <div class="span4">
                 <h3 id="display_name" style="text-align: center; width: 100%;"></h3>
