@@ -9,7 +9,7 @@ if (!file_exists("config.php")) {
 }
 
 //Now that the things are installed
-global $db, $template;
+global $db, $template, $user;
 
 //Check if config.php is readable if not then tell user to set the permissions manually
 if (!is_readable("config.php")) {
@@ -32,9 +32,18 @@ $template->display("infovis.tpl");
 $template->assign(array(
     'authenticated' => $user->is_authenticated()
 ));
+
+if ($user->is_authenticated()) {
+    if (is_null($user->user['sonof'])) {
+        $template->assign(array("user_not_connected" => true));
+    }
+}
+
+
 $template->display("right-container.tpl");
 $template->display("login.form.tpl");
 $template->display('search.form.tpl');
+$template->display("feedback.form.tpl");
 $template->display('operations.tpl');
 if ($user->is_authenticated()) {
     $template->display('operations.add.form.tpl');

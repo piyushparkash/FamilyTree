@@ -1,6 +1,6 @@
 <div  id="vanshavali_user" align="center">
     <div class="btn-group">
-        <a class="btn btn-large">Vanshavali</a>
+        <a class="btn btn-large" href="index.php">Vanshavali</a>
         {if $authenticated eq False}
             <a class="btn btn-large" onclick="login()">Login</a>
         {else}
@@ -15,8 +15,8 @@
                     
 
                 <ul class="dropdown-menu">
-                    <a href="logout.php">Logout</a>
                     <a href="#" onclick="suggest()">Complete Family!</a>
+                    <a href="logout.php">Logout</a>
                 </ul>
             
 

@@ -30,7 +30,7 @@ switch ($_POST['action']) {
     case "getsuggestions":
         global $user;
         $query = $db->query("select * from suggested_info where approved=0 and id not in 
-            (select suggest_id from suggest_approved where user_id=".$user->user['id'].")");
+            (select suggest_id from suggest_approved where user_id=" . $user->user['id'] . ")");
         while ($row = $db->fetch($query)) {
             switch ($row['typesuggest']) {
                 //Dialog to be printed if typesuggest is remove
@@ -207,6 +207,27 @@ switch ($_POST['action']) {
             } else {
                 ajaxSuccess();
             }
+        }
+        break;
+
+    case "feedback":
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $message = $_POST['message'];
+        if (!$db->query("insert into feedback (user_name,user_emailid,feedback_text) 
+                values ('$name','$email','$message')")) {
+            trigger_error("Some error occured");
+        } else {
+            ajaxSuccess();
+        }
+        break;
+    case "checkregistered":
+        global $db, $vanshavali;
+        $res = $vanshavali->getmember($_POST['id']);
+        if (empty($res->data['username']) && empty($res->data['password'])) {
+            ajaxSuccess();
+        } else {
+            ajaxError();
         }
         break;
 

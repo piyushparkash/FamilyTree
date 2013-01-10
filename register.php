@@ -7,6 +7,11 @@ global $template, $vanshavali, $user;
 if (isset($_POST['register_submit'])) {
     //Collect all the variables
     $id = $_POST['register_id'];
+    if (empty($id))
+    {
+        $id=null;  //Letting in member who is not part of family
+    }
+    $membername=$_POST['register_name'];
 
     $username = $_POST['register_username'];
 
@@ -23,7 +28,7 @@ if (isset($_POST['register_submit'])) {
     $about = $_POST['register_about'];
 
     $vanshavali->register(array(
-        $username,$password,$dob,$gender,$relation,$gaon,$email,$about,$id
+        $username,$password,$dob,$gender,$relation,$gaon,$email,$about,$id,$membername
     ));
 }
 

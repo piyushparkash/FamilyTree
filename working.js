@@ -122,13 +122,23 @@ function submit_feedback() {
     var name = $("#feedback_name").attr("disabled", "yes").val();
     var email = $("#feedback_email").attr("disabled", "yes").val();
     var message = $("#feedback_text").attr("disabled", "yes").val();
-    $.post("feedback.php", {
+    $.post("getdata.php", {
+        action:"feedback",
         name: name,
         email: email,
         message: message
     }, function(data) {
-        $("#feedback_form").modal("hide");
-        alert("Thank you for contributing!");
+        if (ajaxError(data))
+        {
+            alert("Some error Occured. Pleae try again");
+            window.location.reload();
+        }
+        else if (ajaxSuccess(data))
+        {
+            $("#feedback_form").modal("hide");
+            alert("Thank you for contributing!");
+        }
+        
     });
 }
 ////////////////////////////////////////////////////////
@@ -452,6 +462,40 @@ function ajaxError(response)
         else
         {
             return false;
+        }
+    }
+}
+
+
+function thisisme()
+{
+    if (!selected_member)
+    {
+        alert("Please Select a member on the Tree and then clock on This is me.");
+        return false;
+    }
+    else
+    {
+        var res=confirm("Are you sure?");
+        if (res)
+        {
+            $.post("getdata.php",{
+                action:"checkregistered",
+                id:selected_member
+            },function (data)
+            {
+                if (ajaxSuccess(data))
+                {
+                    window.location.assign("thisisme.php?id="+selected_member);
+                    return true;
+                }
+                else if (ajaxError(data))
+                {
+                                    
+                    alert("Someone is already registered with that name");
+                    return false;
+                }
+            });
         }
     }
 }

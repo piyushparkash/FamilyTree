@@ -80,8 +80,7 @@
             <div class="control-group">
                 <label class="control-label" for="register_about">Little about you</label>
                 <div class="controls">
-                    <textarea style="font-family: monospace;" placeholder="Tell us something..." name="register_about" >
-                    </textarea>
+                    <textarea placeholder="Tell us something..." name="register_about" ></textarea>
                 </div>
             </div>
             <div class="form-actions">
@@ -233,13 +232,17 @@
 		
         //will remain true if everything is filled out
         var passed=true;
-        var user_id=$("#register_id").val();
-        if (user_id=='' || user_id==null)
-            {
-                alert("Please select a user");
-                $("#register_name").focus();
-                return false;
-             }
+        
+        //If register id is null the let it be and let the user in
+        //var user_id=$("#register_id").val();
+        //if (user_id=='' || user_id==null)
+          //  {
+            //    alert("Please select a user");
+              //  $("#register_name").focus();
+                //return false;
+             //}
+             
+             
         var check=$("#register_name,#register_username,#register_password,#register_confirmpassword,#register_dob,#register_email");
         $.each(check,function (key,value) {
             if (value.value=='') //if value of specified element is empty

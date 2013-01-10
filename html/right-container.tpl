@@ -111,4 +111,14 @@
             <button class="btn" onclick="$('#operation_edit').slideUp()" type="button">Cancel</button>
         </form>
     {/if}
+    {if $user_not_connected eq True}
+        <div class="alert alert-info" style="margin-top: 10px">
+            You are not connected to any member of the family. Please connect yourself to the family.Select Yourself in the Tree and click This is me.
+        </div>
+        <div style="text-align:center">
+            <button class="btn btn-success" onclick="thisisme()">
+                This is me
+            </button>
+        </div>
+    {/if}    
 </div>

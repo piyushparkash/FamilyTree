@@ -28,15 +28,23 @@ class vanshavali {
         $token = $user->generate_token();
 
         //Sql Statement
-        $sql = "update member set username='$details[0]',password='$details[1]',dob=$details[2],gender=$details[3],relationship_status=$details[4],gaon='$details[5]',
+        if (!empty($details[8])) { //If member is not already connected to Family Tree
+            $sql = "update member set membername='$details[9]',username='$details[0]',password='$details[1]',dob=$details[2],gender=$details[3],relationship_status=$details[4],gaon='$details[5]',
 	emailid='$details[6]',alive=1,aboutme='$details[7]',joined=" . time() . ",tokenforact='$token' where id=$details[8]";
-
+        } else {
+            $sql = "insert into member (membername,username,password,dob,gender,relationship_status,gaon,emailid,alive,aboutme,joined,tokenforact)
+                values('$details[9]','$details[0]','$details[1]',$details[2],$details[3],$details[4],'$details[5]','$details[6]',1,'$details[7]'," . time() . ",'$token')";
+        }
         //Finally execute the sql
         $ret = $db->query($sql);
 
         if ($ret != false) {
             $this->mail("mail.register.confirm.tpl", array('username' => $details[0], 'token' => $token, 'email' => $details[6]), $details[6], 'Welcome to Vanshavali | Email Confirmation');
+            header("Location:welcome.php");
             return true;
+        } else {
+            trigger_error("Cannot Connect to the database. Please try again by refreshing the page", E_USER_ERROR);
+            return false;
         }
     }
 
@@ -56,9 +64,7 @@ class vanshavali {
         $headers .= 'MIME-Version: 1.0' . "\n";
         $headers .= 'Content-type: text/html; UTF-8' . "\r\n";
 
-        if (!mail($to, $subject, $body, $headers)) {
-            trigger_error("Error Occured while sending Mail", E_USER_ERROR);
-        }
+        return mail($to, $subject, $body, $headers);
     }
 
 }
