@@ -69,6 +69,16 @@ switch ($_POST['action']) {
                     $template->assign(array('membername' => $suggested_value['name']));
 
                     $template->assign("fathername", $row2['membername']);
+                    
+                    //Display son or daughter according to the gender
+                    if ($suggested_value['gender']==0)
+                    {
+                        $template->assign("mnf","son");
+                    }
+                    else
+                    {
+                        $template->assign("mnf","daughter");
+                    }
 
                     $template->display('suggest.confirmaddmember.tpl');
                     break;

@@ -40,7 +40,7 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="javascript:operation_addmember()">Add Son</a></li>
+                            <li><a href="javascript:operation_addmember()">Add Son/Daughter</a></li>
                             <li><a href="javascript:deletemember()">Remove Member</a></li>
                             <li><a href="javascript:editmember()">Edit Member</a></li>
                         </ul>

@@ -1,6 +1,6 @@
 <div  id="{$suggestid}suggest" class="suggest-box">
     According to {$suggestedby},<br>
-    {$membername} is also a son of {$fathername}
+    {$membername} is also a {$mnf} of {$fathername}
     <br>
 
     Is this change correct?&nbsp;&nbsp;&nbsp;

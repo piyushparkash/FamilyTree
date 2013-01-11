@@ -4,7 +4,7 @@
                 <div class="control-group">
                     <label for="register_name" class="control-label">Your Name:</label>
                     <div class="controls">
-                        <input type="text" id="register_name" />
+                        <input type="text" id="register_name" name="register_name"/>
                         <input type="hidden" id="register_id" name="register_id"/>
                         <span  class="help-block"></span>
                     </div>
