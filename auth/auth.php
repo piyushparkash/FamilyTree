@@ -1,10 +1,4 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of auth
  *
@@ -24,8 +18,6 @@ class auth {
         //if no row found or if user's account is not activated yet then
         if ($row == false) {
             return false;
-        } elseif ($row['approved']==0) {
-            return array('error' => 2);
         }
 
         //Start the session and start storing data about user
