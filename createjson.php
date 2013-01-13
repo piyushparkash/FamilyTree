@@ -13,14 +13,14 @@ function getchild($id) {
         $obj['id'] = $row["id"];
         $obj['name'] = $row['membername'];
         $obj['data'] = array(
-            "dob" => ($row['dob'] ? $row['dob'] : ""),
+            "dob" => ($row['dob'] ? strftime($row['dob'],"%d/%m/%Y") : ""),
             "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
                     "Married"),
             "relationship_status_id" => $row['relationship_status'],
             "alive" => ($row['alive'] == 0 ? "No" : "Yes"),
             "gender"=> $row['gender'],
             "alive_id" => $row['alive'],
-            'image' => is_null($row['profilepic']) ? "common.png" : $row['profilepic']
+            'image' => empty($row['profilepic']) ? "common.png" : $row['profilepic']
             );
         $obj['children'] = getchild($row['id']);
         array_push($finalarray, $obj);
@@ -34,14 +34,14 @@ $finalkey = array();
 $finalkey['id'] = $row['id'];
 $finalkey['name'] = $row['membername'];
 $finalkey['data'] = array(
-            "dob" => ($row['dob'] ? $row['dob'] : ""),
+            "dob" => ($row['dob'] ? strftime($row['dob'],"%d/%m/%Y") : ""),
             "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
                     "Married"),
             "relationship_status_id" => $row['relationship_status'],
             "alive" => ($row['alive'] == 0 ? "No" : "Yes"),
             "gender"=> $row['gender'],
             "alive_id" => $row['alive'],
-            'image' => is_null($row['profilepic']) ? "common.png" : $row['profilepic']
+            'image' => empty($row['profilepic']) ? "common.png" : $row['profilepic']
     );
 $finalkey['children'] = getchild($row['id']);
 
