@@ -90,7 +90,6 @@ function init(){
                 label.onclick = function()
                 {
                     //show the operations toolbar
-                    $("#operation").fadeIn("fast");
                     selected_member=node.id;
                     st.onClick(node.id);
                 
@@ -181,10 +180,6 @@ function init(){
         });
         //store the selected member id in selected_member
         selected_member=st.root;
-    
-    
-        //show the operation toolbar for root
-        $("#operation").fadeIn("fast");
     
     
     
