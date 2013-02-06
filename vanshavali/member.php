@@ -50,8 +50,10 @@ class member extends member_operation {
         global $db;
         $nosons = $this->has_sons();
         if ($nosons > 0) {
-            // If the memeber has sons Change the status to married
+            // If the member has sons Change the status to married
+            // Add a wife and add parents to wife and create a new family
             $this->set_relationship(1);
+            $this->addwife();
         }
     }
 
@@ -64,6 +66,15 @@ class member extends member_operation {
         }
     }
 
+    function related_to($related_to) {
+        global $db;
+        if ($db->query("update member set related_to=$related_to where id=" . $this->data['id'])) {
+            $this->set_relationship(1);
+            
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
-
 ?>
