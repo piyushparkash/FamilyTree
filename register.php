@@ -27,9 +27,12 @@ if (isset($_POST['register_submit'])) {
     $email = $_POST['register_email'];
     $about = $_POST['register_about'];
 
-    $vanshavali->register(array(
+    if ($vanshavali->register(array(
         $username,$password,$dob,$gender,$relation,$gaon,$email,$about,$id,$membername
-    ));
+    )))
+    {
+        header("Location:welcome.php");
+    }
 }
 
 $template->header();
