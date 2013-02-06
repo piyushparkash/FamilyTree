@@ -116,6 +116,12 @@ class install {
 
     private function installTables() {
         global $db;
+        $family = $db->query("Create table family (
+            id int(11) not null primary key auto_increment,
+            family_name mediumtext not null,
+            ts int(11) not null )");
+        
+        
         $member = $db->query("create table member (
             id int(11) null primary key auto_increment,
             membername mediumtext not null,
@@ -136,6 +142,8 @@ class install {
             approved int(1) default 0,
             tokenforact text default null,
             dontshow int(1) default 0,
+            family_id int(11) default 1,
+            foreign key (family_id) references family(id),
             foreign key (related_to) references member(id) );");
 
         $feedback = $db->query("create table feedback (
@@ -172,13 +180,14 @@ class install {
             foreign key (suggest_id) references suggested_info(id),
             foreign key (user_id) references member(id) );");
 
+        $dasfamily = $db->query("insert into family (family_name,ts) values('Das Family'," . time() . ");");
         //Now the data that we already have
         $memberdata = file_get_contents("member_data.sql");
-        
-        $memberdata_sql=$db->query($memberdata);
-        
+
+        $memberdata_sql = $db->query($memberdata);
+
         return $member && $feedback && $joinrequest && $suggested_info
-                && $suggest_approved && $memberdata_sql;
+                && $suggest_approved && $memberdata_sql && $family && $dasfamily;
     }
 
 }
