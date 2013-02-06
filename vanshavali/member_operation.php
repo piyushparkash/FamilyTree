@@ -22,13 +22,53 @@ abstract class member_operation extends member_operation_suggest {
         } else {
             //Add son directly to the Member database
             global $db;
+            //Get the familyid of the parent
+            $query = $db->get("select family_id from member where id=".$this->id); 
+                $familyid = $query['family_id'];
+                if (empty($familyid))
+                {
+                    $familyid=1;
+                }
+            
 
             //Prepare the sql
-            $sql = "Insert into member(membername,gender,sonof) values('$name',$gender," . $this->data['id'] . ")";
+            $sql = "Insert into member(membername,gender,sonof,family_id) 
+                values('$name',$gender," . $this->data['id'] . ",$familyid)";
 
             //Execute the sql
             if (!$db->get($sql)) {
                 trigger_error("Cannot add member. Error executing the query");
+                return false;
+            }
+            return mysql_insert_id();
+        }
+    }
+
+    function addwife($name = "Wife", $suggest = false) {
+        global $vanshavali, $db;
+        if ($suggest) {
+            return parent::addwife_suggest($name);
+        } else {
+            //Add wife directly in the database
+            $family_id = $vanshavali->addfamily($name);
+            if ($family_id) {
+                // Now add parents with that family id
+                $fatherid = $vanshavali->addmember_explicit("Father", 0, $family_id);
+                $motherid = $vanshavali->addmember_explicit("Mother", 1, $family_id);
+
+                $father = $vanshavali->getmember($fatherid);
+                $mother = $vanshavali->getmember($motherid);
+
+                $mother->related_to($fatherid);
+                $father->related_to($motherid);
+
+                $wife=new member($father->add_son("Wife", 1));
+                $this->related_to($wife->id);
+                $this->set_relationship(1);
+                $wife->related_to($this->id);
+                $wife->set_relationship(1);
+                return true;
+            } else {
                 return false;
             }
         }
