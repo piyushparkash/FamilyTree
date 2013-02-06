@@ -12,6 +12,32 @@ class vanshavali {
     public function __construct() {
         
     }
+    
+    function addmember_explicit($membername,$gender,$familyid)
+    {
+        global $db;
+        if ($db->query("insert into member (membername,gender,family_id) values ('$membername',$gender,$familyid)"))
+        {
+            return mysql_insert_id();
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    function addfamily($name)
+    {
+        global $db;
+        if ($db->query("insert into family (family_name,ts) values('$name\'s Family'," . time() . ")"))
+        {
+            return mysql_insert_id();
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     function getmember($id) {
         global $db;
@@ -40,7 +66,6 @@ class vanshavali {
 
         if ($ret != false) {
             $this->mail("mail.register.confirm.tpl", array('username' => $details[0], 'token' => $token, 'email' => $details[6]), $details[6], 'Welcome to Vanshavali | Email Confirmation');
-            header("Location:welcome.php");
             return true;
         } else {
             trigger_error("Cannot Connect to the database. Please try again by refreshing the page", E_USER_ERROR);
