@@ -55,12 +55,12 @@
             <button class='btn btn-success' onclick='viewfamily(this)'>View Family</button>
         </div>
     </fieldset>
-        
+
     {if $authenticated}
         <form method="post" onsubmit="return operation_addmember_submit()" class="well hide" style='margin:10px' id="operation_add" >
             <label for="operation_add_name" class="control-label">Name:</label>
             <input type="text" id="operation_add_name" />
-            <label for="operation_add_sonof_name" class="control-label" >Sonof:&nbsp;&nbsp;
+            <label for="operation_add_sonof_name" class="control-label" >Child of:&nbsp;
                 <span id='operation_add_sonof_name'></span>
             </label>
             <input type="hidden" id="operation_add_sonof_id" />
@@ -77,7 +77,7 @@
             <button class="btn" onclick="$('#operation_add').slideUp()" type="button">Cancel</button>
             <button class="btn" type="reset">Reset</button>
         </form>
-        
+
         <form method="post" onsubmit="return operation_addwife_submit()" class="well hide" style='margin:10px' id="operation_addwife" >
             <label for="operation_addwife_name" class="control-label">Name:</label>
             <input type="text" id="operation_addwife_name" />

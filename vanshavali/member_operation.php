@@ -11,31 +11,57 @@ require 'member_operation_suggest.php';
 abstract class member_operation extends member_operation_suggest {
 
     public $id;
+    public $data;
 
     public function __construct($memberid) {
         $this->id = $memberid;
     }
 
+    function populate_data($memberid) {
+        // Fill user variable with user data
+        global $db;
+        $query = $db->query("Select * from member where id=$memberid");
+        $row = $db->fetch($query);
+        $this->data = $row;
+    }
+
     function add_son($name, $gender, $suggest = false) {
         if ($suggest) {
-            return parent::add_son_suggest($name, $gender, $this->data['id']);
+            if (intval($this->data['gender']) == 0) {
+
+                //If a male member then send his id
+                return parent::add_son_suggest($name, $gender, $this->data['id']);
+            } else {
+
+                //If not a male member then send the id of the spouse
+                return parent::add_son_suggest($name, $gender, $this->data['related_to']);
+            }
         } else {
 
             //Before doing all this check if the member has a wife
-            if ($this->haswife()) {
+            if ($this->hasspouse()) {
+
                 //Add son directly to the Member database
                 global $db;
+
                 //Get the familyid of the parent
-                $query = $db->get("select family_id from member where id=" . $this->id);
-                $familyid = $query['family_id'];
+                $familyid = $this->data['family_id'];
                 if (empty($familyid)) {
+
+                    //If family id is not defined than assume that he/she belongs to the default family
                     $familyid = 1;
                 }
 
 
-                //Prepare the sql
-                $sql = "Insert into member(membername,gender,sonof,family_id) 
+                //Prepare the sql according to the gender
+                $sql = "";
+                if (intval($this->data['gender']) == 1) {
+                    $sql = "Insert into member(membername,gender,sonof,family_id) 
+                values('$name',$gender," . $this->data['related_to'] . ",$familyid)";
+                } else {
+                    $sql = "Insert into member(membername,gender,sonof,family_id) 
                 values('$name',$gender," . $this->data['id'] . ",$familyid)";
+                }
 
                 //Execute the sql
                 if (!$db->get($sql)) {
@@ -49,7 +75,7 @@ abstract class member_operation extends member_operation_suggest {
         }
     }
 
-    function haswife() {
+    function hasspouse() {
         global $db;
 
         $row = $db->get("select related_to from member where id=" . $this->id);

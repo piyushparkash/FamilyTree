@@ -9,7 +9,7 @@ require_once 'member_operation.php';
 
 class member extends member_operation {
 
-    public $data;
+    
 
     public function __construct($memberid) {
         parent::__construct($memberid);
@@ -36,14 +36,6 @@ class member extends member_operation {
         $query = $db->query("select count(*) as nosons from member where sonof=$this->id");
         $row = $db->fetch($query);
         return $row['nosons'];
-    }
-
-    function populate_data($memberid) {
-        // Fill user variable with user data
-        global $db;
-        $query = $db->query("Select * from member where id=$memberid");
-        $row = $db->fetch($query);
-        $this->data = $row;
     }
 
     function autofix() {
