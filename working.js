@@ -50,7 +50,7 @@ function search() {
             tree.onClick(selected_member);
             var node = tree.graph.getNode(selected_member);
             //display data on right container
-            display_data(node.name,node.data.dob,node.data.relationship_status,node.data.alive,node.image);
+            display_data(node);
             
             //reset search value to "" and close the dialog
             $("#search_term").val("");
@@ -504,4 +504,61 @@ function thisisme()
             });
         }
     }
+}
+
+function addwife()
+{
+    //Get the member whose wife is to be added
+    var member=tree.graph.getNode(selected_member);
+    
+    //Fill in the details of the husband
+    $("#operation_addwife_husband_name").text(member.name);
+    $("#operation_addwife_husband_id").val(member.id);
+    $("#operation_addwife").slideDown();
+}
+
+
+function operation_addwife_submit()
+{
+    var name = $("#operation_addwife_name").attr("disabled", "yes");
+    var husband=$("#operation_addwife_husband_id");
+    
+    
+    //post the information in the suggestion table
+    $.post("getdata.php", {
+        action:"operation_addwife",
+        type: "wife",
+        name: name.val(),
+        husband: husband.val()
+    }, function(data) {
+        //Check if AJAX error occured
+        if (ajaxError(data))
+        {
+            alert("Some Error Occured. Please try again");
+            $("#operation_addwife_name").removeAttr("disabled").val("");
+            $("#operation_addwife_dob").removeAttr("disabled");
+            $("#operation_addwife_husband_id").val("");
+            $("#operation_addwife_husband_name").text("");
+            $("#operation_addwife").slideUp();
+            return false;
+        }
+        else if (ajaxSuccess(data))
+        {
+            //enable the controls and set the value to ""
+            $("#operation_addwife_name").removeAttr("disabled").val("");
+            $("#operation_addwife_dob").removeAttr("disabled");
+        
+            //remove any previous text node from #operation_add_sonof_name and reset
+            $("#operation_addwife_husband_name").html("<input type='hidden' id='operation_addwife_husband_name' />");
+        
+        
+            alert("The changes will be viewed permanently in the Family Tree once it is confirmed by other members. Thankyou for your contribution");
+            $("#operation_addwife").slideUp();
+        }
+        
+        return false;
+    });
+    
+    //stop the form from redirecting
+    return false;
 }
