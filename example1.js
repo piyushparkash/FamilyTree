@@ -16,6 +16,35 @@ var labelType, useGradients, nativeTextSupport, animate,selected_member, tree;
 })();
 
 
+function viewfamily(e)
+{
+    e.disabled=true;
+    e.innerText="Loading...";
+    //Get the family id of the current selected member
+    var selectedmember=tree.graph.getNode(selected_member);
+    var url="createjson.php?familyid="+selectedmember.data.familyid;
+    $.getJSON(url,"",function (data)
+    {
+        //Clear the previous Tree
+        tree.graph.empty();
+        tree.labels.clearLabels(true);
+        tree.canvas.clear();
+        
+        //Load the new Json
+        tree.loadJSON(data);
+        
+        //compute node positions and layout
+        tree.compute();
+        tree.plot();
+        
+        //Emulate a click on the root element
+        //tree.onClick(tree.root);
+        tree.select(selected_member);
+        
+        $("#girlfamilybutton").children("button").removeAttr("disabled").text("View Family");
+        $("#girlfamilybutton").fadeOut("medium");
+    });
+}
 //Function to clear previously displayed data by display_data()
 function display_clear_data()
 {
@@ -26,17 +55,55 @@ function display_clear_data()
     $("#display_image").src="";
 }
 
+function rootfamily()
+{
+    rootnode=tree.graph.getNode(tree.root);
+    var rootfamilyid=rootnode.data.familyid;
+    return parseInt(rootfamilyid);
+}
+
 //Function to display data in the right container of the current selected_member
-function display_data(name,dob,relationship_status,alive,image)
+function display_data(node)
 {
     //Remove all previous data
     display_clear_data();
+    
     //display the data
-    $("#display_name").html(name);
-    $("#display_dob").html(dob);
-    $("#display_relationship").html(relationship_status);
-    $("#display_alive").html(alive);
-    $("#display_image").src="assets/user_images/"+image;
+    $("#display_name").html(node.name);
+    $("#display_dob").html(node.data.dob);
+    $("#display_relationship").html(node.data.relationship_status);
+    $("#display_alive").html(node.data.alive);
+    $("#display_image")[0].src="assets/user_images/"+node.data.image;
+    //Now decide whether to show Girls Family Button or not
+    if (rootfamily()!=node.data.familyid)
+    {
+        $("#girlfamilybutton").fadeIn("medium").show();
+    }
+    else
+    {
+        $("#girlfamilybutton").fadeOut("medium");
+    }
+    
+    //Firstly check if he already has wife, We don't allow more than 1 wife
+    var memberchild=node.getSubnodes(1);
+    if (memberchild.length!=0)
+    {
+        if (rootfamily()!=parseInt(memberchild[0].data.familyid) && parseInt(memberchild[0].data.gender)==1)
+        {
+            return;
+        }
+    }
+        
+    //Show option to add wife only if the member is not a girl
+    if (parseInt(node.data.gender)==0)
+    {
+        $("#wifeoperation").show();
+    }
+    else
+    {
+        $("#wifeoperation").hide();
+    }
+    
 }
 function init(){
     var json;
@@ -94,7 +161,7 @@ function init(){
                     st.onClick(node.id);
                 
                     //display data on right container
-                    display_data(node.name,node.data.dob,node.data.relationship_status,node.data.alive,node.image);    
+                    display_data(node);    
                 };
                 //set label styles
                 var style = label.style;
@@ -175,7 +242,7 @@ function init(){
                 //Display data of root in the right Container
                 var tree_root=(st.graph.getNode(st.root));
                 display_clear_data();
-                display_data(tree_root.name,tree_root.data.dob,tree_root.data.relationship_status,tree_root.data.alive);
+                display_data(tree_root);
             }
         });
         //store the selected member id in selected_member
