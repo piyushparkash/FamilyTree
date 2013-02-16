@@ -47,7 +47,7 @@ abstract class member_operation extends member_operation_suggest {
     function addwife($name = "Wife", $suggest = false) {
         global $vanshavali, $db;
         if ($suggest) {
-            return parent::addwife_suggest($name);
+            return parent::addwife_suggest($name,  $this->id);
         } else {
             //Add wife directly in the database
             $family_id = $vanshavali->addfamily($name);
