@@ -20,34 +20,51 @@ abstract class member_operation extends member_operation_suggest {
         if ($suggest) {
             return parent::add_son_suggest($name, $gender, $this->data['id']);
         } else {
-            //Add son directly to the Member database
-            global $db;
-            //Get the familyid of the parent
-            $query = $db->get("select family_id from member where id=".$this->id); 
-                $familyid = $query['family_id'];
-                if (empty($familyid))
-                {
-                    $familyid=1;
-                }
-            
 
-            //Prepare the sql
-            $sql = "Insert into member(membername,gender,sonof,family_id) 
+            //Before doing all this check if the member has a wife
+            if ($this->haswife()) {
+                //Add son directly to the Member database
+                global $db;
+                //Get the familyid of the parent
+                $query = $db->get("select family_id from member where id=" . $this->id);
+                $familyid = $query['family_id'];
+                if (empty($familyid)) {
+                    $familyid = 1;
+                }
+
+
+                //Prepare the sql
+                $sql = "Insert into member(membername,gender,sonof,family_id) 
                 values('$name',$gender," . $this->data['id'] . ",$familyid)";
 
-            //Execute the sql
-            if (!$db->get($sql)) {
-                trigger_error("Cannot add member. Error executing the query");
+                //Execute the sql
+                if (!$db->get($sql)) {
+                    trigger_error("Cannot add member. Error executing the query");
+                    return false;
+                }
+                return mysql_insert_id();
+            } else {
                 return false;
             }
-            return mysql_insert_id();
+        }
+    }
+
+    function haswife() {
+        global $db;
+
+        $row = $db->get("select related_to from member where id=" . $this->id);
+
+        if (!empty($row['related_to'])) {
+            return true;
+        } else {
+            return false;
         }
     }
 
     function addwife($name = "Wife", $suggest = false) {
         global $vanshavali, $db;
         if ($suggest) {
-            return parent::addwife_suggest($name,  $this->id);
+            return parent::addwife_suggest($name, $this->id);
         } else {
             //Add wife directly in the database
             $family_id = $vanshavali->addfamily($name);
@@ -62,7 +79,7 @@ abstract class member_operation extends member_operation_suggest {
                 $mother->related_to($fatherid);
                 $father->related_to($motherid);
 
-                $wife=new member($father->add_son("Wife", 1));
+                $wife = new member($father->add_son("Wife", 1));
                 $this->related_to($wife->id);
                 $this->set_relationship(1);
                 $wife->related_to($this->id);
