@@ -36,7 +36,7 @@ $template->assign(array(
 if ($user->is_authenticated()) {
     if (is_null($user->user['sonof'])) {
         $template->assign(array("user_not_connected" => true,
-            "userimage" => $user->user['profilepic']));
+            "userimage" => (empty($user->user['profilepic']) ? "common.png" : $user->user['proilepic'])));
     }
 } else {
     $template->assign(array("userimage" => "common.png"));
