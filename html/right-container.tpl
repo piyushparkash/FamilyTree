@@ -1,7 +1,7 @@
 <div id="right-container">
 
     <fieldset>
-        <div class="row" >
+        <div class="row" style="text-align: center" >
             <div class="span4" style="text-align: center;" >
                 <img src="assets/user_images/{$userimage}" style="width: 50px; height: 50px;" id="display_image"/>
             </div>
@@ -26,7 +26,7 @@
             </div>
             <div class="span4">
                 <div class="row">
-                    <span class="span2">Alive</span>
+                    <span class="span2">Living/Deceased</span>
                     <div class="span2">
                         <span id="display_alive"></span>
                     </div>
@@ -43,6 +43,7 @@
                             <li><a href="javascript:operation_addmember()">Add Son/Daughter</a></li>
                             <li><a href="javascript:deletemember()">Remove Member</a></li>
                             <li><a href="javascript:editmember()">Edit Member</a></li>
+                            <li><a href="javascript:addwife()" id='wifeoperation' style="display:none" >Add Wife</a>
                         </ul>
                     </div>
                 </div>
@@ -50,7 +51,11 @@
 
             {/if}
         </div>
+        <div style="text-align:center; margin-top:20px;" id='girlfamilybutton' class='hide'>
+            <button class='btn btn-success' onclick='viewfamily(this)'>View Family</button>
+        </div>
     </fieldset>
+        
     {if $authenticated}
         <form method="post" onsubmit="return operation_addmember_submit()" class="well hide" style='margin:10px' id="operation_add" >
             <label for="operation_add_name" class="control-label">Name:</label>
@@ -70,6 +75,18 @@
             </select><br>
             <button class="btn btn-success" type="submit">Add</button>
             <button class="btn" onclick="$('#operation_add').slideUp()" type="button">Cancel</button>
+            <button class="btn" type="reset">Reset</button>
+        </form>
+        
+        <form method="post" onsubmit="return operation_addwife_submit()" class="well hide" style='margin:10px' id="operation_addwife" >
+            <label for="operation_addwife_name" class="control-label">Name:</label>
+            <input type="text" id="operation_addwife_name" />
+            <label for="operation_addwife_husband_name" class="control-label" >Husband:&nbsp;&nbsp;
+                <span id='operation_addwife_husband_name'></span>
+            </label>
+            <input type="hidden" id="operation_addwife_husband_id" /><br />
+            <button class="btn btn-success" type="submit">Add</button>
+            <button class="btn" onclick="$('#operation_addwife').slideUp()" type="button">Cancel</button>
             <button class="btn" type="reset">Reset</button>
         </form>
 
