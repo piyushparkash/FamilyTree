@@ -79,12 +79,12 @@ function fileext($filename, $ext = true) {
     }
 }
 
-function ajaxSuccess($data)
+function ajaxSuccess($data=NULL)
 {
     echo json_encode(array("success" => 1, "data" => $data));
 }
 
-function ajaxError($data)
+function ajaxError($data=NULL)
 {
     echo json_encode(array("success" => 0, "data" => $data));
 }
@@ -101,7 +101,8 @@ function createstruct($row) {
         "alive" => ($row['alive'] == 0 ? "No" : "Yes"),
         "gender" => $row['gender'],
         "alive_id" => $row['alive'],
-        'image' => empty($row['profilepic']) ? "common.png" : $row['profilepic']
+        'image' => empty($row['profilepic']) ? "common.png" : $row['profilepic'],
+        'familyid' => $row['family_id']
     );
     return $obj;
 }
