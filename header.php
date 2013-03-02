@@ -98,7 +98,7 @@ function createstruct($row) {
         "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
                 "Married"),
         "relationship_status_id" => $row['relationship_status'],
-        "alive" => ($row['alive'] == 0 ? "No" : "Yes"),
+        "alive" => ($row['alive'] == 0 ? "Deceased" : "Living"),
         "gender" => $row['gender'],
         "alive_id" => $row['alive'],
         'image' => empty($row['profilepic']) ? "common.png" : $row['profilepic'],
