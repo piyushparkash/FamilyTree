@@ -265,18 +265,16 @@ function editmember_submit()
         x[0].focus();
         return false;
     }
-    if (x[4].value=="")
-    {
-        alert("Date of birth not valid");
-        x[4].focus();
-        return false;
-    }
-    else
-    {
-        regex= /([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})/.test(x[4].value);
+    
+    
+    //Validate date of birth only if user has entered any
+    if (x[4].value!="")
+    {      
+        var regex= /([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})/.test(x[4].value);
         if (!regex)
         {
             alert("Please enter a valid Date of Birth");
+            x[4].focus();
             return false;
         }
     }
@@ -366,7 +364,6 @@ function deletemember_submit()
 {
     $("#operation_remove").modal("hide");
     member_id=$("#operation_remove_son_id").val();
-    alert(member_id);
     $.post("getdata.php",{
         action:"operation_remove",
         type:"remove",
