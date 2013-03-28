@@ -559,3 +559,63 @@ function operation_addwife_submit()
     //stop the form from redirecting
     return false;
 }
+
+
+//Functions to add husband to the daughter
+
+function addhusband()
+{
+    //Get the member whose wife is to be added
+    var member=tree.graph.getNode(selected_member);
+    
+    //Fill in the details of the husband
+    $("#operation_addhusband_wife_name").text(member.name);
+    $("#operation_addhusband_wife_id").val(member.id);
+    $("#operation_addhusband").slideDown();
+}
+
+
+function operation_addhusband_submit()
+{
+    var name = $("#operation_addhusband_name").attr("disabled", "yes");
+    var wife=$("#operation_addhusband_wife_id");
+    
+    
+    //post the information in the suggestion table
+    $.post("getdata.php", {
+        action:"operation_addhusband",
+        type: "husband",
+        name: name.val(),
+        wife: wife.val()
+    }, function(data) {
+        //Check if AJAX error occured
+        if (ajaxError(data))
+        {
+            alert("Some Error Occured. Please try again");
+            $("#operation_addhusband_name").removeAttr("disabled").val("");
+            $("#operation_addhusband_dob").removeAttr("disabled");
+            $("#operation_addhusband_wife_id").val("");
+            $("#operation_addhusband_wife_name").text("");
+            $("#operation_addhusband").slideUp();
+            return false;
+        }
+        else if (ajaxSuccess(data))
+        {
+            //enable the controls and set the value to ""
+            $("#operation_addhusband_name").removeAttr("disabled").val("");
+            $("#operation_addhusband_dob").removeAttr("disabled");
+        
+            //remove any previous text node from #operation_add_sonof_name and reset
+            $("#operation_addhusband_wife_name").html("<input type='hidden' id='operation_addhusband_wife_name' />");
+        
+        
+            alert("The changes will be viewed permanently in the Family Tree once it is confirmed by other members. Thankyou for your contribution");
+            $("#operation_addhusband").slideUp();
+        }
+        
+        return false;
+    });
+    
+    //stop the form from redirecting
+    return false;
+}

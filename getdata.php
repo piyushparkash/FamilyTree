@@ -152,6 +152,26 @@ switch ($_POST['action']) {
             }
             break;
 
+            
+            //When adding husband
+        case "operation_addhusband":
+            global $vanshavali;
+            
+            //Get the member to be changed
+            $member=$vanshavali->getmember($_POST['wife']);
+            
+            //Add wife to the member
+            if ($member->addhusband($_POST['name'],TRUE))
+            {
+                ajaxSuccess();
+            }
+            else
+            {
+                ajaxError();
+            }
+            break;
+            
+            
     //When to approve suggestions
     case "suggestionapproval":
         //Retreive the values

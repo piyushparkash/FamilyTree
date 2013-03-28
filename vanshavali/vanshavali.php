@@ -12,29 +12,21 @@ class vanshavali {
     public function __construct() {
         
     }
-    
-    function addmember_explicit($membername,$gender,$familyid)
-    {
+
+    function addmember_explicit($membername, $gender, $familyid) {
         global $db;
-        if ($db->query("insert into member (membername,gender,family_id) values ('$membername',$gender,$familyid)"))
-        {
+        if ($db->query("insert into member (membername,gender,family_id) values ('$membername',$gender,$familyid)")) {
             return mysql_insert_id();
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
-    
-    function addfamily($name)
-    {
+
+    function addfamily($name) {
         global $db;
-        if ($db->query("insert into family (family_name,ts) values('$name\'s Family'," . time() . ")"))
-        {
+        if ($db->query("insert into family (family_name,ts) values('$name\'s Family'," . time() . ")")) {
             return mysql_insert_id();
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -90,6 +82,80 @@ class vanshavali {
         $headers .= 'Content-type: text/html; UTF-8' . "\r\n";
 
         return mail($to, $subject, $body, $headers);
+    }
+
+    function getJson($familyid = 1) {
+
+        global $db;
+        $finalarray = array();
+        $query = $db->query("select * from member where sonof is null and dontshow=0 and gender=0");
+        //Loop through all the members and feed the row data to a function
+        //Loop will filter the data according to the gender and return
+        //Keep adding the information to a final array
+        $row = $db->fetch($query);
+
+        //Now feed the row to function and in return get the array interface
+        if (is_array($row)) {
+            $obj = $this->infovisstruct($row);
+            //$obj['children'] = $this->getwife($row['id']);
+
+            array_push($finalarray, $obj);
+            return $finalarray;
+        } else {
+            return false;
+        }
+    }
+
+    function infovisstruct($row) {
+        $obj = array();
+
+        if (is_array($row)) {
+            // If feed data is array then only do this
+            $obj['id'] = $row['id'];
+            $obj['name'] = $row['membername'];
+            $obj['data'] = array(
+                "dob" => ($row['dob'] ? strftime($row['dob'], "%d/%m/%Y") : ""),
+                "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
+                        "Married"),
+                "relationship_status_id" => $row['relationship_status'],
+                "alive" => ($row['alive'] == 0 ? "Deceased" : "Living"),
+                "gender" => $row['gender'],
+                "alive_id" => $row['alive'],
+                'image' => empty($row['profilepic']) ? "common.png" : $row['profilepic']
+            );
+            $obj['children']=  $this->getwife($row['id']);
+
+            //return the prepared object
+            return $obj;
+        }
+    }
+
+    function getchild($id) {
+        global $db;
+        $finalarray = array();
+        $query = $db->query("select * from member where sonof=$id and dontshow=0");
+        while ($row = $db->fetch($query)) {
+            $obj = $this->infovisstruct($row);
+            $obj['children'] = $this->getwife($row['id']);
+            array_push($finalarray, $obj);
+        }
+        return $finalarray;
+    }
+
+    function getwife($id) {
+        global $db;
+        $finalarray = array();
+        $row = $db->get("select * from member where id in (select related_to from member where id=$id)");
+        $obj = array();
+        // Space Tree Object if he has a wife
+        if ($row) {
+            $obj = $this->infovisstruct($row);
+            $obj['children'] = $this->getchild($id);
+            array_push($finalarray, $obj);
+            return $finalarray;
+        } else {
+            return NULL;
+        }
     }
 
 }

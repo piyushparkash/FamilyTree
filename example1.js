@@ -93,15 +93,24 @@ function display_data(node)
             return;
         }
     }
+    
+    //Now check if she already has a husband
+    memberchild=node.getParents();
+    if (node.data.familyid!=memberchild[0].data.familyid && parseInt(memberchild[0].data.gender)==0)
+    {
+        return; // as the person being pointed is a wife
+    }
         
     //Show option to add wife only if the member is not a girl
     if (parseInt(node.data.gender)==0)
     {
         $("#wifeoperation").show();
+        $("husbandoperation").hide();
     }
     else
     {
         $("#wifeoperation").hide();
+        $("#husbandoperation").show();
     }
     
 }

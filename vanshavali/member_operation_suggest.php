@@ -93,6 +93,31 @@ abstract class member_operation_suggest {
         }
         
     }
+    
+    
+    
+    function addhusband_suggest($name,$id)
+    {
+        global $db, $user;
+
+        //fill array with data
+        $finalarray = array('name' => $name, 'id' => $id);
+
+        //Put it in database
+
+        if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values('Husband', '" .
+                        json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")"))
+        {
+            //Put the approval suggestion of user that has created the suggestion
+            return ($db->query("insert into suggest_approved (suggest_id,user_id,action) values(".mysql_insert_id().",
+                ".$user->user['id'].",1)"));
+        }
+        else
+        {
+            return false;
+        }
+        
+    }
 
 }
 

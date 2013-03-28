@@ -44,6 +44,7 @@
                             <li><a href="javascript:deletemember()">Remove Member</a></li>
                             <li><a href="javascript:editmember()">Edit Member</a></li>
                             <li><a href="javascript:addwife()" id='wifeoperation' style="display:none" >Add Wife</a>
+                            <li><a href="javascript:addhusband()" id="husbandoperation" style="display:none" > Add Husband</a></li>
                         </ul>
                     </div>
                 </div>
@@ -87,6 +88,19 @@
             <input type="hidden" id="operation_addwife_husband_id" /><br />
             <button class="btn btn-success" type="submit">Add</button>
             <button class="btn" onclick="$('#operation_addwife').slideUp()" type="button">Cancel</button>
+            <button class="btn" type="reset">Reset</button>
+        </form>
+        
+        
+        <form method="post" onsubmit="return operation_addhusband_submit()" class="well hide" style='margin:10px' id="operation_husband" >
+            <label for="operation_husband_name" class="control-label">Name:</label>
+            <input type="text" id="operation_husband_name" />
+            <label for="operation_husband_wife_name" class="control-label" >Wife:&nbsp;&nbsp;
+                <span id='operation_addhusband_wife_name'></span>
+            </label>
+            <input type="hidden" id="operation_addhusband_wife_id" /><br />
+            <button class="btn btn-success" type="submit">Add</button>
+            <button class="btn" onclick="$('#operation_addhusband').slideUp()" type="button">Cancel</button>
             <button class="btn" type="reset">Reset</button>
         </form>
 
