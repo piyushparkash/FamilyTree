@@ -93,7 +93,7 @@ abstract class member_operation extends member_operation_suggest {
             return parent::addwife_suggest($name, $this->id);
         } else {
             //Add wife directly in the database
-            $family_id = $vanshavali->addfamily($name."'s Family");
+            $family_id = $vanshavali->addfamily($name);
             if ($family_id) {
                 // Now add parents with that family id
                 $fatherid = $vanshavali->addmember_explicit("Father", 0, $family_id);
