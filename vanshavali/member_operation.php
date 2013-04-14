@@ -92,39 +92,42 @@ abstract class member_operation extends member_operation_suggest {
         if ($suggest) {
             return parent::addwife_suggest($name, $this->id);
         } else {
-            //Add wife directly in the database
-            $family_id = $vanshavali->addfamily($name);
-            if ($family_id) {
-                // Now add parents with that family id
-                $fatherid = $vanshavali->addmember_explicit("Father", 0, $family_id);
-                $motherid = $vanshavali->addmember_explicit("Mother", 1, $family_id);
 
-                $father = $vanshavali->getmember($fatherid);
-                $mother = $vanshavali->getmember($motherid);
+            //Firstly to check if the member already has a wife
+            if (!$this->hasspouse()) {
+                //Add wife directly in the database
+                $family_id = $vanshavali->addfamily($name);
+                if ($family_id) {
+                    // Now add parents with that family id
+                    $fatherid = $vanshavali->addmember_explicit("Father", 0, $family_id);
+                    $motherid = $vanshavali->addmember_explicit("Mother", 1, $family_id);
 
-                $mother->related_to($fatherid);
-                $father->related_to($motherid);
+                    $father = $vanshavali->getmember($fatherid);
+                    $mother = $vanshavali->getmember($motherid);
 
-                $wife = new member($father->add_son("Wife", 1));
-                $this->related_to($wife->id);
-                $this->set_relationship(1);
-                $wife->related_to($this->id);
-                $wife->set_relationship(1);
-                return true;
-            } else {
-                return false;
+                    $mother->related_to($fatherid);
+                    $father->related_to($motherid);
+
+                    $wife = new member($father->add_son("Wife", 1));
+                    $this->related_to($wife->id);
+                    $this->set_relationship(1);
+                    $wife->related_to($this->id);
+                    $wife->set_relationship(1);
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
     }
-    
-    function addhusband($name = "Husband", $suggest = false)
-    {
+
+    function addhusband($name = "Husband", $suggest = false) {
         global $vanshavali, $db;
         if ($suggest) {
             return parent::addhusband_suggest($name, $this->id);
         } else {
             //Add wife directly in the database
-            $family_id = $vanshavali->addfamily($name."'s Family");
+            $family_id = $vanshavali->addfamily($name . "'s Family");
             if ($family_id) {
                 // Now add parents with that family id
                 $fatherid = $vanshavali->addmember_explicit("Father", 0, $family_id);
@@ -147,6 +150,7 @@ abstract class member_operation extends member_operation_suggest {
             }
         }
     }
+
     function remove($suggest = false) {
         if ($suggest) {
             return parent::remove_suggest($this->data['id']);
