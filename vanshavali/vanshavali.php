@@ -24,7 +24,7 @@ class vanshavali {
 
     function addfamily($name) {
         global $db;
-        if ($db->query("insert into family (family_name,ts) values('$name\'s Family'," . time() . ")")) {
+        if ($db->query("insert into family (family_name,ts) values('$name Family'," . time() . ")")) {
             return mysql_insert_id();
         } else {
             return false;
