@@ -111,10 +111,14 @@ class auth {
     
     function unauthenticate()
     {
+        global $db;
         if (!$this->is_authenticated())
         {
             return false;
         }
+        //Update the last login timestamp
+        if ($db->query("update member set lastlogin=".time()." where id=".$_SESSION['id']))
+        {
         
         //Unset all the session values
         $this->destroy_session();
@@ -122,6 +126,8 @@ class auth {
         {
             trigger_error("Error Ending Session",E_USER_ERROR);
             return false;
+        }
+        
         }
         return true;
     }
