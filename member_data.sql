@@ -201,22 +201,22 @@ INSERT INTO member (id, membername, username, password, sonof, profilepic, dob, 
 (251, 'Mithilesh Kumar', '', '', 139, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
 (252, ' Mr. Rajesh Kumar', '', '', 139, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
 (253, 'Mr. Dipesh Kumar', '', '', 139, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
-(254, ' Mr. Bhupesh Kumar', '', '', 139, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(255, 'Harsh', '', '' , 77, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(256, 'Harsh', '', '', 78, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(257, 'Bullu ji', '', '', 84, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(258, 'Tej Das', '', '', 64, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(259, 'Girdhar', '', '', 147, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(260, 'Kaushal Kishor', '', '', 144, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(261, 'Sonu', '', '', 144, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(262, 'Lala', '', '', 239, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(263, 'Deepak', '', '' , 238, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(264, 'Mithelesh', '', '', 238, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(265, 'Tinku', '', '', 238, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(266, 'Tinku', '', '', 215, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(267, 'Pintu', '', '', 215, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(268, 'Chintu', '', '', 218, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(269, 'Munna', '', '', 128, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(270, 'Manish', '','', 128, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
-(271, 'Sandeep', '', '', 141, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
+(254, ' Mr. Bhupesh Kumar', '', '', 139, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(255, 'Harsh', '', '', 77, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(256, 'Harsh', '', '', 78, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(257, 'Bullu ji', '', '', 84, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(258, 'Tej Das', '', '', 64, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(259, 'Girdhar', '', '', 147, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(260, 'Kaushal Kishor', '', '', 144, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(261, 'Sonu', '', '', 144, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(262, 'Lala', '', '', 239, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(263, 'Deepak', '', '' , 238, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(264, 'Mithelesh', '', '', 238, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(265, 'Tinku', '', '', 238, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(266, 'Tinku', '', '', 215, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(267, 'Pintu', '', '', 215, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(268, 'Chintu', '', '', 218, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(269, 'Munna', '', '', 128, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(270, 'Manish', '','', 128, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
+(271, 'Sandeep', '', '', 141, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL),
 (272, 'Sanjay', '', '', 141, NULL, NULL, 0, 0, '', NULL, '', 0, '', NULL, NULL, 0, NULL);
