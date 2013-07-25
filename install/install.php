@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Script to install vanshavali
+ * This class contains function to install Family Tree
  * @package install
  * @author piyush
  */
@@ -9,10 +9,13 @@ $mode = @$_GET['mode'];
 $sub = @$_GET['sub'];
 
 class install {
-    /*
-     * main function to install to initiate vanshavali installation
+    
+    /**
+     * This class is used to start the installation.
+     * @global type $mode
+     * @global type $sub
+     * @return null
      */
-
     function install() {
         global $mode, $sub;
         //make sure to run this only if database is not installed
@@ -36,9 +39,10 @@ class install {
     }
 
     /**
-     * Asks for database name from the user where to install vanshavali
+     * This function is used ask the user about the database details
      * @param string $mode Describes which phase is currently running
      * @param string $sub Describes which part is running of the phase
+     * @return null
      */
     function ask_database_name($mode, $sub) {
         global $template, $db;
@@ -102,8 +106,10 @@ class install {
         }
     }
 
+
     /**
-     * Function to setup the database
+     * This is a private function used to setup the database
+     * @global type $db
      */
     private function setup_database() {
         global $db;
@@ -114,6 +120,12 @@ class install {
         }
     }
 
+    /**
+     * This function is used install the tables in the database
+     * Returns true if all the tables were installed successfully else false
+     * @global type $db Ths instance of the db class
+     * @return boolean 
+     */
     private function installTables() {
         global $db;
         $family = $db->query("Create table family (

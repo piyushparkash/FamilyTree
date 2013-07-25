@@ -1,13 +1,22 @@
 <?php
 
 /**
- * member_operation_suggest is a Abstract Class containing function 
- * to add member through suggestion
+ * This class is used to add suggestion of member modification
  *
  * @author piyush
  */
 abstract class member_operation_suggest {
 
+    /**
+     * This function is used to add suggestion about addition of a child.
+     * Returns true on successfull operation else returns false
+     * @global \db $db The instance of the \db class
+     * @global \user $user Instanec of the \user class
+     * @param string $name The name of the member to be added
+     * @param integer $gender The gender of the member
+     * @param type $id The ID of the member whose child addition suggestion is being added
+     * @return boolean
+     */
     function add_son_suggest($name, $gender, $id) {
         global $db, $user;
 
@@ -30,6 +39,14 @@ abstract class member_operation_suggest {
         
     }
 
+    /**
+     * This function is used to remove a suggestion. Returns true on successful
+     * removal else returns false
+     * @global \db $db Instance of the db class
+     * @global \user $user Instance of the user class
+     * @param Integer $id The ID of the suggestion
+     * @return boolean
+     */
     function remove_suggest($id) {
         global $db, $user;
 
@@ -46,6 +63,19 @@ abstract class member_operation_suggest {
         
     }
 
+    /**
+     * This function is used to add suggestion regarding modification of user 
+     * detail modification. Returns false on error.
+     * @global \db $db Instance of the db class
+     * @global \user $user Instance of the user class
+     * @param type $name The new name of the member
+     * @param type $gender The new gender of the member
+     * @param type $relationship The new relationship status of the member
+     * @param type $dob The new DOB Timestamp
+     * @param type $alive The new alive ID
+     * @param type $id The ID of the member to be edited
+     * @return boolean
+     */
     function edit_suggest($name, $gender, $relationship, $dob, $alive, $id) {
         global $db, $user;
 
@@ -71,6 +101,14 @@ abstract class member_operation_suggest {
         }
     }
     
+    /**
+     * This function is used to add new wife suggestion. Returns false on error
+     * @global \db $db Instance of db class
+     * @global \user $user Instance of the user class
+     * @param type $name The name of the new wife
+     * @param type $id The ID of the member whose wife is to be added
+     * @return boolean
+     */
     function addwife_suggest($name,$id)
     {
         global $db, $user;
@@ -95,7 +133,14 @@ abstract class member_operation_suggest {
     }
     
     
-    
+    /**
+     * This function is used to add a husband suggestion. Return false on error.
+     * @global \db $db Instance of the db classs
+     * @global \user $user Instance of the user class
+     * @param type $name The name of the new husband
+     * @param type $id ID of the member whose husband is to be added
+     * @return boolean
+     */
     function addhusband_suggest($name,$id)
     {
         global $db, $user;

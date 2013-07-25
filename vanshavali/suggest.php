@@ -2,8 +2,8 @@
 
 /**
  * Suggestion Class is used to add, remove or edit suggestions
- * Basically a Class to operate on suggested_info and suggest_approval
- *
+ * Basically a Class to operate on suggested_info and suggest_approval table
+ * @extends member_operation_suggest
  * @author piyush
  */
 require_once 'member_operation_suggest.php';
@@ -12,6 +12,12 @@ class suggest extends member_operation_suggest {
 
     public $id, $suggested_value, $typesuggest, $suggestedby;
 
+    /**
+     * Constructor of the class. This gathers the basic information about
+     * the suggestion which is to be managed
+     * @global type $db Instance of the db class
+     * @param type $suggestid The ID of the suggestion to be managed
+     */
     function __construct($suggestid) {
         global $db;
         $this->id = $suggestid;
@@ -28,6 +34,13 @@ class suggest extends member_operation_suggest {
         }
     }
 
+    /**
+     * This function is used to add approval to this suggestion. Returns false
+     * on error
+     * @global type $db Instance of the db class
+     * @global type $user Instance of the user class
+     * @return boolean
+     */
     function approve() {
         global $db, $user;
         if (!$db->get("Insert into suggest_approved(suggest_id,user_id,action) values($this->id, 
@@ -40,6 +53,13 @@ class suggest extends member_operation_suggest {
         return true;
     }
 
+    /**
+     * This function is used to add rejection to the suggestion. Return false
+     * on error
+     * @global type $db Instance of the db class
+     * @global type $user Instance of user class
+     * @return boolean
+     */
     function reject() {
         //Rejects the $id provided in the constructor
         global $db, $user;
@@ -53,6 +73,13 @@ class suggest extends member_operation_suggest {
         return TRUE;
     }
 
+    /**
+     * This function is used to mark a suggestion as don't know. Returns false
+     * on error
+     * @global type $db Instance of the db class
+     * @global type $user Instance of the user class
+     * @return boolean
+     */
     function dontknow() {
         //Marks suggestion as don'tknow
         global $db, $user;
@@ -66,6 +93,12 @@ class suggest extends member_operation_suggest {
         return true;
     }
 
+    /**
+     * This function is to check the percentage of the approval/rejection/dontknow
+     * of this suggestion
+     * @global type $db Instance of the db class
+     * @return boolean
+     */
     private function checkpercent() {
         global $db;
 
@@ -104,6 +137,11 @@ class suggest extends member_operation_suggest {
         }
     }
 
+    /**
+     * This function is used to take a decision whether to approve the suggestion
+     * , reject it on the basis percentage of approval or rejection
+     * @return null
+     */
     private function check_decision() {
         $percent = $this->checkpercent();
 
@@ -122,6 +160,13 @@ class suggest extends member_operation_suggest {
         }
     }
 
+    /**
+     * This function is used to accept the suggestion and apply the changes to the 
+     * main member table
+     * @global \vanshavali $vanshavali Instance of the vanshavali class
+     * @global \db $db Instance of the db class
+     * @return null
+     */
     private function apply() {
         global $vanshavali, $db;
 
@@ -153,6 +198,13 @@ class suggest extends member_operation_suggest {
         $db->get("update suggested_info set approved=1 where id=$this->id");
     }
 
+    /**
+     * This function is used to delete all the data regarding the suggestion approval
+     * or rejection. This is to be used when the suggestion is applied and user votes
+     * are of no use. Although it is automatically invoked.
+     * @global type $db
+     * @return boolean
+     */
     function approval_delete() {
         global $db;
 

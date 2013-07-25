@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of db
+ * This class handles all the interaction with the database
  * @package db
  * @author piyush
  */
@@ -14,11 +14,11 @@ class db {
     }
 
     /**
-     * Connects to a database
-     * @param string $host
-     * @param string $username
-     * @param string $password
-     * @param string $database
+     * Connects to a database and returns true if connected
+     * @param string $host Host of the MySQL Database
+     * @param string $username The username of the MySQL Database
+     * @param string $password The password of the MySQL Database
+     * @param string $database The database fetch the data from
      * @return boolean
      */
     public function connect($host = null, $username = null, $password = null, $database = null) {
@@ -47,8 +47,8 @@ class db {
     }
 
     /**
-     * Select Database
-     * @param string $name
+     * This function is used to select a database
+     * @param string $name The name of the databse to select
      * @return boolean
      */
     function select_db($name) {
@@ -59,9 +59,11 @@ class db {
     }
 
     /**
-     * Executes a SQL Query
-     * @param string $sql
-     * @return boolean
+     * Executes a SQL Query and returns the resource of the result set
+     * It returns false and triggers the default error function if connection to
+     * database if not already established
+     * @param string $sql The SQL to be executed
+     * @return resource
      */
     function query($sql) {
         //Check if it is connected to database
@@ -83,9 +85,10 @@ class db {
     }
 
     /**
-     * Fetches a row from the query resource
-     * @param resource $query
-     * @return boolean
+     * Fetches a row from the query resource. Triggers error if invalid resource
+     * is provided
+     * @param resource $query The query resource returned bt query function
+     * @return array
      */
     function fetch($query) {
         if ($query === true) {
@@ -100,8 +103,10 @@ class db {
     }
 
     /**
+     * This function can be used when only a single row is to be fetched from
+     * database
      *  @param SQL $sql Sql query to be executed
-     * @return array First row array of the query
+     *  @return array First row array of the query
      */
     function get($query) {
         if ($query != false) {

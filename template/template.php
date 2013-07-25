@@ -1,10 +1,4 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Handles all the output of the page
  * @extends Smarty

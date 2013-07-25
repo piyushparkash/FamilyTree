@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Core Class
+ * This the core Class of the Family Tree and contains function to manage it.
  *
  * @author piyush
  */
@@ -9,10 +9,24 @@ require_once 'member.php';
 
 class vanshavali {
 
+    /**
+     * 
+     * Constructor of the class
+     */
     public function __construct() {
         
     }
 
+    /**
+     * This special function is used to add member to the Tree
+     * without using any of the member class
+     * Returns the ID of the new member else false if any error occurred
+     * @global type $db Instance of the db class
+     * @param type $membername The name of the new member to be added
+     * @param type $gender The gender of the new member
+     * @param type $familyid The Family ID of the new member
+     * @return integer ID of the new member created
+     */
     function addmember_explicit($membername, $gender, $familyid) {
         global $db;
         if ($db->query("insert into member (membername,gender,family_id) values ('$membername',$gender,$familyid)")) {
@@ -22,6 +36,14 @@ class vanshavali {
         }
     }
 
+    /**
+     * This function is used to add family in the Tree.
+     * Returns the ID of the new family created or returns false if any error
+     * occured
+     * @global \db $db Instance of db class
+     * @param string $name The name of the Family
+     * @return integer ID of the new Family
+     */
     function addfamily($name) {
         global $db;
         if ($db->query("insert into family (family_name,ts) values('$name Family'," . time() . ")")) {
@@ -31,6 +53,12 @@ class vanshavali {
         }
     }
 
+    /**
+     * This function is used get the details about a member.
+     * @global type $db Instance of the db class
+     * @param type $id ID of the member whose details is to be fetched
+     * @return \member
+     */
     function getmember($id) {
         global $db;
         $query = $db->query("select * from member where id=$id");
@@ -39,6 +67,14 @@ class vanshavali {
         return $member;
     }
 
+    /**
+     * This function is used to register a user in Family Tree. Returns false on
+     * error.
+     * @global \db $db Instance of db class
+     * @global \user $user Instance of user class
+     * @param array $details Array containing details about the new member
+     * @return boolean
+     */
     function register($details) {
         global $db, $user;
 
@@ -65,6 +101,15 @@ class vanshavali {
         }
     }
 
+    /**
+     * This function is used to send a mail to an emailID. Returns false on error
+     * @global \template $template Instance of template class
+     * @param string $template_name The name of the mail template to be used in the mail
+     * @param array $data The variables needed by the template used in the mail
+     * @param string $to EmailID of the Recipent
+     * @param string $subject The subject of the Mail
+     * @return boolean
+     */
     function mail($template_name, $data, $to, $subject) {
         global $template;
         //Add Global variable of domain
@@ -84,6 +129,14 @@ class vanshavali {
         return mail($to, $subject, $body, $headers);
     }
 
+    /**
+     * This function is used to get the members in JSON format to be used
+     * with the JIT
+     * @global \db $db Instance of db class
+     * @param integer $familyid The ID of the family whose member are to be shown
+     * By default members of Family 1 are shown
+     * @return array|boolean
+     */
     function getJson($familyid = 1) {
 
         global $db;
@@ -106,6 +159,11 @@ class vanshavali {
         }
     }
 
+    /**
+     * This function is used to generate the structure to be used in JIT
+     * @param array $row Array containing the information of the ROOT Member
+     * @return array
+     */
     function infovisstruct($row) {
         $obj = array();
 
@@ -130,6 +188,13 @@ class vanshavali {
         }
     }
 
+    /**
+     * This function is used to generate JSON structure to be used in JIT of all
+     * children and subchildren under the passed member
+     * @global \db $db Instance of the db class
+     * @param integer $id ID of the member whose children are to be fetched
+     * @return array
+     */
     function getchild($id) {
         global $db;
         $finalarray = array();
@@ -142,6 +207,13 @@ class vanshavali {
         return $finalarray;
     }
 
+    /**
+     * This function is used to generate JSON structure to be used in JIT of the
+     * wife of the passed member
+     * @global \db $db Instance of db class
+     * @param integer $id ID of the member whose wife is to be fetched
+     * @return array|null
+     */
     function getwife($id) {
         global $db;
         $finalarray = array();

@@ -1,22 +1,42 @@
 <?php
 
 /**
- * Contains functions to permanently add, remove or edit Member
+ * This class handles Member Entity
  * To be Only used by other classes
- *
+ * @extends member_operation_suggest
  * @author piyush
  */
 require 'member_operation_suggest.php';
 
 abstract class member_operation extends member_operation_suggest {
 
+    /**
+     *
+     * @var integer The ID of the member
+     */
     public $id;
+    
+    /**
+     *
+     * @var array This array contains all information about the user
+     */
     public $data;
 
+    /**
+     * Constructor of the class
+     * @param type $memberid The ID of the member
+     * @return null
+     */
     public function __construct($memberid) {
         $this->id = $memberid;
     }
 
+    /**
+     * This function is used to fill the $data variable with member data
+     * @global \db $db The instance of the \db class
+     * @param integer $memberid The ID of the member
+     * @return null
+     */
     function populate_data($memberid) {
         // Fill user variable with user data
         global $db;
@@ -25,6 +45,14 @@ abstract class member_operation extends member_operation_suggest {
         $this->data = $row;
     }
 
+    /**
+     * This function is used to add a child of the member. Returns false on error
+     * @global \db $db The instance of db class
+     * @param type $name The name of the new member
+     * @param type $gender The gender of the new member
+     * @param type $suggest If this is a suggestion then set this to true
+     * @return integer The ID of the new member just added
+     */
     function add_son($name, $gender, $suggest = false) {
         if ($suggest) {
             if (intval($this->data['gender']) == 0) {
@@ -75,6 +103,12 @@ abstract class member_operation extends member_operation_suggest {
         }
     }
 
+    /**
+     * This function is used to check if check if the member has a spouse or not
+     * Returns true If the member has spouse else returns false
+     * @global \db $db The instance of the db class
+     * @return boolean
+     */
     function hasspouse() {
         global $db;
 
@@ -87,6 +121,15 @@ abstract class member_operation extends member_operation_suggest {
         }
     }
 
+    /**
+     * This function is used to add wife to the member. Returns true if
+     * successfull operation else returns false
+     * @global type $vanshavali The instance of the \vanshavali class
+     * @global \db $db The instance of the \db class
+     * @param string $name The name of Wife
+     * @param boolean $suggest Set to true if this is a suggestion
+     * @return boolean
+     */
     function addwife($name = "Wife", $suggest = false) {
         global $vanshavali, $db;
         if ($suggest) {
@@ -121,6 +164,15 @@ abstract class member_operation extends member_operation_suggest {
         }
     }
 
+    /**
+     * This function is used to add husband to the member. It returns true on 
+     * successfull operation.
+     * @global type $vanshavali Instance of the \vanshavali class
+     * @global \db $db Instance of the \db class
+     * @param string $name The name of the husband
+     * @param boolean $suggest Set to true if is a suggestion
+     * @return boolean
+     */
     function addhusband($name = "Husband", $suggest = false) {
         global $vanshavali, $db;
         if ($suggest) {
@@ -151,6 +203,13 @@ abstract class member_operation extends member_operation_suggest {
         }
     }
 
+    /**
+     * This function is used to remove the member from the database
+     * Returns true on successfull operation else false
+     * @global \db $db Instance of the \db class
+     * @param boolean $suggest Set to true if is a suggestion
+     * @return boolean
+     */
     function remove($suggest = false) {
         if ($suggest) {
             return parent::remove_suggest($this->data['id']);
@@ -166,6 +225,30 @@ abstract class member_operation extends member_operation_suggest {
         }
     }
 
+    /**
+     * This function is used to edit a user details. Returns true on successful
+     * operation else returns false
+     * @global \db $db
+     * @param string $name The new name of the member
+     * @param integer $gender The new gender of the member. See Below.
+     * @param integer $relationship The relationship status of the member See Below.
+     * @param integer $dob The Timestamp of the DOB of the member
+     * @param Integer $alive The living status of the member
+     * @param boolean $suggest Set to true if this is a suggest
+     * @return boolean
+     * 
+     * Gender
+     * 0 == Male
+     * 1 == Female
+     * 
+     * Relationship Status
+     * 0 == Single
+     * 1 == Married
+     * 
+     * Alive
+     * 0 == Deceased
+     * 1 == Living
+     */
     function edit($name, $gender, $relationship, $dob, $alive, $suggest = FALSE) {
         if ($suggest) {
             return parent::edit_suggest($name, $gender, $relationship, $dob, $alive, $this->data['id']);

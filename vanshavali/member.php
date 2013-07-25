@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Class that manipulates Members
- *
+ * This class is used to manipulate user data
+ * @extends member_operation
  * @author piyush
  */
 require_once 'member_operation.php';
@@ -11,16 +11,31 @@ class member extends member_operation {
 
     
 
+    /**
+     * The constructor of the class
+     * @param integer $memberid The ID of the member
+     * @return null
+     */
     public function __construct($memberid) {
         parent::__construct($memberid);
         $this->populate_data($memberid);
         $this->autofix();
     }
 
+    /**
+     * This function is used to get the ID of the parent of the
+     * current logged in user
+     * @return \member
+     */
     function getparent() {
         return new member($this->data['sonof']);
     }
 
+    /**
+     * This function is used to get the children of the currenyl logged-in user
+     * @global \db $db The instance of the db class 
+     * @return array Array of \member
+     */
     function get_sons() {
         global $db;
         $finalarray = array();
@@ -31,6 +46,12 @@ class member extends member_operation {
         return $finalarray;
     }
 
+    /**
+     * This function is used to check if the user has children
+     * This function also return the number of children of the user
+     * @global \db $db The instance of the \db class
+     * @return integer
+     */
     function has_sons() {
         global $db;
         $query = $db->query("select count(*) as nosons from member where sonof=$this->id");
@@ -38,6 +59,12 @@ class member extends member_operation {
         return $row['nosons'];
     }
 
+    /**
+     * This function is used to fix any anamolies found in member data
+     * such as if user has children but the relationshipstatus is set to Single 
+     * @global \db $db
+     * @return null
+     */
     function autofix() {
         global $db;
         $nosons = $this->has_sons();
@@ -49,6 +76,17 @@ class member extends member_operation {
         }
     }
 
+    /**
+     * This function is used to set the relationship status of the current user
+     * Returns true if successfull else false
+     * @global \db $db The instance of the \db class
+     * @param type $relationship_id The relationship ID. See Below.
+     * @return boolean
+     * 
+     * Relationship ID
+     * 0 == Single
+     * 1 == Married
+     */
     function set_relationship($relationship_id) {
         global $db;
         if (!$db->query("update member set relationship_status=$relationship_id where id=$this->id")) {
@@ -58,6 +96,13 @@ class member extends member_operation {
         }
     }
 
+    /**
+     * This function is add wife of the member. Returns true if successful
+     * else false. The member to be added as wife should already be created
+     * @global \db $db The instance of the db class
+     * @param integer $related_to The ID of the member to be added as wife
+     * @return boolean
+     */
     function related_to($related_to) {
         global $db;
         if ($db->query("update member set related_to=$related_to where id=" . $this->data['id'])) {
