@@ -1,0 +1,122 @@
+\hypertarget{class__smarty__tag}{\section{\-\_\-smarty\-\_\-tag Class Reference}
+\label{class__smarty__tag}\index{\-\_\-smarty\-\_\-tag@{\-\_\-smarty\-\_\-tag}}
+}
+Inheritance diagram for \-\_\-smarty\-\_\-tag\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class__smarty__tag}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class__smarty__tag_a0856e783ab0634dc2e76caf0a12af46a}{\-\_\-\-\_\-construct} (\$parser, \$data)
+\item 
+\hyperlink{class__smarty__tag_afb0cfe4f8c8b586aa60d1da409798a59}{to\-\_\-smarty\-\_\-php} ()
+\item 
+\hyperlink{class__smarty__tag_a26efd9ba00a4c6d16cb5c9ca30c10283}{assign\-\_\-to\-\_\-var} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class__smarty__tag_a6933bf94304fc76f27d6e09b5d122ec4}{{\bfseries \$saved\-\_\-block\-\_\-nesting}}\label{class__smarty__tag_a6933bf94304fc76f27d6e09b5d122ec4}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 47 of file smarty\-\_\-internal\-\_\-parsetree.\-php.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class__smarty__tag_a0856e783ab0634dc2e76caf0a12af46a}{\index{\-\_\-smarty\-\_\-tag@{\-\_\-smarty\-\_\-tag}!\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}}
+\index{\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}!_smarty_tag@{\-\_\-smarty\-\_\-tag}}
+\subsubsection[{\-\_\-\-\_\-construct}]{\setlength{\rightskip}{0pt plus 5cm}\-\_\-smarty\-\_\-tag\-::\-\_\-\-\_\-construct (
+\begin{DoxyParamCaption}
+\item[{}]{\$parser, }
+\item[{}]{\$data}
+\end{DoxyParamCaption}
+)}}\label{class__smarty__tag_a0856e783ab0634dc2e76caf0a12af46a}
+Create parse tree buffer for \hyperlink{classSmarty}{Smarty} tag
+
+
+\begin{DoxyParams}[1]{Parameters}
+object & {\em \$parser} & parser object \\
+\hline
+string & {\em \$data} & content \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 61 of file smarty\-\_\-internal\-\_\-parsetree.\-php.
+
+
+\begin{DoxyCode}
+    \{
+        $this->parser = $parser;
+        $this->data = $data;
+        $this->saved\_block\_nesting = $parser->block\_nesting\_level;
+    \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class__smarty__tag_a26efd9ba00a4c6d16cb5c9ca30c10283}{\index{\-\_\-smarty\-\_\-tag@{\-\_\-smarty\-\_\-tag}!assign\-\_\-to\-\_\-var@{assign\-\_\-to\-\_\-var}}
+\index{assign\-\_\-to\-\_\-var@{assign\-\_\-to\-\_\-var}!_smarty_tag@{\-\_\-smarty\-\_\-tag}}
+\subsubsection[{assign\-\_\-to\-\_\-var}]{\setlength{\rightskip}{0pt plus 5cm}\-\_\-smarty\-\_\-tag\-::assign\-\_\-to\-\_\-var (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class__smarty__tag_a26efd9ba00a4c6d16cb5c9ca30c10283}
+Return complied code that loads the evaluated outout of buffer content into a temporary variable
+
+\begin{DoxyReturn}{Returns}
+string template code 
+\end{DoxyReturn}
+
+
+Definition at line 83 of file smarty\-\_\-internal\-\_\-parsetree.\-php.
+
+
+\begin{DoxyCode}
+    \{
+        $var = sprintf(\textcolor{stringliteral}{'$\_tmp%d'}, ++$this->parser->prefix\_number);
+        $this->parser->compiler->prefix\_code[] = sprintf(\textcolor{stringliteral}{'<?php
+       ob\_start();?>%s<?php %s=ob\_get\_clean();?>'}, $this->data, $var);
+        \textcolor{keywordflow}{return} $var;
+    \}
+\end{DoxyCode}
+\hypertarget{class__smarty__tag_afb0cfe4f8c8b586aa60d1da409798a59}{\index{\-\_\-smarty\-\_\-tag@{\-\_\-smarty\-\_\-tag}!to\-\_\-smarty\-\_\-php@{to\-\_\-smarty\-\_\-php}}
+\index{to\-\_\-smarty\-\_\-php@{to\-\_\-smarty\-\_\-php}!_smarty_tag@{\-\_\-smarty\-\_\-tag}}
+\subsubsection[{to\-\_\-smarty\-\_\-php}]{\setlength{\rightskip}{0pt plus 5cm}\-\_\-smarty\-\_\-tag\-::to\-\_\-smarty\-\_\-php (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class__smarty__tag_afb0cfe4f8c8b586aa60d1da409798a59}
+Return buffer content
+
+\begin{DoxyReturn}{Returns}
+string content 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{class__smarty__parsetree_a0f38ed5d5527ceee7acb60db4b5acf63}{\-\_\-smarty\-\_\-parsetree}.
+
+
+
+Definition at line 73 of file smarty\-\_\-internal\-\_\-parsetree.\-php.
+
+
+\begin{DoxyCode}
+    \{
+        \textcolor{keywordflow}{return} $this->data;
+    \}
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+template/libs/sysplugins/smarty\-\_\-internal\-\_\-parsetree.\-php\end{DoxyCompactItemize}
