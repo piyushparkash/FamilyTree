@@ -26,8 +26,7 @@ function fileext($filename, $ext = true) {
  * This function is used to signal the front end that ajax Request was successful
  * @param array|string $data Any additional data that needs to be sent with the signal (optional)
  */
-function ajaxSuccess($data=NULL)
-{
+function ajaxSuccess($data = NULL) {
     echo json_encode(array("success" => 1, "data" => $data));
 }
 
@@ -37,8 +36,30 @@ function ajaxSuccess($data=NULL)
  * @param array|string $data Any additional data that needs to be sent with the
  * the signal
  */
-function ajaxError($data=NULL)
-{
+function ajaxError($data = NULL) {
     echo json_encode(array("success" => 0, "data" => $data));
 }
+
+/**
+ * This function is used to check if we permission to perform write operation
+ * on the given directory. Returns True if Yes else False
+ * @param string $dirname The name of directory whose permissions is to be 
+ * checked with ending '/'
+ * @return boolean
+ */
+function dir_iswritable($dirname) {
+    $testfile = fopen($dirname . "/test_lock_file", "w+");
+
+    //If it was not able to open the file, that simply means we don't have the
+    //permission to open it
+    if ($testfile === false) {
+        return false;
+    }
+    //If file was created then we have the permission
+    else {
+        unlink($dirname . "/test_lock_file");
+        return true;
+    }
+}
+
 ?>

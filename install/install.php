@@ -9,11 +9,11 @@ $mode = @$_GET['mode'];
 $sub = @$_GET['sub'];
 
 class install {
-    
+
     /**
      * This class is used to start the installation.
-     * @global type $mode
-     * @global type $sub
+     * @global string $mode
+     * @global integer $sub
      * @return null
      */
     function install() {
@@ -32,10 +32,51 @@ class install {
 
 
             case "ask_database_name":
-            default:
                 $this->ask_database_name($mode, $sub);
                 break;
+            case "check_directory_permission":
+            default :
+                $this->check_directory_permission($mode, $sub);
+                break;
         }
+    }
+
+
+    /**
+     * This function is used to check the required directories permission
+     * during the installation as FamilyTree needs to create some config files
+     * which can only be possible if he has the permission
+     * @global \template $template
+     * @param string $mode
+     * @param integer $sub
+     */
+    function check_directory_permission($mode, $sub) {
+        global $template;
+        $cache = false;
+        $compile = false;
+        $main = false;
+
+        //Check if directories are writable
+        if (dir_iswritable("template/cache")) {
+            $cache = TRUE;
+            $template->assign("cache", true);
+        }
+        if (dir_iswritable("template/compile")) {
+            $compile = true;
+            $template->assign("compile", true);
+        }
+        $template->assign("dir", "config.php");
+        if (dir_iswritable(".")) {
+            $main = true;
+            $template->assign("main", TRUE);
+        }
+        
+        if ($cache && $compile && $main)
+        {
+            header("Location: index.php?mode=ask_database_name");
+        }
+        $template->header();
+        $template->display("install.directory_check.tpl");
     }
 
     /**
@@ -106,10 +147,9 @@ class install {
         }
     }
 
-
     /**
      * This is a private function used to setup the database
-     * @global type $db
+     * @global \db $db
      */
     private function setup_database() {
         global $db;
@@ -123,7 +163,7 @@ class install {
     /**
      * This function is used install the tables in the database
      * Returns true if all the tables were installed successfully else false
-     * @global type $db Ths instance of the db class
+     * @global \db $db Ths instance of the db class
      * @return boolean 
      */
     private function installTables() {
@@ -132,8 +172,8 @@ class install {
             id int(11) not null primary key auto_increment,
             family_name mediumtext not null,
             ts int(11) not null )");
-        
-        
+
+
         $member = $db->query("create table member (
             id int(11) null primary key auto_increment,
             membername mediumtext not null,
