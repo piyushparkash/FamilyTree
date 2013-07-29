@@ -130,6 +130,79 @@ class vanshavali {
     }
 
     /**
+     * This function is used to used to create structure to used by JIT. It takes
+     * input the array of a row from member table and converts it into the JIT 
+     * structure.
+     * @param array $row
+     * @return array
+     */
+    function createstruct($row) {
+        $obj = array();
+        $obj['id'] = $row["id"];
+        $obj['name'] = $row['membername'];
+        $obj['data'] = array(
+            "dob" => ($row['dob'] ? strftime($row['dob'], "%d/%m/%Y") : ""),
+            "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
+                    "Married"),
+            "relationship_status_id" => $row['relationship_status'],
+            "alive" => ($row['alive'] == 0 ? "Deceased" : "Living"),
+            "gender" => $row['gender'],
+            "alive_id" => $row['alive'],
+            'image' => empty($row['profilepic']) ? "common.png" : $row['profilepic'],
+            'familyid' => $row['family_id']
+        );
+        return $obj;
+    }
+
+    /**
+     * This function is used to get the child of the given member to be fetched 
+     * to the JIT. It fetches the details of the given member from the database
+     * and uses createstruct() to convert it into JIT structure.
+     * @global \db $db Instance of the db class
+     * @param integer $id Ihe of the member whose children are to be fetched
+     * @return array
+     */
+    function getchild($id) {
+        global $db;
+        $finalarray = array();
+        $query = $db->query("select * from member where sonof=$id and dontshow=0");
+        while ($row = $db->fetch($query)) {
+            $obj = $this->createstruct($row);
+            $obj['children'] = $this->getwife($row['id']);
+            array_push($finalarray, $obj);
+        }
+        return $finalarray;
+    }
+
+    /**
+     * This function is used to get the wife of the given member to be fetched
+     * into JIT. It fetches the details of the given member from the database
+     * and uses createstruct() to convert it into JIT structure.
+     * @global \db $db Instance of db class
+     * @param integer $id ID of the member whose wife is to be fetched
+     * @return array|null
+     */
+    function getwife($id) {
+        global $db;
+        $finalarray = array();
+        $row = $db->get("select * from member where id in (select related_to from member where id=$id)");
+        $obj = array();
+        // Space Tree Object if he has a wife
+        if ($row) {
+            $obj = $this->createstruct($row);
+            $obj['children'] = $this->getchild($id);
+            array_push($finalarray, $obj);
+            return $finalarray;
+        } else {
+            return NULL;
+        }
+    }
+
+    
+    
+    
+    //The following function are not working and are to be improved ********
+    /**
      * This function is used to get the members in JSON format to be used
      * with the JIT
      * @global \db $db Instance of db class
@@ -137,7 +210,7 @@ class vanshavali {
      * By default members of Family 1 are shown
      * @return array|boolean
      */
-    function getJson($familyid = 1) {
+    function getJson_new($familyid = 1) {
 
         global $db;
         $finalarray = array();
@@ -160,42 +233,13 @@ class vanshavali {
     }
 
     /**
-     * This function is used to generate the structure to be used in JIT
-     * @param array $row Array containing the information of the ROOT Member
-     * @return array
-     */
-    function infovisstruct($row) {
-        $obj = array();
-
-        if (is_array($row)) {
-            // If feed data is array then only do this
-            $obj['id'] = $row['id'];
-            $obj['name'] = $row['membername'];
-            $obj['data'] = array(
-                "dob" => ($row['dob'] ? strftime($row['dob'], "%d/%m/%Y") : ""),
-                "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
-                        "Married"),
-                "relationship_status_id" => $row['relationship_status'],
-                "alive" => ($row['alive'] == 0 ? "Deceased" : "Living"),
-                "gender" => $row['gender'],
-                "alive_id" => $row['alive'],
-                'image' => empty($row['profilepic']) ? "common.png" : $row['profilepic']
-            );
-            $obj['children']=  $this->getwife($row['id']);
-
-            //return the prepared object
-            return $obj;
-        }
-    }
-
-    /**
      * This function is used to generate JSON structure to be used in JIT of all
      * children and subchildren under the passed member
      * @global \db $db Instance of the db class
      * @param integer $id ID of the member whose children are to be fetched
      * @return array
      */
-    function getchild($id) {
+    function getchild_new($id) {
         global $db;
         $finalarray = array();
         $query = $db->query("select * from member where sonof=$id and dontshow=0");
@@ -214,7 +258,7 @@ class vanshavali {
      * @param integer $id ID of the member whose wife is to be fetched
      * @return array|null
      */
-    function getwife($id) {
+    function getwife_new($id) {
         global $db;
         $finalarray = array();
         $row = $db->get("select * from member where id in (select related_to from member where id=$id)");

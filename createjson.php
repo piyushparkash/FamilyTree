@@ -2,7 +2,7 @@
 
 require "header.php";
 
-global $db;
+global $db, $vanshavali;
 $familyid = $_GET['familyid'];
 
 //Get the family id of the family to be shown
@@ -16,8 +16,8 @@ $query = $db->query("select * from member where sonof is null and dontshow=0 and
 $row = $db->fetch($query);
 
 //Create a infovis struct
-$finalkey = createstruct($row);
-$finalkey['children'] = getwife($row['id']);
+$finalkey = $vanshavali->createstruct($row);
+$finalkey['children'] = $vanshavali->getwife($row['id']);
 
 echo json_encode($finalkey);
 ?>
