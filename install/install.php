@@ -75,8 +75,15 @@ class install {
         {
             header("Location: index.php?mode=ask_database_name");
         }
-        $template->header();
-        $template->display("install.directory_check.tpl");
+
+        //Apparently we cannot use template as we have not write permission in compile directory
+        //So read the tpl file and output it as it is.
+        // We are using @ just in case we don't have permission to read
+        $output = @file_get_contents("install.directory_check.tpl");
+
+        echo $output;
+
+
     }
 
     /**
