@@ -79,7 +79,14 @@ class install {
         //Apparently we cannot use template as we have not write permission in compile directory
         //So read the tpl file and output it as it is.
         // We are using @ just in case we don't have permission to read
-        $output = @file_get_contents("install.directory_check.tpl");
+        $output = file_get_contents("html/install.directory_check.tpl");
+
+        if ($output === false)
+        {
+            //We also cannot read that file so just print a simple plain message
+            echo "Please give permission to the root folder i.e. ./FamilyTree <br /> The template cache folder (template/cache) <br /> The template compile folder (template/compile) and refresh this page";
+            return false;
+        }
 
         echo $output;
 
