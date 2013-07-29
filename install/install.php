@@ -57,14 +57,30 @@ class install {
         $main = false;
 
         //Check if directories are writable
+
+        //Template Cache directory
         if (dir_iswritable("template/cache")) {
             $cache = TRUE;
             $template->assign("cache", true);
         }
+        else if (!file_exists("template/cache"))
+        {
+            //try making the directory if possible
+            @mkdir("template/cache", 0755);
+        }
+
+        //Template compile directory
         if (dir_iswritable("template/compile")) {
             $compile = true;
             $template->assign("compile", true);
         }
+        else if (!file_exists("template/compile"))
+        {
+            //Trying to make the directory myself here
+            @mkdir("template/cache", 0755);
+        }
+
+        //Family Tree main directory
         $template->assign("dir", "config.php");
         if (dir_iswritable(".")) {
             $main = true;
@@ -90,7 +106,18 @@ class install {
 
         echo $output;
 
-
+        if (!$cache)
+        {
+            echo "<h4>Cannot write in template/cache folder</h4><br>";
+        }
+        if (!$compile)
+        {
+            echo "<h4>Cannot write in template/compile folder</h4><br>";
+        }
+        if (!$main)
+        {
+            echo "<h4>Cannot write in FamilyTree's Directory</h4><br>";
+        }
     }
 
     /**

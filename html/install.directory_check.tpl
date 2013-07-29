@@ -15,5 +15,3 @@
             <td>Give Permission to Template Compilation directory (template/compile)</td>
         </tr>
     </table>
-            <div><a href='index.php?mode=ask_database_name'>Next</a></div>
-</div>
