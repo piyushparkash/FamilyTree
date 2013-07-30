@@ -9,7 +9,7 @@ if (!file_exists("config.php")) {
 }
 
 //Now that the things are installed
-global $db, $template, $user;
+global $template, $user;
 
 //Check if config.php is readable if not then tell user to set the permissions manually
 if (!is_readable("config.php")) {
