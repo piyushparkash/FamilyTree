@@ -14,17 +14,17 @@ Installation of Family Tree is pretty simple. You just have to follow the follow
 	
 	2) Now open the browser and open the Directory
 	
-		After the cloning repository A folder named FamilyTree will be created in your document root
+		After the cloning repository a folder named FamilyTree will be created in your document root
 		
 		with path that will look something like this (/var/www/FamilyTree)
 		
 		Then you can write the following in browser http://localhost/FamilyTree/
 		
-	3) Make sure you have given proper write permissions to the FamilyTree Folder
-	
-		If not then you can do it by executing the following command
-		
-			$ chmod -R 777 /var/www/FamilyTree
+	3) The very first step is to give permissions to certains folders which FamilyTree requires
+        
+        These folders are FamilyTree, FamilyTree/template/cache, FamilyTree/template/compile
+
+        Note: If these folder are not already present then you will have to create it manually
 			
 AUTHORS:
 ----------------------------
