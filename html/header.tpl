@@ -26,7 +26,7 @@
         </script>
         <script type="text/javascript" src="working.js">
         </script>
-        <script type="text/javascript" src="example1.js">
+        <script type="text/javascript" src="tree.js">
         </script>
     </head>
     <body>
