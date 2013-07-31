@@ -115,3 +115,58 @@
     border-radius: 3px;
     margin-bottom: 5px;
 }
+
+#display_image
+{
+    width: 50px;
+    height: 50px;
+    vertical-align: middle;
+}
+
+#display_name
+{
+    
+    font-family: Geneva,Arial,Helvetica,sans-serif;
+    background-color: #d4d7d7;
+    vertical-align: middle;
+    font-size: 1.5em;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    border-right-color: #cbcbcb;
+    border-left-color: #cbcbcb;
+    border-bottom-color: #cbcbcb;
+    border-top-color: #cbcbcb;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    border-right-style: solid;
+    border-left-style: solid;
+    border-bottom-style: solid;
+    border-top-style: solid;
+}
+
+#right-container fieldset
+{
+    border: 1px #c7c7c7 solid;
+    padding: 20px;
+    border-radius: 6px;
+    background-color: #b8e2d8;
+}
+
+.username_container
+{
+    padding: 5px;
+    margin-bottom: 20px;
+}
+
+.otherdetails_container
+{
+    margin-top: 10px;
+}
+
+#display_dob, #display_relationship, #display_alive
+{
+    font-weight: bold;
+}
