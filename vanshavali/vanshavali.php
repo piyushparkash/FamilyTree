@@ -80,6 +80,7 @@ class vanshavali {
         
         //convert the password to md5 hash
         $details[1] = md5($details[1]);
+        
         //The token for activation
         $token = $user->generate_token();
 
