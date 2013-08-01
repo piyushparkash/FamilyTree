@@ -77,12 +77,14 @@ class vanshavali {
      */
     function register($details) {
         global $db, $user;
-
+        
+        //convert the password to md5 hash
+        $details[1] = md5($details[1]);
         //The token for activation
         $token = $user->generate_token();
 
         //Sql Statement
-        if (!empty($details[8])) { //If member is not already connected to Family Tree
+        if (!empty($details[8])) { //If member is not already connected to Family Tree then insert else update
             $sql = "update member set membername='$details[9]',username='$details[0]',password='$details[1]',dob=$details[2],gender=$details[3],relationship_status=$details[4],gaon='$details[5]',
 	emailid='$details[6]',alive=1,aboutme='$details[7]',joined=" . time() . ",tokenforact='$token' where id=$details[8]";
         } else {

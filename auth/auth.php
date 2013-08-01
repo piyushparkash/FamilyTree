@@ -28,6 +28,9 @@ class auth {
      */
     public function authenticate($username, $password) {
         global $db;
+        
+        //Convert Password in md5 Hash
+        $password = md5($password);
         $query = $db->query("select * from member where username='$username' and password='$password'");
         $row = $db->fetch($query);
 
