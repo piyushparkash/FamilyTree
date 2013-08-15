@@ -95,8 +95,14 @@ class vanshavali {
         //Finally execute the sql
         $ret = $db->query($sql);
 
+        //Mail Options
+        $mail_options = array(
+            'username' => $details[0],
+            'email' => $details[6],
+            'not_connected' => !empty($details[8]) ? true : false
+        );
         if ($ret != false) {
-            $this->mail("mail.register.confirm.tpl", array('username' => $details[0], 'token' => $token, 'email' => $details[6]), $details[6], 'Welcome to Vanshavali | Email Confirmation');
+            $this->mail("mail.register.confirm.tpl", $mail_options, $details[6], 'Welcome to Vanshavali | Email Confirmation');
             return true;
         } else {
             trigger_error("Cannot Connect to the database. Please try again by refreshing the page", E_USER_ERROR);
