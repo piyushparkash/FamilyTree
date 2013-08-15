@@ -6,7 +6,7 @@
             Vanshavali - Place for famliy
         </title>
         <!-- CSS Files -->
-        <link href="../ajax/css/smoothness/jquery-ui-1.10.0.custom.css" rel="stylesheet" type="text/css" />
+        <link href="ajax/css/smoothness/jquery-ui-1.10.0.custom.css" rel="stylesheet" type="text/css" />
         <link type="text/css" href="css/Spacetree.css" rel="stylesheet" />
         <link type="text/css" href="assets/css/bootstrap.css" rel="stylesheet" />
         <link href="style.css" rel="stylesheet" type="text/css" />
@@ -16,9 +16,9 @@
                 </script>
         <![endif]-->
         <!-- JIT Library File -->
-        <script type="text/javascript" src="../ajax/jquery.js">
+        <script type="text/javascript" src="ajax/jquery.js">
         </script>
-        <script type="text/javascript" src="../ajax/jquery-ui.js">
+        <script type="text/javascript" src="ajax/jquery-ui.js">
         </script>
         <script type="text/javascript" src="assets/js/bootstrap-modal.js"></script>
         <script type="text/javascript" src="assets/js/bootstrap-dropdown.js"></script>
