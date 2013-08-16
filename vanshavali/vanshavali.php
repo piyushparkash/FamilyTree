@@ -150,7 +150,7 @@ class vanshavali {
         $obj['id'] = $row["id"];
         $obj['name'] = $row['membername'];
         $obj['data'] = array(
-            "dob" => ($row['dob'] ? strftime($row['dob'], "%d/%m/%Y") : ""),
+            "dob" => ($row['dob'] ? strftime("%d/%m/%Y", $row['dob']) : ""),
             "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
                     "Married"),
             "relationship_status_id" => $row['relationship_status'],
