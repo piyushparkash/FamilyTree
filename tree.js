@@ -130,14 +130,13 @@ function init(){
             //set animation transition type
             transition: $jit.Trans.Quart.easeInOut,
             //set distance between node and its children
-            levelDistance: 50,
+            levelDistance: 20,
             //Top to bottom orientation
             orientation:"top",
             //enable panning
             Navigation: {
                 enable:true,
-                panning:true,
-                zooming:10
+                panning:false
             },
             //set node and edge styles
             //set overridable=true for styling individual
@@ -156,7 +155,12 @@ function init(){
             Edge: {
                 type: 'bezier',
                 overridable: true
-            },        
+            },
+            Label: {
+                type: "HTML",
+                overridable: true,
+                style: 'bold'
+            },
             //This method is called on DOM label creation.
             //Use this method to add event handlers and styles to
             //your node.
@@ -174,13 +178,12 @@ function init(){
                 };
                 //set label styles
                 var style = label.style;
-                style.width = 60 + 'px';
-                style.height = 25 + 'px';            
+                //style.width = 60 + 'px';
+                //style.height = 25 + 'px';            
                 style.cursor = 'pointer';
-                style.color = '#333';
-                style.fontSize = '0.8em';
+                style.fontSize = '0.9em';
                 style.textAlign= 'center';
-                style.paddingTop = '3px';
+                style.paddingTop = '15px';
             },
             onComplete:function ()
             {
@@ -197,22 +200,24 @@ function init(){
                 //add some color to the nodes in the path between the
                 //root node and the selected node.
                 if (node.selected) {
-                    node.data.$color = "#ff7";
+                    node.data.$color = "#fcff00";
                 
                 }
                 else {
+                    
                     delete node.data.$color;
                     //if the node belongs to the last plotted level
-                    if(!node.anySubnode("exist")) {
-                        //count children number
-                        var count = 0;
-                        node.eachSubnode(function(n) {
-                            count++;
-                        });
-                        //assign a node color based on
-                        //how many children it has
-                        node.data.$color = ['#aaa', '#baa', '#caa', '#daa', '#eaa', '#faa'][count];                    
+                    
+                    if (node.data.gender == "0")
+                    {
+                        node.data.$color = "#C7E9FF";
                     }
+                    else
+                    {
+                        node.data.$color = "#F9C7FF";
+                    }
+                //node.data.$color = ['#aaa', '#baa', '#caa', '#daa', '#eaa', '#faa'][count];                    
+                    
                 }
             },
         
