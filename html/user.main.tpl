@@ -8,7 +8,7 @@
                 is_authenticated = true;
             </script>
             
-                <a class="btn btn-large dropdown-toggle" data-toggle="dropdown" href="#" >
+                <a class="btn btn-large btn-success dropdown-toggle" data-toggle="dropdown" href="#" ><i class="icon-user icon-white"></i> 
                     {$membername}
                     <span class="caret"></span>
                 </a>
