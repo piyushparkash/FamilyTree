@@ -59,12 +59,11 @@
 
 
         {/if}
-</div>
+
+</fieldset>
 <div style="text-align:center; margin-top:20px;" id='girlfamilybutton' class='hide'>
     <button class='btn btn-success' onclick='viewfamily(this)'>View Family</button>
 </div>
-</fieldset>
-
 {if $authenticated}
     <form method="post" onsubmit="return operation_addmember_submit()" class="well hide" style='margin:10px' id="operation_add" >
         <label for="operation_add_name" class="control-label">Name:</label>

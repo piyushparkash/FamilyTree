@@ -75,14 +75,14 @@ function display_data(node)
     $("#display_alive").html(node.data.alive);
     $("#display_image")[0].src="assets/user_images/"+node.data.image;
     //Now decide whether to show Girls Family Button or not
-    if (rootfamily()!=node.data.familyid)
+
+    if (rootfamily() != node.data.familyid)
     {
-        aler
-        $("#girlfamilybutton").fadeIn("medium").show();
+        $("#girlfamilybutton").fadeIn("medium").removeClass("hide");
     }
     else
     {
-        $("#girlfamilybutton").fadeOut("medium");
+        $("#girlfamilybutton").fadeOut("medium").addClass("hide");
     }
     
     //Firstly check if he already has wife, We don't allow more than 1 wife
