@@ -77,6 +77,7 @@ function display_data(node)
     //Now decide whether to show Girls Family Button or not
     if (rootfamily()!=node.data.familyid)
     {
+        aler
         $("#girlfamilybutton").fadeIn("medium").show();
     }
     else
@@ -159,7 +160,8 @@ function init(){
             Label: {
                 type: "HTML",
                 overridable: true,
-                style: 'bold'
+                style: 'bold',
+                color: "#000"
             },
             //This method is called on DOM label creation.
             //Use this method to add event handlers and styles to
@@ -183,7 +185,7 @@ function init(){
                 style.cursor = 'pointer';
                 style.fontSize = '0.9em';
                 style.textAlign= 'center';
-                style.paddingTop = '15px';
+                style.paddingTop = '3px';
             },
             onComplete:function ()
             {

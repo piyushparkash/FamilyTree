@@ -174,4 +174,6 @@
 .node
 {
     font-weight: bolder;
+    text-align: center;
+    vertical-align: middle;
 }
