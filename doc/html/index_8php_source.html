@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('index_8php_source.html','');});
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;}</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">//Now that the things are installed</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;global $db, $template, $user;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;global $template, $user;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//Check if config.php is readable if not then tell user to set the permissions manually</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keywordflow">if</span> (!is_readable(<span class="stringliteral">&quot;config.php&quot;</span>)) {</div>
@@ -144,31 +144,36 @@ $(document).ready(function(){initNavTree('index_8php_source.html','');});
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        $template-&gt;assign(array(<span class="stringliteral">&quot;user_not_connected&quot;</span> =&gt; <span class="keyword">true</span>,</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <span class="stringliteral">&quot;userimage&quot;</span> =&gt; (empty($user-&gt;user[<span class="stringliteral">&#39;profilepic&#39;</span>]) ? <span class="stringliteral">&quot;common.png&quot;</span> : $user-&gt;user[<span class="stringliteral">&#39;proilepic&#39;</span>])));</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;} <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    $template-&gt;assign(array(<span class="stringliteral">&quot;userimage&quot;</span> =&gt; <span class="stringliteral">&quot;common.png&quot;</span>));</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;$template-&gt;display(<span class="stringliteral">&quot;right-container.tpl&quot;</span>);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;$template-&gt;display(<span class="stringliteral">&quot;login.form.tpl&quot;</span>);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;$template-&gt;display(<span class="stringliteral">&#39;search.form.tpl&#39;</span>);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;$template-&gt;display(<span class="stringliteral">&quot;feedback.form.tpl&quot;</span>);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;$template-&gt;display(<span class="stringliteral">&#39;operations.tpl&#39;</span>);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordflow">if</span> ($user-&gt;is_authenticated()) {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    $template-&gt;display(<span class="stringliteral">&#39;operations.add.form.tpl&#39;</span>);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    $template-&gt;display(<span class="stringliteral">&#39;operations.remove.tpl&#39;</span>);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    $template-&gt;display(<span class="stringliteral">&quot;suggest.tpl&quot;</span>);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;?&gt;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        $template-&gt;assign(<span class="stringliteral">&quot;id&quot;</span>, $user-&gt;user[<span class="stringliteral">&#39;id&#39;</span>]);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        $template-&gt;display(<span class="stringliteral">&quot;showuser.tpl&quot;</span>);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;} <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    $template-&gt;assign(array(<span class="stringliteral">&quot;userimage&quot;</span> =&gt; <span class="stringliteral">&quot;common.png&quot;</span>));</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;$template-&gt;display(<span class="stringliteral">&quot;right-container.tpl&quot;</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;$template-&gt;display(<span class="stringliteral">&quot;login.form.tpl&quot;</span>);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;$template-&gt;display(<span class="stringliteral">&#39;search.form.tpl&#39;</span>);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;$template-&gt;display(<span class="stringliteral">&quot;feedback.form.tpl&quot;</span>);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;$template-&gt;display(<span class="stringliteral">&#39;operations.tpl&#39;</span>);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keywordflow">if</span> ($user-&gt;is_authenticated()) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    $template-&gt;display(<span class="stringliteral">&#39;operations.add.form.tpl&#39;</span>);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    $template-&gt;display(<span class="stringliteral">&#39;operations.remove.tpl&#39;</span>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    $template-&gt;display(<span class="stringliteral">&quot;suggest.tpl&quot;</span>);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;?&gt;</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>index.php</b></li>
-    <li class="footer">Generated on Mon Jul 29 2013 14:47:22 for Family Tree by
+    <li class="footer">Generated on Mon Aug 19 2013 00:08:39 for Family Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

@@ -217,12 +217,12 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This special function is used to add member to the Tree without using any of the member class Returns the ID of the new member else false if any error occurred  type $db Instance of the db class </p>
+<p>This special function is used to add member to the Tree without using any of the member class Returns the ID of the new member else false if any error occurred   $db Instance of the db class </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramtype">type</td><td class="paramname">$membername</td><td>The name of the new member to be added </td></tr>
-    <tr><td class="paramtype">type</td><td class="paramname">$gender</td><td>The gender of the new member </td></tr>
-    <tr><td class="paramtype">type</td><td class="paramname">$familyid</td><td>The Family ID of the new member </td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$membername</td><td>The name of the new member to be added </td></tr>
+    <tr><td class="paramtype">integer</td><td class="paramname">$gender</td><td>The gender of the new member </td></tr>
+    <tr><td class="paramtype">integer</td><td class="paramname">$familyid</td><td>The Family ID of the new member </td></tr>
   </table>
   </dd>
 </dl>
@@ -262,13 +262,13 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>array </dd></dl>
 
-<p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00139">139</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
+<p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00148">148</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
 <div class="fragment"><div class="line">                                {</div>
 <div class="line">        $obj = array();</div>
 <div class="line">        $obj[<span class="stringliteral">&#39;id&#39;</span>] = $row[<span class="stringliteral">&quot;id&quot;</span>];</div>
 <div class="line">        $obj[<span class="stringliteral">&#39;name&#39;</span>] = $row[<span class="stringliteral">&#39;membername&#39;</span>];</div>
 <div class="line">        $obj[<span class="stringliteral">&#39;data&#39;</span>] = array(</div>
-<div class="line">            <span class="stringliteral">&quot;dob&quot;</span> =&gt; ($row[<span class="stringliteral">&#39;dob&#39;</span>] ? strftime($row[<span class="stringliteral">&#39;dob&#39;</span>], <span class="stringliteral">&quot;%d/%m/%Y&quot;</span>) : <span class="stringliteral">&quot;&quot;</span>),</div>
+<div class="line">            <span class="stringliteral">&quot;dob&quot;</span> =&gt; ($row[<span class="stringliteral">&#39;dob&#39;</span>] ? strftime(<span class="stringliteral">&quot;%d/%m/%Y&quot;</span>, $row[<span class="stringliteral">&#39;dob&#39;</span>]) : <span class="stringliteral">&quot;&quot;</span>),</div>
 <div class="line">            <span class="stringliteral">&quot;relationship_status&quot;</span> =&gt; ($row[<span class="stringliteral">&#39;relationship_status&#39;</span>] == 0 ? <span class="stringliteral">&quot;Single&quot;</span> :</div>
 <div class="line">                    <span class="stringliteral">&quot;Married&quot;</span>),</div>
 <div class="line">            <span class="stringliteral">&quot;relationship_status_id&quot;</span> =&gt; $row[<span class="stringliteral">&#39;relationship_status&#39;</span>],</div>
@@ -305,7 +305,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>array </dd></dl>
 
-<p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00165">165</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
+<p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00174">174</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
 <div class="fragment"><div class="line">                           {</div>
 <div class="line">        global $db;</div>
 <div class="line">        $finalarray = array();</div>
@@ -342,7 +342,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>array </dd></dl>
 
-<p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00242">242</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
+<p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00251">251</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
 <div class="fragment"><div class="line">                               {</div>
 <div class="line">        global $db;</div>
 <div class="line">        $finalarray = array();</div>
@@ -379,7 +379,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>array|boolean </dd></dl>
 
-<p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00213">213</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
+<p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00222">222</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
 <div class="fragment"><div class="line">                                        {</div>
 <div class="line"></div>
 <div class="line">        global $db;</div>
@@ -417,10 +417,10 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function is used get the details about a member.  type $db Instance of the db class </p>
+<p>This function is used get the details about a member.   $db Instance of the db class </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramtype">type</td><td class="paramname">$id</td><td>ID of the member whose details is to be fetched </td></tr>
+    <tr><td class="paramtype">integer</td><td class="paramname">$id</td><td>ID of the member whose details is to be fetched </td></tr>
   </table>
   </dd>
 </dl>
@@ -459,7 +459,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>array|null </dd></dl>
 
-<p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00185">185</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
+<p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00194">194</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
 <div class="fragment"><div class="line">                          {</div>
 <div class="line">        global $db;</div>
 <div class="line">        $finalarray = array();</div>
@@ -500,7 +500,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>array|null </dd></dl>
 
-<p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00261">261</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
+<p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00270">270</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
 <div class="fragment"><div class="line">                              {</div>
 <div class="line">        global $db;</div>
 <div class="line">        $finalarray = array();</div>
@@ -566,7 +566,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
 
-<p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00113">113</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
+<p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00122">122</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
 <div class="fragment"><div class="line">                                                        {</div>
 <div class="line">        global $template;</div>
 <div class="line">        <span class="comment">//Add Global variable of domain</span></div>
@@ -613,12 +613,15 @@ Public Member Functions</h2></td></tr>
 <p>Definition at line <a class="el" href="vanshavali_8php_source.html#l00078">78</a> of file <a class="el" href="vanshavali_8php_source.html">vanshavali.php</a>.</p>
 <div class="fragment"><div class="line">                                {</div>
 <div class="line">        global $db, $user;</div>
-<div class="line"></div>
+<div class="line">        </div>
+<div class="line">        <span class="comment">//convert the password to md5 hash</span></div>
+<div class="line">        $details[1] = md5($details[1]);</div>
+<div class="line">        </div>
 <div class="line">        <span class="comment">//The token for activation</span></div>
 <div class="line">        $token = $user-&gt;generate_token();</div>
 <div class="line"></div>
 <div class="line">        <span class="comment">//Sql Statement</span></div>
-<div class="line">        <span class="keywordflow">if</span> (!empty($details[8])) { <span class="comment">//If member is not already connected to Family Tree</span></div>
+<div class="line">        <span class="keywordflow">if</span> (!empty($details[8])) { <span class="comment">//If member is not already connected to Family Tree then insert else update</span></div>
 <div class="line">            $sql = <span class="stringliteral">&quot;update member set membername=&#39;$details[9]&#39;,username=&#39;$details[0]&#39;,password=&#39;$details[1]&#39;,dob=$details[2],gender=$details[3],relationship_status=$details[4],gaon=&#39;$details[5]&#39;,</span></div>
 <div class="line"><span class="stringliteral">    emailid=&#39;$details[6]&#39;,alive=1,aboutme=&#39;$details[7]&#39;,joined=&quot;</span> . time() . <span class="stringliteral">&quot;,tokenforact=&#39;$token&#39; where id=$details[8]&quot;</span>;</div>
 <div class="line">        } <span class="keywordflow">else</span> {</div>
@@ -628,8 +631,14 @@ Public Member Functions</h2></td></tr>
 <div class="line">        <span class="comment">//Finally execute the sql</span></div>
 <div class="line">        $ret = $db-&gt;query($sql);</div>
 <div class="line"></div>
+<div class="line">        <span class="comment">//Mail Options</span></div>
+<div class="line">        $mail_options = array(</div>
+<div class="line">            <span class="stringliteral">&#39;username&#39;</span> =&gt; $details[0],</div>
+<div class="line">            <span class="stringliteral">&#39;email&#39;</span> =&gt; $details[6],</div>
+<div class="line">            <span class="stringliteral">&#39;not_connected&#39;</span> =&gt; !empty($details[8]) ? <span class="keyword">true</span> : <span class="keyword">false</span></div>
+<div class="line">        );</div>
 <div class="line">        <span class="keywordflow">if</span> ($ret != <span class="keyword">false</span>) {</div>
-<div class="line">            $this-&gt;<a class="code" href="classvanshavali.html#aba5843e1d503de982e31f1366cef2abb">mail</a>(<span class="stringliteral">&quot;mail.register.confirm.tpl&quot;</span>, array(<span class="stringliteral">&#39;username&#39;</span> =&gt; $details[0], <span class="stringliteral">&#39;token&#39;</span> =&gt; $token, <span class="stringliteral">&#39;email&#39;</span> =&gt; $details[6]), $details[6], <span class="stringliteral">&#39;Welcome to Vanshavali | Email Confirmation&#39;</span>);</div>
+<div class="line">            $this-&gt;<a class="code" href="classvanshavali.html#aba5843e1d503de982e31f1366cef2abb">mail</a>(<span class="stringliteral">&quot;mail.register.confirm.tpl&quot;</span>, $mail_options, $details[6], <span class="stringliteral">&#39;Welcome to Vanshavali | Email Confirmation&#39;</span>);</div>
 <div class="line">            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">        } <span class="keywordflow">else</span> {</div>
 <div class="line">            trigger_error(<span class="stringliteral">&quot;Cannot Connect to the database. Please try again by refreshing the page&quot;</span>, E_USER_ERROR);</div>
@@ -648,7 +657,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classvanshavali.html">vanshavali</a></li>
-    <li class="footer">Generated on Mon Jul 29 2013 14:47:23 for Family Tree by
+    <li class="footer">Generated on Mon Aug 19 2013 00:08:42 for Family Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

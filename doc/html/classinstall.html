@@ -160,7 +160,7 @@ Private Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>null </dd></dl>
 
-<p>Definition at line <a class="el" href="install_8php_source.html#l00088">88</a> of file <a class="el" href="install_8php_source.html">install.php</a>.</p>
+<p>Definition at line <a class="el" href="install_8php_source.html#l00129">129</a> of file <a class="el" href="install_8php_source.html">install.php</a>.</p>
 <div class="fragment"><div class="line">                                            {</div>
 <div class="line">        global $template, $db;</div>
 <div class="line">        $sub = ($sub == null) ? 1 : $sub;</div>
@@ -265,14 +265,30 @@ Private Member Functions</h2></td></tr>
 <div class="line">        $main = <span class="keyword">false</span>;</div>
 <div class="line"></div>
 <div class="line">        <span class="comment">//Check if directories are writable</span></div>
+<div class="line"></div>
+<div class="line">        <span class="comment">//Template Cache directory</span></div>
 <div class="line">        <span class="keywordflow">if</span> (dir_iswritable(<span class="stringliteral">&quot;template/cache&quot;</span>)) {</div>
 <div class="line">            $cache = TRUE;</div>
 <div class="line">            $template-&gt;assign(<span class="stringliteral">&quot;cache&quot;</span>, <span class="keyword">true</span>);</div>
 <div class="line">        }</div>
+<div class="line">        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!file_exists(<span class="stringliteral">&quot;template/cache&quot;</span>))</div>
+<div class="line">        {</div>
+<div class="line">            <span class="comment">//try making the directory if possible</span></div>
+<div class="line">            @mkdir(<span class="stringliteral">&quot;template/cache&quot;</span>, 0755);</div>
+<div class="line">        }</div>
+<div class="line"></div>
+<div class="line">        <span class="comment">//Template compile directory</span></div>
 <div class="line">        <span class="keywordflow">if</span> (dir_iswritable(<span class="stringliteral">&quot;template/compile&quot;</span>)) {</div>
 <div class="line">            $compile = <span class="keyword">true</span>;</div>
 <div class="line">            $template-&gt;assign(<span class="stringliteral">&quot;compile&quot;</span>, <span class="keyword">true</span>);</div>
 <div class="line">        }</div>
+<div class="line">        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!file_exists(<span class="stringliteral">&quot;template/compile&quot;</span>))</div>
+<div class="line">        {</div>
+<div class="line">            <span class="comment">//Trying to make the directory myself here</span></div>
+<div class="line">            @mkdir(<span class="stringliteral">&quot;template/cache&quot;</span>, 0755);</div>
+<div class="line">        }</div>
+<div class="line"></div>
+<div class="line">        <span class="comment">//Family Tree main directory</span></div>
 <div class="line">        $template-&gt;assign(<span class="stringliteral">&quot;dir&quot;</span>, <span class="stringliteral">&quot;config.php&quot;</span>);</div>
 <div class="line">        <span class="keywordflow">if</span> (dir_iswritable(<span class="stringliteral">&quot;.&quot;</span>)) {</div>
 <div class="line">            $main = <span class="keyword">true</span>;</div>
@@ -283,8 +299,33 @@ Private Member Functions</h2></td></tr>
 <div class="line">        {</div>
 <div class="line">            header(<span class="stringliteral">&quot;Location: index.php?mode=ask_database_name&quot;</span>);</div>
 <div class="line">        }</div>
-<div class="line">        $template-&gt;header();</div>
-<div class="line">        $template-&gt;display(<span class="stringliteral">&quot;install.directory_check.tpl&quot;</span>);</div>
+<div class="line"></div>
+<div class="line">        <span class="comment">//Apparently we cannot use template as we have not write permission in compile directory</span></div>
+<div class="line">        <span class="comment">//So read the tpl file and output it as it is.</span></div>
+<div class="line">        <span class="comment">// We are using @ just in case we don&#39;t have permission to read</span></div>
+<div class="line">        $output = file_get_contents(<span class="stringliteral">&quot;html/install.directory_check.tpl&quot;</span>);</div>
+<div class="line"></div>
+<div class="line">        <span class="keywordflow">if</span> ($output === <span class="keyword">false</span>)</div>
+<div class="line">        {</div>
+<div class="line">            <span class="comment">//We also cannot read that file so just print a simple plain message</span></div>
+<div class="line">            echo <span class="stringliteral">&quot;Please give permission to the root folder i.e. ./FamilyTree &lt;br /&gt; The template cache folder (template/cache) &lt;br /&gt; The template compile folder (template/compile) and refresh this page&quot;</span>;</div>
+<div class="line">            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line">        }</div>
+<div class="line"></div>
+<div class="line">        echo $output;</div>
+<div class="line"></div>
+<div class="line">        <span class="keywordflow">if</span> (!$cache)</div>
+<div class="line">        {</div>
+<div class="line">            echo <span class="stringliteral">&quot;&lt;h4&gt;Cannot write in template/cache folder&lt;/h4&gt;&lt;br&gt;&quot;</span>;</div>
+<div class="line">        }</div>
+<div class="line">        <span class="keywordflow">if</span> (!$compile)</div>
+<div class="line">        {</div>
+<div class="line">            echo <span class="stringliteral">&quot;&lt;h4&gt;Cannot write in template/compile folder&lt;/h4&gt;&lt;br&gt;&quot;</span>;</div>
+<div class="line">        }</div>
+<div class="line">        <span class="keywordflow">if</span> (!$main)</div>
+<div class="line">        {</div>
+<div class="line">            echo <span class="stringliteral">&quot;&lt;h4&gt;Cannot write in FamilyTree&#39;s Directory&lt;/h4&gt;&lt;br&gt;&quot;</span>;</div>
+<div class="line">        }</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 </div>
@@ -301,7 +342,7 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This class is used to start the installation.  string $mode  integer $sub </p>
+<p>This function is used to start the installation.  string $mode  integer $sub </p>
 <dl class="section return"><dt>Returns</dt><dd>null </dd></dl>
 
 <p>Definition at line <a class="el" href="install_8php_source.html#l00019">19</a> of file <a class="el" href="install_8php_source.html">install.php</a>.</p>
@@ -355,7 +396,7 @@ Private Member Functions</h2></td></tr>
 <p>This function is used install the tables in the database Returns true if all the tables were installed successfully else false   $db Ths instance of the db class </p>
 <dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
 
-<p>Definition at line <a class="el" href="install_8php_source.html#l00169">169</a> of file <a class="el" href="install_8php_source.html">install.php</a>.</p>
+<p>Definition at line <a class="el" href="install_8php_source.html#l00210">210</a> of file <a class="el" href="install_8php_source.html">install.php</a>.</p>
 <div class="fragment"><div class="line">                                     {</div>
 <div class="line">        global $db;</div>
 <div class="line">        $family = $db-&gt;query(<span class="stringliteral">&quot;Create table family (</span></div>
@@ -456,7 +497,7 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>This is a private function used to setup the database   $db </p>
 
-<p>Definition at line <a class="el" href="install_8php_source.html#l00154">154</a> of file <a class="el" href="install_8php_source.html">install.php</a>.</p>
+<p>Definition at line <a class="el" href="install_8php_source.html#l00195">195</a> of file <a class="el" href="install_8php_source.html">install.php</a>.</p>
 <div class="fragment"><div class="line">                                      {</div>
 <div class="line">        global $db;</div>
 <div class="line">        <span class="comment">//Install the tables</span></div>
@@ -477,7 +518,7 @@ Private Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classinstall.html">install</a></li>
-    <li class="footer">Generated on Mon Jul 29 2013 14:47:23 for Family Tree by
+    <li class="footer">Generated on Mon Aug 19 2013 00:08:42 for Family Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

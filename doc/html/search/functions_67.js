@@ -2,6 +2,7 @@ var searchData=
 [
   ['generate_5ftoken',['generate_token',['../classauth.html#a4ec05ca8231cd1151246b127f168d457',1,'auth']]],
   ['get',['get',['../classdb.html#a4c8cb845fd6b4d2784424e2026d3a6cb',1,'db']]],
+  ['get_5flastlogin',['get_lastlogin',['../classuser.html#a317fcb7a9feaf538c182b28fb7c9844c',1,'user']]],
   ['get_5fsons',['get_sons',['../classmember.html#af0d9a69479f2b9c859acb90e97bad85c',1,'member']]],
   ['get_5fuser',['get_user',['../classauth.html#aebf5c1995f3314883dc475628db61ccc',1,'auth']]],
   ['getchild',['getchild',['../classvanshavali.html#a9f7d7e7137457aefbbd85ac33c5c1372',1,'vanshavali']]],

@@ -129,6 +129,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acb8e72f7d45579e3f07e071e06d11ac8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser.html#acb8e72f7d45579e3f07e071e06d11ac8">logout</a> ()</td></tr>
 <tr class="memitem:aad321ca58463f653b456dae243737c7e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser.html#aad321ca58463f653b456dae243737c7e">populate_data</a> ($id)</td></tr>
 <tr class="memitem:a309159734946cdb67542dc0110055ae0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser.html#a309159734946cdb67542dc0110055ae0">remove_data</a> ()</td></tr>
+<tr class="memitem:a9538d09a879e3d85c9cedcc634df5751"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser.html#a9538d09a879e3d85c9cedcc634df5751">update_lastlogin</a> ()</td></tr>
+<tr class="memitem:a317fcb7a9feaf538c182b28fb7c9844c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuser.html#a317fcb7a9feaf538c182b28fb7c9844c">get_lastlogin</a> ()</td></tr>
 <tr class="inherit_header pub_methods_classauth"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classauth')"><img src="closed.png" alt="-"/>&nbsp;Public Member Functions inherited from <a class="el" href="classauth.html">auth</a></td></tr>
 <tr class="memitem:a019d664334a621e770043d9fb4210836 inherit pub_methods_classauth"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classauth.html#a019d664334a621e770043d9fb4210836">authenticate</a> ($username, $password)</td></tr>
 <tr class="memitem:a0de1d4416c9fb04b4223cd7a3dd3a623 inherit pub_methods_classauth"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classauth.html#a0de1d4416c9fb04b4223cd7a3dd3a623">user_account_activated</a> ($id)</td></tr>
@@ -174,12 +176,42 @@ Public Attributes</h2></td></tr>
 <div class="line">        <span class="keywordflow">if</span> ($this-&gt;<a class="code" href="classauth.html#ad5c908efc480a57e5625131348f4bf29">check_session</a>() == <span class="keyword">true</span>) {</div>
 <div class="line">            <span class="comment">//populate user data and set class variables to authenticated else normal</span></div>
 <div class="line">            $this-&gt;<a class="code" href="classuser.html#aad321ca58463f653b456dae243737c7e">populate_data</a>($_SESSION[<span class="stringliteral">&#39;id&#39;</span>]);</div>
+<div class="line">            </div>
+<div class="line">            <span class="comment">//Insert this recent activity time in the database</span></div>
+<div class="line">            $this-&gt;<a class="code" href="classuser.html#a9538d09a879e3d85c9cedcc634df5751">update_lastlogin</a>();</div>
 <div class="line">        }</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2>Member Function Documentation</h2>
+<a class="anchor" id="a317fcb7a9feaf538c182b28fb7c9844c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">user::get_lastlogin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function is used to get the last login time of the user   $db Instance of the db class </p>
+<dl class="section return"><dt>Returns</dt><dd>integer TimeStamp of the last login </dd></dl>
+
+<p>Definition at line <a class="el" href="user_8php_source.html#l00114">114</a> of file <a class="el" href="user_8php_source.html">user.php</a>.</p>
+<div class="fragment"><div class="line">    {</div>
+<div class="line">        global $db;</div>
+<div class="line">        $query = $db-&gt;query(<span class="stringliteral">&quot;select lastlogin from member where id=&quot;</span>.$this-&gt;<a class="code" href="classuser.html">user</a>[<span class="stringliteral">&#39;lastlogin&#39;</span>]);</div>
+<div class="line">        </div>
+<div class="line">        $row = $db-&gt;fetch($query);</div>
+<div class="line">        </div>
+<div class="line">        <span class="keywordflow">return</span> $row[<span class="stringliteral">&#39;lastlogin&#39;</span>];</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a class="anchor" id="a0846994f392a18a32bfcae200cb33974"></a>
 <div class="memitem">
 <div class="memproto">
@@ -203,17 +235,17 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function is used to log-in the user and populate the $user variable with all the user data. Returns true if successful else false  type $_SESSION The Superglobal Session variable </p>
+<p>This function is used to log-in the user and populate the $user variable with all the user data. Returns true if successful else false  array $_SESSION The Superglobal Session variable </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramtype">type</td><td class="paramname">$username</td><td>The username of the user </td></tr>
-    <tr><td class="paramtype">type</td><td class="paramname">$password</td><td>The password of the user </td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$username</td><td>The username of the user </td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$password</td><td>The password of the user </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
 
-<p>Definition at line <a class="el" href="user_8php_source.html#l00039">39</a> of file <a class="el" href="user_8php_source.html">user.php</a>.</p>
+<p>Definition at line <a class="el" href="user_8php_source.html#l00042">42</a> of file <a class="el" href="user_8php_source.html">user.php</a>.</p>
 <div class="fragment"><div class="line">                                         {</div>
 <div class="line">        global $_SESSION;</div>
 <div class="line"></div>
@@ -246,7 +278,7 @@ Public Attributes</h2></td></tr>
 <p>This function is used to log-out the user and destroy the session </p>
 <dl class="section return"><dt>Returns</dt><dd>null </dd></dl>
 
-<p>Definition at line <a class="el" href="user_8php_source.html#l00058">58</a> of file <a class="el" href="user_8php_source.html">user.php</a>.</p>
+<p>Definition at line <a class="el" href="user_8php_source.html#l00061">61</a> of file <a class="el" href="user_8php_source.html">user.php</a>.</p>
 <div class="fragment"><div class="line">                      {</div>
 <div class="line">        <span class="comment">//Remove all the session variables and remove user data</span></div>
 <div class="line">        $this-&gt;<a class="code" href="classauth.html#a17089bfa7c3b9d0546f80ac9472dfc7b">unauthenticate</a>();</div>
@@ -268,16 +300,16 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function is used to populate the $user variable with all the user data  type $db The instance of the db class </p>
+<p>This function is used to populate the $user variable with all the user data   $db The instance of the db class </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramtype">type</td><td class="paramname">$id</td><td>The ID of the user to fetch the data of. </td></tr>
+    <tr><td class="paramtype">integer</td><td class="paramname">$id</td><td>The ID of the user to fetch the data of. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>null </dd></dl>
 
-<p>Definition at line <a class="el" href="user_8php_source.html#l00070">70</a> of file <a class="el" href="user_8php_source.html">user.php</a>.</p>
+<p>Definition at line <a class="el" href="user_8php_source.html#l00073">73</a> of file <a class="el" href="user_8php_source.html">user.php</a>.</p>
 <div class="fragment"><div class="line">                                {</div>
 <div class="line">        <span class="comment">// Fill user variable with user data</span></div>
 <div class="line">        global $db;</div>
@@ -303,11 +335,41 @@ Public Attributes</h2></td></tr>
 <p>This is the opposite of <a class="el" href="classuser.html#aad321ca58463f653b456dae243737c7e">populate_data()</a> function. This function is used to remove the data from the $user variable. </p>
 <dl class="section return"><dt>Returns</dt><dd>null </dd></dl>
 
-<p>Definition at line <a class="el" href="user_8php_source.html#l00083">83</a> of file <a class="el" href="user_8php_source.html">user.php</a>.</p>
+<p>Definition at line <a class="el" href="user_8php_source.html#l00086">86</a> of file <a class="el" href="user_8php_source.html">user.php</a>.</p>
 <div class="fragment"><div class="line">                           {</div>
 <div class="line">        <span class="comment">//Remove data filled in user variable</span></div>
 <div class="line">        unset($this-&gt;<a class="code" href="classuser.html">user</a>);</div>
 <div class="line">        $this-&gt;<a class="code" href="classuser.html">user</a> = array();</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a9538d09a879e3d85c9cedcc634df5751"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">user::update_lastlogin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function is used to get the last activity time of the user   $db Instance of the db class </p>
+<dl class="section return"><dt>Returns</dt><dd>boolean True if successfull else false on unsuccessfull </dd></dl>
+
+<p>Definition at line <a class="el" href="user_8php_source.html#l00097">97</a> of file <a class="el" href="user_8php_source.html">user.php</a>.</p>
+<div class="fragment"><div class="line">    {</div>
+<div class="line">        global $db;</div>
+<div class="line">        <span class="keywordflow">if</span> ($db-&gt;query(<span class="stringliteral">&quot;update member set lastlogin=&quot;</span> . time(). <span class="stringliteral">&quot; where id=&quot;</span>. $this-&gt;<a class="code" href="classuser.html">user</a>[<span class="stringliteral">&#39;id&#39;</span>]))</div>
+<div class="line">        {</div>
+<div class="line">            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line">        }</div>
+<div class="line">        <span class="keywordflow">else</span></div>
+<div class="line">        {</div>
+<div class="line">            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line">        }</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 </div>
@@ -321,7 +383,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classuser.html">user</a></li>
-    <li class="footer">Generated on Mon Jul 29 2013 14:47:23 for Family Tree by
+    <li class="footer">Generated on Mon Aug 19 2013 00:08:42 for Family Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
