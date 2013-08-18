@@ -1,7 +1,5 @@
 var is_authenticated = false;
 $(document).ready(function () {
-    //$("#firstlogininfo").modal();
-    //$("#firsttimeinfo").modal();
     //Adjust the size of the canvas according to size of the screen
     var opti_width=.65*(screen.availWidth);
     var opti_height=.90*screen.availHeight;
