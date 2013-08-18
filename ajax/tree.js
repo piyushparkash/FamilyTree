@@ -15,6 +15,21 @@ var labelType, useGradients, nativeTextSupport, animate,selected_member, tree;
     animate = !(iStuff || !nativeCanvasSupport);
 })();
 
+/**
+ * This function is used to select the current logged in user
+ * in the Tree
+ * @return null
+ */
+function showUser(id)
+{
+    tree.select(id);
+    //show the operations toolbar
+    selected_member=id;
+    tree.onClick(selected_member);
+    var node = tree.graph.getNode(selected_member);
+    //display data on right container
+    display_data(node);
+}
 
 function viewfamily(e)
 {
@@ -259,6 +274,7 @@ function init(){
                 var tree_root=(st.graph.getNode(st.root));
                 display_clear_data();
                 display_data(tree_root);
+                showUser(user_id);
             }
         });
         //store the selected member id in selected_member
@@ -269,7 +285,7 @@ function init(){
         //end
         
         tree=st;
-    
+        
     //end
     });
 }

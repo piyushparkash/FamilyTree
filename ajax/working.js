@@ -44,13 +44,7 @@ function search() {
             this.value = ui.item.label;
             
             //select member on the tree
-            tree.select(ui.item.value);
-            //show the operations toolbar
-            selected_member=ui.item.value;
-            tree.onClick(selected_member);
-            var node = tree.graph.getNode(selected_member);
-            //display data on right container
-            display_data(node);
+            showUser(ui.item.value);
             
             //reset search value to "" and close the dialog
             $("#search_term").val("");

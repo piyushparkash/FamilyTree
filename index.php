@@ -38,6 +38,11 @@ if ($user->is_authenticated()) {
         $template->assign(array("user_not_connected" => true,
             "userimage" => (empty($user->user['profilepic']) ? "common.png" : $user->user['proilepic'])));
     }
+    else
+    {
+        $template->assign("id", $user->user['id']);
+        $template->display("showuser.tpl");
+    }
 } else {
     $template->assign(array("userimage" => "common.png"));
 }
