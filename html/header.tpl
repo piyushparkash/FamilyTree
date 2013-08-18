@@ -6,10 +6,10 @@
             Vanshavali - Place for famliy
         </title>
         <!-- CSS Files -->
-        <link href="ajax/css/smoothness/jquery-ui-1.10.0.custom.css" rel="stylesheet" type="text/css" />
-        <link type="text/css" href="css/Spacetree.css" rel="stylesheet" />
-        <link type="text/css" href="assets/css/bootstrap.css" rel="stylesheet" />
-        <link href="style.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/jquery-ui.css" rel="stylesheet" type="text/css" />
+        <link type="text/css" href="assets/css/Spacetree.css" rel="stylesheet" />
+        <link type="text/css" href="assets/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
 
         <!--[if IE]>
                 <script language="javascript" type="text/javascript" src="../../Extras/excanvas.js">
@@ -22,11 +22,11 @@
         </script>
         <script type="text/javascript" src="assets/js/bootstrap-modal.js"></script>
         <script type="text/javascript" src="assets/js/bootstrap-dropdown.js"></script>
-        <script type="text/javascript" src="jit.js">
+        <script type="text/javascript" src="ajax/jit.js">
         </script>
-        <script type="text/javascript" src="working.js">
+        <script type="text/javascript" src="ajax/working.js">
         </script>
-        <script type="text/javascript" src="tree.js">
+        <script type="text/javascript" src="ajax/tree.js">
         </script>
     </head>
     <body>
