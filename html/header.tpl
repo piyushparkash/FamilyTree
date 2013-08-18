@@ -10,6 +10,7 @@
         <link type="text/css" href="assets/css/Spacetree.css" rel="stylesheet" />
         <link type="text/css" href="assets/css/bootstrap.min.css" rel="stylesheet" />
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/introjs.min.css" rel="stylesheet" type="text/css" />
 
         <!--[if IE]>
                 <script language="javascript" type="text/javascript" src="../../Extras/excanvas.js">
@@ -27,6 +28,8 @@
         <script type="text/javascript" src="ajax/working.js">
         </script>
         <script type="text/javascript" src="ajax/tree.js">
+        </script>
+        <script type="text/javascript" src="ajax/intro.min.js">
         </script>
     </head>
     <body>

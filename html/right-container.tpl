@@ -1,4 +1,4 @@
-<div id="right-container">
+<div id="right-container" data-intro="Here you will see information about the selected member." data-step="3" data-position="left">
 
     <fieldset>
         <div class="row username_container">
@@ -43,7 +43,7 @@
         {if $authenticated}
             <div class='span4' style="text-align: center">
                 <div class="btn-group">
-                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" data-intro="Click on member you want to edit. And use this to add/remove/modify any member" data-step="4" data-position="left">
                         Edit Member
                         <span class="caret"></span>
                     </a>
