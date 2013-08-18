@@ -11,7 +11,7 @@ $sub = @$_GET['sub'];
 class install {
 
     /**
-     * This class is used to start the installation.
+     * This function is used to start the installation.
      * @global string $mode
      * @global integer $sub
      * @return null

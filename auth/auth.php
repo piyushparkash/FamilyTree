@@ -102,8 +102,8 @@ class auth {
     /**
      * This function is used to checkt the token generated against the user.
      * Return true if matches
-     * @param type $id The ID of the user
-     * @param type $token The token generated for the user
+     * @param integer $id The ID of the user
+     * @param string $token The token generated for the user
      * @return boolean
      */
     function check_token($id, $token) {
@@ -134,7 +134,7 @@ class auth {
     /**
      * This function is generated token for a user.
      * Token is a random alphanumeric string
-     * @param type $id The ID of the used to generate the token for.
+     * @param integer $id The ID of the used to generate the token for.
      * @return string The generated Token
      */
     function generate_token($id = '') {

@@ -80,7 +80,7 @@ class member extends member_operation {
      * This function is used to set the relationship status of the current user
      * Returns true if successfull else false
      * @global \db $db The instance of the \db class
-     * @param type $relationship_id The relationship ID. See Below.
+     * @param integer $relationship_id The relationship ID. See Below.
      * @return boolean
      * 
      * Relationship ID

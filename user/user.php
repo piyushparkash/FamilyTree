@@ -31,9 +31,9 @@ class user extends auth {
     /**
      * This function is used to log-in the user and populate the $user variable
      * with all the user data. Returns true if successful else false
-     * @global type $_SESSION The Superglobal Session variable
-     * @param type $username The username of the user
-     * @param type $password The password of the user
+     * @global array $_SESSION The Superglobal Session variable
+     * @param string $username The username of the user
+     * @param string $password The password of the user
      * @return boolean
      */
     function login($username, $password) {
@@ -63,8 +63,8 @@ class user extends auth {
 
     /**
      * This function is used to populate the $user variable with all the user data
-     * @global type $db The instance of the db class
-     * @param type $id The ID of the user to fetch the data of.
+     * @global \db $db The instance of the db class
+     * @param integer $id The ID of the user to fetch the data of.
      * @return null
      */
     function populate_data($id) {

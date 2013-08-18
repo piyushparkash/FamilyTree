@@ -15,8 +15,8 @@ class suggest extends member_operation_suggest {
     /**
      * Constructor of the class. This gathers the basic information about
      * the suggestion which is to be managed
-     * @global type $db Instance of the db class
-     * @param type $suggestid The ID of the suggestion to be managed
+     * @global \db $db Instance of the db class
+     * @param integer $suggestid The ID of the suggestion to be managed
      */
     function __construct($suggestid) {
         global $db;
@@ -37,8 +37,8 @@ class suggest extends member_operation_suggest {
     /**
      * This function is used to add approval to this suggestion. Returns false
      * on error
-     * @global type $db Instance of the db class
-     * @global type $user Instance of the user class
+     * @global \db $db Instance of the db class
+     * @global \user $user Instance of the user class
      * @return boolean
      */
     function approve() {
@@ -56,8 +56,8 @@ class suggest extends member_operation_suggest {
     /**
      * This function is used to add rejection to the suggestion. Return false
      * on error
-     * @global type $db Instance of the db class
-     * @global type $user Instance of user class
+     * @global \db $db Instance of the db class
+     * @global \user $user Instance of user class
      * @return boolean
      */
     function reject() {
@@ -76,8 +76,8 @@ class suggest extends member_operation_suggest {
     /**
      * This function is used to mark a suggestion as don't know. Returns false
      * on error
-     * @global type $db Instance of the db class
-     * @global type $user Instance of the user class
+     * @global \db $db Instance of the db class
+     * @global \user $user Instance of the user class
      * @return boolean
      */
     function dontknow() {
@@ -96,7 +96,7 @@ class suggest extends member_operation_suggest {
     /**
      * This function is to check the percentage of the approval/rejection/dontknow
      * of this suggestion
-     * @global type $db Instance of the db class
+     * @global \db $db Instance of the db class
      * @return boolean
      */
     private function checkpercent() {
@@ -202,7 +202,7 @@ class suggest extends member_operation_suggest {
      * This function is used to delete all the data regarding the suggestion approval
      * or rejection. This is to be used when the suggestion is applied and user votes
      * are of no use. Although it is automatically invoked.
-     * @global type $db
+     * @global \db $db
      * @return boolean
      */
     function approval_delete() {

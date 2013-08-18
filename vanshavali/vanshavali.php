@@ -21,10 +21,10 @@ class vanshavali {
      * This special function is used to add member to the Tree
      * without using any of the member class
      * Returns the ID of the new member else false if any error occurred
-     * @global type $db Instance of the db class
-     * @param type $membername The name of the new member to be added
-     * @param type $gender The gender of the new member
-     * @param type $familyid The Family ID of the new member
+     * @global \db $db Instance of the db class
+     * @param string $membername The name of the new member to be added
+     * @param integer $gender The gender of the new member
+     * @param integer $familyid The Family ID of the new member
      * @return integer ID of the new member created
      */
     function addmember_explicit($membername, $gender, $familyid) {
@@ -55,8 +55,8 @@ class vanshavali {
 
     /**
      * This function is used get the details about a member.
-     * @global type $db Instance of the db class
-     * @param type $id ID of the member whose details is to be fetched
+     * @global \db $db Instance of the db class
+     * @param integer $id ID of the member whose details is to be fetched
      * @return \member
      */
     function getmember($id) {
