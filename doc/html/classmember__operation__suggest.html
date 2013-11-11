@@ -175,7 +175,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$name</td><td>The name of the member to be added </td></tr>
     <tr><td class="paramtype">integer</td><td class="paramname">$gender</td><td>The gender of the member </td></tr>
-    <tr><td class="paramtype">type</td><td class="paramname">$id</td><td>The ID of the member whose child addition suggestion is being added </td></tr>
+    <tr><td class="paramtype">integer</td><td class="paramname">$id</td><td>The ID of the member whose child addition suggestion is being added </td></tr>
   </table>
   </dd>
 </dl>
@@ -232,8 +232,8 @@ Public Member Functions</h2></td></tr>
 <p>This function is used to add a husband suggestion. Return false on error.   $db Instance of the db classs   $user Instance of the user class </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramtype">type</td><td class="paramname">$name</td><td>The name of the new husband </td></tr>
-    <tr><td class="paramtype">type</td><td class="paramname">$id</td><td>ID of the member whose husband is to be added </td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$name</td><td>The name of the new husband </td></tr>
+    <tr><td class="paramtype">integer</td><td class="paramname">$id</td><td>ID of the member whose husband is to be added </td></tr>
   </table>
   </dd>
 </dl>
@@ -290,8 +290,8 @@ Public Member Functions</h2></td></tr>
 <p>This function is used to add new wife suggestion. Returns false on error   $db Instance of db class   $user Instance of the user class </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramtype">type</td><td class="paramname">$name</td><td>The name of the new wife </td></tr>
-    <tr><td class="paramtype">type</td><td class="paramname">$id</td><td>The ID of the member whose wife is to be added </td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$name</td><td>The name of the new wife </td></tr>
+    <tr><td class="paramtype">integer</td><td class="paramname">$id</td><td>The ID of the member whose wife is to be added </td></tr>
   </table>
   </dd>
 </dl>
@@ -372,12 +372,12 @@ Public Member Functions</h2></td></tr>
 <p>This function is used to add suggestion regarding modification of user detail modification. Returns false on error.   $db Instance of the db class   $user Instance of the user class </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramtype">type</td><td class="paramname">$name</td><td>The new name of the member </td></tr>
-    <tr><td class="paramtype">type</td><td class="paramname">$gender</td><td>The new gender of the member </td></tr>
-    <tr><td class="paramtype">type</td><td class="paramname">$relationship</td><td>The new relationship status of the member </td></tr>
-    <tr><td class="paramtype">type</td><td class="paramname">$dob</td><td>The new DOB Timestamp </td></tr>
-    <tr><td class="paramtype">type</td><td class="paramname">$alive</td><td>The new alive ID </td></tr>
-    <tr><td class="paramtype">type</td><td class="paramname">$id</td><td>The ID of the member to be edited </td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$name</td><td>The new name of the member </td></tr>
+    <tr><td class="paramtype">integer</td><td class="paramname">$gender</td><td>The new gender of the member </td></tr>
+    <tr><td class="paramtype">integer</td><td class="paramname">$relationship</td><td>The new relationship status of the member </td></tr>
+    <tr><td class="paramtype">integer</td><td class="paramname">$dob</td><td>The new DOB Timestamp </td></tr>
+    <tr><td class="paramtype">integer</td><td class="paramname">$alive</td><td>The new alive ID </td></tr>
+    <tr><td class="paramtype">integer</td><td class="paramname">$id</td><td>The ID of the member to be edited </td></tr>
   </table>
   </dd>
 </dl>
@@ -461,7 +461,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classmember__operation__suggest.html">member_operation_suggest</a></li>
-    <li class="footer">Generated on Mon Jul 29 2013 14:47:23 for Family Tree by
+    <li class="footer">Generated on Mon Nov 11 2013 18:54:12 for Family Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

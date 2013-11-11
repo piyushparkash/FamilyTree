@@ -1,7 +1,9 @@
 var searchData=
 [
+  ['add',['add',['../classsuggest__storage.html#adc5150e75ba041a2b00e13d0c04c0dbc',1,'suggest_storage']]],
   ['add_5fson',['add_son',['../classmember__operation.html#a6262e1076fe11fe6c0ef4311bfb79ac7',1,'member_operation']]],
   ['add_5fson_5fsuggest',['add_son_suggest',['../classmember__operation__suggest.html#a4dcc91a74ba3f10dbe430e1754a92a67',1,'member_operation_suggest']]],
+  ['add_5fsuggest',['add_suggest',['../classsuggest__handler.html#a43d80867b8bbfca4cff37b0b834db089',1,'suggest_handler']]],
   ['addfamily',['addfamily',['../classvanshavali.html#a0e2dc92ebdd355f1e995976f79285d1b',1,'vanshavali']]],
   ['addhusband',['addhusband',['../classmember__operation.html#adc35cdeaaa4979bf5b8d602dd4f2b529',1,'member_operation']]],
   ['addhusband_5fsuggest',['addhusband_suggest',['../classmember__operation__suggest.html#a84540a159ed0279c5e65abdf2b50f6db',1,'member_operation_suggest']]],

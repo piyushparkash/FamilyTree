@@ -103,6 +103,9 @@ Definition at line 29 of file auth.\-php.
 \begin{DoxyCode}
                                                        \{
         global $db;
+        
+        \textcolor{comment}{//Convert Password in md5 Hash}
+        $password = md5($password);
         $query = $db->query(\textcolor{stringliteral}{"select * from member where username='$username'
        and password='$password'"});
         $row = $db->fetch($query);
@@ -139,7 +142,7 @@ boolean
 \end{DoxyReturn}
 
 
-Definition at line 86 of file auth.\-php.
+Definition at line 89 of file auth.\-php.
 
 
 \begin{DoxyCode}
@@ -168,9 +171,9 @@ Definition at line 86 of file auth.\-php.
 )}}\label{classauth_ac2530bf2bba79e22de7e2f3ebb63be3a}
 This function is used to checkt the token generated against the user. Return true if matches 
 \begin{DoxyParams}[1]{Parameters}
-type & {\em \$id} & The I\-D of the user \\
+integer & {\em \$id} & The I\-D of the user \\
 \hline
-type & {\em \$token} & The token generated for the user \\
+string & {\em \$token} & The token generated for the user \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -178,7 +181,7 @@ boolean
 \end{DoxyReturn}
 
 
-Definition at line 106 of file auth.\-php.
+Definition at line 109 of file auth.\-php.
 
 
 \begin{DoxyCode}
@@ -206,7 +209,7 @@ null
 \end{DoxyReturn}
 
 
-Definition at line 164 of file auth.\-php.
+Definition at line 167 of file auth.\-php.
 
 
 \begin{DoxyCode}
@@ -223,7 +226,7 @@ Definition at line 164 of file auth.\-php.
 )}}\label{classauth_a4ec05ca8231cd1151246b127f168d457}
 This function is generated token for a user. Token is a random alphanumeric string 
 \begin{DoxyParams}[1]{Parameters}
-type & {\em \$id} & The I\-D of the used to generate the token for. \\
+integer & {\em \$id} & The I\-D of the used to generate the token for. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -231,7 +234,7 @@ string The generated Token
 \end{DoxyReturn}
 
 
-Definition at line 137 of file auth.\-php.
+Definition at line 140 of file auth.\-php.
 
 
 \begin{DoxyCode}
@@ -276,7 +279,7 @@ array
 \end{DoxyReturn}
 
 
-Definition at line 74 of file auth.\-php.
+Definition at line 77 of file auth.\-php.
 
 
 \begin{DoxyCode}
@@ -298,7 +301,7 @@ boolean
 \end{DoxyReturn}
 
 
-Definition at line 123 of file auth.\-php.
+Definition at line 126 of file auth.\-php.
 
 
 \begin{DoxyCode}
@@ -323,7 +326,7 @@ boolean
 \end{DoxyReturn}
 
 
-Definition at line 174 of file auth.\-php.
+Definition at line 177 of file auth.\-php.
 
 
 \begin{DoxyCode}
@@ -367,7 +370,7 @@ boolean
 \end{DoxyReturn}
 
 
-Definition at line 58 of file auth.\-php.
+Definition at line 61 of file auth.\-php.
 
 
 \begin{DoxyCode}

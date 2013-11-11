@@ -1,7 +1,7 @@
 var NAVTREE =
 [
   [ "Family Tree", "index.html", [
-    [ "2.0 BOOTSTRAP JS PHILOSOPHY", "md_README.html", null ],
+    [ "FamilyTree", "md_README.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ]
     ] ],

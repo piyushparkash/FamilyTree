@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('getdata_8php_source.html','');});
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="stringliteral">            (select suggest_id from suggest_approved where user_id=&quot;</span> . $user-&gt;user[<span class="stringliteral">&#39;id&#39;</span>] . <span class="stringliteral">&quot;)&quot;</span>);</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordflow">while</span> ($row = $db-&gt;fetch($query)) {</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordflow">switch</span> ($row[<span class="stringliteral">&#39;typesuggest&#39;</span>]) {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                <span class="comment">//Dialog to be printed if typesuggest is remove</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                <span class="comment">//Dialog\ to be printed if typesuggest is remove</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                <span class="keywordflow">case</span> <span class="stringliteral">&quot;remove&quot;</span>:</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                    global $template;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                    $template-&gt;assign(<span class="stringliteral">&quot;suggestid&quot;</span>, $row[<span class="stringliteral">&#39;id&#39;</span>]);</div>
@@ -392,7 +392,7 @@ $(document).ready(function(){initNavTree('getdata_8php_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>getdata.php</b></li>
-    <li class="footer">Generated on Mon Jul 29 2013 14:47:22 for Family Tree by
+    <li class="footer">Generated on Mon Nov 11 2013 18:54:09 for Family Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

@@ -15,5 +15,7 @@ var hierarchy =
       [ "suggest", "classsuggest.html", null ],
       [ "suggest", "classsuggest.html", null ]
     ] ],
+    [ "suggest_handler", "classsuggest__handler.html", null ],
+    [ "suggest_storage", "classsuggest__storage.html", null ],
     [ "vanshavali", "classvanshavali.html", null ]
 ];

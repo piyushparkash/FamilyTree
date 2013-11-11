@@ -4,6 +4,8 @@ var files =
     [ "db", "dir_ce5981f09099a3fa6071b9eb8fe67a2c.html", "dir_ce5981f09099a3fa6071b9eb8fe67a2c" ],
     [ "install", "dir_e3a4aa6ae53c85312025264fe419cff9.html", "dir_e3a4aa6ae53c85312025264fe419cff9" ],
     [ "joinfamily", "dir_fd6fcf24bcb3cfd651ae553dbf211168.html", "dir_fd6fcf24bcb3cfd651ae553dbf211168" ],
+    [ "notification", "dir_bae4c12adbb95e891181349e3e98680c.html", "dir_bae4c12adbb95e891181349e3e98680c" ],
+    [ "suggest", "dir_b7e1dcc6ea1a6f6d2131939b71a23b2f.html", "dir_b7e1dcc6ea1a6f6d2131939b71a23b2f" ],
     [ "user", "dir_111cd2f11cffd6d6d28d89ee0389ee9e.html", "dir_111cd2f11cffd6d6d28d89ee0389ee9e" ],
     [ "vanshavali", "dir_5dc5b4cce9deb32ea7472fa9fa47d9d4.html", "dir_5dc5b4cce9deb32ea7472fa9fa47d9d4" ],
     [ "autofix.php", "autofix_8php_source.html", null ],

@@ -123,58 +123,64 @@ $(document).ready(function(){initNavTree('header_8php_source.html','');});
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;require_once <span class="stringliteral">&#39;user/user.php&#39;</span>;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;require_once <span class="stringliteral">&#39;vanshavali/vanshavali.php&#39;</span>;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;require_once <span class="stringliteral">&#39;functions.php&#39;</span>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;$template = <span class="keyword">new</span> <span class="keyword">template</span>();</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;$db = <span class="keyword">new</span> <a class="code" href="classdb.html">db</a>();</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;$vanshavali = <span class="keyword">new</span> <a class="code" href="classvanshavali.html">vanshavali</a>();</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">//Select the default database</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordflow">if</span> (isset($config[<span class="stringliteral">&#39;database&#39;</span>]) and !empty($config[<span class="stringliteral">&#39;database&#39;</span>])) {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    $db-&gt;select_db($config[<span class="stringliteral">&#39;database&#39;</span>]);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;}</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;$user = <span class="keyword">new</span> <a class="code" href="classuser.html">user</a>();</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//Initialize custom error handler</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">function</span> vanshavali_error($level, $message, $file, $line, $context) {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    global $template;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">switch</span> ($level) {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordflow">case</span> E_USER_ERROR:</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordflow">case</span> E_USER_WARNING:</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            $template-&gt;assign(<span class="stringliteral">&quot;message&quot;</span>, $message);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            $template-&gt;assign(<span class="stringliteral">&quot;lineno&quot;</span>, $line);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            $template-&gt;assign(<span class="stringliteral">&quot;file&quot;</span>, $file);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            $template-&gt;assign(<span class="stringliteral">&quot;context&quot;</span>, $context);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            $template-&gt;header();</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            $template-&gt;display(<span class="stringliteral">&quot;error_high.tpl&quot;</span>);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            exit(); <span class="comment">//exit the file as error level is high</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordflow">case</span> E_USER_NOTICE:</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="comment">//If request is AJAX then</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keywordflow">if</span> ($_SERVER[<span class="stringliteral">&#39;HTTP_X_REQUESTED_WITH&#39;</span>]) {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="comment">//Prepare the array</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                $errorarray = array(<span class="stringliteral">&quot;success&quot;</span> =&gt; 0, <span class="stringliteral">&quot;message&quot;</span> =&gt; $message);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                echo json_encode($errorarray);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                $template-&gt;assign(<span class="stringliteral">&quot;message&quot;</span>, $message);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                $template-&gt;assign(<span class="stringliteral">&quot;lineno&quot;</span>, $line);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                $template-&gt;assign(<span class="stringliteral">&quot;file&quot;</span>, $file);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                $template-&gt;assign(<span class="stringliteral">&quot;context&quot;</span>, $context);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                $template-&gt;display(<span class="stringliteral">&quot;error_low.tpl&quot;</span>);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;set_error_handler(<span class="stringliteral">&quot;vanshavali_error&quot;</span>);  <span class="comment">//Set the custom error handler</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;?&gt;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;require_once <span class="stringliteral">&#39;suggest/suggest_handler.php&#39;</span>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;$template = <span class="keyword">new</span> <span class="keyword">template</span>();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;$db = <span class="keyword">new</span> <a class="code" href="classdb.html">db</a>();</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;$vanshavali = <span class="keyword">new</span> <a class="code" href="classvanshavali.html">vanshavali</a>();</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">//Select the default database</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordflow">if</span> (isset($config[<span class="stringliteral">&#39;database&#39;</span>]) and !empty($config[<span class="stringliteral">&#39;database&#39;</span>])) {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    $db-&gt;select_db($config[<span class="stringliteral">&#39;database&#39;</span>]);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;$user = <span class="keyword">new</span> <a class="code" href="classuser.html">user</a>();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;$suggest_handler=<span class="keyword">new</span> <a class="code" href="classsuggest__handler.html">suggest_handler</a>();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//Register the basic suggests</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;$suggest_handler-&gt;register_handler(<span class="stringliteral">&quot;addmember&quot;</span>, $tpl, $parameter)</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//Initialize custom error handler</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">function</span> vanshavali_error($level, $message, $file, $line, $context) {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    global $template;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">switch</span> ($level) {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordflow">case</span> E_USER_ERROR:</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">case</span> E_USER_WARNING:</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            $template-&gt;assign(<span class="stringliteral">&quot;message&quot;</span>, $message);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            $template-&gt;assign(<span class="stringliteral">&quot;lineno&quot;</span>, $line);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            $template-&gt;assign(<span class="stringliteral">&quot;file&quot;</span>, $file);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            $template-&gt;assign(<span class="stringliteral">&quot;context&quot;</span>, $context);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            $template-&gt;header();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            $template-&gt;display(<span class="stringliteral">&quot;error_high.tpl&quot;</span>);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            exit(); <span class="comment">//exit the file as error level is high</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">case</span> E_USER_NOTICE:</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="comment">//If request is AJAX then</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keywordflow">if</span> ($_SERVER[<span class="stringliteral">&#39;HTTP_X_REQUESTED_WITH&#39;</span>]) {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="comment">//Prepare the array</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                $errorarray = array(<span class="stringliteral">&quot;success&quot;</span> =&gt; 0, <span class="stringliteral">&quot;message&quot;</span> =&gt; $message);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                echo json_encode($errorarray);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                $template-&gt;assign(<span class="stringliteral">&quot;message&quot;</span>, $message);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                $template-&gt;assign(<span class="stringliteral">&quot;lineno&quot;</span>, $line);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                $template-&gt;assign(<span class="stringliteral">&quot;file&quot;</span>, $file);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                $template-&gt;assign(<span class="stringliteral">&quot;context&quot;</span>, $context);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                $template-&gt;display(<span class="stringliteral">&quot;error_low.tpl&quot;</span>);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;set_error_handler(<span class="stringliteral">&quot;vanshavali_error&quot;</span>);  <span class="comment">//Set the custom error handler</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;?&gt;</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>header.php</b></li>
-    <li class="footer">Generated on Mon Jul 29 2013 14:47:22 for Family Tree by
+    <li class="footer">Generated on Mon Nov 11 2013 18:54:09 for Family Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
