@@ -9,8 +9,6 @@ require_once 'member_operation.php';
 
 class member extends member_operation {
 
-    
-
     /**
      * The constructor of the class
      * @param integer $memberid The ID of the member
@@ -20,6 +18,30 @@ class member extends member_operation {
         parent::__construct($memberid);
         $this->populate_data($memberid);
         $this->autofix();
+    }
+
+    /**
+     * Return true f the user is male
+     * @return boolean
+     */
+    function ismale() {
+        if ($this->data['gender'] == 0) {
+            return TRUE;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns true if the user is female
+     * @return boolean
+     */
+    function isfemale() {
+        if ($this->data['gender'] == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -107,11 +129,13 @@ class member extends member_operation {
         global $db;
         if ($db->query("update member set related_to=$related_to where id=" . $this->data['id'])) {
             $this->set_relationship(1);
-            
+
             return true;
         } else {
             return false;
         }
     }
+
 }
+
 ?>
