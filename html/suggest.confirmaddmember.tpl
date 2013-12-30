@@ -1,4 +1,4 @@
-<div  id="{$suggestid}suggest" class="suggest-box">
+<div id="{$suggestid}suggest" class="suggest-box">
     According to {$suggestedby},<br>
     {$membername} is also a {$mnf} of {$fathername}
     <br>

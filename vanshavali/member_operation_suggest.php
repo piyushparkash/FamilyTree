@@ -18,25 +18,30 @@ abstract class member_operation_suggest {
      * @return boolean
      */
     function add_son_suggest($name, $gender, $id) {
-        global $db, $user;
+        global $db, $user, $suggest_handler;
 
-        //fill array with data
-        $finalarray = array('name' => $name, 'gender' => $gender, 'id' => $id);
+        //Add the suggestion
+        return $suggest_handler->add_suggest(ADDMEMBER, $id, array(NAME => $name, GENDER => $gender));
 
-        //Put it in database
+        /* Old Method
+          //fill array with data
+          $finalarray = array('name' => $name, 'gender' => $gender, 'id' => $id);
 
-        if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values('child', '" .
-                        json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")"))
-        {
-            //Put the approval suggestion of user that has created the suggestion
-            return ($db->query("insert into suggest_approved (suggest_id,user_id,action) values(".mysql_insert_id().",
-                ".$user->user['id'].",1)"));
-        }
-        else
-        {
-            return false;
-        }
-        
+          //Put it in database
+
+          if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values('child', '" .
+          json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")"))
+          {
+          //Put the approval suggestion of user that has created the suggestion
+          return ($db->query("insert into suggest_approved (suggest_id,user_id,action) values(".mysql_insert_id().",
+          ".$user->user['id'].",1)"));
+          }
+          else
+          {
+          return false;
+          }
+         * End of old method
+         */
     }
 
     /**
@@ -48,19 +53,20 @@ abstract class member_operation_suggest {
      * @return boolean
      */
     function remove_suggest($id) {
-        global $db, $user;
+        global $db, $user, $suggest_handler;
 
-        if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
-            ('remove', '$id'," . $user->user['id'] . "," . time() . ")"))
-        {
-            return ($db->query("insert into suggest_approved (suggest_id,user_id,action) values(".mysql_insert_id().",
-                ".$user->user['id'].",1)"));
-        }
-        else
-        {
-            return false;
-        }
-        
+        return $suggest_handler->add_suggest(DELMEMBER, $id);
+
+        /* Old method
+          if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
+          ('remove', '$id'," . $user->user['id'] . "," . time() . ")")) {
+          return ($db->query("insert into suggest_approved (suggest_id,user_id,action) values(" . mysql_insert_id() . ",
+          " . $user->user['id'] . ",1)"));
+          } else {
+          return false;
+          }
+         * End of the old method
+         */
     }
 
     /**
@@ -77,30 +83,37 @@ abstract class member_operation_suggest {
      * @return boolean
      */
     function edit_suggest($name, $gender, $relationship, $dob, $alive, $id) {
-        global $db, $user;
+        global $db, $user, $suggest_handler;
 
         preg_match("/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})/", $dob, $matches);
         $dob = mktime(0, 0, 0, $matches[2], $matches[1], $matches[3]);
 
-        $finalarray = array('name' => $name,
-            'gender' => $gender,
-            'relationship' => $relationship,
-            'dob' => $dob,
-            'alive' => $alive,
-            'id' => $id);
 
-        if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
-            ('edit', '" . json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")"))
-        {
-            return ($db->query("insert into suggest_approved (suggest_id,user_id,action) values(".mysql_insert_id().",
-                ".$user->user['id'].",1)"));
-        }
-        else
-        {
-            return false;
-        }
+        return $suggest_handler->add_suggest(NAME, $id, $name) &&
+                $suggest_handler->add_suggest(GENDER, $id, $gender) &&
+                $suggest_handler->add_suggest(RELATIONSHIP, $id, $relationship) &&
+                $suggest_handler->add_suggest(DOB, $id, $dob) &&
+                $suggest_handler->add_suggest(ALIVE, $id, $alive);
+
+        /* Old Method
+          $finalarray = array('name' => $name,
+          'gender' => $gender,
+          'relationship' => $relationship,
+          'dob' => $dob,
+          'alive' => $alive,
+          'id' => $id);
+
+          if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values
+          ('edit', '" . json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")")) {
+          return ($db->query("insert into suggest_approved (suggest_id,user_id,action) values(" . mysql_insert_id() . ",
+          " . $user->user['id'] . ",1)"));
+          } else {
+          return false;
+          }
+         * End of the old method
+         */
     }
-    
+
     /**
      * This function is used to add new wife suggestion. Returns false on error
      * @global \db $db Instance of db class
@@ -109,30 +122,28 @@ abstract class member_operation_suggest {
      * @param integer $id The ID of the member whose wife is to be added
      * @return boolean
      */
-    function addwife_suggest($name,$id)
-    {
-        global $db, $user;
+    function addwife_suggest($name, $id) {
+        global $db, $user, $suggest_handler;
 
-        //fill array with data
-        $finalarray = array('name' => $name, 'id' => $id);
+        return $suggest_handler->add_suggest(ADDSPOUSE, $id, array(NAME => $name, GENDER => 1));
+        /*
+          //fill array with data
+          $finalarray = array('name' => $name, 'id' => $id);
 
-        //Put it in database
+          //Put it in database
 
-        if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values('wife', '" .
-                        json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")"))
-        {
-            //Put the approval suggestion of user that has created the suggestion
-            return ($db->query("insert into suggest_approved (suggest_id,user_id,action) values(".mysql_insert_id().",
-                ".$user->user['id'].",1)"));
-        }
-        else
-        {
-            return false;
-        }
-        
+          if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values('wife', '" .
+          json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")")) {
+          //Put the approval suggestion of user that has created the suggestion
+          return ($db->query("insert into suggest_approved (suggest_id,user_id,action) values(" . mysql_insert_id() . ",
+          " . $user->user['id'] . ",1)"));
+          } else {
+          return false;
+          }
+         * End of the old method
+         */
     }
-    
-    
+
     /**
      * This function is used to add a husband suggestion. Return false on error.
      * @global \db $db Instance of the db classs
@@ -141,27 +152,30 @@ abstract class member_operation_suggest {
      * @param integer $id ID of the member whose husband is to be added
      * @return boolean
      */
-    function addhusband_suggest($name,$id)
-    {
-        global $db, $user;
+    function addhusband_suggest($name, $id) {
+        global $db, $user, $suggest_handler;
 
-        //fill array with data
-        $finalarray = array('name' => $name, 'id' => $id);
+        return $suggest_handler->add_suggest(ADDSPOUSE, $id, array(NAME => $name, GENDER => 0));
 
-        //Put it in database
+        /*
+         * Old method
+         * 
+          //fill array with data
+          $finalarray = array('name' => $name, 'id' => $id);
 
-        if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values('Husband', '" .
-                        json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")"))
-        {
-            //Put the approval suggestion of user that has created the suggestion
-            return ($db->query("insert into suggest_approved (suggest_id,user_id,action) values(".mysql_insert_id().",
-                ".$user->user['id'].",1)"));
-        }
-        else
-        {
-            return false;
-        }
-        
+          //Put it in database
+
+          if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values('Husband', '" .
+          json_encode($finalarray) . "'," . $user->user['id'] . "," . time() . ")")) {
+          //Put the approval suggestion of user that has created the suggestion
+          return ($db->query("insert into suggest_approved (suggest_id,user_id,action) values(" . mysql_insert_id() . ",
+          " . $user->user['id'] . ",1)"));
+          } else {
+          return false;
+          }
+          /*
+         * ENd of the old method
+         */
     }
 
 }

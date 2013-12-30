@@ -15,7 +15,7 @@ abstract class member_operation extends member_operation_suggest {
      * @var integer The ID of the member
      */
     public $id;
-    
+
     /**
      *
      * @var array This array contains all information about the user
