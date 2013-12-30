@@ -145,7 +145,7 @@ class suggest_handler {
         global $suggests;
         $found_key = NULL;
         foreach ($suggests as $key => $value) {
-            if ($value->$name == $name) {
+            if ($value->name == $name) {
                 $found_key = $key;
             }
         }

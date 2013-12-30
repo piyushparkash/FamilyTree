@@ -49,6 +49,10 @@ class suggest_storage {
      */
     public $type;
 
+    public function __construct($sname, $stpl, $sparameter) {
+        $this->add($sname, $stpl, $sparameter);
+    }
+
     /**
      * This function is used to set the suggest parameters that are required
      * @param string $sname
