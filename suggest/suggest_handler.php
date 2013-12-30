@@ -74,6 +74,7 @@ class suggest_handler {
      * @return boolean Return true if successfully registered
      */
     public function register_handler($name, $tpl, $parameter, $type) {
+        global $suggests;
         if (empty($name) || empty($tpl) || empty($parameter) || empty($type)) {
 // Here raise a serious error and working will be interrupted if
 // the given suggest is not registered
