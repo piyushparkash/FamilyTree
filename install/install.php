@@ -248,8 +248,8 @@ class install {
         $suggested_info = $db->query("create table suggested_info (
             id int(11) not null primary key auto_increment,
             typesuggest mediumtext not null,
-            new_value text not null,
-            old_value text not null,
+            new_value text default null,
+            old_value text default null,
             suggested_by int(11) not null,
             suggested_to int(11) not null,
             ts int(11) not null,

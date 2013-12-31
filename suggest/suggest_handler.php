@@ -54,7 +54,7 @@ class suggest_handler {
     }
 
     public function getsuggestions() {
-        global $db, $user, $template;
+        global $db, $user;
 
         //Make the query
         $query = $db->query("select * from suggested_info where approved=0 and id not in 
@@ -82,7 +82,7 @@ class suggest_handler {
             return false;
         }
 // Store all the information of the suggest
-        $suggests[] = new suggest_storage($name, $tpl, $parameter);
+        $suggests[] = new suggest_storage($name, $tpl, $parameter, $type);
     }
 
     /**
@@ -95,7 +95,7 @@ class suggest_handler {
      * @param int $to
      */
     public function add_suggest($name, $to, $new_value = NULL) {
-        global $db, $vanshavali;
+        global $db, $user;
 
         //To return at the end
         $success = true;
@@ -117,7 +117,14 @@ class suggest_handler {
                 //Now in this case we don't have any old value or new value
                 //So the newvalue and the old value field remains empty in this case
                 //We don't have to find any old value. So lets implement
-                if (!$db->query("insert into suggested_info (typesuggest, newvalue, oldvalue, from, to, ts) values('$name', '$new_value', '$old_value', " . $user->user['id'] . ", $to, " . time() . ")")) {
+                //As we have composite value while adding and removing a member i.e. name and gender
+                //we put it in an array for it to be passed on.
+                if (!is_array($new_value)) {
+                    $new_value = array($new_value);
+                }
+
+                $new_value = json_encode($new_value);
+                if (!$db->query("insert into suggested_info (typesuggest, new_value, old_value, suggested_by, suggested_to, ts) values('$name', '$new_value', null, " . $user->user['id'] . ", $to, " . time() . ")")) {
                     $success = false;
                 }
                 break;
@@ -127,7 +134,7 @@ class suggest_handler {
                 $query = $db->fetch($db->query("select $name from member where id=$to"));
 
                 $old_value = $query[$name]; // And we have the old value now lets add the suggest
-                if (!$db->query("insert into suggested_info (typesuggest, newvalue, oldvalue, from, to, ts) values('$name', '$new_value', '$old_value', " . $user->user['id'] . ", $to, " . time() . ")")) {
+                if (!$db->query("insert into suggested_info (typesuggest, new_value, old_value, suggested_by, suggested_to, ts) values('$name', '$new_value', '$old_value', " . $user->user['id'] . ", $to, " . time() . ")")) {
                     $success = false;
                 }
                 break;
@@ -147,9 +154,10 @@ class suggest_handler {
         foreach ($suggests as $key => $value) {
             if ($value->name == $name) {
                 $found_key = $key;
+                break;
             }
         }
-        if ($found_key != null) {
+        if (!is_null($found_key)) {
             return $suggests[$found_key];
         } else {
             return false;

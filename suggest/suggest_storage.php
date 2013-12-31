@@ -49,8 +49,8 @@ class suggest_storage {
      */
     public $type;
 
-    public function __construct($sname, $stpl, $sparameter) {
-        $this->add($sname, $stpl, $sparameter);
+    public function __construct($sname, $stpl, $sparameter, $stype) {
+        $this->add($sname, $stpl, $sparameter, $stype);
     }
 
     /**
@@ -59,10 +59,11 @@ class suggest_storage {
      * @param string $stpl
      * @param array $sparameters
      */
-    public function add($sname, $stpl, $sparameter) {
+    public function add($sname, $stpl, $sparameter, $stype) {
         $this->name = $sname;
         $this->tpl = $stpl;
         $this->parameter = $sparameter;
+        $this->type = $stype;
     }
 
 }
