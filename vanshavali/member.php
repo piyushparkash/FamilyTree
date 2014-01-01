@@ -136,6 +136,16 @@ class member extends member_operation {
         }
     }
 
+    /**
+     * Return the gender code of the member
+     * 1 = Female
+     * 0= Male
+     * @return integer
+     */
+    function gender() {
+        return $this->data['gender'];
+    }
+
 }
 
 ?>
