@@ -53,9 +53,14 @@ abstract class member_operation_suggest {
      * @return boolean
      */
     function remove_suggest($id) {
-        global $db, $user, $suggest_handler;
+        global $db, $user, $suggest_handler, $vanshavali;
 
-        return $suggest_handler->add_suggest(DELMEMBER, $id);
+        //We need the removed members father name to show
+        //firstly accquire the current member details
+        $current = $vanshavali->getmember($id);
+        $father = $vanshavali->getmember($current->data['sonof']);
+        
+        return $suggest_handler->add_suggest(DELMEMBER, $id, $father->data['membername']);
 
         /* Old method
           if ($db->query("insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values

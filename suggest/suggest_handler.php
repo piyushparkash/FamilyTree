@@ -23,25 +23,52 @@ class suggest_handler {
 //Find the structure of the suggest
         $struct = $this->find_structure($detail['typesuggest']);
 
-//Now do check here if we have the structure
-//because if not then the program will crash
-//Collect the data needed
-//Here is the needed data
-//from , to , old_value, newvalue, sod
+        //Now do check here if we have the structure
+        //because if not then the program will crash
+        //Collect the data needed
+        //Here is the needed data
+        //from , to , old_value, newvalue, sod
 
-        $finalarray['from'] = $vanshavali->getmember($user->user['id']);
-        $finalarray['to'] = $vanshavali->getmember($detail['suggested_to']);
-        $finalarray['oldvalue'] = $detail['old_value'];
-        $finalarray['newvalue'] = $detail['newvalue'];
+        $finalarray['suggested_by'] = $vanshavali->getmember($user->user['id']);
+        $finalarray['suggested_to'] = $vanshavali->getmember($detail['suggested_to']);
+        $finalarray['oldvalue'] = is_null($detail['old_value']) ? "" : $detail['old_value'];
 
-//Check if we have all the data that needs to be passed
+        //Now check if new value is a json..
+        $decoded = json_decode($detail['new_value'], TRUE);
+        if (!is_null($decoded)) {
+            if (isset($decoded[NAME])) {
+                $finalarray['newvalue'] = $decoded[NAME];
+            } else {
+                $finalarray['newvalue'] = $decoded;
+            }
+
+            //Now check if gender is there or not
+            if (isset($decoded[GENDER])) {
+                $finalarray['sod'] = $decoded[GENDER];
+            } else { // if not then assign the gender of the to member as it is being modified
+                $finalarray['sod'] = $finalarray['suggested_to']->gender();
+            }
+        } else {
+            //This is going to happen when we have suggestion which has no old value or new value
+            //SO better be ready for that
+            //We already have old_value so prepare new value
+            $finalarray['newvalue'] = $detail['new_value'];
+
+            //and sod
+            $finalarray['sod'] = $finalarray['suggested_to']->gender();
+        }
+
+
+        //Check if we have all the data that needs to be passed
         $error = false;
         foreach ($struct->parameter as $value) {
             if (!isset($finalarray[$value])) {
                 $error = TRUE;
+                echo "we broke at $value";
+                break;
             }
         }
-//get the template content, We haven't passed any data into it. So check here
+        //get the template content, We haven't passed any data into it. So check here
         if ($error) {
             trigger_error("Not enough parameters to show the suggestion: $detail[1]", E_USER_ERROR);
             return false;
@@ -134,6 +161,10 @@ class suggest_handler {
                 $query = $db->fetch($db->query("select $name from member where id=$to"));
 
                 $old_value = $query[$name]; // And we have the old value now lets add the suggest
+                //But first lets check if the old value and the new value are same
+                if ($old_value == $new_value) {
+                    return;
+                }
                 if (!$db->query("insert into suggested_info (typesuggest, new_value, old_value, suggested_by, suggested_to, ts) values('$name', '$new_value', '$old_value', " . $user->user['id'] . ", $to, " . time() . ")")) {
                     $success = false;
                 }
