@@ -110,74 +110,94 @@ $(document).ready(function(){initNavTree('member_8php_source.html','');});
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
 <div class="line"><a name="l00010"></a><span class="lineno"><a class="code" href="classmember.html">   10</a></span>&#160;<span class="keyword">class </span><a class="code" href="classmember.html">member</a> <span class="keyword">extends</span> <a class="code" href="classmember__operation.html">member_operation</a> {</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="code" href="classmember.html#aa2427c65795ffbdc72d64e2e91640463">   19</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="classmember.html#aa2427c65795ffbdc72d64e2e91640463">__construct</a>($memberid) {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <a class="code" href="classmember.html#aa2427c65795ffbdc72d64e2e91640463">parent::__construct</a>($memberid);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        $this-&gt;<a class="code" href="classmember__operation.html#aaae269a6cda847ad7aaffad933fe0ee6">populate_data</a>($memberid);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        $this-&gt;<a class="code" href="classmember.html#a45c3ed97d49c45ce716892b4b5e44bd2">autofix</a>();</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    }</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="code" href="classmember.html#ac331cc43c8c076314d05ac004d20e021">   30</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#ac331cc43c8c076314d05ac004d20e021">getparent</a>() {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classmember.html">member</a>($this-&gt;data[<span class="stringliteral">&#39;sonof&#39;</span>]);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="code" href="classmember.html#af0d9a69479f2b9c859acb90e97bad85c">   39</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#af0d9a69479f2b9c859acb90e97bad85c">get_sons</a>() {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        global $db;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        $finalarray = array();</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        $query = $db-&gt;query(<span class="stringliteral">&quot;select * from member where sonof=$this-&gt;id&quot;</span>);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordflow">while</span> ($row = $db-&gt;fetch($query)) {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            array_push($finalarray, <span class="keyword">new</span> <a class="code" href="classmember.html">member</a>($row[<span class="stringliteral">&#39;id&#39;</span>]));</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">return</span> $finalarray;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="code" href="classmember.html#a024f7356f2279490775b6ae432d51010">   55</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#a024f7356f2279490775b6ae432d51010">has_sons</a>() {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        global $db;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        $query = $db-&gt;query(<span class="stringliteral">&quot;select count(*) as nosons from member where sonof=$this-&gt;id&quot;</span>);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        $row = $db-&gt;fetch($query);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordflow">return</span> $row[<span class="stringliteral">&#39;nosons&#39;</span>];</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="code" href="classmember.html#a45c3ed97d49c45ce716892b4b5e44bd2">   68</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#a45c3ed97d49c45ce716892b4b5e44bd2">autofix</a>() {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        global $db;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        $nosons = $this-&gt;<a class="code" href="classmember.html#a024f7356f2279490775b6ae432d51010">has_sons</a>();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">if</span> ($nosons &gt; 0) {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="comment">// If the member has sons Change the status to married</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="comment">// Add a wife and add parents to wife and create a new family</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            $this-&gt;<a class="code" href="classmember.html#ae0f93137fb23a9f5ae9e6a287f6232dd">set_relationship</a>(1);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            $this-&gt;<a class="code" href="classmember__operation.html#a98d050cd93cb97b426d8971a827159b1">addwife</a>();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="code" href="classmember.html#ae0f93137fb23a9f5ae9e6a287f6232dd">   90</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#ae0f93137fb23a9f5ae9e6a287f6232dd">set_relationship</a>($relationship_id) {</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="code" href="classmember.html#aa2427c65795ffbdc72d64e2e91640463">   17</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="classmember.html#aa2427c65795ffbdc72d64e2e91640463">__construct</a>($memberid) {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <a class="code" href="classmember.html#aa2427c65795ffbdc72d64e2e91640463">parent::__construct</a>($memberid);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        $this-&gt;<a class="code" href="classmember__operation.html#aaae269a6cda847ad7aaffad933fe0ee6">populate_data</a>($memberid);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        $this-&gt;<a class="code" href="classmember.html#a45c3ed97d49c45ce716892b4b5e44bd2">autofix</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    }</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="code" href="classmember.html#a364bea0f1ea59b67e68293ae5da9f413">   27</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#a364bea0f1ea59b67e68293ae5da9f413">ismale</a>() {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordflow">if</span> ($this-&gt;data[<span class="stringliteral">&#39;gender&#39;</span>] == 0) {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keywordflow">return</span> TRUE;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        }</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    }</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="code" href="classmember.html#af93337d3c08cad93fa43b5f30c0215b0">   39</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#af93337d3c08cad93fa43b5f30c0215b0">isfemale</a>() {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordflow">if</span> ($this-&gt;data[<span class="stringliteral">&#39;gender&#39;</span>] == 1) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="code" href="classmember.html#ac331cc43c8c076314d05ac004d20e021">   52</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#ac331cc43c8c076314d05ac004d20e021">getparent</a>() {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classmember.html">member</a>($this-&gt;data[<span class="stringliteral">&#39;sonof&#39;</span>]);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="code" href="classmember.html#af0d9a69479f2b9c859acb90e97bad85c">   61</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#af0d9a69479f2b9c859acb90e97bad85c">get_sons</a>() {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        global $db;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        $finalarray = array();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        $query = $db-&gt;query(<span class="stringliteral">&quot;select * from member where sonof=$this-&gt;id&quot;</span>);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">while</span> ($row = $db-&gt;fetch($query)) {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            array_push($finalarray, <span class="keyword">new</span> <a class="code" href="classmember.html">member</a>($row[<span class="stringliteral">&#39;id&#39;</span>]));</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">return</span> $finalarray;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="code" href="classmember.html#a024f7356f2279490775b6ae432d51010">   77</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#a024f7356f2279490775b6ae432d51010">has_sons</a>() {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        global $db;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        $query = $db-&gt;query(<span class="stringliteral">&quot;select count(*) as nosons from member where sonof=$this-&gt;id&quot;</span>);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        $row = $db-&gt;fetch($query);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordflow">return</span> $row[<span class="stringliteral">&#39;nosons&#39;</span>];</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="code" href="classmember.html#a45c3ed97d49c45ce716892b4b5e44bd2">   90</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#a45c3ed97d49c45ce716892b4b5e44bd2">autofix</a>() {</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        global $db;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordflow">if</span> (!$db-&gt;query(<span class="stringliteral">&quot;update member set relationship_status=$relationship_id where id=$this-&gt;id&quot;</span>)) {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="code" href="classmember.html#a541afd2c1c096f5810c0b889e33287ba">  106</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#a541afd2c1c096f5810c0b889e33287ba">related_to</a>($related_to) {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        global $db;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordflow">if</span> ($db-&gt;query(<span class="stringliteral">&quot;update member set related_to=$related_to where id=&quot;</span> . $this-&gt;data[<span class="stringliteral">&#39;id&#39;</span>])) {</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            $this-&gt;<a class="code" href="classmember.html#ae0f93137fb23a9f5ae9e6a287f6232dd">set_relationship</a>(1);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        }</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    }</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;}</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;?&gt;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        $nosons = $this-&gt;<a class="code" href="classmember.html#a024f7356f2279490775b6ae432d51010">has_sons</a>();</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordflow">if</span> ($nosons &gt; 0) {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="comment">// If the member has sons Change the status to married</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="comment">// Add a wife and add parents to wife and create a new family</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            $this-&gt;<a class="code" href="classmember.html#ae0f93137fb23a9f5ae9e6a287f6232dd">set_relationship</a>(1);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            $this-&gt;<a class="code" href="classmember__operation.html#a98d050cd93cb97b426d8971a827159b1">addwife</a>();</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="code" href="classmember.html#ae0f93137fb23a9f5ae9e6a287f6232dd">  112</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#ae0f93137fb23a9f5ae9e6a287f6232dd">set_relationship</a>($relationship_id) {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        global $db;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">if</span> (!$db-&gt;query(<span class="stringliteral">&quot;update member set relationship_status=$relationship_id where id=$this-&gt;id&quot;</span>)) {</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        }</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    }</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno"><a class="code" href="classmember.html#a541afd2c1c096f5810c0b889e33287ba">  128</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#a541afd2c1c096f5810c0b889e33287ba">related_to</a>($related_to) {</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        global $db;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        <span class="keywordflow">if</span> ($db-&gt;query(<span class="stringliteral">&quot;update member set related_to=$related_to where id=&quot;</span> . $this-&gt;data[<span class="stringliteral">&#39;id&#39;</span>])) {</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            $this-&gt;<a class="code" href="classmember.html#ae0f93137fb23a9f5ae9e6a287f6232dd">set_relationship</a>(1);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        }</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    }</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
+<div class="line"><a name="l00145"></a><span class="lineno"><a class="code" href="classmember.html#aeb52158abb66bf82955ab17670b11eec">  145</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="classmember.html#aeb52158abb66bf82955ab17670b11eec">gender</a>() {</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="keywordflow">return</span> $this-&gt;data[<span class="stringliteral">&#39;gender&#39;</span>];</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    }</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;}</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;?&gt;</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5dc5b4cce9deb32ea7472fa9fa47d9d4.html">vanshavali</a></li><li class="navelem"><b>member.php</b></li>
-    <li class="footer">Generated on Mon Aug 19 2013 00:08:39 for Family Tree by
+    <li class="footer">Generated on Mon Jan 6 2014 23:06:56 for Family Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

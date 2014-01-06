@@ -41,7 +41,6 @@ class install {
         }
     }
 
-
     /**
      * This function is used to check the required directories permission
      * during the installation as FamilyTree needs to create some config files
@@ -57,14 +56,11 @@ class install {
         $main = false;
 
         //Check if directories are writable
-
         //Template Cache directory
         if (dir_iswritable("template/cache")) {
             $cache = TRUE;
             $template->assign("cache", true);
-        }
-        else if (!file_exists("template/cache"))
-        {
+        } else if (!file_exists("template/cache")) {
             //try making the directory if possible
             @mkdir("template/cache", 0755);
         }
@@ -73,9 +69,7 @@ class install {
         if (dir_iswritable("template/compile")) {
             $compile = true;
             $template->assign("compile", true);
-        }
-        else if (!file_exists("template/compile"))
-        {
+        } else if (!file_exists("template/compile")) {
             //Trying to make the directory myself here
             @mkdir("template/cache", 0755);
         }
@@ -86,9 +80,8 @@ class install {
             $main = true;
             $template->assign("main", TRUE);
         }
-        
-        if ($cache && $compile && $main)
-        {
+
+        if ($cache && $compile && $main) {
             header("Location: index.php?mode=ask_database_name");
         }
 
@@ -97,8 +90,7 @@ class install {
         // We are using @ just in case we don't have permission to read
         $output = file_get_contents("html/install.directory_check.tpl");
 
-        if ($output === false)
-        {
+        if ($output === false) {
             //We also cannot read that file so just print a simple plain message
             echo "Please give permission to the root folder i.e. ./FamilyTree <br /> The template cache folder (template/cache) <br /> The template compile folder (template/compile) and refresh this page";
             return false;
@@ -106,16 +98,13 @@ class install {
 
         echo $output;
 
-        if (!$cache)
-        {
+        if (!$cache) {
             echo "<h4>Cannot write in template/cache folder</h4><br>";
         }
-        if (!$compile)
-        {
+        if (!$compile) {
             echo "<h4>Cannot write in template/compile folder</h4><br>";
         }
-        if (!$main)
-        {
+        if (!$main) {
             echo "<h4>Cannot write in FamilyTree's Directory</h4><br>";
         }
     }
@@ -259,11 +248,14 @@ class install {
         $suggested_info = $db->query("create table suggested_info (
             id int(11) not null primary key auto_increment,
             typesuggest mediumtext not null,
-            suggested_value text not null,
+            new_value text default null,
+            old_value text default null,
             suggested_by int(11) not null,
+            suggested_to int(11) not null,
             ts int(11) not null,
             approved int(1) default 0,
-            foreign key(suggested_by) references member(id) );");
+            foreign key(from) references member(id),
+            foreign key(to) references member(id) );");
 
         $suggest_approved = $db->query("create table suggest_approved (
             id int(11) not null primary key auto_increment,
@@ -274,6 +266,8 @@ class install {
             foreign key (user_id) references member(id) );");
 
         $dasfamily = $db->query("insert into family (family_name,ts) values('Das Family'," . time() . ");");
+
+
         //Now the data that we already have
         $memberdata = file_get_contents("member_data.sql");
 

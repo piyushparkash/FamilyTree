@@ -28,150 +28,43 @@ switch ($_POST['action']) {
 
     //When to get suggestions for approval
     case "getsuggestions":
-        global $user;
-        $query = $db->query("select * from suggested_info where approved=0 and id not in 
-            (select suggest_id from suggest_approved where user_id=" . $user->user['id'] . ")");
-        while ($row = $db->fetch($query)) {
-            switch ($row['typesuggest']) {
-                //Dialog to be printed if typesuggest is remove
-                case "remove":
-                    global $template;
-                    $template->assign("suggestid", $row['id']);
-                    //Get the name of the member to be removed, His father and Member who suggested this...
-                    $query2 = $db->query("select * from member where id=" . $row['suggested_by']);
-                    $row2 = $db->fetch($query2);
-                    $template->assign('suggestedby', $row2['membername']);
+        global $suggest_handler;
+        $suggest_handler->getsuggestions();
+        break;
 
 
-                    $query2 = $db->query("select * from member where id=" . $row['suggested_value']);
-                    $row2 = $db->fetch($query2);
-                    $template->assign("membername", $row2['membername']);
+    //When adding wife
+    case "operation_addwife":
+        global $vanshavali;
 
-                    //Now the father of the memeber to be removed
-                    $query2 = $db->query("select * from member where id=" . $row2['sonof']);
-                    $row2 = $db->fetch($query2);
-                    $template->assign("fathername", $row2['membername']);
-                    $template->display("suggest.confirmremovemember.tpl");
-                    break;
-                case "child";
-                    global $template;
-                    $template->assign("suggestid", $row['id']);
-                    //Decode the given json value
-                    $suggested_value = json_decode($row['suggested_value'], true);
+        //Get the member to be changed
+        $member = $vanshavali->getmember($_POST['husband']);
 
-                    //Get the member who suggested it and the father of the new member
-                    $query2 = $db->query("select * from member where id=" . $row['suggested_by']);
-                    $row2 = $db->fetch($query2);
-                    $template->assign("suggestedby", $row2['membername']);
-
-                    $query2 = $db->query("select * from member where id=" . $suggested_value['id']);
-                    $row2 = $db->fetch($query2);
-                    $template->assign(array('membername' => $suggested_value['name']));
-
-                    $template->assign("fathername", $row2['membername']);
-                    
-                    //Display son or daughter according to the gender
-                    if ($suggested_value['gender']==0)
-                    {
-                        $template->assign("mnf","son");
-                    }
-                    else
-                    {
-                        $template->assign("mnf","daughter");
-                    }
-
-                    $template->display('suggest.confirmaddmember.tpl');
-                    break;
-                case "edit":
-                    $template->assign("suggestid", $row['id']);
-                    //Decode the suggested information
-                    $suggested_value = json_decode($row['suggested_value'], true);
-
-                    //Get the changed member previous values
-                    $row2 = $db->get("select * from member where id=" . $suggested_value['id']);
-
-                    //Compare them with each other and set the template values
-                    if ($row2['membername'] != $suggested_value['name']) {
-                        $template->assign("changed_name", 1);
-                    }
-
-                    if ($row2['gender'] != $suggested_value['gender']) {
-                        $template->assign("changed_gender", 1);
-                    }
-
-                    if ($row2['relationship_status'] != $suggested_value['relationship']) {
-                        $template->assign("changed_relationship", 1);
-                    }
-
-                    if ($row2['dob'] != $suggested_value['dob']) {
-                        $template->assign("changed_dob", 1);
-                    }
-
-                    if ($row2['alive'] != $suggested_value['alive']) {
-                        $template->assign("changed_alive", 1);
-                    }
-
-                    //Constants are all set...now update the values
-                    $template->assign(array(
-                        "membername" => $row2['membername'],
-                        "old_name" => $row2['membername'],
-                        "old_relationship" => ($row2['relationship_status'] == 0 ? "Single" : "Married"),
-                        "old_dob" => strftime("%d/%b/%G", $row2['dob']),
-                        "old_alive" => ($row2['alive'] == 0 ? "No" : "Yes"),
-                        "old_gender" => ($row2['gender'] == 0 ? "Male" : "Female"),
-                        "new_name" => $suggested_value['name'],
-                        "new_relationship" => ($suggested_value['relationship'] == 0 ? "Single" : "Married"),
-                        "new_dob" => strftime("%d/%b/%G", $suggested_value['dob']),
-                        "new_alive" => ($suggested_value['alive'] == 0 ? "No" : "Yes"),
-                        "new_gender" => ($suggested_value['gender'] == 0 ? "Male" : "Female")
-                    ));
-                    $template->display("suggest.confirmeditmember.tpl");
-                    break;
-                default :
-                    break;
-            }
+        //Add wife to the member
+        if ($member->addwife($_POST['name'], TRUE)) {
+            ajaxSuccess();
+        } else {
+            ajaxError();
         }
         break;
-        
-        
-        //When adding wife
-        case "operation_addwife":
-            global $vanshavali;
-            
-            //Get the member to be changed
-            $member=$vanshavali->getmember($_POST['husband']);
-            
-            //Add wife to the member
-            if ($member->addwife($_POST['name'],TRUE))
-            {
-                ajaxSuccess();
-            }
-            else
-            {
-                ajaxError();
-            }
-            break;
 
-            
-            //When adding husband
-        case "operation_addhusband":
-            global $vanshavali;
-            
-            //Get the member to be changed
-            $member=$vanshavali->getmember($_POST['wife']);
-            
-            //Add wife to the member
-            if ($member->addhusband($_POST['name'],TRUE))
-            {
-                ajaxSuccess();
-            }
-            else
-            {
-                ajaxError();
-            }
-            break;
-            
-            
+
+    //When adding husband
+    case "operation_addhusband":
+        global $vanshavali;
+
+        //Get the member to be changed
+        $member = $vanshavali->getmember($_POST['wife']);
+
+        //Add wife to the member
+        if ($member->addhusband($_POST['name'], TRUE)) {
+            ajaxSuccess();
+        } else {
+            ajaxError();
+        }
+        break;
+
+
     //When to approve suggestions
     case "suggestionapproval":
         //Retreive the values

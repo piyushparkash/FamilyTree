@@ -183,25 +183,30 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="member__operation__suggest_8php_source.html#l00020">20</a> of file <a class="el" href="member__operation__suggest_8php_source.html">member_operation_suggest.php</a>.</p>
 <div class="fragment"><div class="line">                                                  {</div>
-<div class="line">        global $db, $user;</div>
+<div class="line">        global $db, $user, $suggest_handler;</div>
 <div class="line"></div>
-<div class="line">        <span class="comment">//fill array with data</span></div>
-<div class="line">        $finalarray = array(<span class="stringliteral">&#39;name&#39;</span> =&gt; $name, <span class="stringliteral">&#39;gender&#39;</span> =&gt; $gender, <span class="stringliteral">&#39;id&#39;</span> =&gt; $id);</div>
+<div class="line">        <span class="comment">//Add the suggestion</span></div>
+<div class="line">        <span class="keywordflow">return</span> $suggest_handler-&gt;add_suggest(ADDMEMBER, $id, array(NAME =&gt; $name, GENDER =&gt; $gender));</div>
 <div class="line"></div>
-<div class="line">        <span class="comment">//Put it in database</span></div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ($db-&gt;query(<span class="stringliteral">&quot;insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values(&#39;child&#39;, &#39;&quot;</span> .</div>
-<div class="line">                        json_encode($finalarray) . <span class="stringliteral">&quot;&#39;,&quot;</span> . $user-&gt;user[<span class="stringliteral">&#39;id&#39;</span>] . <span class="stringliteral">&quot;,&quot;</span> . time() . <span class="stringliteral">&quot;)&quot;</span>))</div>
-<div class="line">        {</div>
-<div class="line">            <span class="comment">//Put the approval suggestion of user that has created the suggestion</span></div>
-<div class="line">            <span class="keywordflow">return</span> ($db-&gt;query(<span class="stringliteral">&quot;insert into suggest_approved (suggest_id,user_id,action) values(&quot;</span>.mysql_insert_id().<span class="stringliteral">&quot;,</span></div>
-<div class="line"><span class="stringliteral">                &quot;</span>.$user-&gt;user[<span class="stringliteral">&#39;id&#39;</span>].<span class="stringliteral">&quot;,1)&quot;</span>));</div>
-<div class="line">        }</div>
-<div class="line">        <span class="keywordflow">else</span></div>
-<div class="line">        {</div>
-<div class="line">            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line">        }</div>
-<div class="line">        </div>
+<div class="line">        <span class="comment">/* Old Method</span></div>
+<div class="line"><span class="comment">          //fill array with data</span></div>
+<div class="line"><span class="comment">          $finalarray = array(&#39;name&#39; =&gt; $name, &#39;gender&#39; =&gt; $gender, &#39;id&#39; =&gt; $id);</span></div>
+<div class="line"><span class="comment"></span></div>
+<div class="line"><span class="comment">          //Put it in database</span></div>
+<div class="line"><span class="comment"></span></div>
+<div class="line"><span class="comment">          if ($db-&gt;query(&quot;insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values(&#39;child&#39;, &#39;&quot; .</span></div>
+<div class="line"><span class="comment">          json_encode($finalarray) . &quot;&#39;,&quot; . $user-&gt;user[&#39;id&#39;] . &quot;,&quot; . time() . &quot;)&quot;))</span></div>
+<div class="line"><span class="comment">          {</span></div>
+<div class="line"><span class="comment">          //Put the approval suggestion of user that has created the suggestion</span></div>
+<div class="line"><span class="comment">          return ($db-&gt;query(&quot;insert into suggest_approved (suggest_id,user_id,action) values(&quot;.mysql_insert_id().&quot;,</span></div>
+<div class="line"><span class="comment">          &quot;.$user-&gt;user[&#39;id&#39;].&quot;,1)&quot;));</span></div>
+<div class="line"><span class="comment">          }</span></div>
+<div class="line"><span class="comment">          else</span></div>
+<div class="line"><span class="comment">          {</span></div>
+<div class="line"><span class="comment">          return false;</span></div>
+<div class="line"><span class="comment">          }</span></div>
+<div class="line"><span class="comment">         * End of old method</span></div>
+<div class="line"><span class="comment">         */</span></div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 </div>
@@ -239,27 +244,31 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
 
-<p>Definition at line <a class="el" href="member__operation__suggest_8php_source.html#l00144">144</a> of file <a class="el" href="member__operation__suggest_8php_source.html">member_operation_suggest.php</a>.</p>
-<div class="fragment"><div class="line">    {</div>
-<div class="line">        global $db, $user;</div>
+<p>Definition at line <a class="el" href="member__operation__suggest_8php_source.html#l00160">160</a> of file <a class="el" href="member__operation__suggest_8php_source.html">member_operation_suggest.php</a>.</p>
+<div class="fragment"><div class="line">                                            {</div>
+<div class="line">        global $db, $user, $suggest_handler;</div>
 <div class="line"></div>
-<div class="line">        <span class="comment">//fill array with data</span></div>
-<div class="line">        $finalarray = array(<span class="stringliteral">&#39;name&#39;</span> =&gt; $name, <span class="stringliteral">&#39;id&#39;</span> =&gt; $id);</div>
+<div class="line">        <span class="keywordflow">return</span> $suggest_handler-&gt;add_suggest(ADDSPOUSE, $id, array(NAME =&gt; $name, GENDER =&gt; 0));</div>
 <div class="line"></div>
-<div class="line">        <span class="comment">//Put it in database</span></div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ($db-&gt;query(<span class="stringliteral">&quot;insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values(&#39;Husband&#39;, &#39;&quot;</span> .</div>
-<div class="line">                        json_encode($finalarray) . <span class="stringliteral">&quot;&#39;,&quot;</span> . $user-&gt;user[<span class="stringliteral">&#39;id&#39;</span>] . <span class="stringliteral">&quot;,&quot;</span> . time() . <span class="stringliteral">&quot;)&quot;</span>))</div>
-<div class="line">        {</div>
-<div class="line">            <span class="comment">//Put the approval suggestion of user that has created the suggestion</span></div>
-<div class="line">            <span class="keywordflow">return</span> ($db-&gt;query(<span class="stringliteral">&quot;insert into suggest_approved (suggest_id,user_id,action) values(&quot;</span>.mysql_insert_id().<span class="stringliteral">&quot;,</span></div>
-<div class="line"><span class="stringliteral">                &quot;</span>.$user-&gt;user[<span class="stringliteral">&#39;id&#39;</span>].<span class="stringliteral">&quot;,1)&quot;</span>));</div>
-<div class="line">        }</div>
-<div class="line">        <span class="keywordflow">else</span></div>
-<div class="line">        {</div>
-<div class="line">            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line">        }</div>
-<div class="line">        </div>
+<div class="line">        <span class="comment">/*</span></div>
+<div class="line"><span class="comment">         * Old method</span></div>
+<div class="line"><span class="comment">         * </span></div>
+<div class="line"><span class="comment">          //fill array with data</span></div>
+<div class="line"><span class="comment">          $finalarray = array(&#39;name&#39; =&gt; $name, &#39;id&#39; =&gt; $id);</span></div>
+<div class="line"><span class="comment"></span></div>
+<div class="line"><span class="comment">          //Put it in database</span></div>
+<div class="line"><span class="comment"></span></div>
+<div class="line"><span class="comment">          if ($db-&gt;query(&quot;insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values(&#39;Husband&#39;, &#39;&quot; .</span></div>
+<div class="line"><span class="comment">          json_encode($finalarray) . &quot;&#39;,&quot; . $user-&gt;user[&#39;id&#39;] . &quot;,&quot; . time() . &quot;)&quot;)) {</span></div>
+<div class="line"><span class="comment">          //Put the approval suggestion of user that has created the suggestion</span></div>
+<div class="line"><span class="comment">          return ($db-&gt;query(&quot;insert into suggest_approved (suggest_id,user_id,action) values(&quot; . mysql_insert_id() . &quot;,</span></div>
+<div class="line"><span class="comment">          &quot; . $user-&gt;user[&#39;id&#39;] . &quot;,1)&quot;));</span></div>
+<div class="line"><span class="comment">          } else {</span></div>
+<div class="line"><span class="comment">          return false;</span></div>
+<div class="line"><span class="comment">          }</span></div>
+<div class="line"><span class="comment">          /*</span></div>
+<div class="line"><span class="comment">         * ENd of the old method</span></div>
+<div class="line"><span class="comment">         */</span></div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 </div>
@@ -297,27 +306,27 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
 
-<p>Definition at line <a class="el" href="member__operation__suggest_8php_source.html#l00112">112</a> of file <a class="el" href="member__operation__suggest_8php_source.html">member_operation_suggest.php</a>.</p>
-<div class="fragment"><div class="line">    {</div>
-<div class="line">        global $db, $user;</div>
+<p>Definition at line <a class="el" href="member__operation__suggest_8php_source.html#l00130">130</a> of file <a class="el" href="member__operation__suggest_8php_source.html">member_operation_suggest.php</a>.</p>
+<div class="fragment"><div class="line">                                         {</div>
+<div class="line">        global $db, $user, $suggest_handler;</div>
 <div class="line"></div>
-<div class="line">        <span class="comment">//fill array with data</span></div>
-<div class="line">        $finalarray = array(<span class="stringliteral">&#39;name&#39;</span> =&gt; $name, <span class="stringliteral">&#39;id&#39;</span> =&gt; $id);</div>
-<div class="line"></div>
-<div class="line">        <span class="comment">//Put it in database</span></div>
-<div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ($db-&gt;query(<span class="stringliteral">&quot;insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values(&#39;wife&#39;, &#39;&quot;</span> .</div>
-<div class="line">                        json_encode($finalarray) . <span class="stringliteral">&quot;&#39;,&quot;</span> . $user-&gt;user[<span class="stringliteral">&#39;id&#39;</span>] . <span class="stringliteral">&quot;,&quot;</span> . time() . <span class="stringliteral">&quot;)&quot;</span>))</div>
-<div class="line">        {</div>
-<div class="line">            <span class="comment">//Put the approval suggestion of user that has created the suggestion</span></div>
-<div class="line">            <span class="keywordflow">return</span> ($db-&gt;query(<span class="stringliteral">&quot;insert into suggest_approved (suggest_id,user_id,action) values(&quot;</span>.mysql_insert_id().<span class="stringliteral">&quot;,</span></div>
-<div class="line"><span class="stringliteral">                &quot;</span>.$user-&gt;user[<span class="stringliteral">&#39;id&#39;</span>].<span class="stringliteral">&quot;,1)&quot;</span>));</div>
-<div class="line">        }</div>
-<div class="line">        <span class="keywordflow">else</span></div>
-<div class="line">        {</div>
-<div class="line">            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line">        }</div>
-<div class="line">        </div>
+<div class="line">        <span class="keywordflow">return</span> $suggest_handler-&gt;add_suggest(ADDSPOUSE, $id, array(NAME =&gt; $name, GENDER =&gt; 1));</div>
+<div class="line">        <span class="comment">/*</span></div>
+<div class="line"><span class="comment">          //fill array with data</span></div>
+<div class="line"><span class="comment">          $finalarray = array(&#39;name&#39; =&gt; $name, &#39;id&#39; =&gt; $id);</span></div>
+<div class="line"><span class="comment"></span></div>
+<div class="line"><span class="comment">          //Put it in database</span></div>
+<div class="line"><span class="comment"></span></div>
+<div class="line"><span class="comment">          if ($db-&gt;query(&quot;insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values(&#39;wife&#39;, &#39;&quot; .</span></div>
+<div class="line"><span class="comment">          json_encode($finalarray) . &quot;&#39;,&quot; . $user-&gt;user[&#39;id&#39;] . &quot;,&quot; . time() . &quot;)&quot;)) {</span></div>
+<div class="line"><span class="comment">          //Put the approval suggestion of user that has created the suggestion</span></div>
+<div class="line"><span class="comment">          return ($db-&gt;query(&quot;insert into suggest_approved (suggest_id,user_id,action) values(&quot; . mysql_insert_id() . &quot;,</span></div>
+<div class="line"><span class="comment">          &quot; . $user-&gt;user[&#39;id&#39;] . &quot;,1)&quot;));</span></div>
+<div class="line"><span class="comment">          } else {</span></div>
+<div class="line"><span class="comment">          return false;</span></div>
+<div class="line"><span class="comment">          }</span></div>
+<div class="line"><span class="comment">         * End of the old method</span></div>
+<div class="line"><span class="comment">         */</span></div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 </div>
@@ -383,30 +392,37 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
 
-<p>Definition at line <a class="el" href="member__operation__suggest_8php_source.html#l00079">79</a> of file <a class="el" href="member__operation__suggest_8php_source.html">member_operation_suggest.php</a>.</p>
+<p>Definition at line <a class="el" href="member__operation__suggest_8php_source.html#l00090">90</a> of file <a class="el" href="member__operation__suggest_8php_source.html">member_operation_suggest.php</a>.</p>
 <div class="fragment"><div class="line">                                                                            {</div>
-<div class="line">        global $db, $user;</div>
+<div class="line">        global $db, $user, $suggest_handler;</div>
 <div class="line"></div>
 <div class="line">        preg_match(<span class="stringliteral">&quot;/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})/&quot;</span>, $dob, $matches);</div>
 <div class="line">        $dob = mktime(0, 0, 0, $matches[2], $matches[1], $matches[3]);</div>
 <div class="line"></div>
-<div class="line">        $finalarray = array(<span class="stringliteral">&#39;name&#39;</span> =&gt; $name,</div>
-<div class="line">            <span class="stringliteral">&#39;gender&#39;</span> =&gt; $gender,</div>
-<div class="line">            <span class="stringliteral">&#39;relationship&#39;</span> =&gt; $relationship,</div>
-<div class="line">            <span class="stringliteral">&#39;dob&#39;</span> =&gt; $dob,</div>
-<div class="line">            <span class="stringliteral">&#39;alive&#39;</span> =&gt; $alive,</div>
-<div class="line">            <span class="stringliteral">&#39;id&#39;</span> =&gt; $id);</div>
 <div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ($db-&gt;query(<span class="stringliteral">&quot;insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values</span></div>
-<div class="line"><span class="stringliteral">            (&#39;edit&#39;, &#39;&quot;</span> . json_encode($finalarray) . <span class="stringliteral">&quot;&#39;,&quot;</span> . $user-&gt;user[<span class="stringliteral">&#39;id&#39;</span>] . <span class="stringliteral">&quot;,&quot;</span> . time() . <span class="stringliteral">&quot;)&quot;</span>))</div>
-<div class="line">        {</div>
-<div class="line">            <span class="keywordflow">return</span> ($db-&gt;query(<span class="stringliteral">&quot;insert into suggest_approved (suggest_id,user_id,action) values(&quot;</span>.mysql_insert_id().<span class="stringliteral">&quot;,</span></div>
-<div class="line"><span class="stringliteral">                &quot;</span>.$user-&gt;user[<span class="stringliteral">&#39;id&#39;</span>].<span class="stringliteral">&quot;,1)&quot;</span>));</div>
-<div class="line">        }</div>
-<div class="line">        <span class="keywordflow">else</span></div>
-<div class="line">        {</div>
-<div class="line">            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line">        }</div>
+<div class="line">        <span class="keywordflow">return</span> $suggest_handler-&gt;add_suggest(NAME, $id, $name) &amp;&amp;</div>
+<div class="line">                $suggest_handler-&gt;add_suggest(GENDER, $id, $gender) &amp;&amp;</div>
+<div class="line">                $suggest_handler-&gt;add_suggest(RELATIONSHIP, $id, $relationship) &amp;&amp;</div>
+<div class="line">                $suggest_handler-&gt;add_suggest(DOB, $id, $dob) &amp;&amp;</div>
+<div class="line">                $suggest_handler-&gt;add_suggest(ALIVE, $id, $alive);</div>
+<div class="line"></div>
+<div class="line">        <span class="comment">/* Old Method</span></div>
+<div class="line"><span class="comment">          $finalarray = array(&#39;name&#39; =&gt; $name,</span></div>
+<div class="line"><span class="comment">          &#39;gender&#39; =&gt; $gender,</span></div>
+<div class="line"><span class="comment">          &#39;relationship&#39; =&gt; $relationship,</span></div>
+<div class="line"><span class="comment">          &#39;dob&#39; =&gt; $dob,</span></div>
+<div class="line"><span class="comment">          &#39;alive&#39; =&gt; $alive,</span></div>
+<div class="line"><span class="comment">          &#39;id&#39; =&gt; $id);</span></div>
+<div class="line"><span class="comment"></span></div>
+<div class="line"><span class="comment">          if ($db-&gt;query(&quot;insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values</span></div>
+<div class="line"><span class="comment">          (&#39;edit&#39;, &#39;&quot; . json_encode($finalarray) . &quot;&#39;,&quot; . $user-&gt;user[&#39;id&#39;] . &quot;,&quot; . time() . &quot;)&quot;)) {</span></div>
+<div class="line"><span class="comment">          return ($db-&gt;query(&quot;insert into suggest_approved (suggest_id,user_id,action) values(&quot; . mysql_insert_id() . &quot;,</span></div>
+<div class="line"><span class="comment">          &quot; . $user-&gt;user[&#39;id&#39;] . &quot;,1)&quot;));</span></div>
+<div class="line"><span class="comment">          } else {</span></div>
+<div class="line"><span class="comment">          return false;</span></div>
+<div class="line"><span class="comment">          }</span></div>
+<div class="line"><span class="comment">         * End of the old method</span></div>
+<div class="line"><span class="comment">         */</span></div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 </div>
@@ -433,21 +449,27 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
 
-<p>Definition at line <a class="el" href="member__operation__suggest_8php_source.html#l00050">50</a> of file <a class="el" href="member__operation__suggest_8php_source.html">member_operation_suggest.php</a>.</p>
+<p>Definition at line <a class="el" href="member__operation__suggest_8php_source.html#l00055">55</a> of file <a class="el" href="member__operation__suggest_8php_source.html">member_operation_suggest.php</a>.</p>
 <div class="fragment"><div class="line">                                 {</div>
-<div class="line">        global $db, $user;</div>
+<div class="line">        global $db, $user, $suggest_handler, $vanshavali;</div>
 <div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ($db-&gt;query(<span class="stringliteral">&quot;insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values</span></div>
-<div class="line"><span class="stringliteral">            (&#39;remove&#39;, &#39;$id&#39;,&quot;</span> . $user-&gt;user[<span class="stringliteral">&#39;id&#39;</span>] . <span class="stringliteral">&quot;,&quot;</span> . time() . <span class="stringliteral">&quot;)&quot;</span>))</div>
-<div class="line">        {</div>
-<div class="line">            <span class="keywordflow">return</span> ($db-&gt;query(<span class="stringliteral">&quot;insert into suggest_approved (suggest_id,user_id,action) values(&quot;</span>.mysql_insert_id().<span class="stringliteral">&quot;,</span></div>
-<div class="line"><span class="stringliteral">                &quot;</span>.$user-&gt;user[<span class="stringliteral">&#39;id&#39;</span>].<span class="stringliteral">&quot;,1)&quot;</span>));</div>
-<div class="line">        }</div>
-<div class="line">        <span class="keywordflow">else</span></div>
-<div class="line">        {</div>
-<div class="line">            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line">        }</div>
+<div class="line">        <span class="comment">//We need the removed members father name to show</span></div>
+<div class="line">        <span class="comment">//firstly accquire the current member details</span></div>
+<div class="line">        $current = $vanshavali-&gt;getmember($id);</div>
+<div class="line">        $father = $vanshavali-&gt;getmember($current-&gt;data[<span class="stringliteral">&#39;sonof&#39;</span>]);</div>
 <div class="line">        </div>
+<div class="line">        <span class="keywordflow">return</span> $suggest_handler-&gt;add_suggest(DELMEMBER, $id, $father-&gt;data[<span class="stringliteral">&#39;membername&#39;</span>]);</div>
+<div class="line"></div>
+<div class="line">        <span class="comment">/* Old method</span></div>
+<div class="line"><span class="comment">          if ($db-&gt;query(&quot;insert into suggested_info (typesuggest,suggested_value,suggested_by,ts) values</span></div>
+<div class="line"><span class="comment">          (&#39;remove&#39;, &#39;$id&#39;,&quot; . $user-&gt;user[&#39;id&#39;] . &quot;,&quot; . time() . &quot;)&quot;)) {</span></div>
+<div class="line"><span class="comment">          return ($db-&gt;query(&quot;insert into suggest_approved (suggest_id,user_id,action) values(&quot; . mysql_insert_id() . &quot;,</span></div>
+<div class="line"><span class="comment">          &quot; . $user-&gt;user[&#39;id&#39;] . &quot;,1)&quot;));</span></div>
+<div class="line"><span class="comment">          } else {</span></div>
+<div class="line"><span class="comment">          return false;</span></div>
+<div class="line"><span class="comment">          }</span></div>
+<div class="line"><span class="comment">         * End of the old method</span></div>
+<div class="line"><span class="comment">         */</span></div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 </div>
@@ -461,7 +483,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classmember__operation__suggest.html">member_operation_suggest</a></li>
-    <li class="footer">Generated on Mon Aug 19 2013 00:08:42 for Family Tree by
+    <li class="footer">Generated on Mon Jan 6 2014 23:06:59 for Family Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

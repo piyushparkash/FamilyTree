@@ -128,12 +128,15 @@ Inheritance diagram for member:</div>
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa2427c65795ffbdc72d64e2e91640463"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmember.html#aa2427c65795ffbdc72d64e2e91640463">__construct</a> ($memberid)</td></tr>
+<tr class="memitem:a364bea0f1ea59b67e68293ae5da9f413"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmember.html#a364bea0f1ea59b67e68293ae5da9f413">ismale</a> ()</td></tr>
+<tr class="memitem:af93337d3c08cad93fa43b5f30c0215b0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmember.html#af93337d3c08cad93fa43b5f30c0215b0">isfemale</a> ()</td></tr>
 <tr class="memitem:ac331cc43c8c076314d05ac004d20e021"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmember.html#ac331cc43c8c076314d05ac004d20e021">getparent</a> ()</td></tr>
 <tr class="memitem:af0d9a69479f2b9c859acb90e97bad85c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmember.html#af0d9a69479f2b9c859acb90e97bad85c">get_sons</a> ()</td></tr>
 <tr class="memitem:a024f7356f2279490775b6ae432d51010"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmember.html#a024f7356f2279490775b6ae432d51010">has_sons</a> ()</td></tr>
 <tr class="memitem:a45c3ed97d49c45ce716892b4b5e44bd2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmember.html#a45c3ed97d49c45ce716892b4b5e44bd2">autofix</a> ()</td></tr>
 <tr class="memitem:ae0f93137fb23a9f5ae9e6a287f6232dd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmember.html#ae0f93137fb23a9f5ae9e6a287f6232dd">set_relationship</a> ($relationship_id)</td></tr>
 <tr class="memitem:a541afd2c1c096f5810c0b889e33287ba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmember.html#a541afd2c1c096f5810c0b889e33287ba">related_to</a> ($related_to)</td></tr>
+<tr class="memitem:aeb52158abb66bf82955ab17670b11eec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmember.html#aeb52158abb66bf82955ab17670b11eec">gender</a> ()</td></tr>
 <tr class="inherit_header pub_methods_classmember__operation"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmember__operation')"><img src="closed.png" alt="-"/>&nbsp;Public Member Functions inherited from <a class="el" href="classmember__operation.html">member_operation</a></td></tr>
 <tr class="memitem:aaae269a6cda847ad7aaffad933fe0ee6 inherit pub_methods_classmember__operation"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmember__operation.html#aaae269a6cda847ad7aaffad933fe0ee6">populate_data</a> ($memberid)</td></tr>
 <tr class="memitem:a6262e1076fe11fe6c0ef4311bfb79ac7 inherit pub_methods_classmember__operation"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmember__operation.html#a6262e1076fe11fe6c0ef4311bfb79ac7">add_son</a> ($name, $gender, $<a class="el" href="classsuggest.html">suggest</a>=false)</td></tr>
@@ -187,7 +190,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmember__operation.html#a6878b5586bd9ea7e86c0ec19750437ca">member_operation</a>.</p>
 
-<p>Definition at line <a class="el" href="member_8php_source.html#l00019">19</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
+<p>Definition at line <a class="el" href="member_8php_source.html#l00017">17</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
 <div class="fragment"><div class="line">                                           {</div>
 <div class="line">        <a class="code" href="classmember.html#aa2427c65795ffbdc72d64e2e91640463">parent::__construct</a>($memberid);</div>
 <div class="line">        $this-&gt;<a class="code" href="classmember__operation.html#aaae269a6cda847ad7aaffad933fe0ee6">populate_data</a>($memberid);</div>
@@ -212,7 +215,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This function is used to fix any anamolies found in member data such as if user has children but the relationshipstatus is set to Single   $db </p>
 <dl class="section return"><dt>Returns</dt><dd>null </dd></dl>
 
-<p>Definition at line <a class="el" href="member_8php_source.html#l00068">68</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
+<p>Definition at line <a class="el" href="member_8php_source.html#l00090">90</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
 <div class="fragment"><div class="line">                       {</div>
 <div class="line">        global $db;</div>
 <div class="line">        $nosons = $this-&gt;<a class="code" href="classmember.html#a024f7356f2279490775b6ae432d51010">has_sons</a>();</div>
@@ -222,6 +225,28 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">            $this-&gt;<a class="code" href="classmember.html#ae0f93137fb23a9f5ae9e6a287f6232dd">set_relationship</a>(1);</div>
 <div class="line">            $this-&gt;<a class="code" href="classmember__operation.html#a98d050cd93cb97b426d8971a827159b1">addwife</a>();</div>
 <div class="line">        }</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aeb52158abb66bf82955ab17670b11eec"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">member::gender </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the gender code of the member 1 = Female 0= Male </p>
+<dl class="section return"><dt>Returns</dt><dd>integer </dd></dl>
+
+<p>Definition at line <a class="el" href="member_8php_source.html#l00145">145</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
+<div class="fragment"><div class="line">                      {</div>
+<div class="line">        <span class="keywordflow">return</span> $this-&gt;data[<span class="stringliteral">&#39;gender&#39;</span>];</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 </div>
@@ -241,7 +266,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This function is used to get the children of the currenyl logged-in user   $db The instance of the db class </p>
 <dl class="section return"><dt>Returns</dt><dd>array Array of  </dd></dl>
 
-<p>Definition at line <a class="el" href="member_8php_source.html#l00039">39</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
+<p>Definition at line <a class="el" href="member_8php_source.html#l00061">61</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
 <div class="fragment"><div class="line">                        {</div>
 <div class="line">        global $db;</div>
 <div class="line">        $finalarray = array();</div>
@@ -269,7 +294,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This function is used to get the ID of the parent of the current logged in user </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="member_8php_source.html#l00030">30</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
+<p>Definition at line <a class="el" href="member_8php_source.html#l00052">52</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
 <div class="fragment"><div class="line">                         {</div>
 <div class="line">        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classmember.html">member</a>($this-&gt;data[<span class="stringliteral">&#39;sonof&#39;</span>]);</div>
 <div class="line">    }</div>
@@ -291,12 +316,64 @@ Additional Inherited Members</h2></td></tr>
 <p>This function is used to check if the user has children This function also return the number of children of the user   $db The instance of the  class </p>
 <dl class="section return"><dt>Returns</dt><dd>integer </dd></dl>
 
-<p>Definition at line <a class="el" href="member_8php_source.html#l00055">55</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
+<p>Definition at line <a class="el" href="member_8php_source.html#l00077">77</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
 <div class="fragment"><div class="line">                        {</div>
 <div class="line">        global $db;</div>
 <div class="line">        $query = $db-&gt;query(<span class="stringliteral">&quot;select count(*) as nosons from member where sonof=$this-&gt;id&quot;</span>);</div>
 <div class="line">        $row = $db-&gt;fetch($query);</div>
 <div class="line">        <span class="keywordflow">return</span> $row[<span class="stringliteral">&#39;nosons&#39;</span>];</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="af93337d3c08cad93fa43b5f30c0215b0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">member::isfemale </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the user is female </p>
+<dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
+
+<p>Definition at line <a class="el" href="member_8php_source.html#l00039">39</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
+<div class="fragment"><div class="line">                        {</div>
+<div class="line">        <span class="keywordflow">if</span> ($this-&gt;data[<span class="stringliteral">&#39;gender&#39;</span>] == 1) {</div>
+<div class="line">            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line">        } <span class="keywordflow">else</span> {</div>
+<div class="line">            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line">        }</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a364bea0f1ea59b67e68293ae5da9f413"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">member::ismale </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return true f the user is male </p>
+<dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
+
+<p>Definition at line <a class="el" href="member_8php_source.html#l00027">27</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
+<div class="fragment"><div class="line">                      {</div>
+<div class="line">        <span class="keywordflow">if</span> ($this-&gt;data[<span class="stringliteral">&#39;gender&#39;</span>] == 0) {</div>
+<div class="line">            <span class="keywordflow">return</span> TRUE;</div>
+<div class="line">        } <span class="keywordflow">else</span> {</div>
+<div class="line">            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line">        }</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 </div>
@@ -323,12 +400,12 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
 
-<p>Definition at line <a class="el" href="member_8php_source.html#l00106">106</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
+<p>Definition at line <a class="el" href="member_8php_source.html#l00128">128</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
 <div class="fragment"><div class="line">                                     {</div>
 <div class="line">        global $db;</div>
 <div class="line">        <span class="keywordflow">if</span> ($db-&gt;query(<span class="stringliteral">&quot;update member set related_to=$related_to where id=&quot;</span> . $this-&gt;data[<span class="stringliteral">&#39;id&#39;</span>])) {</div>
 <div class="line">            $this-&gt;<a class="code" href="classmember.html#ae0f93137fb23a9f5ae9e6a287f6232dd">set_relationship</a>(1);</div>
-<div class="line">            </div>
+<div class="line"></div>
 <div class="line">            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">        } <span class="keywordflow">else</span> {</div>
 <div class="line">            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -360,7 +437,7 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>boolean</dd></dl>
 <p>Relationship ID 0 == Single 1 == Married </p>
 
-<p>Definition at line <a class="el" href="member_8php_source.html#l00090">90</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
+<p>Definition at line <a class="el" href="member_8php_source.html#l00112">112</a> of file <a class="el" href="member_8php_source.html">member.php</a>.</p>
 <div class="fragment"><div class="line">                                                {</div>
 <div class="line">        global $db;</div>
 <div class="line">        <span class="keywordflow">if</span> (!$db-&gt;query(<span class="stringliteral">&quot;update member set relationship_status=$relationship_id where id=$this-&gt;id&quot;</span>)) {</div>
@@ -381,7 +458,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classmember.html">member</a></li>
-    <li class="footer">Generated on Mon Aug 19 2013 00:08:42 for Family Tree by
+    <li class="footer">Generated on Mon Jan 6 2014 23:06:59 for Family Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
