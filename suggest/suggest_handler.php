@@ -4,6 +4,7 @@
  * This package will be used to handle the suggest system
  * @author Piyush
  */
+
 /**
  * This array will hold all types of suggestions
  */
