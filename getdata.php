@@ -145,7 +145,7 @@ switch ($_POST['action']) {
 
             //Now add the suggestion
             if (!$member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive'], TRUE)) {
-                trigger_error("Cannot Edit Member. Some error occured");
+                ajaxError();
             } else {
                 ajaxSuccess();
             }
