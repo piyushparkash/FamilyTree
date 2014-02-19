@@ -394,12 +394,15 @@ function suggest_action(e, actionid)
     var x = $(e).parents("div");
 
     //Get the id of the suggest
-    var id = parseInt(x[1].id);
+    var id = parseInt(x[0].id);
+    var forceful = parseInt($(x).data('forceful'));
+    
     //perform the suggestion ajax action
     $.post("getdata.php", {
         action: "suggestionapproval",
         suggestid: id,
-        suggest_action: actionid
+        suggest_action: actionid,
+        forceful: forceful,
     }, function(data)
 
     {

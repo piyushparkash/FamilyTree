@@ -10,7 +10,7 @@ require_once 'member_operation_suggest.php';
 
 class suggest extends member_operation_suggest {
 
-    public $id, $suggested_value, $typesuggest, $suggestedby;
+    public $id, $suggested_value, $typesuggest, $suggestedby, $detail;
 
     /**
      * Constructor of the class. This gathers the basic information about
@@ -22,6 +22,7 @@ class suggest extends member_operation_suggest {
         global $db;
         $this->id = $suggestid;
         $row = $db->get("select * from suggested_info where id=$suggestid");
+        $this->detail = $row;
         //$this->suggested_value = json_decode($row['suggested_value'], TRUE);
         $this->typesuggest = $row['typesuggest'];
         $this->suggestedby = $row['suggested_by'];
@@ -41,8 +42,13 @@ class suggest extends member_operation_suggest {
      * @global \user $user Instance of the user class
      * @return boolean
      */
-    function approve() {
+    function approve($forceful = false) {
         global $db, $user;
+
+        if ($forceful) {
+            $this->apply();
+            return true;
+        }
         if (!$db->get("Insert into suggest_approved(suggest_id,user_id,action) values($this->id, 
                 " . $user->user['id'] . ",1)")) {
             return false;
@@ -60,11 +66,16 @@ class suggest extends member_operation_suggest {
      * @global \user $user Instance of user class
      * @return boolean
      */
-    function reject() {
+    function reject($forceful = false) {
         //Rejects the $id provided in the constructor
         global $db, $user;
+
+        if ($forceful) {
+            $this->apply();
+            return true;
+        }
         if (!$db->get("Insert into suggest_approved (suggest_id,user_id,action) values
-            ($this->id,".$user->user[0].",0)")) {
+            ($this->id," . $user->user[0] . ",0)")) {
             return false;
         }
 
@@ -80,11 +91,17 @@ class suggest extends member_operation_suggest {
      * @global \user $user Instance of the user class
      * @return boolean
      */
-    function dontknow() {
+    function dontknow($forceful = FALSE) {
         //Marks suggestion as don'tknow
         global $db, $user;
+
+
+        if ($forceful) {
+            $this->apply();
+            return true;
+        }
         if (!$db->get("Insert into suggest_approved (suggest_id,user_id,action)
-            values($this->id,".$user->user[0].",2)")) {
+            values($this->id," . $user->user[0] . ",2)")) {
             return false;
         }
 
@@ -168,28 +185,10 @@ class suggest extends member_operation_suggest {
      * @return null
      */
     private function apply() {
-        global $vanshavali, $db;
+        global $db, $suggest_handler;
 
-        //Check if suggested_value was JSON or not
-        if (is_array($this->suggested_value)) {
-            $member = $vanshavali->getmember($this->suggested_value['id']);
-        } else {
-            $member = $vanshavali->getmember($this->suggested_value);
-        }
-
-
-        //We have the member to be edited. Now apply the given operation
-        switch ($this->typesuggest) {
-            case "child":
-                $member->add_son($this->suggested_value['name'], $this->suggested_value['gender']);
-                break;
-            case "remove":
-                $member->remove();
-                break;
-            case "edit":
-                $member->edit($this->suggested_value['name'], $this->suggested_value['gender'], $this->suggested_value['relationship'], $this->suggested_value['dob'], $this->suggested_value['alive']);
-                break;
-        }
+        //Hand over the Functions to the handler
+        $suggest_handler->apply_suggest($this->detail);
 
         //Now delete all the suggestion approvals as they are of no use
         $this->approval_delete();

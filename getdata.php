@@ -70,13 +70,13 @@ switch ($_POST['action']) {
         //Retreive the values
         $suggest_id = $_POST['suggestid'];
         $action = $_POST['suggest_action'];
-
+        $forceful = (boolean) $_POST['forceful'];
         $suggest = new suggest($suggest_id);
         switch ($action) {
             case 0:
                 //Reject the suggestion
-                if (!$suggest->reject()) {
-                    trigger_error("Cannot reject suggestion. Error Executing query", E_USER_NOTICE);
+                if (!$suggest->reject($forceful)) {
+                    ajaxError();
                 } else {
 
                     //Pass the id of the suggest so that proper HTML element can be made disappear
@@ -85,8 +85,8 @@ switch ($_POST['action']) {
                 break;
             case 1:
                 //Accept the suggestion
-                if (!$suggest->approve()) {
-                    trigger_error("Cannot approved the Suggestion. Error Executing query", E_USER_NOTICE);
+                if (!$suggest->approve($forceful)) {
+                    ajaxError();
                 } else {
                     //Pass the id of the suggest so that proper HTML element can be made disappear
                     ajaxSuccess(array("suggestid" => $suggest_id));
@@ -95,7 +95,7 @@ switch ($_POST['action']) {
                 break;
             case 2:
                 //Mark the suggestion as don't know
-                if (!$suggest->dontknow()) {
+                if (!$suggest->dontknow($forceful)) {
                     trigger_error("Cannot reject suggestion. Error Executing query", E_USER_NOTICE);
                 } else {
 
