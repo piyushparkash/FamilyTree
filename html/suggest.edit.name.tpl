@@ -1,0 +1,1 @@
+{$suggested_by->data['membername']} changed the name of {$suggested_to->data['membername']} to {$newvalue}
