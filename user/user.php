@@ -5,7 +5,7 @@
  * @extends \auth
  * @author piyush
  */
-require("auth/auth.php");
+require(__DIR__ . "/../auth/auth.php");
 
 class user extends auth {
 
@@ -25,7 +25,7 @@ class user extends auth {
         if ($this->check_session() == true) {
             //populate user data and set class variables to authenticated else normal
             $this->populate_data($_SESSION['id']);
-            
+
             //Insert this recent activity time in the database
             $this->update_lastlogin();
         }
@@ -49,7 +49,7 @@ class user extends auth {
         if ($ret == true and !is_array($ret)) {
             $this->populate_data($_SESSION['id']);
         }
-        
+
         //And return as it was previously doing before populate data was added
         return $ret;
     }
@@ -88,36 +88,32 @@ class user extends auth {
         unset($this->user);
         $this->user = array();
     }
-    
+
     /**
      * This function is used to get the last activity time of the user
      * @global \db $db Instance of the db class
      * @return boolean True if successfull else false on unsuccessfull
      */
-    function update_lastlogin()
-    {
+    function update_lastlogin() {
         global $db;
-        if ($db->query("update member set lastlogin=" . time(). " where id=". $this->user['id']))
-        {
+        if ($db->query("update member set lastlogin=" . time() . " where id=" . $this->user['id'])) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
+
     /**
      * This function is used to get the last login time of the user
      * @global \db $db Instance of the db class
      * @return integer TimeStamp of the last login
      */
-    function get_lastlogin()
-    {
+    function get_lastlogin() {
         global $db;
-        $query = $db->query("select lastlogin from member where id=".$this->user['lastlogin']);
-        
+        $query = $db->query("select lastlogin from member where id=" . $this->user['lastlogin']);
+
         $row = $db->fetch($query);
-        
+
         return $row['lastlogin'];
     }
 
