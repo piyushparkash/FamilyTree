@@ -2,7 +2,7 @@
 
 // put your code here
 
-require_once __DIR__.'/header.php';
+require_once 'header.php';
 global $suggest_handler;
 
 $template->header();
