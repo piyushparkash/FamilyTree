@@ -16,12 +16,12 @@ if (file_exists("config.php")) {
 global $db, $template, $user, $vanshavali;
 
 //Initialize Global variables
-require_once __DIR__.'/template/template.php';
-require_once __DIR__.'/db/db.php';
-require_once __DIR__.'/user/user.php';
-require_once __DIR__.'/vanshavali/vanshavali.php';
-require_once __DIR__.'/functions.php';
-require_once __DIR__.'/suggest/suggest_handler.php';
+require_once 'template/template.php';
+require_once 'db/db.php';
+require_once 'user/user.php';
+require_once 'vanshavali/vanshavali.php';
+require_once 'functions.php';
+require_once 'suggest/suggest_handler.php';
 $template = new template();
 $db = new db();
 $vanshavali = new vanshavali();
