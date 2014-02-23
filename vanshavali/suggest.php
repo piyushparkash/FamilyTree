@@ -23,16 +23,6 @@ class suggest extends member_operation_suggest {
         $this->id = $suggestid;
         $row = $db->get("select * from suggested_info where id=$suggestid");
         $this->detail = $row;
-        //$this->suggested_value = json_decode($row['suggested_value'], TRUE);
-        $this->typesuggest = $row['typesuggest'];
-        $this->suggestedby = $row['suggested_by'];
-
-        //if typesuggest is remove then suggested value is in json else not
-        if ($row['typesuggest'] == "remove") {
-            $this->suggested_value = $row['suggested_value'];
-        } else {
-            $this->suggested_value = json_decode($row['suggested_value'], true);
-        }
     }
 
     /**
@@ -71,7 +61,7 @@ class suggest extends member_operation_suggest {
         global $db, $user;
 
         if ($forceful) {
-            $this->apply();
+            $this->removesuggestion();
             return true;
         }
         if (!$db->get("Insert into suggest_approved (suggest_id,user_id,action) values
@@ -82,32 +72,6 @@ class suggest extends member_operation_suggest {
         //Check if suggestion has crossed 50% mark
         $this->check_decision();
         return TRUE;
-    }
-
-    /**
-     * This function is used to mark a suggestion as don't know. Returns false
-     * on error
-     * @global \db $db Instance of the db class
-     * @global \user $user Instance of the user class
-     * @return boolean
-     */
-    function dontknow($forceful = FALSE) {
-        //Marks suggestion as don'tknow
-        global $db, $user;
-
-
-        if ($forceful) {
-            $this->apply();
-            return true;
-        }
-        if (!$db->get("Insert into suggest_approved (suggest_id,user_id,action)
-            values($this->id," . $user->user[0] . ",2)")) {
-            return false;
-        }
-
-        //Check if suggestion has crossed 50% mark
-        $this->check_decision();
-        return true;
     }
 
     /**
@@ -125,7 +89,6 @@ class suggest extends member_operation_suggest {
         $total = mysql_num_rows($query);
         $noapproved = 0;
         $norejected = 0;
-        $nodontknow = 0;
 
         //Count the no of approvals/Rejections
         while ($row = $db->fetch($query)) {
@@ -134,21 +97,17 @@ class suggest extends member_operation_suggest {
                     break;
                 case 1:$noapproved++;
                     break;
-                case 2:$nodontknow++;
-                    break;
                 default:
                     break;
             }
         }
         $noapproved = ($noapproved / $total) * 100;
-        $nodontknow = ($nodontknow / $total) * 100;
         $norejected = ($norejected / $total) * 100;
 
         //If approved>50 then accept the suggestion
         //if rejected>50 then reject the suggestion
-        //if donknow>50 then even i don't know what to do
         if ($total == $row2['totaluser']) {
-            return array($noapproved, $norejected, $nodontknow);
+            return array($noapproved, $norejected);
         } else {
             return false;
         }
@@ -163,17 +122,24 @@ class suggest extends member_operation_suggest {
         $percent = $this->checkpercent();
 
         if ($percent) {
-            if ($percent[0] > 50) {
+            if ($percent[0] > 10) {
                 //Almost half the people have agreed, So lets add it permanently..
                 $this->apply();
-            } else if ($percent[1] > 50) {
+            } else if ($percent[1] > 10) {
                 //More than half of the people have rejected it, So lets remove the suggestion
-                $this->apply();
-            } else if ($percent[2] > 50) {
-                //More than half of the people don't know about it
-                //So we have no choice lets approve this suggestion
-                $this->apply();
+                $this->removesuggestion();
             }
+        }
+    }
+
+    private function removesuggestion() {
+        //Remove the suggestion
+        global $db;
+
+        $query = $db->get("delete from suggested_info where id = " . $this->id);
+
+        if ($query) {
+            $this->approval_delete();
         }
     }
 

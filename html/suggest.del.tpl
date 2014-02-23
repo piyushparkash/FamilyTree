@@ -1,1 +1,1 @@
-{$suggested_to->data['membername']} is not {if !$sod}son{else}daughter{/if} of {$newvalue}
+{$suggested_to->data['membername']} is not {if !$sod}son{else}daughter{/if} of {$newvalue[0]}

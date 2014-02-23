@@ -158,7 +158,8 @@ class vanshavali {
             "gender" => $row['gender'],
             "alive_id" => $row['alive'],
             'image' => empty($row['profilepic']) ? "common.png" : $row['profilepic'],
-            'familyid' => $row['family_id']
+            'familyid' => $row['family_id'],
+            'gaon' => $row['gaon']
         );
         return $obj;
     }

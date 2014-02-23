@@ -216,9 +216,8 @@ class suggest_handler {
             case ADD:
                 //Decode the values
                 $details['new_value'] = json_decode($details['new_value'], true);
-                $sql = "insert into member(membername, gender, sonof) values ('"
-                        . $details['new_value']['membername'] . "'," . $details['new_value']['gender'] . ", "
-                        . $details['suggested_to'] . ")";
+                $member = new member($details['suggested_to']);
+                $member->add_son($details['new_value']['membername'], $details['new_value']['gender']);
                 $db->query($sql);
                 break;
             case MODIFY:
@@ -227,8 +226,9 @@ class suggest_handler {
                 break;
             case DEL;
                 //Just don't show the member and he is deleted'
-                $sql = "update member set dontshow = 1 where id = " . $details['suggested_to'];
-                $db->query($sql);
+                $member = new member($details['suggested_to']);
+                $member->removeme();
+                unset($member);
                 break;
         }
     }

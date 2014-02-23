@@ -202,11 +202,12 @@ function editmember() {
 
     //Collect all the members
     x = $("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
-        #operation_edit_dob,#operation_edit_alive");
+        #operation_edit_dob,#operation_edit_alive,#operation_edit_gaon");
 
     //Set their default values
     x[0].value = member.name;
     x[3].value = member.data.dob;
+    x[4].value = member.data.gaon;
 
     //Find from values and select the given element
     options = x[1].options;
@@ -232,12 +233,12 @@ function editmember() {
                 maxDate: '-10y'
             });
 
-    options = x[4].options;
-    for (i = 0; i < x[4].options.length; i++)
+    options = x[5].options;
+    for (i = 0; i < x[5].options.length; i++)
     {
         if (options[i].value == parseInt(member.data.alive_id))
         {
-            x[4].selectedIndex = i;
+            x[5].selectedIndex = i;
         }
     }
 
@@ -249,7 +250,7 @@ function editmember_submit()
 {
     //Collect variables values
     x = $("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
-        #operation_edit_dob,#operation_edit_alive,#operation_edit_id");
+        #operation_edit_dob,#operation_edit_alive,#operation_edit_id,#operation_edit_gaon");
 
     if (x[0].value == "")
     {
@@ -279,9 +280,9 @@ function editmember_submit()
         "gender": x[2].value,
         "relationship": x[3].value,
         "dob": x[4].value,
-        "alive": x[5].value,
-        memberid: x[1].value
-
+        "alive": x[6].value,
+        memberid: x[1].value,
+        gaon: x[5].value
     }, function(data)
     {
         //Check for AJAX Error
@@ -293,7 +294,7 @@ function editmember_submit()
         else if (ajaxSuccess(data))
         {
             var x = $("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
-        #operation_edit_dob,#operation_edit_alive,#operation_edit_id");
+        #operation_edit_dob,#operation_edit_alive,#operation_edit_id,#operation_edit_gaon");
 
             //Set the canvas variables
             member = tree.graph.getNode($("#operation_edit_id").val());
@@ -302,6 +303,7 @@ function editmember_submit()
             member.data.alive_id = x[5].value;
             member.data.gender = x[2].value;
             member.data.dob = x[4].value;
+            member.data.gaon = x[6].value;
 
             //Change the displayed data on the screen
             member.data.relationship_status = member.data.relationship_status_id == 0 ? "Single" : "Married";
@@ -396,7 +398,7 @@ function suggest_action(e, actionid)
     //Get the id of the suggest
     var id = parseInt(x[0].id);
     var forceful = parseInt($(x).data('forceful'));
-    
+
     //perform the suggestion ajax action
     $.post("getdata.php", {
         action: "suggestionapproval",

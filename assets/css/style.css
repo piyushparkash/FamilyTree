@@ -14,12 +14,12 @@
 }
 .successbox
 {
-	color: green;
-	font-weight: bold;
+    color: green;
+    font-weight: bold;
 }
 .small
 {
-	font-size: small;
+    font-size: small;
 }
 .alone_title
 {
@@ -125,7 +125,7 @@
 
 #display_name
 {
-    
+
     font-family: Geneva,Arial,Helvetica,sans-serif;
     background-color: #d4d7d7;
     vertical-align: middle;
@@ -166,7 +166,7 @@
     margin-top: 10px;
 }
 
-#display_dob, #display_relationship, #display_alive
+#display_dob, #display_relationship, #display_alive, #display_gaon
 {
     font-weight: bold;
 }

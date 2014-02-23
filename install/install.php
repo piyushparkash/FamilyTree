@@ -243,9 +243,7 @@ class install {
             suggested_by int(11) not null,
             suggested_to int(11) not null,
             ts int(11) not null,
-            approved int(1) default 0,
-            foreign key(suggested_by) references member(id),
-            foreign key(suggested_to) references member(id) );");
+            approved int(1) default 0 );");
 
         $suggest_approved = $db->query("create table suggest_approved (
             id int(11) not null primary key auto_increment,

@@ -139,12 +139,12 @@ switch ($_POST['action']) {
         break;
     case "operation_edit":
         global $vanshavali;
-        if (isset($_POST['type']) && isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['relationship']) && isset($_POST['dob']) && isset($_POST['alive']) && isset($_POST['memberid'])) {
+        if (isset($_POST['type']) && isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['relationship']) && isset($_POST['dob']) && isset($_POST['alive']) && isset($_POST['memberid']) && isset($_POST['gaon'])) {
             //Get the member
             $member = $vanshavali->getmember($_POST['memberid']);
 
             //Now add the suggestion
-            if (!$member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive'], TRUE)) {
+            if (!$member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive'], $_POST['gaon'], TRUE)) {
                 ajaxError();
             } else {
                 ajaxSuccess();

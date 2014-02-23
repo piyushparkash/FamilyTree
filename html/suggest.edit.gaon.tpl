@@ -1,1 +1,1 @@
-{$suggested_by->data['membername']} said that {$suggested_to->data['membername']} belong to {$newvalue} and not to {oldvalue}
+{$suggested_by->data['membername']} said that {$suggested_to->data['membername']} belongs to {$newvalue}
