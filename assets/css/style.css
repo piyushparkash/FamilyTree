@@ -12,14 +12,26 @@
     padding: 10px;
     color: #A4CFF2;
 }
+
+.wrapper_left
+{
+    background-color: #bbd8e9;
+    border-radius: 3px;
+}
+
+.wrapper_right
+{
+    border-radius: 3px;
+    background-color: #dceaf4;
+}
 .successbox
 {
-	color: green;
-	font-weight: bold;
+    color: green;
+    font-weight: bold;
 }
 .small
 {
-	font-size: small;
+    font-size: small;
 }
 .alone_title
 {
@@ -125,7 +137,7 @@
 
 #display_name
 {
-    
+
     font-family: Geneva,Arial,Helvetica,sans-serif;
     background-color: #d4d7d7;
     vertical-align: middle;

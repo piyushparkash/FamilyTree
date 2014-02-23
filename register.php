@@ -3,6 +3,9 @@
 require 'header.php';
 global $template, $vanshavali, $user;
 
+$mode = $_GET['mode'];
+$sub = $_GET['sub'];
+
 //If there is submitted data
 if (isset($_POST['register_submit'])) {
     //Collect all the variables
@@ -34,8 +37,5 @@ if (isset($_POST['register_submit'])) {
         header("Location:welcome.php");
     }
 }
-
-$template->header();
-$template->display('user.main.tpl');
-$template->display('register.form.tpl');
-$template->footer();
+require_once 'registration/registration.php';
+$registration = new registration($mode, $sub);

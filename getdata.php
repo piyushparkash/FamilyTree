@@ -10,7 +10,7 @@ require "vanshavali/suggest.php";
 global $db;
 
 //get the type of data to be extracted
-switch ($_POST['action']) {
+switch ($_REQUEST['action']) {
 
     //when to check whether a given username already exists or not
     case "username_check":
@@ -20,9 +20,9 @@ switch ($_POST['action']) {
 
         //if count is >1 then there are user with that username
         if ($row['no'] > 0) {
-            echo json_encode(array("yes" => 1));
+            echo json_encode("Username already taken");
         } else {
-            echo json_encode(array("yes" => 0));
+            echo json_encode("true");
         }
         break;
 
