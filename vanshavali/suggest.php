@@ -10,7 +10,7 @@ require_once 'member_operation_suggest.php';
 
 class suggest extends member_operation_suggest {
 
-    public $id, $suggested_value, $typesuggest, $suggestedby;
+    public $id, $suggested_value, $typesuggest, $suggestedby, $detail;
 
     /**
      * Constructor of the class. This gathers the basic information about
@@ -22,16 +22,7 @@ class suggest extends member_operation_suggest {
         global $db;
         $this->id = $suggestid;
         $row = $db->get("select * from suggested_info where id=$suggestid");
-        //$this->suggested_value = json_decode($row['suggested_value'], TRUE);
-        $this->typesuggest = $row['typesuggest'];
-        $this->suggestedby = $row['suggested_by'];
-
-        //if typesuggest is remove then suggested value is in json else not
-        if ($row['typesuggest'] == "remove") {
-            $this->suggested_value = $row['suggested_value'];
-        } else {
-            $this->suggested_value = json_decode($row['suggested_value'], true);
-        }
+        $this->detail = $row;
     }
 
     /**
@@ -41,8 +32,13 @@ class suggest extends member_operation_suggest {
      * @global \user $user Instance of the user class
      * @return boolean
      */
-    function approve() {
+    function approve($forceful = false) {
         global $db, $user;
+
+        if ($forceful) {
+            $this->apply();
+            return true;
+        }
         if (!$db->get("Insert into suggest_approved(suggest_id,user_id,action) values($this->id, 
                 " . $user->user['id'] . ",1)")) {
             return false;
@@ -60,37 +56,22 @@ class suggest extends member_operation_suggest {
      * @global \user $user Instance of user class
      * @return boolean
      */
-    function reject() {
+    function reject($forceful = false) {
         //Rejects the $id provided in the constructor
         global $db, $user;
+
+        if ($forceful) {
+            $this->removesuggestion();
+            return true;
+        }
         if (!$db->get("Insert into suggest_approved (suggest_id,user_id,action) values
-            ($this->id,".$user->user[0].",0)")) {
+            ($this->id," . $user->user[0] . ",0)")) {
             return false;
         }
 
         //Check if suggestion has crossed 50% mark
         $this->check_decision();
         return TRUE;
-    }
-
-    /**
-     * This function is used to mark a suggestion as don't know. Returns false
-     * on error
-     * @global \db $db Instance of the db class
-     * @global \user $user Instance of the user class
-     * @return boolean
-     */
-    function dontknow() {
-        //Marks suggestion as don'tknow
-        global $db, $user;
-        if (!$db->get("Insert into suggest_approved (suggest_id,user_id,action)
-            values($this->id,".$user->user[0].",2)")) {
-            return false;
-        }
-
-        //Check if suggestion has crossed 50% mark
-        $this->check_decision();
-        return true;
     }
 
     /**
@@ -108,7 +89,6 @@ class suggest extends member_operation_suggest {
         $total = mysql_num_rows($query);
         $noapproved = 0;
         $norejected = 0;
-        $nodontknow = 0;
 
         //Count the no of approvals/Rejections
         while ($row = $db->fetch($query)) {
@@ -117,21 +97,17 @@ class suggest extends member_operation_suggest {
                     break;
                 case 1:$noapproved++;
                     break;
-                case 2:$nodontknow++;
-                    break;
                 default:
                     break;
             }
         }
         $noapproved = ($noapproved / $total) * 100;
-        $nodontknow = ($nodontknow / $total) * 100;
         $norejected = ($norejected / $total) * 100;
 
         //If approved>50 then accept the suggestion
         //if rejected>50 then reject the suggestion
-        //if donknow>50 then even i don't know what to do
         if ($total == $row2['totaluser']) {
-            return array($noapproved, $norejected, $nodontknow);
+            return array($noapproved, $norejected);
         } else {
             return false;
         }
@@ -146,17 +122,24 @@ class suggest extends member_operation_suggest {
         $percent = $this->checkpercent();
 
         if ($percent) {
-            if ($percent[0] > 50) {
+            if ($percent[0] > 10) {
                 //Almost half the people have agreed, So lets add it permanently..
                 $this->apply();
-            } else if ($percent[1] > 50) {
+            } else if ($percent[1] > 10) {
                 //More than half of the people have rejected it, So lets remove the suggestion
-                $this->apply();
-            } else if ($percent[2] > 50) {
-                //More than half of the people don't know about it
-                //So we have no choice lets approve this suggestion
-                $this->apply();
+                $this->removesuggestion();
             }
+        }
+    }
+
+    private function removesuggestion() {
+        //Remove the suggestion
+        global $db;
+
+        $query = $db->get("delete from suggested_info where id = " . $this->id);
+
+        if ($query) {
+            $this->approval_delete();
         }
     }
 
@@ -168,28 +151,10 @@ class suggest extends member_operation_suggest {
      * @return null
      */
     private function apply() {
-        global $vanshavali, $db;
+        global $db, $suggest_handler;
 
-        //Check if suggested_value was JSON or not
-        if (is_array($this->suggested_value)) {
-            $member = $vanshavali->getmember($this->suggested_value['id']);
-        } else {
-            $member = $vanshavali->getmember($this->suggested_value);
-        }
-
-
-        //We have the member to be edited. Now apply the given operation
-        switch ($this->typesuggest) {
-            case "child":
-                $member->add_son($this->suggested_value['name'], $this->suggested_value['gender']);
-                break;
-            case "remove":
-                $member->remove();
-                break;
-            case "edit":
-                $member->edit($this->suggested_value['name'], $this->suggested_value['gender'], $this->suggested_value['relationship'], $this->suggested_value['dob'], $this->suggested_value['alive']);
-                break;
-        }
+        //Hand over the Functions to the handler
+        $suggest_handler->apply_suggest($this->detail);
 
         //Now delete all the suggestion approvals as they are of no use
         $this->approval_delete();

@@ -1,0 +1,1 @@
+{$suggested_by->data['membername']} said that {$suggested_to->data['membername']} belongs to {$newvalue}

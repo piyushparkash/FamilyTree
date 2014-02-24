@@ -21,7 +21,7 @@
                 </div>
                 <div class="form-actions">
                     <button class="btn btn-primary" type="submit">Login</button>
-                    <a class="btn btn-success" href="register.php">Join Family</a>
+                    <a class="btn btn-success" href="register.php">Register</a>
                 </div>
             </fieldset>
         </form>
