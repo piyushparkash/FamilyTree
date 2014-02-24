@@ -27,37 +27,39 @@ $template->assign(array(
     'authenticated' => $user->is_authenticated(),
     'membername' => $_SESSION['membername']
 ));
-$template->display("user.main.tpl");
-$template->display("infovis.tpl");
-$template->assign(array(
-    'authenticated' => $user->is_authenticated()
-));
+/*
+  $template->display("user.main.tpl");
+  $template->display("infovis.tpl");
+  $template->assign(array(
+  'authenticated' => $user->is_authenticated()
+  ));
 
-if ($user->is_authenticated()) {
-    if (is_null($user->user['sonof'])) {
-        $template->assign(array("user_not_connected" => true,
-            "userimage" => (empty($user->user['profilepic']) ? "common.png" : $user->user['proilepic'])));
-    }
-    else
-    {
-        $template->assign("id", $user->user['id']);
-        $template->display("showuser.tpl");
-    }
-} else {
-    $template->assign(array("userimage" => "common.png"));
-}
+  if ($user->is_authenticated()) {
+  if (is_null($user->user['sonof'])) {
+  $template->assign(array("user_not_connected" => true,
+  "userimage" => (empty($user->user['profilepic']) ? "common.png" : $user->user['proilepic'])));
+  }
+  else
+  {
+  $template->assign("id", $user->user['id']);
+  $template->display("showuser.tpl");
+  }
+  } else {
+  $template->assign(array("userimage" => "common.png"));
+  }
 
+ */
 
-
-
-$template->display("right-container.tpl");
-$template->display("login.form.tpl");
-$template->display('search.form.tpl');
-$template->display("feedback.form.tpl");
-$template->display('operations.tpl');
-if ($user->is_authenticated()) {
-    $template->display('operations.add.form.tpl');
-    $template->display('operations.remove.tpl');
-    $template->display("suggest.tpl");
-}
+$template->display("navbar.tpl");
+$template->display("wrapper.tpl");
+// $template->display("right-container.tpl");
+// $template->display("login.form.tpl");
+// $template->display('search.form.tpl');
+// $template->display("feedback.form.tpl");
+// $template->display('operations.tpl');
+//if ($user->is_authenticated()) {
+//    $template->display('operations.add.form.tpl');
+//    $template->display('operations.remove.tpl');
+//    $template->display("suggest.tpl");
+//}
 ?>
