@@ -235,21 +235,12 @@ function editmember() {
                 maxDate: '-10y'
             });
 
-<<<<<<< HEAD
     options = x[5].options;
     for (i = 0; i < x[5].options.length; i++)
     {
         if (options[i].value == parseInt(member.data.alive_id))
         {
             x[5].selectedIndex = i;
-=======
-    options = x[4].options;
-    for (i = 0; i < x[4].options.length; i++)
-    {
-        if (options[i].value == parseInt(member.data.alive_id))
-        {
-            x[4].selectedIndex = i;
->>>>>>> basicpage
         }
     }
 
