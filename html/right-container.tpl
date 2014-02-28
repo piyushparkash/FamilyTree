@@ -82,10 +82,10 @@
             <input type="hidden" id="operation_add_sonof_id" />
             <label for="operation_add_gender" class="control-label">Gender:</label>
             <select id="operation_add_gender">
-                <option value="1">
+                <option value="0">
                     Male
                 </option>
-                <option value="0">
+                <option value="1">
                     Female
                 </option>
             </select><br>
