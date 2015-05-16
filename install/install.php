@@ -198,13 +198,13 @@ class install {
      */
     private function installTables() {
         global $db;
-        $family = $db->query("Create table family (
+        $family = $db->query("Create table if not exists family (
             id int(11) not null primary key auto_increment,
             family_name mediumtext not null,
             ts int(11) not null )");
 
 
-        $member = $db->query("create table member (
+        $member = $db->query("create table if not exists member (
             id int(11) null primary key auto_increment,
             membername mediumtext not null,
             username mediumtext default null,
@@ -228,14 +228,14 @@ class install {
             foreign key (family_id) references family(id),
             foreign key (related_to) references member(id) );");
 
-        $feedback = $db->query("create table feedback (
+        $feedback = $db->query("create table if not exists feedback (
             id int(11) not null primary key auto_increment,
             user_name text not null,
             user_emailid text not null,
             feedback_text text not null,
             seen int(1) default 0 );");
 
-        $joinrequest = $db->query("create table joinrequest (
+        $joinrequest = $db->query("create table if not exists joinrequest (
             id int(11) not null primary key auto_increment,
             formember int(11) not null,
             pic text default null,
@@ -245,7 +245,7 @@ class install {
             approved int(1) default 0,
             foreign key(formember) references member(id) );");
 
-        $suggested_info = $db->query("create table suggested_info (
+        $suggested_info = $db->query("create table if not exists suggested_info (
             id int(11) not null primary key auto_increment,
             typesuggest mediumtext not null,
             new_value text default null,
@@ -254,10 +254,10 @@ class install {
             suggested_to int(11) not null,
             ts int(11) not null,
             approved int(1) default 0,
-            foreign key(from) references member(id),
-            foreign key(to) references member(id) );");
+            foreign key(suggested_by) references member(id),
+            foreign key(suggested_to) references member(id) );");
 
-        $suggest_approved = $db->query("create table suggest_approved (
+        $suggest_approved = $db->query("create table if not exists suggest_approved (
             id int(11) not null primary key auto_increment,
             suggest_id int(11) not null,
             user_id int(11) not null,
