@@ -10,8 +10,6 @@ $(document).ready(function() {
 }
 );
 
-//Jquery Custom validate
-
 //Search Functions
 function search() {
 
@@ -235,21 +233,12 @@ function editmember() {
                 maxDate: '-10y'
             });
 
-<<<<<<< HEAD
     options = x[5].options;
     for (i = 0; i < x[5].options.length; i++)
     {
         if (options[i].value == parseInt(member.data.alive_id))
         {
             x[5].selectedIndex = i;
-=======
-    options = x[4].options;
-    for (i = 0; i < x[4].options.length; i++)
-    {
-        if (options[i].value == parseInt(member.data.alive_id))
-        {
-            x[4].selectedIndex = i;
->>>>>>> basicpage
         }
     }
 
@@ -306,6 +295,7 @@ function editmember_submit()
         {
             var x = $("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
         #operation_edit_dob,#operation_edit_alive,#operation_edit_id,#operation_edit_gaon");
+
             //Set the canvas variables
             member = tree.graph.getNode($("#operation_edit_id").val());
             member.name = x[0].value;
@@ -314,11 +304,13 @@ function editmember_submit()
             member.data.gender = x[2].value;
             member.data.dob = x[4].value;
             member.data.gaon = x[6].value;
+
             //Change the displayed data on the screen
             member.data.relationship_status = member.data.relationship_status_id == 0 ? "Single" : "Married";
             member.data.alive = member.data.alive_id == 0 ? "No" : "Yes";
 
             display_data(member);
+
             //hide the form
             $("#operation_edit").slideUp();
 
@@ -406,6 +398,7 @@ function suggest_action(e, actionid)
     //Get the id of the suggest
     var id = parseInt(x[0].id);
     var forceful = parseInt($(x).data('forceful'));
+
     //perform the suggestion ajax action
     $.post("getdata.php", {
         action: "suggestionapproval",

@@ -12,18 +12,6 @@
     padding: 10px;
     color: #A4CFF2;
 }
-
-.wrapper_left
-{
-    background-color: #bbd8e9;
-    border-radius: 3px;
-}
-
-.wrapper_right
-{
-    border-radius: 3px;
-    background-color: #dceaf4;
-}
 .successbox
 {
     color: green;
