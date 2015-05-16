@@ -62,22 +62,4 @@ function dir_iswritable($dirname) {
     }
 }
 
-/**
- * This function is just an alias for strftime with fixed format which is to be
- * used throughout FamilyTree
- * @param string $date
- * @return boolean|string
- */
-function formatdate($date)
-{
-    if ($date)
-    {
-        return strftime("%d/%m/%Y", $date);
-    }
-    else
-    {
-        return false;
-    }
-}
-
 ?>
