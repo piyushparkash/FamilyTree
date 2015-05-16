@@ -4,8 +4,9 @@
  * @author Piyush
  * @copyright 2011
  */
-error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL);
 
+require_once 'constants.php';
 //If config file exists then include it else leave it
 if (file_exists("config.php")) {
     if (is_readable("config.php")) {
