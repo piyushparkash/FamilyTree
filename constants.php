@@ -20,5 +20,5 @@ define("MALE", 0);
 define("FEMALE", 1);
 
 //ALIVE
-define("ALIVE", 1);
-define("DEAD", 0);
+define("LIVING", 1);
+define("DECEASED", 0);
