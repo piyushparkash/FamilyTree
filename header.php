@@ -63,7 +63,7 @@ function vanshavali_error($level, $message, $file, $line, $context) {
             break;
         case E_USER_NOTICE:
             //If request is AJAX then
-            if ($_SERVER['HTTP_X_REQUESTED_WITH']) {
+            if (@$_SERVER['HTTP_X_REQUESTED_WITH']) {
                 //Prepare the array
                 $errorarray = array("success" => 0, "message" => $message);
                 echo json_encode($errorarray);
