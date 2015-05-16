@@ -1,1 +1,0 @@
-{$suggested_by->data['membername']} changed the Birthday of {$suggested_to->data['membername']} to {"%d/%m/%Y"|strftime:$newvalue}

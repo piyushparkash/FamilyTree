@@ -70,13 +70,13 @@ switch ($_POST['action']) {
         //Retreive the values
         $suggest_id = $_POST['suggestid'];
         $action = $_POST['suggest_action'];
-        $forceful = (boolean) $_POST['forceful'];
+
         $suggest = new suggest($suggest_id);
         switch ($action) {
             case 0:
                 //Reject the suggestion
-                if (!$suggest->reject($forceful)) {
-                    ajaxError();
+                if (!$suggest->reject()) {
+                    trigger_error("Cannot reject suggestion. Error Executing query", E_USER_NOTICE);
                 } else {
 
                     //Pass the id of the suggest so that proper HTML element can be made disappear
@@ -85,8 +85,8 @@ switch ($_POST['action']) {
                 break;
             case 1:
                 //Accept the suggestion
-                if (!$suggest->approve($forceful)) {
-                    ajaxError();
+                if (!$suggest->approve()) {
+                    trigger_error("Cannot approved the Suggestion. Error Executing query", E_USER_NOTICE);
                 } else {
                     //Pass the id of the suggest so that proper HTML element can be made disappear
                     ajaxSuccess(array("suggestid" => $suggest_id));
@@ -95,7 +95,7 @@ switch ($_POST['action']) {
                 break;
             case 2:
                 //Mark the suggestion as don't know
-                if (!$suggest->dontknow($forceful)) {
+                if (!$suggest->dontknow()) {
                     trigger_error("Cannot reject suggestion. Error Executing query", E_USER_NOTICE);
                 } else {
 
@@ -139,13 +139,13 @@ switch ($_POST['action']) {
         break;
     case "operation_edit":
         global $vanshavali;
-        if (isset($_POST['type']) && isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['relationship']) && isset($_POST['dob']) && isset($_POST['alive']) && isset($_POST['memberid']) && isset($_POST['gaon'])) {
+        if (isset($_POST['type']) && isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['relationship']) && isset($_POST['dob']) && isset($_POST['alive']) && isset($_POST['memberid'])) {
             //Get the member
             $member = $vanshavali->getmember($_POST['memberid']);
 
             //Now add the suggestion
-            if (!$member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive'], $_POST['gaon'], TRUE)) {
-                ajaxError();
+            if (!$member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive'], TRUE)) {
+                trigger_error("Cannot Edit Member. Some error occured");
             } else {
                 ajaxSuccess();
             }

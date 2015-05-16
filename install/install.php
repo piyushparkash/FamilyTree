@@ -235,6 +235,16 @@ class install {
             feedback_text text not null,
             seen int(1) default 0 );");
 
+        $joinrequest = $db->query("create table joinrequest (
+            id int(11) not null primary key auto_increment,
+            formember int(11) not null,
+            pic text default null,
+            personalmessage text default null,
+            emailid text not null,
+            tokenforact varchar(20) default null,
+            approved int(1) default 0,
+            foreign key(formember) references member(id) );");
+
         $suggested_info = $db->query("create table suggested_info (
             id int(11) not null primary key auto_increment,
             typesuggest mediumtext not null,
@@ -243,7 +253,9 @@ class install {
             suggested_by int(11) not null,
             suggested_to int(11) not null,
             ts int(11) not null,
-            approved int(1) default 0 );");
+            approved int(1) default 0,
+            foreign key(from) references member(id),
+            foreign key(to) references member(id) );");
 
         $suggest_approved = $db->query("create table suggest_approved (
             id int(11) not null primary key auto_increment,
@@ -261,7 +273,7 @@ class install {
 
         $memberdata_sql = $db->query($memberdata);
 
-        return $member && $feedback && $suggested_info
+        return $member && $feedback && $joinrequest && $suggested_info
                 && $suggest_approved && $memberdata_sql && $family && $dasfamily;
     }
 

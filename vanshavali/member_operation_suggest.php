@@ -59,7 +59,7 @@ abstract class member_operation_suggest {
         //firstly accquire the current member details
         $current = $vanshavali->getmember($id);
         $father = $vanshavali->getmember($current->data['sonof']);
-
+        
         return $suggest_handler->add_suggest(DELMEMBER, $id, $father->data['membername']);
 
         /* Old method
@@ -87,7 +87,7 @@ abstract class member_operation_suggest {
      * @param integer $id The ID of the member to be edited
      * @return boolean
      */
-    function edit_suggest($name, $gender, $relationship, $dob, $alive, $gaon, $id) {
+    function edit_suggest($name, $gender, $relationship, $dob, $alive, $id) {
         global $db, $user, $suggest_handler;
 
         preg_match("/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})/", $dob, $matches);
@@ -98,8 +98,7 @@ abstract class member_operation_suggest {
                 $suggest_handler->add_suggest(GENDER, $id, $gender) &&
                 $suggest_handler->add_suggest(RELATIONSHIP, $id, $relationship) &&
                 $suggest_handler->add_suggest(DOB, $id, $dob) &&
-                $suggest_handler->add_suggest(ALIVE, $id, $alive) &&
-                $suggest_handler->add_suggest(GAON, $id, $gaon);
+                $suggest_handler->add_suggest(ALIVE, $id, $alive);
 
         /* Old Method
           $finalarray = array('name' => $name,

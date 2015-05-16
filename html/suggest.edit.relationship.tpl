@@ -1,1 +1,0 @@
-{$suggested_by->data['membername']} said that {$suggested_to->data['membername']} is {if $newvalue==1}Married{else}Single{/if}

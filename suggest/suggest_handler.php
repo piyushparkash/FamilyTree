@@ -4,6 +4,7 @@
  * This package will be used to handle the suggest system
  * @author Piyush
  */
+
 /**
  * This array will hold all types of suggestions
  */
@@ -80,27 +81,16 @@ class suggest_handler {
         }
     }
 
-    public function getsuggestions($forceful = false) {
-        global $db, $user, $template;
-
-        $sql = "";
-
-        if ($forceful) {
-            $sql = "select * from suggested_info where approved=0";
-        } else {
-            $sql = "select * from suggested_info where approved=0 and id not in 
-            (select suggest_id from suggest_approved where user_id=" . $user->user['id'] . ")";
-        }
+    public function getsuggestions() {
+        global $db, $user;
 
         //Make the query
-        $query = $db->query($sql);
+        $query = $db->query("select * from suggested_info where approved=0 and id not in 
+            (select suggest_id from suggest_approved where user_id=" . $user->user['id'] . ")");
 
         //Now prepare the data to be shown
         while ($row = $db->fetch($query)) {
-            $template->assign('content', $this->getviewname($row));
-            $template->assign('id', $row['id']);
-            $template->assign('force', $forceful);
-            $template->display('suggest.container.tpl');
+            echo $this->getviewname($row);
         }
     }
 
@@ -174,7 +164,7 @@ class suggest_handler {
                 $old_value = $query[$name]; // And we have the old value now lets add the suggest
                 //But first lets check if the old value and the new value are same
                 if ($old_value == $new_value) {
-                    return true; // Pretend if everything has went alright else other operations will abort
+                    return;
                 }
                 if (!$db->query("insert into suggested_info (typesuggest, new_value, old_value, suggested_by, suggested_to, ts) values('$name', '$new_value', '$old_value', " . $user->user['id'] . ", $to, " . time() . ")")) {
                     $success = false;
@@ -203,33 +193,6 @@ class suggest_handler {
             return $suggests[$found_key];
         } else {
             return false;
-        }
-    }
-
-    public function apply_suggest($details) {
-        global $db;
-        //First thing find the structure
-        $struct = $this->find_structure($details['typesuggest']);
-
-        //Now perform the operation according to the Suggest type
-        switch ($struct->type) {
-            case ADD:
-                //Decode the values
-                $details['new_value'] = json_decode($details['new_value'], true);
-                $member = new member($details['suggested_to']);
-                $member->add_son($details['new_value']['membername'], $details['new_value']['gender']);
-                $db->query($sql);
-                break;
-            case MODIFY:
-                $sql = "update member set " . $details['typesuggest'] . "='" . $details['new_value'] . "' where id=" . $details['suggested_to'];
-                $db->query($sql);
-                break;
-            case DEL;
-                //Just don't show the member and he is deleted'
-                $member = new member($details['suggested_to']);
-                $member->removeme();
-                unset($member);
-                break;
         }
     }
 

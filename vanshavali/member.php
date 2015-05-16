@@ -21,71 +21,7 @@ class member extends member_operation {
     }
 
     /**
-     * Checks if the member is married or not
-     * @return boolean
-     */
-    public function ismarried() {
-        if ($this->data['relationship_status'] == 1 and !empty($this->data['related_to'])) {
-            return true;
-        } else {
-            return FALSE;
-        }
-    }
-
-    public function spouse() {
-        if ($this->ismarried()) {
-            return new member($this->data['related_to']);
-        } else {
-            return false;
-        }
-    }
-
-    public function family() {
-        return $this->data['family_id'];
-    }
-
-    public function removefamily() {
-        //Remove whole of the family
-        global $db;
-        if ($this->family() != 1) {
-            //We have to remove all the constraints first
-            if ($db->query("update member set related_to=null where family_id=" . $this->family())) {
-
-                if ($db->query("delete from member where family_id=" . $this->family())) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-    }
-
-    public function removespouse() {
-        //Remove the wife
-        global $db;
-
-        //Fetch the spouse and as they are not connected we can remove all of the family
-        //as because of them the families were connected except for family 1
-        if ($this->ismarried()) {
-            $spouse = $this->spouse();
-
-            //Check if it belongs to family 1
-            if ($spouse->family() == 1) {
-                $spouse->removeme();
-                return; // We cannot remove the main Family
-            } else {
-                $spouse->removefamily();
-                unset($spouse);
-                $this->related_to(null);
-                $this->set_relationship(0);
-            }
-        }
-    }
-
-    /**
-     * Return true if the user is male
+     * Return true f the user is male
      * @return boolean
      */
     function ismale() {
@@ -162,39 +98,6 @@ class member extends member_operation {
         }
     }
 
-    public function makesingle() {
-
-        return $this->set_relationship(0) && $this->set_relationship(0);
-    }
-
-    public function removeme() {
-        global $db;
-
-        //Check if the spouse family id is different
-        $spouse = $this->spouse();
-
-        if ($spouse) {
-            if ($spouse->family() != $this->family()) {
-                //Ok we are disconnected and now we can erase the entire family
-                //Disconnect both of them
-                $this->makesingle();
-                $spouse->makesingle();
-
-                //Now remove all the members
-                $this->removefamily();
-                return true;
-            }
-        }
-
-
-
-        if ($db->query("delete from member where id = " . $this->data['id'])) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     /**
      * This function is used to set the relationship status of the current user
      * Returns true if successfull else false
@@ -224,13 +127,9 @@ class member extends member_operation {
      */
     function related_to($related_to) {
         global $db;
-        if (is_null($related_to)) {
-            $related_to = "NULL";
-        }
         if ($db->query("update member set related_to=$related_to where id=" . $this->data['id'])) {
-            if ($related_to != "NULL") {
-                $this->set_relationship(1);
-            }
+            $this->set_relationship(1);
+
             return true;
         } else {
             return false;
