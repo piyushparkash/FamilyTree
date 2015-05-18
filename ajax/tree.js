@@ -195,12 +195,12 @@ function init(){
                 };
                 //set label styles
                 var style = label.style;
-                //style.width = 60 + 'px';
-                //style.height = 25 + 'px';            
+                style.width = node.data.$width + 'px';
+                style.height = node.data.$height + 'px';            
                 style.cursor = 'pointer';
                 style.fontSize = '0.9em';
-                style.textAlign= 'center';
-                style.paddingTop = '3px';
+                style.textAlign = 'center'; 
+                style.paddingTop = '15px';
             },
             onComplete:function ()
             {
