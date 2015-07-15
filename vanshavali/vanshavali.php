@@ -148,7 +148,7 @@ class vanshavali {
     function createstruct($row) {
         $obj = array();
         $obj['id'] = $row["id"];
-        $obj['name'] = $row['membername'];
+        $obj['name'] = trim($row['membername']) == "" ? "unknown" : $row["membername"];
         $obj['data'] = array(
             "dob" => ($row['dob'] ? strftime("%d/%m/%Y", $row['dob']) : ""),
             "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
