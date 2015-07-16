@@ -4,7 +4,6 @@
  * This package will be used to handle the suggest system
  * @author Piyush
  */
-
 /**
  * This array will hold all types of suggestions
  */
@@ -21,7 +20,8 @@ class suggest_handler {
     public function getviewname($detail) {
 
         global $user, $vanshavali, $template;
-//Find the structure of the suggest
+        
+        //Find the structure of the suggest
         $struct = $this->find_structure($detail['typesuggest']);
 
         //Now do check here if we have the structure
