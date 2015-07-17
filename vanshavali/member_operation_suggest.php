@@ -9,7 +9,9 @@ abstract class member_operation_suggest {
 
     /**
      * This function is used to add suggestion about addition of a child.
+     * 
      * Returns true on successfull operation else returns false
+     * 
      * @global \db $db The instance of the \db class
      * @global \user $user Instanec of the \user class
      * @param string $name The name of the member to be added
@@ -45,8 +47,9 @@ abstract class member_operation_suggest {
     }
 
     /**
-     * This function is used to remove a suggestion. Returns true on successful
-     * removal else returns false
+     * This function is used to add a suggestion of removal of a member from FamilyTree
+     * 
+     * Returns true on successfull run else false
      * @global \db $db Instance of the db class
      * @global \user $user Instance of the user class
      * @param Integer $id The ID of the suggestion
@@ -57,6 +60,7 @@ abstract class member_operation_suggest {
 
         //We need the removed members father name to show
         //firstly accquire the current member details
+        
         $current = $vanshavali->getmember($id);
         $father = $vanshavali->getmember($current->data['sonof']);
         
@@ -130,7 +134,7 @@ abstract class member_operation_suggest {
     function addwife_suggest($name, $id) {
         global $db, $user, $suggest_handler;
 
-        return $suggest_handler->add_suggest(ADDSPOUSE, $id, array(NAME => $name, GENDER => 1));
+        return $suggest_handler->add_suggest(ADDSPOUSE, $id, array(NAME => $name, GENDER => FEMALE));
         /*
           //fill array with data
           $finalarray = array('name' => $name, 'id' => $id);
@@ -160,7 +164,7 @@ abstract class member_operation_suggest {
     function addhusband_suggest($name, $id) {
         global $db, $user, $suggest_handler;
 
-        return $suggest_handler->add_suggest(ADDSPOUSE, $id, array(NAME => $name, GENDER => 0));
+        return $suggest_handler->add_suggest(ADDSPOUSE, $id, array(NAME => $name, GENDER => MALE));
 
         /*
          * Old method

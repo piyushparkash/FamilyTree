@@ -49,6 +49,8 @@ abstract class member_operation extends member_operation_suggest {
     }
 
     /**
+     * @TODO: Change name of the function. Misleading it is as it also works for daughters.
+     * 
      * This function is used to add a child of the member. Returns false on error
      * @global \db $db The instance of db class
      * @param string $name The name of the new member
@@ -58,7 +60,7 @@ abstract class member_operation extends member_operation_suggest {
      */
     function add_son($name, $gender, $suggest = false) {
         if ($suggest) {
-            if (intval($this->data['gender']) == 0) {
+            if (intval($this->data['gender']) == MALE) {
 
                 //If a male member then send his id
                 return parent::add_son_suggest($name, $gender, $this->data['id']);
@@ -76,6 +78,8 @@ abstract class member_operation extends member_operation_suggest {
                 global $db;
 
                 //Get the familyid of the parent
+                
+                /* @var $familyid integer */
                 $familyid = $this->data['family_id'];
                 if (empty($familyid)) {
 
@@ -86,7 +90,7 @@ abstract class member_operation extends member_operation_suggest {
 
                 //Prepare the sql according to the gender
                 $sql = "";
-                if (intval($this->data['gender']) == 1) {
+                if (intval($this->data['gender']) === FEMALE) {
                     $sql = "Insert into member(membername,gender,sonof,family_id) 
                 values('$name',$gender," . $this->data['related_to'] . ",$familyid)";
                 } else {
@@ -270,4 +274,3 @@ abstract class member_operation extends member_operation_suggest {
 
 }
 
-?>
