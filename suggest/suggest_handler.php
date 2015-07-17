@@ -1,7 +1,9 @@
 <?php
 
 /**
- * This package will be used to handle the suggest system
+ * This package will be used to handle the suggest system. It will hold
+ * all the fields that can be edited and all the types of suggsestion
+ * which this system can entertain
  * @author Piyush
  */
 /**
