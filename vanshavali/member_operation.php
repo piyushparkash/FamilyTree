@@ -43,6 +43,9 @@ abstract class member_operation extends member_operation_suggest {
         $query = $db->query("Select * from member where id=$memberid");
         $row = $db->fetch($query);
         $this->data = $row;
+        
+        //Adding a check for the name. This is when user forgets to add name in the suggestion.
+        $row['membername'] = trim($row['membername']) == "" ? "unknown" : $row['membername'];
     }
 
     /**
