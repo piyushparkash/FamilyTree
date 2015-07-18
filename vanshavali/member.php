@@ -25,7 +25,7 @@ class member extends member_operation {
      * @return boolean
      */
     function ismale() {
-        if ($this->data['gender'] == 0) {
+        if ($this->data['gender'] == MALE) {
             return TRUE;
         } else {
             return false;
@@ -37,7 +37,7 @@ class member extends member_operation {
      * @return boolean
      */
     function isfemale() {
-        if ($this->data['gender'] == 1) {
+        if ($this->data['gender'] == FEMALE) {
             return true;
         } else {
             return false;
