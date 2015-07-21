@@ -21,7 +21,7 @@ class member extends member_operation {
     }
 
     /**
-     * Return true f the user is male
+     * Return true if the user is male
      * @return boolean
      */
     function ismale() {
@@ -148,4 +148,3 @@ class member extends member_operation {
 
 }
 
-?>
