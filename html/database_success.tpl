@@ -1,12 +1,12 @@
 {include file="header.tpl"}
 <div style="text-align: center;">
     <div class="single-dialog alert alert-success alert-block">
-        Databases Successfully Created!! Now we will add All the confirmed data that we have. This may take some time. Please be patient.
+        Database Setup Done! Moving On!
     </div>
     <script type="text/javascript">
         setTimeout(function ()
         {
-            window.location.assign("autofix.php");
+            window.location.assign("index.php?mode=setupAdmin");
         }
         ,3000);
     </script>
