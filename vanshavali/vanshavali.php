@@ -16,6 +16,60 @@ class vanshavali {
     public function __construct() {
         
     }
+    /**
+     * 
+     * @global \db $db
+     * @param type $member
+     * @return type
+     */
+    public function makeAdmin($member)
+    {
+        global $db;
+        
+        $query = $db->query("Update member set admin = 1 where id = $member");
+        
+        return $query;
+    }
+    
+    /**
+     * 
+     * @global \db $db
+     * @return boolean
+     */
+    public function firstTimeFamily() {
+        global $db;
+
+        //Get the count on the number of members
+        $query = $db->query("select count(*) membercount from family;");
+
+        $count = $db->fetch($query);
+
+        if ($count['membercount'] > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * 
+     * @global \db $db
+     * @return boolean
+     */
+    public function firstTime() {
+        global $db;
+
+        //Get the count on the number of members
+        $query = $db->query("select count(*) membercount from member;");
+
+        $count = $db->fetch($query);
+
+        if ($count['membercount'] > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     /**
      * This special function is used to add member to the Tree
@@ -77,10 +131,10 @@ class vanshavali {
      */
     function register($details) {
         global $db, $user;
-        
+
         //convert the password to md5 hash
         $details[1] = md5($details[1]);
-        
+
         //The token for activation
         $token = $user->generate_token();
 
@@ -207,9 +261,6 @@ class vanshavali {
         }
     }
 
-    
-    
-    
     //The following function are not working and are to be improved ********
     /**
      * This function is used to get the members in JSON format to be used

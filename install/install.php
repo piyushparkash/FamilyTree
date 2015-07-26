@@ -34,6 +34,9 @@ class install {
             case "ask_database_name":
                 $this->ask_database_name($mode, $sub);
                 break;
+            case "setupAdmin":
+                $this->setupAdmin($mode, $sub);
+                break;
             case "check_directory_permission":
             default :
                 $this->check_directory_permission($mode, $sub);
@@ -106,6 +109,38 @@ class install {
         }
         if (!$main) {
             echo "<h4>Cannot write in FamilyTree's Directory</h4><br>";
+        }
+    }
+
+    /**
+     * 
+     * @global \template $template
+     * @global \db $db
+     * @param type $mode
+     * @param type $sub
+     */
+    function setupAdmin($mode, $sub) {
+        global $template, $db, $vanshavali;
+        $sub = ($sub == null) ? "firstfamily" : $sub;
+
+        if ($sub == "firstfamily") {
+            $template->header();
+            $template->display("family.form.tpl");
+            $template->footer();
+        } else if ($sub == "firstfamilypost") {
+            //This just means that user has submitted the firstfamily form
+            
+            $vanshavali->addfamily($_POST['family_name']) or trigger_error("Unable to add family. Please try again");
+            
+            //We have added the first family. Lets proceed to add first member
+            header("Location: index.php?mode=setupAdmin&sub=firstmember");
+            
+        } else if ($sub == "firstmember") {
+            //This is where we find out that there is no member installed
+            $template->header();
+            $template->assign("is_admin", 1);
+            $template->display("register.form.tpl");
+            $template->footer();
         }
     }
 
@@ -199,7 +234,7 @@ class install {
     private function installTables() {
         global $db;
         $family = $db->query("Create table if not exists family (
-            id int(11) not null primary key auto_increment,
+            id int(11) primary key auto_increment,
             family_name mediumtext not null,
             ts int(11) not null )");
 
@@ -226,7 +261,8 @@ class install {
             dontshow int(1) default 0,
             family_id int(11) default 1,
             foreign key (family_id) references family(id),
-            foreign key (related_to) references member(id) );");
+            foreign key (related_to) references member(id),
+            admin int(1) default 0 )");
 
         $feedback = $db->query("create table if not exists feedback (
             id int(11) not null primary key auto_increment,
@@ -265,18 +301,14 @@ class install {
             foreign key (suggest_id) references suggested_info(id),
             foreign key (user_id) references member(id) );");
 
-        $dasfamily = $db->query("insert into family (family_name,ts) values('Das Family'," . time() . ");");
-
-
+        //Commenting this out as we have ask user about the new family from now on.
+        //$dasfamily = $db->query("insert into family (family_name,ts) values('Das Family'," . time() . ");");
         //Now the data that we already have
-        $memberdata = file_get_contents("member_data.sql");
+        //Commenting this out, as we don't have any default family data from now on.
+        //$memberdata = file_get_contents("member_data.sql");
+        //$memberdata_sql = $db->query($memberdata);
 
-        $memberdata_sql = $db->query($memberdata);
-
-        return $member && $feedback && $joinrequest && $suggested_info
-                && $suggest_approved && $memberdata_sql && $family && $dasfamily;
+        return $member && $feedback && $joinrequest && $suggested_info && $suggest_approved /* && $memberdata_sql */ && $family /* && $dasfamily */;
     }
 
 }
-
-?>

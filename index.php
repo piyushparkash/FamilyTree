@@ -2,7 +2,7 @@
 
 require 'header.php';
 //If config.php doesn't exist, probably not installed
-if (!file_exists("config.php")) {
+if (!file_exists("config.php") or $vanshavali->firstTime() or $vanshavali->firstTimeFamily()) {
     require_once("install/install.php");
     $install = new install();
     exit();
@@ -59,4 +59,3 @@ if ($user->is_authenticated()) {
     $template->display('operations.remove.tpl');
     $template->display("suggest.tpl");
 }
-?>
