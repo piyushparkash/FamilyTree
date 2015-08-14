@@ -166,7 +166,7 @@
     margin-top: 10px;
 }
 
-#display_dob, #display_relationship, #display_alive
+#display_dob, #display_relationship, #display_alive, #display_relation
 {
     font-weight: bold;
 }
