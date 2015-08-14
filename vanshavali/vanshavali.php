@@ -6,6 +6,7 @@
  * @author piyush
  */
 require_once 'member.php';
+require_once 'constants.php';
 
 class vanshavali {
 
@@ -16,21 +17,251 @@ class vanshavali {
     public function __construct() {
         
     }
+
+    public function getHeadofFamily($familyid) {
+        $query = $db->query("select id from member where sonof is null and dontshow=0 and gender=" . MALE . " and family_id=$familyid");
+        $row = $db->fetch($query);
+
+        return $row['id'];
+    }
+
+    public function distanceFromTop($member, $samefamily = true) {
+
+
+        //While we are going up. We will first go to mother and then we will
+        // to the father. This way we will be able to calculate relations for
+        // female members of the family too.
+
+        if (!$samefamily) {
+            //Since the family is not same. We will first switch to husband
+            $member = $this->getmember($member->data['related_to']);
+        } //else we continue with normal execution
+
+        $distance = 0;
+        $mother = true;
+        while (1) {
+
+            if ($mother) {
+                //Get father
+                //echo "\nget the father to get mother. Father id = " . $member->data['sonof'];
+                $member = $this->getmember($member->data['sonof']);
+
+                if ($member === false) {
+//                    echo "\nWent into first part break. Couldn't get the above given father";
+                    break;
+                }
+
+                //Get mother through him
+                $member = $this->getmember($member->data['related_to']);
+//                echo " \nhere we should get the mother. Mother id = " . $member->id;
+
+                $mother = false; //next turn is for father
+
+                $distance++;
+            } else {
+
+                //Check for root. Last person will be male
+                if ($member == false or $member->data["sonof"] == null) {
+//                    echo "\nPrevious loop didn't return any member or there is no father to this member = " . $member->data['sonof'];
+                    break;
+                }
+                //Previous loop was for mother. This one would be for father
+                $member = $this->getmember($member->data['related_to']);
+
+                if ($member == false) {
+//                    echo " we can't find a husband to this wife.\n";
+                    break;
+                }
+
+                $mother = true; //Next up is mother
+
+                $distance++;
+            }
+        }
+
+        if (!$samefamily) {
+            //Since we switched to husband in the starting of the function,
+            //We are by default one level down. Lets add to it.
+            $distance++;
+        }
+
+        return $distance;
+    }
+
+    public function memberDistance($to, $from) {
+        $sameFamily = false;
+        $sameFather = false;
+        $diffsex = false;
+
+
+        //Check if they are from same family.
+        if ($to->data['family_id'] == $from->data['family_id']) {
+            $sameFamily = true;
+        }
+
+        //Check if they child of same father
+        if ($to->data['sonof'] == $from->data['sonof']) {
+            $sameFather = true;
+        }
+
+        //Check if they are of same gender
+        if ($to->ismale() == $from->isfemale()) {
+            $diffsex = true;
+        }
+
+        //Check if given member is mother of first member
+        if ($from->getMother()->id == $to->id) {
+            $is_mother = true;
+        }
+
+        //Check if given member is father of second member
+        $father = $from->getparent();
+        if ($father->id == $to->id) {
+            $is_father = true;
+        }
+
+        $levelDistance = $this->distanceFromTop($from) - $this->distanceFromTop($to, $sameFamily);
+
+        return array("is_mother" => $is_mother,
+            "is_father" => $is_father,
+            "sameFamily" => $sameFamily,
+            "sameFather" => $sameFather,
+            "diffsex" => $diffsex,
+            "levelDistance" => $levelDistance
+        );
+    }
+
+    private $relation_array = array(
+        array(false, false, true, true, false, 0, "Brother", 0) //brother
+    );
+
+    private function comparerelationArray($array) {
+        //Initialize all the parameters
+        $is_mother = $is_father = $sameFamily = $sameFather = $diffsex = $levelDistance = false;
+        $result = -1;
+
+        //Now compare this array with all options that we have
+        foreach ($this->relation_array as $key => $singlerelation) {
+            $is_mother = ($singlerelation[0] == $array['is_mother']);
+            $is_father = ($singlerelation[1] == $array['is_father']);
+            $sameFamily = ($singlerelation[2] == $array['sameFamily']);
+            $sameFather = ($singlerelation[3] == $array['sameFather']);
+            $diffsex = ($singlerelation[4] == $array['diffsex']);
+            $levelDistance = ($singlerelation[5] == $array['levelDistance']);
+
+            if ($is_mother && $is_father && $sameFamily && $sameFather && $diffsex && $levelDistance) {
+                $result = array($singlerelation[6], $singlerelation[7]);
+                break;
+            }
+        }
+
+        if ($result == -1) {
+            return false; // We couldn't find such relation
+        }
+        /* @var $result array|number */ else if (is_array($result)) {
+            return $result;
+        }
+    }
+
+    /**
+     * 
+     * @param type $from
+     * @param type $to
+     * @return string|boolean
+     * 
+     * Constants
+     * 0 brothers
+     * 1 mother
+     * 2 father
+     * 3 uncle chacha
+     * 4 aunty chachi
+     * 5 sister
+     * 6 grand father
+     * 7 grand mother
+     * 8 fufa (male)
+     * 9 fufa (female)
+     * 10 mama
+     * 11 mami
+     * 12 brother cousin
+     * 13 sister cousin
+     * 14 bhanja
+     * 15 bhanji
+     * 16 granchild
+     * 17 bhatiji
+     * 18 bhatija
+     * 19 Fore father
+     * 20 fore mother
+     * 21 grand son
+     * 22 grand daughter
+     * 23 bahoo
+     * 24 bahoo cousin
+     * 25 nata
+     * 26 nati
+     * 
+     */
+    public function calculateRelation($from, $to) {
+        if ($from === $to) {
+            return false;
+        }
+
+        if ($from == null or $to == null) {
+            return false;
+        }
+
+        $from = $this->getmember($from);
+        $to = $this->getmember($to);
+
+        //Get the parameters between them
+        $relationparam = $this->memberDistance($to, $from);
+
+        $result = $this->comparerelationArray($relationparam);
+
+        if (is_array($result)) {
+            return $result;
+        } else {
+            return print_r($relationparam); //Just for development purpose
+//            return "Cannot determine relation";
+        }
+    }
+
+    /**
+     * 
+     * @param type $who
+     * @param type $whom
+     * @return boolean
+     */
+    public function hasAccess($who, $whom) {
+
+        //accessArray
+        $accessArray = array(); //This contains the relation which have access over each other
+        //Basic things. User can edit is own information.
+        if ($who === $whom) {
+            return true;
+        }
+
+        $relation = calculateRelation($who, $whom);
+
+        if (in_array($relation, $accessArray)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * 
      * @global \db $db
      * @param type $member
      * @return type
      */
-    public function makeAdmin($member)
-    {
+    public function makeAdmin($member) {
         global $db;
-        
+
         $query = $db->query("Update member set admin = 1 where id = $member");
-        
+
         return $query;
     }
-    
+
     /**
      * 
      * @global \db $db
@@ -114,9 +345,22 @@ class vanshavali {
      * @return \member
      */
     function getmember($id) {
+
+        //Before doing anything. Lets check if we have everything
+        if (empty($id)) {
+            return false;
+        }
+
         global $db;
         $query = $db->query("select * from member where id=$id");
         $ret = $db->fetch($query);
+
+        //Check if we have such member or not
+        if ($ret == false) {
+            return false;
+        }
+
+        //else proceed with normal execution
         $member = new member($ret['id']);
         return $member;
     }
@@ -200,6 +444,8 @@ class vanshavali {
      * @return array
      */
     function createstruct($row) {
+        global $user;
+
         $obj = array();
         $obj['id'] = $row["id"];
         $obj['name'] = trim($row['membername']) == "" ? "unknown" : $row["membername"];
@@ -213,6 +459,7 @@ class vanshavali {
             "alive_id" => $row['alive'],
             'image' => empty($row['profilepic']) ? "common.png" : $row['profilepic'],
             'familyid' => $row['family_id']
+//            'relation' => ($this->calculateRelation($row["id"], $user->user["id"]) ? $user->is_authenticated() : "Login to view relation")
         );
         return $obj;
     }

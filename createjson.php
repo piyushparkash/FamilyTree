@@ -12,7 +12,7 @@ if (!$familyid) {
 
 
 //Get the member who is son of no one and is male and is of given family id
-$query = $db->query("select * from member where sonof is null and dontshow=0 and gender=0 and family_id=$familyid");
+$query = $db->query("select * from member where sonof is null and dontshow=0 and gender=". MALE . " and family_id=$familyid");
 $row = $db->fetch($query);
 
 //Create a infovis struct

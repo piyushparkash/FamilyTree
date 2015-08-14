@@ -38,6 +38,14 @@
                     </div>
                 </div>
             </div>
+            <div class="span4">
+                <div class="row" style="text-align: right">
+                    <span class="span2">Relation with You:</span>
+                    <div class="span2">
+                        <span id="display_relation"></span>
+                    </div>
+                </div>
+            </div>
         </div>    
 
         {if $authenticated}

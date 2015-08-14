@@ -52,6 +52,14 @@ class member extends member_operation {
     function getparent() {
         return new member($this->data['sonof']);
     }
+    
+    function getMother()
+    {
+        global $db;
+        $query = $db->get("select related_to from member where id = " . $this->data['sonof']);
+        
+        return new member($query['related_to']);
+    }
 
     /**
      * This function is used to get the children of the currenyl logged-in user
