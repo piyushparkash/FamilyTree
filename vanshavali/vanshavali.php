@@ -132,7 +132,19 @@ class vanshavali {
     }
 
     private $relation_array = array(
-        array(false, false, true, true, false, 0, "Brother", 0) //brother
+        array(false, false, true, true, false, 0, "Brother", 0), //brother
+        array(true, false, false, false, true, 1, "Mother", 1),
+        array(false, true, true, false, false, 2, "Father", 2),
+        array(false, false, true, false, false, 2, "Chacha (Uncle)", 3),
+        array(false, false, false, false, true, 1, "Chachi (Aunt)", 4),
+        array(false, false, true, false, true, 0, "Cousin Sister", 5),
+        array(false, false, true, false, false, 0, "Cousin Brother", 6),
+        array(false, false, false, false, true, -1, "Bhabhi (Sister-in-law)", 7),
+        array(false, false, true, false, true, -2, "Bhatiji (Niece)", 8),
+        array(false, false, true, false, false, -2, "Bhatija (Niece)", 9),
+        array(false, false, false, false, true, 3, "Dadi Maa (GrandMother)", 10),
+        array(false, false, true, false, false, 4, "Dada Ji (GrandFather)", 11),
+        array()
     );
 
     private function comparerelationArray($array) {
