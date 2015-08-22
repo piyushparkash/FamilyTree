@@ -3,13 +3,22 @@
 require "header.php";
 global $vanshavali, $db, $user;
 
-$member=$vanshavali->getmember($_GET['id']);
+//The original member present in tree
+$ori_member = $vanshavali->getmember($_GET['id']);
 
-$sql="update member set sonof=".$member->data['sonof']." where id=".$user->user['id'];
+$new_member = $vanshavali->getmember($user->user['id']);
 
-if ($db->query($sql) && $db->query("delete from member where id=".$_GET['id']))
-{
-    $user->logout();
-    header("Location:index.php");
+//Copy the details of the new member to the original member
+$details_changed = array('membername', 'username', 'password', 'dob', 'gender',
+    'relationship_status', 'gaon', 'emailid', 'alive', 'aboutme', 'joined', 'approved', 'tokenforact', 'dontshow');
+
+foreach ($column as $key => $value) {
+    $ori_member->set($column, $new_member->get($column));
 }
-?>
+
+//Remove the new user, hence removing the duplicate
+$new_member->remove();
+
+$user->logout();
+header("Location:index.php");
+

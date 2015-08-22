@@ -149,8 +149,8 @@ abstract class member_operation extends member_operation_suggest {
                 $family_id = $vanshavali->addfamily($name);
                 if ($family_id) {
                     // Now add parents with that family id
-                    $fatherid = $vanshavali->addmember_explicit("Father", 0, $family_id);
-                    $motherid = $vanshavali->addmember_explicit("Mother", 1, $family_id);
+                    $fatherid = $vanshavali->addmember_explicit("Father", MALE, $family_id);
+                    $motherid = $vanshavali->addmember_explicit("Mother", FEMALE, $family_id);
 
                     $father = $vanshavali->getmember($fatherid);
                     $mother = $vanshavali->getmember($motherid);
@@ -160,9 +160,9 @@ abstract class member_operation extends member_operation_suggest {
 
                     $wife = new member($father->add_son("Wife", 1));
                     $this->related_to($wife->id);
-                    $this->set_relationship(1);
+                    $this->set_relationship(MARRIED);
                     $wife->related_to($this->id);
-                    $wife->set_relationship(1);
+                    $wife->set_relationship(MARRIED);
                     return true;
                 } else {
                     return false;

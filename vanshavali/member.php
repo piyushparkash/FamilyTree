@@ -52,12 +52,11 @@ class member extends member_operation {
     function getparent() {
         return new member($this->data['sonof']);
     }
-    
-    function getMother()
-    {
+
+    function getMother() {
         global $db;
         $query = $db->get("select related_to from member where id = " . $this->data['sonof']);
-        
+
         return new member($query['related_to']);
     }
 
@@ -101,7 +100,7 @@ class member extends member_operation {
         if ($nosons > 0) {
             // If the member has sons Change the status to married
             // Add a wife and add parents to wife and create a new family
-            $this->set_relationship(1);
+            $this->set_relationship(MARRIED);
             $this->addwife();
         }
     }
@@ -136,7 +135,7 @@ class member extends member_operation {
     function related_to($related_to) {
         global $db;
         if ($db->query("update member set related_to=$related_to where id=" . $this->data['id'])) {
-            $this->set_relationship(1);
+            $this->set_relationship(MARRIED);
 
             return true;
         } else {
@@ -153,6 +152,37 @@ class member extends member_operation {
     function gender() {
         return $this->data['gender'];
     }
+    
+    /**
+     * 
+     * @global \db $db
+     * @param type $propertyName
+     * @return type
+     */
+    function get($propertyName) {
+        global $db;
+
+        $query = $db->query("select $propertyName from member where id = " . $this->id);
+        
+        $row = $db->fetch($query);
+        
+        return $row[$propertyName];
+    }
+    
+    /**
+     * 
+     * @global \db $db
+     * @param type $propertyName
+     * @param type $value
+     * @return type
+     */
+    function set($propertyName, $value)
+    {
+        global $db;
+        
+        $query = $db->query("update member set $propertyName = '$value' where id = ". $this->id);
+        
+        return $query;
+    }
 
 }
-
