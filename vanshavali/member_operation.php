@@ -43,7 +43,7 @@ abstract class member_operation extends member_operation_suggest {
         $query = $db->query("Select * from member where id=$memberid");
         $row = $db->fetch($query);
         $this->data = $row;
-        
+
         //Adding a check for the name. This is when user forgets to add name in the suggestion.
         $row['membername'] = trim($row['membername']) == "" ? "unknown" : $row['membername'];
     }
@@ -78,7 +78,7 @@ abstract class member_operation extends member_operation_suggest {
                 global $db;
 
                 //Get the familyid of the parent
-                
+
                 /* @var $familyid integer */
                 $familyid = $this->data['family_id'];
                 if (empty($familyid)) {
@@ -146,11 +146,12 @@ abstract class member_operation extends member_operation_suggest {
             //Firstly to check if the member already has a wife
             if (!$this->hasspouse()) {
                 //Add wife directly in the database
-                $family_id = $vanshavali->addfamily($name);
-                if ($family_id) {
+                $father_family_id = $vanshavali->addfamily($name);
+                $mother_family_id = $vanshavali->addfamily($name);
+                if ($father_family_id && $mother_family_id) {
                     // Now add parents with that family id
-                    $fatherid = $vanshavali->addmember_explicit("Father", MALE, $family_id);
-                    $motherid = $vanshavali->addmember_explicit("Mother", FEMALE, $family_id);
+                    $fatherid = $vanshavali->addmember_explicit("Father", MALE, $father_family_id);
+                    $motherid = $vanshavali->addmember_explicit("Mother", FEMALE, $mother_family_id);
 
                     $father = $vanshavali->getmember($fatherid);
                     $mother = $vanshavali->getmember($motherid);
@@ -273,4 +274,3 @@ abstract class member_operation extends member_operation_suggest {
     }
 
 }
-
