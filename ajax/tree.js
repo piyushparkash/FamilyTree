@@ -99,7 +99,7 @@ function display_data(node)
 
     if (typeof user_id !== "undefined")
     {
-        $("#display_relation").load('relationtest.php', {"from": user_id, "to": node.id});
+        $("#display_relation").html("Calculating relation with you").load('relationtest.php', {"from": user_id, "to": node.id});
     }
     else
     {
