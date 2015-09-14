@@ -30,7 +30,7 @@ class db {
         $password = $password == null ? $config['password'] : $password;
         $database = $database == null ? $config['database'] : $database;
         if (!empty($host) && !empty($username) && !empty($password)) {
-            $this->connection = mysql_connect($host, $username, $password);
+            $this->connection = mysqli_connect($host, $username, $password);
             if ($this->connection == false) {
                 trigger_error("Cannot connect to database", E_USER_ERROR); //report error in case of failure
                 return false;
@@ -52,7 +52,7 @@ class db {
      * @return boolean
      */
     function select_db($name) {
-        if (!mysql_select_db($name)) {
+        if (!mysqli_select_db($this->connection, $name)) {
             trigger_error("Cannot Select Database", E_USER_ERROR);
             return false;
         }
@@ -68,7 +68,7 @@ class db {
     function query($sql) {
         //Check if it is connected to database
         if ($this->connection != false) {
-            $query = mysql_query($sql);
+            $query = mysqli_query($this->connection, $sql);
             if ($query == false) {
                 //Some error occured while querying
                 trigger_error(mysql_error(), E_USER_NOTICE);
@@ -95,7 +95,7 @@ class db {
             return true;
         }
         else if ($query != false) {
-            return mysql_fetch_array($query);
+            return mysqli_fetch_array($query);
         } else {
             trigger_error("Invalid Query resource provided", E_USER_NOTICE);
             return false;
