@@ -92,6 +92,9 @@ class vanshavali {
         $sameFamily = false;
         $sameFather = false;
         $diffsex = false;
+        $is_parent = false;
+        $is_spouse = false;
+        $is_child = false;
 
 
         //Check if they are from same family.
@@ -109,21 +112,34 @@ class vanshavali {
             $diffsex = true;
         }
 
-        //Check if given member is mother of first member
-        if ($from->getMother()->id == $to->id) {
-            $is_mother = true;
+        //Check if the given member is the wife of the from member
+        $spouse = $from->spouse();
+        if ($spouse->id == $to->id) {
+            $is_spouse = true;
         }
 
-        //Check if given member is father of second member
-        $father = $from->getparent();
-        if ($father->id == $to->id) {
-            $is_father = true;
+        //Check if the second member is the parent of the first member
+        $mother = $from->getMother();
+        $father = $from->getFather();
+        if ($to->id == $mother->id or $to->id == $father->id) {
+            $is_parent = true;
         }
+
+        //Check if the given member is the child of respective member
+        $children = $from->get_sons();
+        foreach ($children as $child) {
+            if ($child->id == $to->id) {
+                $is_child = true;
+            }
+        }
+
 
         $levelDistance = $this->distanceFromTop($from) - $this->distanceFromTop($to, $sameFamily);
 
-        return array("is_mother" => $is_mother,
-            "is_father" => $is_father,
+        return array("is_child" => $is_child,
+            "is_parent" => $is_parent,
+            "is_spouse" => $is_spouse,
+            "gender" => $from->gender(),
             "sameFamily" => $sameFamily,
             "sameFather" => $sameFather,
             "diffsex" => $diffsex,
@@ -132,37 +148,51 @@ class vanshavali {
     }
 
     private $relation_array = array(
-        array(false, false, true, true, false, 0, "Brother", 0), //brother
-        array(true, false, false, false, true, 1, "Mother", 1),
-        array(false, true, true, false, false, 2, "Father", 2),
-        array(false, false, true, false, false, 2, "Chacha (Uncle)", 3),
-        array(false, false, false, false, true, 1, "Chachi (Aunt)", 4),
-        array(false, false, true, false, true, 0, "Cousin Sister", 5),
-        array(false, false, true, false, false, 0, "Cousin Brother", 6),
-        array(false, false, false, false, true, -1, "Bhabhi (Sister-in-law)", 7),
-        array(false, false, true, false, true, -2, "Bhatiji (Niece)", 8),
-        array(false, false, true, false, false, -2, "Bhatija (Niece)", 9),
-        array(false, false, false, false, true, 3, "Dadi Maa (GrandMother)", 10),
-        array(false, false, true, false, false, 4, "Dada Ji (GrandFather)", 11),
-        array()
+        array(false, false, true, MALE, false, false, true, -1, "Wife", 12),
+        array(false, false, true, FEMALE, false, false, true, -1, "Husband", 13),
+        array(false, false, false, FEMALE, false, false, true, -1, "Brother-in-law (Devar)", 14),
+        array(true, false, false, null, true, false, false, -2, "Son", 15),
+        array(true, false, false, null, true, false, true, -2, "Daughter", 16),
+        array(false, false, false, null, true, true, false, 0, "Brother", 0),
+        array(false, true, false, null, false, false, true, 1, "Mother", 1),
+        array(false, true, false, null, true, false, false, 2, "Father", 2),
+        array(false, false, false, null, true, false, false, 2, "Chacha (Uncle)", 3),
+        array(false, false, false, null, false, false, true, 1, "Chachi (Aunt)", 4),
+        array(false, false, false, null, true, false, true, 0, "Cousin Sister", 5),
+        array(false, false, false, null, true, false, false, 0, "Cousin Brother", 6),
+        array(false, false, false, null, false, false, true, -1, "Bhabhi (Sister-in-law)", 7),
+        array(false, false, false, null, true, false, true, -2, "Bhatiji (Niece)", 8),
+        array(false, false, false, null, true, false, false, -2, "Bhatija (Niece)", 9),
+        array(false, false, false, null, false, false, true, 3, "Dadi Maa (GrandMother)", 10),
+        array(false, false, false, null, true, false, false, 4, "Dada Ji (GrandFather)", 11),
     );
 
+    /**
+     * 
+     * @param type $array
+     * @return boolean
+     */
     private function comparerelationArray($array) {
         //Initialize all the parameters
-        $is_mother = $is_father = $sameFamily = $sameFather = $diffsex = $levelDistance = false;
+        $is_child = $is_parent = $is_spouse = $gender = $sameFamily = $sameFather = $diffsex = $levelDistance = false;
         $result = -1;
+
 
         //Now compare this array with all options that we have
         foreach ($this->relation_array as $key => $singlerelation) {
-            $is_mother = ($singlerelation[0] == $array['is_mother']);
-            $is_father = ($singlerelation[1] == $array['is_father']);
-            $sameFamily = ($singlerelation[2] == $array['sameFamily']);
-            $sameFather = ($singlerelation[3] == $array['sameFather']);
-            $diffsex = ($singlerelation[4] == $array['diffsex']);
-            $levelDistance = ($singlerelation[5] == $array['levelDistance']);
+            $is_child = ($singlerelation[0] == $array['is_child']);
+            $is_parent = ($singlerelation[1] == $array['is_parent']);
+            $is_spouse = ($singlerelation[2] == $array['is_spouse']);
+            $gender = ($singlerelation[3] == null ? true : ($singlerelation[3] == $array['gender']));
+            $sameFamily = ($singlerelation[4] == $array['sameFamily']);
+            $sameFather = ($singlerelation[5] == $array['sameFather']);
+            $diffsex = ($singlerelation[6] == $array['diffsex']);
+            $levelDistance = ($singlerelation[7] == $array['levelDistance']);
 
-            if ($is_mother && $is_father && $sameFamily && $sameFather && $diffsex && $levelDistance) {
-                $result = array($singlerelation[6], $singlerelation[7]);
+            if ($is_child && $is_parent && $is_spouse && $gender &&
+                    $sameFamily && $sameFather && $diffsex && $levelDistance) {
+
+                $result = array($singlerelation[8], $singlerelation[9]);
                 break;
             }
         }

@@ -138,7 +138,7 @@ abstract class member_operation extends member_operation_suggest {
      * @return boolean
      */
     function addwife($name = "Wife", $suggest = false) {
-        global $vanshavali, $db;
+        global $vanshavali;
         if ($suggest) {
             return parent::addwife_suggest($name, $this->id);
         } else {
@@ -159,7 +159,7 @@ abstract class member_operation extends member_operation_suggest {
                     $mother->related_to($fatherid);
                     $father->related_to($motherid);
 
-                    $wife = new member($father->add_son("Wife", 1));
+                    $wife = new member($father->add_son("Wife", FEMALE));
                     $this->related_to($wife->id);
                     $this->set_relationship(MARRIED);
                     $wife->related_to($this->id);

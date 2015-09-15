@@ -49,10 +49,16 @@ class member extends member_operation {
      * current logged in user
      * @return \member
      */
-    function getparent() {
+    function getFather() {
         return new member($this->data['sonof']);
     }
-
+    
+    
+    /**
+     * 
+     * @global \db $db
+     * @return \member
+     */
     function getMother() {
         global $db;
         $query = $db->get("select related_to from member where id = " . $this->data['sonof']);
@@ -183,6 +189,18 @@ class member extends member_operation {
         $query = $db->query("update member set $propertyName = '$value' where id = ". $this->id);
         
         return $query;
+    }
+    
+    function spouse()
+    {
+        if ($this->data['relationship_status'] == MARRIED)
+        {
+            return new member($this->data['related_to']);
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }
