@@ -259,7 +259,7 @@ class install {
             approved int(1) default 0,
             tokenforact text default null,
             dontshow int(1) default 0,
-            family_id int(11) default 1,
+            family_id int(11) null,
             foreign key (family_id) references family(id),
             foreign key (related_to) references member(id),
             admin int(1) default 0 )");
