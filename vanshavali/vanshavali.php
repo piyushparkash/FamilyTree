@@ -18,13 +18,24 @@ class vanshavali {
         
     }
 
-    public function getHeadofFamily($familyid) {
-        $query = $db->query("select id from member where sonof is null and dontshow=0 and gender=" . MALE . " and family_id=$familyid");
-        $row = $db->fetch($query);
+    public function getHeadofFamily($family_id = null) {
+        global $db;
+        if (is_null($family_id)) {
+            $query = $db->query("select * from member where sonof is null and dontshow = 0 and family_id in (select family_id from member where admin = 1)");
+        } else {
+            $query = $db->query("select id from member where sonof is null and dontshow=0 and gender=" . MALE . " and family_id=$family_id");
+        }
 
+        $row = $db->fetch($query);
         return $row['id'];
     }
 
+    /**
+     * 
+     * @param type $member
+     * @param type $samefamily
+     * @return int
+     */
     public function distanceFromTop($member, $samefamily = true) {
 
 
@@ -61,7 +72,7 @@ class vanshavali {
             } else {
 
                 //Check for root. Last person will be male
-                if ($member == false or $member->data["sonof"] == null) {
+                if ($member == false) {
 //                    echo "\nPrevious loop didn't return any member or there is no father to this member = " . $member->data['sonof'];
                     break;
                 }
@@ -153,9 +164,10 @@ class vanshavali {
         array(false, false, false, FEMALE, false, false, true, -1, "Brother-in-law (Devar)", 14),
         array(true, false, false, null, true, false, false, -2, "Son", 15),
         array(true, false, false, null, true, false, true, -2, "Daughter", 16),
-        array(false, false, false, null, true, true, false, 0, "Brother", 0),
+        array(false, false, false, null, true, true, True, 0, "Brother", 0),
+        array(false, false, false, null, true, true, false, 0, "Sister", 17),
         array(false, true, false, null, false, false, true, 1, "Mother", 1),
-        array(false, true, false, null, true, false, false, 2, "Father", 2),
+        array(false, true, false, null, true, false, null, 2, "Father", 2),
         array(false, false, false, null, true, false, false, 2, "Chacha (Uncle)", 3),
         array(false, false, false, null, false, false, true, 1, "Chachi (Aunt)", 4),
         array(false, false, false, null, true, false, true, 0, "Cousin Sister", 5),
@@ -186,7 +198,7 @@ class vanshavali {
             $gender = ($singlerelation[3] == null ? true : ($singlerelation[3] == $array['gender']));
             $sameFamily = ($singlerelation[4] == $array['sameFamily']);
             $sameFather = ($singlerelation[5] == $array['sameFather']);
-            $diffsex = ($singlerelation[6] == $array['diffsex']);
+            $diffsex = ($singlerelation[6] == null ? true : ($singlerelation[6] == $array['diffsex']));
             $levelDistance = ($singlerelation[7] == $array['levelDistance']);
 
             if ($is_child && $is_parent && $is_spouse && $gender &&
@@ -374,7 +386,7 @@ class vanshavali {
     function addfamily($name) {
         global $db;
         if ($db->query("insert into family (family_name,ts) values('$name Family'," . time() . ")")) {
-            return mysql_insert_id();
+            return $db->last_id();
         } else {
             return false;
         }
