@@ -52,8 +52,7 @@ class member extends member_operation {
     function getFather() {
         return new member($this->data['sonof']);
     }
-    
-    
+
     /**
      * 
      * @global \db $db
@@ -101,14 +100,43 @@ class member extends member_operation {
      * @return null
      */
     function autofix() {
-        global $db;
+
         $nosons = $this->has_sons();
         if ($nosons > 0) {
-            // If the member has sons Change the status to married
-            // Add a wife and add parents to wife and create a new family
+// If the member has sons Change the status to married
+// Add a wife and add parents to wife and create a new family
             $this->set_relationship(MARRIED);
             $this->addwife();
+
+//Call the second autofix function to fix the wife and 
+//husband of same family issue.
+            $this->autofix2();
         }
+    }
+
+    function autofix2() {
+//check which records were overwritten
+        $logfile = fopen("logfile.txt", "w+");
+        global $vanshavali;
+//This check should only run for wifes
+        $spouse = new member($this->data['related_to']);
+
+//Check if it is wife
+        if ($spouse->isfemale()) {
+//Now check if we have different family for the wife here
+            if ($spouse->data['family_id'] == $this->data['family_id']) {
+                $new_family_id = $vanshavali->addfamily($spouse->data['membername']);
+                if ($new_family_id == false) {
+                    fwrite($logfile, "Could not add a new family");
+                    fclose($logfile);
+                    return;
+                }
+                $spouse->set("family_id", $new_family_id);
+                fwrite($logfile, "$spouse->id--corrected" . "\n");
+//And we are done.
+            }
+        }
+        fclose($logfile);
     }
 
     /**
@@ -158,7 +186,7 @@ class member extends member_operation {
     function gender() {
         return $this->data['gender'];
     }
-    
+
     /**
      * 
      * @global \db $db
@@ -169,12 +197,12 @@ class member extends member_operation {
         global $db;
 
         $query = $db->query("select $propertyName from member where id = " . $this->id);
-        
+
         $row = $db->fetch($query);
-        
+
         return $row[$propertyName];
     }
-    
+
     /**
      * 
      * @global \db $db
@@ -182,23 +210,18 @@ class member extends member_operation {
      * @param type $value
      * @return type
      */
-    function set($propertyName, $value)
-    {
+    function set($propertyName, $value) {
         global $db;
-        
-        $query = $db->query("update member set $propertyName = '$value' where id = ". $this->id);
-        
+
+        $query = $db->query("update member set $propertyName = '$value' where id = " . $this->id);
+
         return $query;
     }
-    
-    function spouse()
-    {
-        if ($this->data['relationship_status'] == MARRIED)
-        {
+
+    function spouse() {
+        if ($this->data['relationship_status'] == MARRIED) {
             return new member($this->data['related_to']);
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
