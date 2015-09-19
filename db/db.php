@@ -36,7 +36,7 @@ class db {
                 return false;
 
                 if (!is_null($database)) {
-                    if (!mysql_select_db($database)) {
+                    if (!mysqli_select_db($database)) {
                         trigger_error("Cannot Select database.", E_USER_ERROR);
                         return false;
                     }
@@ -71,7 +71,7 @@ class db {
             $query = mysqli_query($this->connection, $sql);
             if ($query == false) {
                 //Some error occured while querying
-                trigger_error(mysql_error(), E_USER_NOTICE);
+                trigger_error(mysqli_error(), E_USER_NOTICE);
                 return false;
             } else {
                 //return the resource
@@ -85,6 +85,14 @@ class db {
     }
 
     /**
+     * 
+     * @return type
+     */
+    function last_id() {
+        return mysqli_insert_id($this->connection);
+    }
+
+    /**
      * Fetches a row from the query resource. Triggers error if invalid resource
      * is provided
      * @param resource $query The query resource returned bt query function
@@ -93,8 +101,7 @@ class db {
     function fetch($query) {
         if ($query === true) {
             return true;
-        }
-        else if ($query != false) {
+        } else if ($query != false) {
             return mysqli_fetch_array($query);
         } else {
             trigger_error("Invalid Query resource provided", E_USER_NOTICE);
