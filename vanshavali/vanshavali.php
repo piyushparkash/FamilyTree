@@ -161,7 +161,7 @@ class vanshavali {
     private $relation_array = array(
         array(false, false, true, MALE, false, false, true, -1, "Wife", 12),
         array(false, false, true, FEMALE, false, false, true, -1, "Husband", 13),
-        array(false, false, false, FEMALE, false, false, true, -1, "Brother-in-law (Devar)", 14),
+        /*array(false, false, false, FEMALE, false, false, true, -1, "Brother-in-law (Devar)", 14),
         array(true, false, false, null, true, false, false, -2, "Son", 15),
         array(true, false, false, null, true, false, true, -2, "Daughter", 16),
         array(false, false, false, null, true, true, True, 0, "Brother", 0),
@@ -176,7 +176,7 @@ class vanshavali {
         array(false, false, false, null, true, false, true, -2, "Bhatiji (Niece)", 8),
         array(false, false, false, null, true, false, false, -2, "Bhatija (Niece)", 9),
         array(false, false, false, null, false, false, true, 3, "Dadi Maa (GrandMother)", 10),
-        array(false, false, false, null, true, false, false, 4, "Dada Ji (GrandFather)", 11),
+        array(false, false, false, null, true, false, false, 4, "Dada Ji (GrandFather)", 11),*/
     );
 
     /**
@@ -187,7 +187,8 @@ class vanshavali {
     private function comparerelationArray($array) {
         //Initialize all the parameters
         $is_child = $is_parent = $is_spouse = $gender = $sameFamily = $sameFather = $diffsex = $levelDistance = false;
-        $result = -1;
+        $result = array();
+        $approx_relation = false;
 
 
         //Now compare this array with all options that we have
@@ -201,19 +202,48 @@ class vanshavali {
             $diffsex = ($singlerelation[6] == null ? true : ($singlerelation[6] == $array['diffsex']));
             $levelDistance = ($singlerelation[7] == $array['levelDistance']);
 
+            //Check if this relation was approx relations
+            if ($singlerelation[3] == null or $singlerelation[6] == null) {
+                $approx_relation = true;
+            }
+
             if ($is_child && $is_parent && $is_spouse && $gender &&
                     $sameFamily && $sameFather && $diffsex && $levelDistance) {
 
-                $result = array($singlerelation[8], $singlerelation[9]);
-                break;
+                $result[] = array($singlerelation[8], $singlerelation[9], $approx_relation);
             }
+            
+            //Reset the approx_relation variable for the next relation
+            $approx_relation = false;
         }
 
-        if ($result == -1) {
+
+        if (sizeof($result) == 0) {
             return false; // We couldn't find such relation
         }
-        /* @var $result array|number */ else if (is_array($result)) {
-            return $result;
+
+        //Check here if we have multiple values
+        if (sizeof($result) == 1) {
+            //Congrats, we heve only on relation to show.
+            return $result[0];
+        } elseif (sizeof($result) > 1) {
+            //We have more than one relation which is matching
+            //Select the one which is not approx
+            $accurate_relation = -1;
+            foreach ($result as $matched_relation) {
+                if ($matched_relation[2] == false) { //This says that it is not approximate relation
+                    //Get out of the loop
+                    $accurate_relation = $matched_relation;
+                    break;
+                }
+            }
+
+            //Check if we have accurate relation
+            if ($accurate_relation == -1) {
+                return false; //Two many relations matching
+            } else {
+                return $accurate_relation;
+            }
         }
     }
 
