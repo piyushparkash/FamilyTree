@@ -161,12 +161,12 @@ class vanshavali {
     private $relation_array = array(
         array(false, false, true, MALE, false, false, true, -1, "Wife", 12),
         array(false, false, true, FEMALE, false, false, true, -1, "Husband", 13),
-        /*array(false, false, false, FEMALE, false, false, true, -1, "Brother-in-law (Devar)", 14),
+        array(false, false, false, FEMALE, false, false, true, -1, "Brother-in-law (Devar)", 14),
         array(true, false, false, null, true, false, false, -2, "Son", 15),
         array(true, false, false, null, true, false, true, -2, "Daughter", 16),
         array(false, false, false, null, true, true, True, 0, "Brother", 0),
         array(false, false, false, null, true, true, false, 0, "Sister", 17),
-        array(false, true, false, null, false, false, true, 1, "Mother", 1),
+        array(false, true, false, null, false, false, null, 1, "Mother", 1),
         array(false, true, false, null, true, false, null, 2, "Father", 2),
         array(false, false, false, null, true, false, false, 2, "Chacha (Uncle)", 3),
         array(false, false, false, null, false, false, true, 1, "Chachi (Aunt)", 4),
@@ -176,7 +176,7 @@ class vanshavali {
         array(false, false, false, null, true, false, true, -2, "Bhatiji (Niece)", 8),
         array(false, false, false, null, true, false, false, -2, "Bhatija (Niece)", 9),
         array(false, false, false, null, false, false, true, 3, "Dadi Maa (GrandMother)", 10),
-        array(false, false, false, null, true, false, false, 4, "Dada Ji (GrandFather)", 11),*/
+        array(false, false, false, null, true, false, false, 4, "Dada Ji (GrandFather)", 11),
     );
 
     /**
@@ -212,7 +212,7 @@ class vanshavali {
 
                 $result[] = array($singlerelation[8], $singlerelation[9], $approx_relation);
             }
-            
+
             //Reset the approx_relation variable for the next relation
             $approx_relation = false;
         }
