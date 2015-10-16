@@ -317,8 +317,10 @@ class vanshavali {
     public function hasAccess($who, $whom) {
 
         //accessArray
-        $accessArray = array(); //This contains the relation which have access over each other
+        $accessArray = array(12,13,15,16,0,17,1,2); 
+        ////This contains the relation which have access over each other
         //Basic things. User can edit is own information.
+        
         if ($who === $whom) {
             return true;
         }
