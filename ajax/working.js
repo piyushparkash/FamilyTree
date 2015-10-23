@@ -307,7 +307,7 @@ function editmember_submit()
             member.data.relationship_status=member.data.relationship_status_id==0 ? "Single" : "Married";
             member.data.alive=member.data.alive_id==0 ?"No" :"Yes";
         
-            display_data(member.name,member.data.dob,member.data.relationship_status,member.data.alive,"");
+            display_data(member);
         
             //hide the form
             $("#operation_edit").slideUp();
