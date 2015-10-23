@@ -163,6 +163,7 @@ switch ($_POST['action']) {
             ajaxSuccess();
         }
         break;
+
     case "checkregistered":
         global $db, $vanshavali;
         $res = $vanshavali->getmember($_POST['id']);

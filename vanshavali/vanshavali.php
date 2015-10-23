@@ -325,7 +325,7 @@ class vanshavali {
             return true;
         }
 
-        $relation = calculateRelation($who, $whom);
+        $relation = $this->calculateRelation($who, $whom);
 
         if (in_array($relation, $accessArray)) {
             return true;

@@ -59,7 +59,12 @@ abstract class member_operation extends member_operation_suggest {
      * @return integer The ID of the new member just added
      */
     function add_son($name, $gender, $suggest = false) {
-        if ($suggest) {
+        global $vanshavali, $user;
+
+        //Check for member to member access
+        $hasAccess = $vanshavali->hasAccess($user->user['id'], $this->id);
+
+        if ($suggest & !$hasAccess) {
             if (intval($this->data['gender']) == MALE) {
 
                 //If a male member then send his id
@@ -84,7 +89,7 @@ abstract class member_operation extends member_operation_suggest {
                 if (empty($familyid)) {
 
                     //If family id is not defined than assume that he/she belongs to the default family
-                    $familyid = 1;
+                    trigger_error("Empty Family. Don't belong to any Family", E_USER_ERROR);
                 }
 
 
@@ -138,8 +143,9 @@ abstract class member_operation extends member_operation_suggest {
      * @return boolean
      */
     function addwife($name = "Wife", $suggest = false) {
-        global $vanshavali;
-        if ($suggest) {
+        global $vanshavali, $user;
+
+        if ($suggest && !$hasAccess) {
             return parent::addwife_suggest($name, $this->id);
         } else {
 
@@ -182,10 +188,14 @@ abstract class member_operation extends member_operation_suggest {
      * @return boolean
      */
     function addhusband($name = "Husband", $suggest = false) {
-        global $vanshavali, $db;
-        if ($suggest) {
+        global $vanshavali, $user;
+
+        $hasAccess = $vanshavali->hasAccess($user->user['id'], $this->id);
+
+        if ($suggest && !$hasAccess) {
             return parent::addhusband_suggest($name, $this->id);
         } else {
+
             //Add wife directly in the database
             $family_id = $vanshavali->addfamily($name . "'s Family");
             if ($family_id) {
@@ -219,7 +229,11 @@ abstract class member_operation extends member_operation_suggest {
      * @return boolean
      */
     function remove($suggest = false) {
-        if ($suggest) {
+
+        global $vanshavali, $user;
+
+        $hasAccess = $vanshavali->hasAccess($user->user['id'], $this->id);
+        if ($suggest && !$hasAccess) {
             return parent::remove_suggest($this->data['id']);
         } else {
             //Remove the member completely
@@ -231,6 +245,9 @@ abstract class member_operation extends member_operation_suggest {
                 return false;
             }
         }
+
+        //If reached here, then the operations is complete
+        return true;
     }
 
     /**
@@ -258,7 +275,11 @@ abstract class member_operation extends member_operation_suggest {
      * 1 == Living
      */
     function edit($name, $gender, $relationship, $dob, $alive, $suggest = FALSE) {
-        if ($suggest) {
+        global $vanshavali, $user;
+
+        $hasAccess = $vanshavali->hasAccess($user->user['id'], $this->id);
+
+        if ($suggest && !$hasAccess) {
             return parent::edit_suggest($name, $gender, $relationship, $dob, $alive, $this->data['id']);
         } else {
             //Change the details directly...
@@ -271,6 +292,9 @@ abstract class member_operation extends member_operation_suggest {
                 return FALSE;
             }
         }
+
+        //If reached till here, then the operation is complete
+        return True;
     }
 
 }
