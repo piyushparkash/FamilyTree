@@ -178,4 +178,3 @@ switch ($_POST['action']) {
     default: //when nothing matches
         break;
 }
-?>

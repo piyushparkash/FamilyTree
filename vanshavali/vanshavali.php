@@ -324,6 +324,14 @@ class vanshavali {
         if ($who === $whom) {
             return true;
         }
+        
+        //Make a check if the person is admin
+        $mclass = new member($who);
+        if ($mclass->isAdmin())
+        {
+            //The person suggesting is admin. Just do it. :P
+            return true;
+        }
 
         $relation = $this->calculateRelation($who, $whom);
 

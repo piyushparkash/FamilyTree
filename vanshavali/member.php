@@ -217,13 +217,22 @@ class member extends member_operation {
 
         return $query;
     }
-
+    
+    /**
+     * 
+     * @return boolean|\member
+     */
     function spouse() {
         if ($this->data['relationship_status'] == MARRIED) {
             return new member($this->data['related_to']);
         } else {
             return false;
         }
+    }
+    
+    function isAdmin()
+    {
+        return $this->data['admin'];
     }
 
 }
