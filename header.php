@@ -4,8 +4,9 @@
  * @author Piyush
  * @copyright 2011
  */
-error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL);
 
+require_once 'constants.php';
 //If config file exists then include it else leave it
 if (file_exists("config.php")) {
     if (is_readable("config.php")) {
@@ -20,16 +21,31 @@ require_once 'template/template.php';
 require_once 'db/db.php';
 require_once 'user/user.php';
 require_once 'vanshavali/vanshavali.php';
+require_once 'functions.php';
+require_once 'suggest/suggest_handler.php';
 $template = new template();
 $db = new db();
 $vanshavali = new vanshavali();
 
-//Select the defualt database
+//Select the default database
 if (isset($config['database']) and !empty($config['database'])) {
     $db->select_db($config['database']);
 }
 
 $user = new user();
+$suggest_handler = new suggest_handler();
+
+//Register the basic suggests
+
+$suggest_handler->register_handler(ADDMEMBER, "suggest.add.tpl", array("suggested_by", "suggested_to", "newvalue", "sod", "oldvalue"), ADD);
+$suggest_handler->register_handler(NAME, "suggest.edit.name.tpl", array("suggested_by", "suggested_to", "oldvalue", "newvalue", "sod"), MODIFY);
+$suggest_handler->register_handler(DOB, "suggest.edit.dob.tpl", array("suggested_by", "suggested_to", "oldvalue", "newvalue", "sod"), MODIFY);
+$suggest_handler->register_handler(GAON, "suggest.edit.gaon.tpl", array("suggested_by", "suggested_to", "oldvalue", "newvalue", "sod"), MODIFY);
+$suggest_handler->register_handler(RELATIONSHIP, "suggest.edit.relationship.tpl", array("suggested_by", "suggested_to", "oldvalue", "newvalue", "sod"), MODIFY);
+$suggest_handler->register_handler(ALIVE, "suggest.edit.alive.tpl", array("suggested_by", "suggested_to", "oldvalue", "newvalue", "sod"), MODIFY);
+$suggest_handler->register_handler(GENDER, "suggest.edit.gender.tpl", array("suggested_by", "suggested_to", "oldvalue", "newvalue", "sod"), MODIFY);
+$suggest_handler->register_handler(DELMEMBER, "suggest.del.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue", "sod"), MODIFY);
+$suggest_handler->register_handler(ADDSPOUSE, "suggest.add.spouse.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue", "sod"), ADD);
 
 //Initialize custom error handler
 function vanshavali_error($level, $message, $file, $line, $context) {
@@ -47,7 +63,7 @@ function vanshavali_error($level, $message, $file, $line, $context) {
             break;
         case E_USER_NOTICE:
             //If request is AJAX then
-            if ($_SERVER['HTTP_X_REQUESTED_WITH']) {
+            if (@$_SERVER['HTTP_X_REQUESTED_WITH']) {
                 //Prepare the array
                 $errorarray = array("success" => 0, "message" => $message);
                 echo json_encode($errorarray);
@@ -62,75 +78,4 @@ function vanshavali_error($level, $message, $file, $line, $context) {
 }
 
 set_error_handler("vanshavali_error");  //Set the custom error handler
-
-/***********************************************
- * After this Function sections start. All the global function used 
- * within the project has been declared below this
- ***********************************************/
-
-function fileext($filename, $ext = true) {
-    $filename = basename($filename);
-    $arr = explode(".", $filename);
-    $count = count($arr);
-    if ($ext) {
-        return $arr[$count - 1];
-    } else {
-        return implode("", array_slice($arr, 0, $count - 1));
-    }
-}
-
-function ajaxSuccess($data=NULL)
-{
-    echo json_encode(array("success" => 1, "data" => $data));
-}
-
-function ajaxError($data=NULL)
-{
-    echo json_encode(array("success" => 0, "data" => $data));
-}
-
-function createstruct($row) {
-    $obj = array();
-    $obj['id'] = $row["id"];
-    $obj['name'] = $row['membername'];
-    $obj['data'] = array(
-        "dob" => ($row['dob'] ? strftime($row['dob'], "%d/%m/%Y") : ""),
-        "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
-                "Married"),
-        "relationship_status_id" => $row['relationship_status'],
-        "alive" => ($row['alive'] == 0 ? "Deceased" : "Living"),
-        "gender" => $row['gender'],
-        "alive_id" => $row['alive'],
-        'image' => empty($row['profilepic']) ? "common.png" : $row['profilepic'],
-        'familyid' => $row['family_id']
-    );
-    return $obj;
-}
-
-function getchild($id) {
-    global $db;
-    $finalarray = array();
-    $query = $db->query("select * from member where sonof=$id and dontshow=0");
-    while ($row = $db->fetch($query)) {
-        $obj = createstruct($row);
-        $obj['children'] = getwife($row['id']);
-        array_push($finalarray, $obj);
-    }
-    return $finalarray;
-}
-
-function getwife($id) {
-    global $db;
-    $finalarray = array();
-    $row = $db->get("select * from member where id in (select related_to from member where id=$id)");
-    $obj = array();
-    // Space Tree Object if he has a wife
-    if ($row) {
-        $obj=  createstruct($row);
-        $obj['children'] = getchild($id);
-        array_push($finalarray, $obj);
-        return $finalarray;
-    } else {
-        return NULL;
-    }
-}
+?>

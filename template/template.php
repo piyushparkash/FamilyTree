@@ -1,10 +1,4 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Handles all the output of the page
  * @extends Smarty
@@ -17,8 +11,8 @@ class template extends Smarty {
     //The Constructor
     function __construct() {
         parent::__construct(); //Calls the smarty constructor
-        $this->setCacheDir("cache");
-        $this->setCompileDir("compile");
+        $this->setCacheDir("template/cache");
+        $this->setCompileDir("template/compile");
         $this->setTemplateDir("html");
         
         //Check here for the permissions of the above folder and report error

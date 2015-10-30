@@ -1,0 +1,391 @@
+\hypertarget{classauth}{\section{auth Class Reference}
+\label{classauth}\index{auth@{auth}}
+}
+Inheritance diagram for auth\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classauth}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classauth_a476f6d06e1ddb49cf4268918363c1d99}{\-\_\-\-\_\-construct} ()
+\item 
+\hyperlink{classauth_a019d664334a621e770043d9fb4210836}{authenticate} (\$username, \$password)
+\item 
+\hyperlink{classauth_a0de1d4416c9fb04b4223cd7a3dd3a623}{user\-\_\-account\-\_\-activated} (\$id)
+\item 
+\hyperlink{classauth_aebf5c1995f3314883dc475628db61ccc}{get\-\_\-user} (\$id)
+\item 
+\hyperlink{classauth_ad5c908efc480a57e5625131348f4bf29}{check\-\_\-session} ()
+\item 
+\hyperlink{classauth_ac2530bf2bba79e22de7e2f3ebb63be3a}{check\-\_\-token} (\$id, \$token)
+\item 
+\hyperlink{classauth_a73a5af5d9e12014687cf0d360f5e6356}{is\-\_\-authenticated} ()
+\item 
+\hyperlink{classauth_a4ec05ca8231cd1151246b127f168d457}{generate\-\_\-token} (\$id= '')
+\item 
+\hyperlink{classauth_adeb7a80afb02aceb540c541d591baf69}{destroy\-\_\-session} ()
+\item 
+\hyperlink{classauth_a17089bfa7c3b9d0546f80ac9472dfc7b}{unauthenticate} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class is used to create and destroy sessions. It also handles User Authentication 
+\begin{DoxyParams}{Parameters}
+{\em none} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+piyush 
+\end{DoxyAuthor}
+
+
+Definition at line 7 of file auth.\-php.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classauth_a476f6d06e1ddb49cf4268918363c1d99}{\index{auth@{auth}!\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}}
+\index{\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}!auth@{auth}}
+\subsubsection[{\-\_\-\-\_\-construct}]{\setlength{\rightskip}{0pt plus 5cm}auth\-::\-\_\-\-\_\-construct (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classauth_a476f6d06e1ddb49cf4268918363c1d99}
+The constructor of the class 
+\begin{DoxyParams}{Parameters}
+{\em null} & \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{classuser_acf59e1e14564ce949759964415069581}{user}.
+
+
+
+Definition at line 13 of file auth.\-php.
+
+
+\begin{DoxyCode}
+                                  \{
+        session\_start();
+    \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classauth_a019d664334a621e770043d9fb4210836}{\index{auth@{auth}!authenticate@{authenticate}}
+\index{authenticate@{authenticate}!auth@{auth}}
+\subsubsection[{authenticate}]{\setlength{\rightskip}{0pt plus 5cm}auth\-::authenticate (
+\begin{DoxyParamCaption}
+\item[{}]{\$username, }
+\item[{}]{\$password}
+\end{DoxyParamCaption}
+)}}\label{classauth_a019d664334a621e770043d9fb4210836}
+This function is used to basically log-\/in the user. It takes username and password combination as parameter and return true if such user is present and authentication process was successfully completed. If no such user is present it returns false   \$db The instance of the the db class  array \$\-\_\-\-S\-E\-S\-S\-I\-O\-N The global Session variable storing all the session data 
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$username} & The username of the users to check against \\
+\hline
+string & {\em \$password} & The password of the user \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 29 of file auth.\-php.
+
+
+\begin{DoxyCode}
+                                                       \{
+        global $db;
+        
+        \textcolor{comment}{//Convert Password in md5 Hash}
+        $password = md5($password);
+        $query = $db->query(\textcolor{stringliteral}{"select * from member where username='$username'
+       and password='$password'"});
+        $row = $db->fetch($query);
+
+        \textcolor{comment}{//if no row found or if user's account is not activated yet then}
+        \textcolor{keywordflow}{if} ($row == \textcolor{keyword}{false}) \{
+            \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+        \}
+        
+        \textcolor{comment}{//Check here for approval if user registration has been approved by the
+       admin. Currently disabled}
+
+        \textcolor{comment}{//Start the session and start storing data about user}
+        global $\_SESSION;
+        $token = $this->\hyperlink{classauth_a4ec05ca8231cd1151246b127f168d457}{generate\_token}($row[\textcolor{stringliteral}{'id'}]);
+        $\_SESSION[\textcolor{stringliteral}{'membername'}] = $row[\textcolor{stringliteral}{'membername'}];
+        $\_SESSION[\textcolor{stringliteral}{'id'}] = $row[\textcolor{stringliteral}{'id'}];
+        $\_SESSION[\textcolor{stringliteral}{'token'}] = $token;
+        $\_SESSION[\textcolor{stringliteral}{'authenticated'}] = \textcolor{keyword}{true};
+
+        \textcolor{comment}{//if everything is alright then return true}
+        \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+    \}
+\end{DoxyCode}
+\hypertarget{classauth_ad5c908efc480a57e5625131348f4bf29}{\index{auth@{auth}!check\-\_\-session@{check\-\_\-session}}
+\index{check\-\_\-session@{check\-\_\-session}!auth@{auth}}
+\subsubsection[{check\-\_\-session}]{\setlength{\rightskip}{0pt plus 5cm}auth\-::check\-\_\-session (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classauth_ad5c908efc480a57e5625131348f4bf29}
+This function is used to check if sessions was initialized i.\-e. all the required cookies are set. Return true if set  array \$\-\_\-\-S\-E\-S\-S\-I\-O\-N The Superglobal Session variable \begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 89 of file auth.\-php.
+
+
+\begin{DoxyCode}
+                             \{
+        global $\_SESSION;
+        \textcolor{keywordflow}{if} (isset($\_SESSION[\textcolor{stringliteral}{'membername'}], $\_SESSION[\textcolor{stringliteral}{'id'}], $\_SESSION[\textcolor{stringliteral}{'token'}],
+       $\_SESSION[\textcolor{stringliteral}{'authenticated'}])) \{
+            \textcolor{keywordflow}{if} ($\_SESSION[\textcolor{stringliteral}{'authenticated'}] == \textcolor{keyword}{true}) \{
+                \textcolor{keywordflow}{if} ($this->\hyperlink{classauth_ac2530bf2bba79e22de7e2f3ebb63be3a}{check\_token}($\_SESSION[\textcolor{stringliteral}{'id'}], $\_SESSION[\textcolor{stringliteral}{'
+      token'}])) \{
+                    \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+                \}
+            \}
+        \}
+
+        \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+    \}
+\end{DoxyCode}
+\hypertarget{classauth_ac2530bf2bba79e22de7e2f3ebb63be3a}{\index{auth@{auth}!check\-\_\-token@{check\-\_\-token}}
+\index{check\-\_\-token@{check\-\_\-token}!auth@{auth}}
+\subsubsection[{check\-\_\-token}]{\setlength{\rightskip}{0pt plus 5cm}auth\-::check\-\_\-token (
+\begin{DoxyParamCaption}
+\item[{}]{\$id, }
+\item[{}]{\$token}
+\end{DoxyParamCaption}
+)}}\label{classauth_ac2530bf2bba79e22de7e2f3ebb63be3a}
+This function is used to checkt the token generated against the user. Return true if matches 
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$id} & The I\-D of the user \\
+\hline
+string & {\em \$token} & The token generated for the user \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 109 of file auth.\-php.
+
+
+\begin{DoxyCode}
+                                      \{
+        $numtoken = preg\_replace(\textcolor{stringliteral}{"/[^0-9]/"}, \textcolor{stringliteral}{""}, $token);
+        $numtoken = (int) $numtoken;
+        \textcolor{keywordflow}{if} ($numtoken == $id) \{
+
+            \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+        \} \textcolor{keywordflow}{else} \{
+
+            \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+        \}
+    \}
+\end{DoxyCode}
+\hypertarget{classauth_adeb7a80afb02aceb540c541d591baf69}{\index{auth@{auth}!destroy\-\_\-session@{destroy\-\_\-session}}
+\index{destroy\-\_\-session@{destroy\-\_\-session}!auth@{auth}}
+\subsubsection[{destroy\-\_\-session}]{\setlength{\rightskip}{0pt plus 5cm}auth\-::destroy\-\_\-session (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classauth_adeb7a80afb02aceb540c541d591baf69}
+This function is used to destroy the session created \begin{DoxyReturn}{Returns}
+null 
+\end{DoxyReturn}
+
+
+Definition at line 167 of file auth.\-php.
+
+
+\begin{DoxyCode}
+    \{
+        session\_unset();
+    \}
+\end{DoxyCode}
+\hypertarget{classauth_a4ec05ca8231cd1151246b127f168d457}{\index{auth@{auth}!generate\-\_\-token@{generate\-\_\-token}}
+\index{generate\-\_\-token@{generate\-\_\-token}!auth@{auth}}
+\subsubsection[{generate\-\_\-token}]{\setlength{\rightskip}{0pt plus 5cm}auth\-::generate\-\_\-token (
+\begin{DoxyParamCaption}
+\item[{}]{\$id = {\ttfamily ''}}
+\end{DoxyParamCaption}
+)}}\label{classauth_a4ec05ca8231cd1151246b127f168d457}
+This function is generated token for a user. Token is a random alphanumeric string 
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$id} & The I\-D of the used to generate the token for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string The generated Token 
+\end{DoxyReturn}
+
+
+Definition at line 140 of file auth.\-php.
+
+
+\begin{DoxyCode}
+                                      \{
+
+        $codelenght = 20;
+        \textcolor{keywordflow}{for} ($newcode = \textcolor{stringliteral}{""}, $newcode\_length = 0; $newcode\_length < $codelenght;
+       $newcode\_length++) \{
+            \textcolor{keywordflow}{if} ($newcode\_length == 5) \{
+                $newcode = $newcode . $id;
+            \}
+            $x = 1;
+            $y = 2;
+            $part = rand($x, $y);
+            \textcolor{keywordflow}{if} ($part == 1) \{
+                $a = 65;
+                $b = 90;
+            \} \textcolor{comment}{// UpperCase}
+            \textcolor{keywordflow}{if} ($part == 2) \{
+                $a = 97;
+                $b = 122;
+            \} \textcolor{comment}{// LowerCase}
+            $newcode = $newcode . chr(rand($a, $b));
+        \}
+        \textcolor{keywordflow}{return} $newcode;
+    \}
+\end{DoxyCode}
+\hypertarget{classauth_aebf5c1995f3314883dc475628db61ccc}{\index{auth@{auth}!get\-\_\-user@{get\-\_\-user}}
+\index{get\-\_\-user@{get\-\_\-user}!auth@{auth}}
+\subsubsection[{get\-\_\-user}]{\setlength{\rightskip}{0pt plus 5cm}auth\-::get\-\_\-user (
+\begin{DoxyParamCaption}
+\item[{}]{\$id}
+\end{DoxyParamCaption}
+)}}\label{classauth_aebf5c1995f3314883dc475628db61ccc}
+This function returns all the information of the user in array just as it is stored in the table   \$db The instance of the db class 
+\begin{DoxyParams}[1]{Parameters}
+type & {\em \$id} & The I\-D of the user for which the information is to be fetched \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+array 
+\end{DoxyReturn}
+
+
+Definition at line 77 of file auth.\-php.
+
+
+\begin{DoxyCode}
+                           \{
+        global $db;
+        $row = $db->fetch($db->query(\textcolor{stringliteral}{"select * from member where id=$id"}));
+        \textcolor{keywordflow}{return} $row;
+    \}
+\end{DoxyCode}
+\hypertarget{classauth_a73a5af5d9e12014687cf0d360f5e6356}{\index{auth@{auth}!is\-\_\-authenticated@{is\-\_\-authenticated}}
+\index{is\-\_\-authenticated@{is\-\_\-authenticated}!auth@{auth}}
+\subsubsection[{is\-\_\-authenticated}]{\setlength{\rightskip}{0pt plus 5cm}auth\-::is\-\_\-authenticated (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classauth_a73a5af5d9e12014687cf0d360f5e6356}
+This function is used to check if the user is logged-\/in Returns true if logged-\/in \begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 126 of file auth.\-php.
+
+
+\begin{DoxyCode}
+                                \{
+        \textcolor{keywordflow}{if} ($this->\hyperlink{classauth_ac2530bf2bba79e22de7e2f3ebb63be3a}{check\_token}($\_SESSION[\textcolor{stringliteral}{'id'}], $\_SESSION[\textcolor{stringliteral}{'token'}]) 
+      && $\_SESSION[\textcolor{stringliteral}{'authenticated'}]) \{
+            \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+        \} \textcolor{keywordflow}{else} \{
+            \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+        \}
+    \}
+\end{DoxyCode}
+\hypertarget{classauth_a17089bfa7c3b9d0546f80ac9472dfc7b}{\index{auth@{auth}!unauthenticate@{unauthenticate}}
+\index{unauthenticate@{unauthenticate}!auth@{auth}}
+\subsubsection[{unauthenticate}]{\setlength{\rightskip}{0pt plus 5cm}auth\-::unauthenticate (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classauth_a17089bfa7c3b9d0546f80ac9472dfc7b}
+This function is used to log-\/out the user   \$db The instance of the db class \begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 177 of file auth.\-php.
+
+
+\begin{DoxyCode}
+    \{
+        global $db;
+        \textcolor{keywordflow}{if} (!$this->\hyperlink{classauth_a73a5af5d9e12014687cf0d360f5e6356}{is\_authenticated}())
+        \{
+            \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+        \}
+        \textcolor{comment}{//Update the last login timestamp}
+        \textcolor{keywordflow}{if} ($db->query(\textcolor{stringliteral}{"update member set lastlogin="}.time().\textcolor{stringliteral}{" where id="}.
+      $\_SESSION[\textcolor{stringliteral}{'id'}]))
+        \{
+        
+        \textcolor{comment}{//Unset all the session values}
+        $this->\hyperlink{classauth_adeb7a80afb02aceb540c541d591baf69}{destroy\_session}();
+        \textcolor{keywordflow}{if} ($this->\hyperlink{classauth_a73a5af5d9e12014687cf0d360f5e6356}{is\_authenticated}())
+        \{
+            trigger\_error(\textcolor{stringliteral}{"Error Ending Session"},E\_USER\_ERROR);
+            \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+        \}
+        
+        \}
+        \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+    \}
+\end{DoxyCode}
+\hypertarget{classauth_a0de1d4416c9fb04b4223cd7a3dd3a623}{\index{auth@{auth}!user\-\_\-account\-\_\-activated@{user\-\_\-account\-\_\-activated}}
+\index{user\-\_\-account\-\_\-activated@{user\-\_\-account\-\_\-activated}!auth@{auth}}
+\subsubsection[{user\-\_\-account\-\_\-activated}]{\setlength{\rightskip}{0pt plus 5cm}auth\-::user\-\_\-account\-\_\-activated (
+\begin{DoxyParamCaption}
+\item[{}]{\$id}
+\end{DoxyParamCaption}
+)}}\label{classauth_a0de1d4416c9fb04b4223cd7a3dd3a623}
+This function is used to check if user's account has been approved by the admin 
+\begin{DoxyParams}[1]{Parameters}
+type & {\em \$id} & The I\-D of the user to check for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 61 of file auth.\-php.
+
+
+\begin{DoxyCode}
+                                         \{
+
+        $data = $this->\hyperlink{classauth_aebf5c1995f3314883dc475628db61ccc}{get\_user}($id);
+        \textcolor{keywordflow}{if} ($data[\textcolor{stringliteral}{'approved'}] == 0) \{
+            \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+        \} \textcolor{keywordflow}{else} \{
+            \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+        \}
+    \}
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+auth/auth.\-php\end{DoxyCompactItemize}

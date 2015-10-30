@@ -2,22 +2,20 @@
 
 require "header.php";
 
-global $db;
-$familyid = $_GET['familyid'];
+global $db, $vanshavali, $user;
 
-//Get the family id of the family to be shown
-if (!$familyid) {
-    $familyid = 1;
+if ($user->is_authenticated()) {
+    $familyid = $user->user['family_id'];
+} else {
+    $familyid = null;
 }
 
-
-//Get the member who is son of no one and is male and is of given family id
-$query = $db->query("select * from member where sonof is null and dontshow=0 and gender=0 and family_id=$familyid");
-$row = $db->fetch($query);
+$head = $vanshavali->getHeadofFamily($familyid);
+$head = new member($head);
 
 //Create a infovis struct
-$finalkey = createstruct($row);
-$finalkey['children'] = getwife($row['id']);
+$finalkey = $vanshavali->createstruct($head->data);
+$finalkey['children'] = $vanshavali->getwife($head->data['id']);
 
 echo json_encode($finalkey);
 ?>

@@ -1,6 +1,5 @@
 nbproject
 nbproject/*
-compile/*
 config.php
 template/cache/*
 template/compile/*
