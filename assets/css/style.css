@@ -64,6 +64,7 @@
     font-size:12px;
     border-radius: 3px;
 }
+
 #vanshavali_user
 {
     padding: 5px;
@@ -85,7 +86,6 @@
     height:600px;
     margin:0px;
     overflow:hidden;
-    border-right: 1px solid #cac
 }
 
 
@@ -93,7 +93,6 @@
     right:0;
     border-right:1px solid #ddd;
     color:#686c70;
-    text-align: left;
     overflow: auto;
     position:absolute;
     top:10%;
@@ -149,26 +148,44 @@
 
 #right-container fieldset
 {
-    border: 1px #c7c7c7 solid;
-    padding: 20px;
+//    border: 1px #c7c7c7 solid;
     border-radius: 6px;
-    background-color: #b8e2d8;
+//    background-color: #b8e2d8;
 }
 
 .username_container
 {
-    padding: 5px;
-    margin-bottom: 20px;
+    padding: 10px;
+    box-shadow: 0 3px 5px;
+    background-color: #003399;
+    z-index: 1;
+    position: relative;
+    border-radius: 0 10px 0 15px;
+}
+
+.username_container > #display_name 
+{
+    float: left;
+}
+
+.username_container > #display_image
+{
+    float: left;
 }
 
 .otherdetails_container
 {
-    margin-top: 10px;
+    padding: 10px 5px 10px;
+    margin: 0 5px 5px;
+    background-color: #5bc0de;
+    z-index: 0;
+    position: relative;
 }
 
 #display_dob, #display_relationship, #display_alive, #display_relation
 {
     font-weight: bold;
+    text-wrap: normal;
 }
 
 .node
