@@ -1,3 +1,14 @@
+/*
+255    162      0        iGranati
+0      160      62
+36     168      172
+0      135      203
+152    35       149
+*/
+body
+{
+    overflow: hidden;
+}
 .title
 {
     text-align: center;
@@ -14,12 +25,12 @@
 }
 .successbox
 {
-	color: green;
-	font-weight: bold;
+    color: green;
+    font-weight: bold;
 }
 .small
 {
-	font-size: small;
+    font-size: small;
 }
 .alone_title
 {
@@ -92,7 +103,6 @@
 #right-container {
     right:0;
     border-right:1px solid #ddd;
-    color:#686c70;
     overflow: auto;
     position:absolute;
     top:10%;
@@ -124,7 +134,7 @@
 
 #display_name
 {
-    
+
     font-family: Geneva,Arial,Helvetica,sans-serif;
     background-color: #d4d7d7;
     vertical-align: middle;
@@ -148,16 +158,16 @@
 
 #right-container fieldset
 {
-//    border: 1px #c7c7c7 solid;
+    //    border: 1px #c7c7c7 solid;
     border-radius: 6px;
-//    background-color: #b8e2d8;
+    //    background-color: #b8e2d8;
 }
 
 .username_container
 {
     padding: 10px;
     box-shadow: 0 3px 5px;
-    background-color: #003399;
+    background-color: rgb(0,135,203);
     z-index: 1;
     position: relative;
     border-radius: 0 10px 0 15px;
@@ -177,9 +187,14 @@
 {
     padding: 10px 5px 10px;
     margin: 0 5px 5px;
-    background-color: #5bc0de;
+    background-color: rgb(36,168,172);
     z-index: 0;
     position: relative;
+}
+
+.otherdetails_container div.span2
+{
+    text-align: left;
 }
 
 #display_dob, #display_relationship, #display_alive, #display_relation
