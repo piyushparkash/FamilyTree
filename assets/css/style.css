@@ -156,6 +156,17 @@ body
     border-top-style: solid;
 }
 
+.suggest_quest
+{
+    font-weight: bold;
+}
+
+.membername_mention
+{
+    font-weight: bold;
+    font-family: open-sans;
+}
+
 #right-container fieldset
 {
     //    border: 1px #c7c7c7 solid;

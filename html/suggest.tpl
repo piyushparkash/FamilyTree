@@ -1,6 +1,6 @@
 <div id="suggest" class="modal hide">
     <div class="modal-header">
-        Complete Your Family!
+        <b>Complete Your Family!</b>
     </div>
     <div class="modal-body" id="suggest-data">
     </div>
