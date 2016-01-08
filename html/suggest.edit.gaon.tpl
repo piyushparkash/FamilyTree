@@ -1,4 +1,4 @@
-<div class='suggest-box'>
+<div class='suggest-box' suggest-id="{$suggestid}">
     Is <span class='membername_mention'>{$suggested_to->data['membername']}</span> from {$newvalue}?
     <span class='suggest_quest'>Is this correct?</span>
     <div class="row">

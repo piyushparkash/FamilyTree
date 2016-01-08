@@ -105,10 +105,10 @@ class suggest extends member_operation_suggest {
         //Get all Rejections, Approvals, Dontknow's
         $query = $db->query("select * from suggest_approved where suggest_id=" . $this->id);
         $row2 = $db->get('select count(*) as totaluser from member where username!="" and password!=""');
-        $total = mysql_num_rows($query);
-        $noapproved = 0;
-        $norejected = 0;
-        $nodontknow = 0;
+        $total = (float)mysql_num_rows($query);
+        $noapproved = 0.0;
+        $norejected = 0.0;
+        $nodontknow = 0.0;
 
         //Count the no of approvals/Rejections
         while ($row = $db->fetch($query)) {
@@ -123,9 +123,9 @@ class suggest extends member_operation_suggest {
                     break;
             }
         }
-        $noapproved = ($noapproved / $total) * 100;
-        $nodontknow = ($nodontknow / $total) * 100;
-        $norejected = ($norejected / $total) * 100;
+        $noapproved = (float)($noapproved / $total) * 100;
+        $nodontknow = (float)($nodontknow / $total) * 100;
+        $norejected = (float)($norejected / $total) * 100;
 
         //If approved>50 then accept the suggestion
         //if rejected>50 then reject the suggestion

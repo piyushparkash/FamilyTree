@@ -1,4 +1,4 @@
-<div class="suggest-box">
+<div class="suggest-box" suggest-id="{$suggestid}">
     <span class='membername_mention'>{$suggested_by->data['membername']}</span> said <span class='membername_mention'>{$newvalue}</span> is
     {if $sod}
         Wife

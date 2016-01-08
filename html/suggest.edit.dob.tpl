@@ -1,4 +1,4 @@
-<div class='suggest-box'>
+<div class='suggest-box' suggest-id="{$suggestid}">
     Was <span class='membername_mention'>{$suggested_to->data['membername']}</span> born on {$newvalue}?
     <span class='suggest_quest'>Is this correct?</span>
     <div class="row">

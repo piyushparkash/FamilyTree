@@ -1,4 +1,4 @@
-<div class="suggest-box">
+<div class="suggest-box" suggest-id="{$suggestid}">
     Is <span class='membername_mention'>{$newvalue}</span> {if !$sod}son{else}daughter{/if} of <span class='membername_mention'>{$suggested_to->data['membername']}</span>?
     <span class='suggest_quest'>Is this correct?</span>
     <div class="row">

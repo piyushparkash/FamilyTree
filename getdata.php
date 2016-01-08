@@ -80,7 +80,7 @@ switch ($_POST['action']) {
                 } else {
 
                     //Pass the id of the suggest so that proper HTML element can be made disappear
-                    ajaxSuccess(array("suggestid" => $suggest_id));
+                    ajaxSuccess(array("suggestid" => $suggest_id) + $suggest->checkpercent());
                 }
                 break;
             case 1:
@@ -89,7 +89,7 @@ switch ($_POST['action']) {
                     trigger_error("Cannot approved the Suggestion. Error Executing query", E_USER_NOTICE);
                 } else {
                     //Pass the id of the suggest so that proper HTML element can be made disappear
-                    ajaxSuccess(array("suggestid" => $suggest_id));
+                    ajaxSuccess(array("suggestid" => $suggest_id) + $suggest->checkpercent());
                 }
 
                 break;
@@ -100,7 +100,7 @@ switch ($_POST['action']) {
                 } else {
 
                     //Pass the id of the suggest so that proper HMTL element can be made disappear
-                    ajaxSuccess(array('suggestid' => $suggest_id));
+                    ajaxSuccess(array('suggestid' => $suggest_id)  + $suggest->checkpercent());
                 }
                 break;
         }

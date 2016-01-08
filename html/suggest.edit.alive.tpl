@@ -1,4 +1,4 @@
-<div class='suggest-box'>
+<div class='suggest-box' suggest-id="{$suggestid}">
     {if !$newvalue}
         Is <span class='membername_mention'>{$suggested_to->data['membername']}</span> still alive?
     {else}

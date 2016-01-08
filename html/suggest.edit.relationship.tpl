@@ -1,4 +1,4 @@
-<div class='suggest-box'>
+<div class='suggest-box' suggest-id="{$suggestid}">
     <div class="row">
         <div class="span12">
             {if $newvalue}   <!-- Hard coded value, assumes 1 is female -->
