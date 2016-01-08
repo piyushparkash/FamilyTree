@@ -13,7 +13,7 @@
 
         <div class="span4">
             <div class="progress progress-success">
-                <div class="bar" style="width: {$yespercent}40%;"></div>
+                <div class="bar" style="width: {$yespercent}%;"></div>
             </div>
         </div>
         <div class="span2">

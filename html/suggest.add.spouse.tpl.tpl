@@ -1,10 +1,16 @@
-<div>
+<div class="suggest-box">
+    <span class='membername_mention'>{$suggested_by->data['membername']}</span> said <span class='membername_mention'>{$newvalue}</span> is
+    {if $sod}
+        Wife
+    {else}
+        Husband
+    {/if}
+    of <span class='membername_mention'>{$suggested_to->data['membername']}</span>
     <span class='suggest_quest'>Is this correct?</span>
     <div class="row">
-
         <div class="span4">
             <div class="progress progress-success">
-                <div class="bar" style="width: {$yespercent}40%;"></div>
+                <div class="bar" style="width: {$yespercent}%;"></div>
             </div>
         </div>
         <div class="span2">
