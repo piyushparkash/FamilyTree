@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="span2">
-            <button class="btn btn-success" onclick="suggest_action(this, 1);">Yes</button>
+            <button class="btn btn-success" onclick="suggest_action(this, 0);">Yes</button>
         </div>
     </div>
     <div class="row">
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="span2">
-            <button class="btn btn-danger" onclick="suggest_action(this, 0);">No</button>
+            <button class="btn btn-danger" onclick="suggest_action(this, 1);">No</button>
         </div>
     </div>
 
