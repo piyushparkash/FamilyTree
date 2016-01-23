@@ -85,7 +85,8 @@ class db {
     }
 
     /**
-     * 
+     * Now mysqli needs sql connection to get the last_insert_id. So I had to
+     * make this wrapper around the function.
      * @return type
      */
     function last_id() {
