@@ -137,8 +137,13 @@ class install {
             
         } else if ($sub == "firstmember") {
             //This is where we find out that there is no member installed
+            
+            //We need to first get the family that was just added for this member
+            $family = $db->get("select * from family limit 1");
+            
             $template->header();
             $template->assign("is_admin", 1);
+            $template->assign("familyid", $family['id']);
             $template->display("register.form.tpl");
             $template->footer();
         }

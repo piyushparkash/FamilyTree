@@ -25,9 +25,10 @@ if (isset($_POST['register_submit'])) {
     $gaon = $_POST['register_gaon'];
     $email = $_POST['register_email'];
     $about = $_POST['register_about'];
+    $familyid = $_POST['familyid'];
 
     if ($vanshavali->register(array(
-                $username, $password, $dob, $gender, $relation, $gaon, $email, $about, $id, $membername
+                $username, $password, $dob, $gender, $relation, $gaon, $email, $about, $id, $membername, $familyid
             ))) {
         if ($_POST['is_admin']) {
 

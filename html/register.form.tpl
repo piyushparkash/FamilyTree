@@ -8,6 +8,15 @@
                 Welcome to Vanshavali! Fill out the form to register.
             {/if}
         </legend>
+        {if $familyid}
+            <input type="hidden" value="{$familyid}" name="familyid" />
+        {/if}
+        <style>
+            body
+            {
+                overflow: scroll;
+            }
+        </style>
         <div class="control-group">
             <label for="register_name" class="control-label">Your Name:</label>
             <div class="controls">
