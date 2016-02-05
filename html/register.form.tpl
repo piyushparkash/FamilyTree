@@ -114,14 +114,14 @@
     {
         //hide the element, insert the text and the tick, and then show
         $("#" + id).parents(".control-group").addClass("success");
-        $("#" + id).siblings(".help-text").css("display", "none").text(display_text)
+        $("#" + id).siblings(".help-block").css("display", "none").text(display_text)
                 .fadeIn(500);
     }
 
     //Function to hide success message when value changed
     function success_hide(id)
     {
-        $("#" + id).siblings("span.help-text").fadeIn("medium");
+        $("#" + id).siblings("span.help-block").fadeIn("medium");
         $("#" + id).parents("div.control-group").removeClass("success");
     }
 
