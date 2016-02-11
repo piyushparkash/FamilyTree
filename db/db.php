@@ -120,7 +120,6 @@ class db {
         if ($query != false) {
             return ($this->fetch($this->query($query)));
         } else {
-            trigger_error("Invalid SQL Query String", E_USER_NOTICE);
             return false;
         }
     }
