@@ -19,6 +19,11 @@
                         <span class="help-block hide" id="login_error">Wrong Username or Password</p>
                     </div>
                 </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <a href="javascript:forgotPassword()">Forgot Password?</a>
+                    </div>
+                </div>
                 <div class="form-actions">
                     <button class="btn btn-primary" type="submit">Login</button>
                     <a class="btn btn-success" href="register.php">Join Family</a>

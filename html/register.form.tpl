@@ -218,7 +218,10 @@
     //Initialize the date picker
     $("#register_dob").datepicker({
         maxDate: "-1d",
-        dateFormat: "dd/mm/yy"
+        dateFormat: "dd/mm/yy",
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true
     });
 
     //End of Date of Birth Related Checks

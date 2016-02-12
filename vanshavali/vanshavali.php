@@ -446,7 +446,7 @@ class vanshavali {
         }
 
         global $db;
-        $query = $db->query("select * from member where id=$id");
+        $query = $db->query("select id from member where id=$id");
         $ret = $db->fetch($query);
 
         //Check if we have such member or not

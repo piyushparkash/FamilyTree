@@ -57,7 +57,48 @@ function search() {
 }
 //End of search related functions
 
+function validateEmail(emailID)
+{
+    var atpos = emailID.indexOf("@");
+    var dotpos = emailID.lastIndexOf(".");
+    if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= emailID.length)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
 
+//Forgot Password section
+
+function forgotPassword()
+{
+    //Hide the Login Modal first
+    $("#login").modal('hide');
+    $("#forgotPassword").modal();
+}
+
+function forgotPassword_submit(ohtml)
+{
+    //Disable the reset button
+    $(ohtml).children("div.form-actions button").attr("disabled","yes");
+
+    //Validate the Email.
+    userInfo = $("#emailoname").val();
+    isEmail = validateEmail(userInfo);
+    
+    if (isEmail)
+    {
+        //Send a request to send the reset link
+    }
+    else
+    {
+        //It should be username, neither case will be handled in this
+    }
+
+}
 //login Form
 function login() {
     $("#login").modal();
