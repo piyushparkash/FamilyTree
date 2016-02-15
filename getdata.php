@@ -23,12 +23,25 @@ switch ($_POST['action']) {
         } else if ($type = "usernmame") {
             $query = $db->query("select id from member where username = '" . $data . "'");
         }
-        
+
         $searchedID = $db->fetch($query);
+
+        if ($searchedID == null) {
+            //That username/email does not exist. Tell the user
+            trigger_error("NO_USER");
+            break;
+        }
+
+
         $searchMember = $vanshavali->getmember($searchedID['id']);
-        
+
         //Send the forgot password link
-        $searchMember->sendForgotPassword();
+        if ($searchMember->sendForgotPassword()) {
+            ajaxSuccess();
+        } else {
+            trigger_error("NO_MAIL");
+        }
+
     //when to check whether a given username already exists or not
     case "username_check":
         $username = $_POST['username'];
@@ -175,7 +188,7 @@ switch ($_POST['action']) {
         $message = $_POST['message'];
         if (!$db->query("insert into feedback (user_name,user_emailid,feedback_text) 
                 values ('$name','$email','$message')")) {
-            trigger_error("Some error occured");
+            trigger_error("Some error occured with the database query");
         } else {
             ajaxSuccess();
         }

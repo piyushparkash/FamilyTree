@@ -9,7 +9,8 @@
                 <div class="control-group">
                     <label class="control-label" for="Email Or Username">Username or Email Address</label>
                     <div class="controls">
-                        <input type="text" id="emailoname" />
+                        <input type="text" id="emailoname" name="emailoname"/>
+                        <span class="help-block"></span>
                     </div>
                 </div>
                 <div class="form-actions">
