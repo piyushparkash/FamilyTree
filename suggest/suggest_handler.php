@@ -12,7 +12,6 @@
 $suggests = array();
 
 require_once 'suggest_storage.php';
-//require_once 'vanshavali/suggest.php';
 
 class suggest_handler {
 
@@ -42,6 +41,7 @@ class suggest_handler {
         $percentArray = $suggestion->checkpercent();
         
         //Assign the percent to template
+        $finalarray['suggestid'] = $detail['id'];
         $finalarray['yespercent'] = $percentArray[0];
         $finalarray['nopercent'] = $percentArray[1];
         $finalarray['dontknowpercent'] = $percentArray[2];
@@ -52,7 +52,7 @@ class suggest_handler {
         //Here is the needed data
         //from , to , old_value, newvalue, sod
 
-        $finalarray['suggested_by'] = $vanshavali->getmember($user->user['id']);
+        $finalarray['suggested_by'] = $vanshavali->getmember($detail['suggested_by']);
         $finalarray['suggested_to'] = $vanshavali->getmember($detail['suggested_to']);
         $finalarray['oldvalue'] = is_null($detail['old_value']) ? "" : $detail['old_value'];
 

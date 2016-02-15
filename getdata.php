@@ -12,6 +12,23 @@ global $db;
 //get the type of data to be extracted
 switch ($_POST['action']) {
 
+
+    case "forgotpassword":
+        $type = $_POST['type'];
+        $data = $_POST['data'];
+
+        //Find the member of the given email or username
+        if ($type = "email") {
+            $query = $db->query("select id from member where emailid = '" . $data . "'");
+        } else if ($type = "usernmame") {
+            $query = $db->query("select id from member where username = '" . $data . "'");
+        }
+        
+        $searchedID = $db->fetch($query);
+        $searchMember = $vanshavali->getmember($searchedID['id']);
+        
+        //Send the forgot password link
+        $searchMember->sendForgotPassword();
     //when to check whether a given username already exists or not
     case "username_check":
         $username = $_POST['username'];
@@ -100,7 +117,7 @@ switch ($_POST['action']) {
                 } else {
 
                     //Pass the id of the suggest so that proper HMTL element can be made disappear
-                    ajaxSuccess(array('suggestid' => $suggest_id)  + $suggest->checkpercent());
+                    ajaxSuccess(array('suggestid' => $suggest_id) + $suggest->checkpercent());
                 }
                 break;
         }
