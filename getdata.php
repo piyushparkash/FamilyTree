@@ -18,9 +18,9 @@ switch ($_POST['action']) {
         $data = $_POST['data'];
 
         //Find the member of the given email or username
-        if ($type = "email") {
+        if ($type == "email") {
             $query = $db->query("select id from member where emailid = '" . $data . "'");
-        } else if ($type = "usernmame") {
+        } else if ($type == "username") {
             $query = $db->query("select id from member where username = '" . $data . "'");
         }
 
@@ -41,6 +41,7 @@ switch ($_POST['action']) {
         } else {
             trigger_error("NO_MAIL");
         }
+        break;
 
     //when to check whether a given username already exists or not
     case "username_check":

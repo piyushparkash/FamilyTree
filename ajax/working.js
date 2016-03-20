@@ -80,8 +80,12 @@ function forgotPassword()
     $("#forgotPassword").modal();
 }
 
-function forgotPassword_submit(ohtml)
+function forgotPassword_submit(ohtml,e)
 {
+    
+    //Disable the event from happening first
+    e.preventDefault();
+    
     //Disable the reset button
     $(ohtml).children("div.form-actions button").attr("disabled", "yes");
 
@@ -89,48 +93,59 @@ function forgotPassword_submit(ohtml)
     userInfo = $("#emailoname").attr("disabled", "yes").val();
     isEmail = validateEmail(userInfo);
 
+
+    var type;
     if (isEmail)
     {
-        //Send a request to the site for forgotpassword link
-        $.post("getdata.php",
-                {
-                    type: "email",
-                    data: userInfo
-                },
-        function (data)
-        {
-            if (ajaxSuccess(data))
-            {
-                //Tell the user, email has been sent.
-                $("#emailoname").siblings(".help-block").val("Reset Password link has been sent to your Email ID");
-            }
-            else if (ajaxError(data))
-            {
-                //Oops now what to do
-                //read out the error cause
-                var datajson = $.parseJSON(data);
-
-                if (datajson.message == "NO_USER")
-                {
-                    $("#emailoname").siblings(".help-block").val("No User with given Email/Username");
-                }
-                else if (datajson.message == "NO_MAIL")
-                {
-                    $("#emailoname").siblings(".help-block").val("We could not sent mail. Sorry about that! Please retry");
-                }
-
-            }
-        });
-        
-        //All things done. Lets Reenable the controls
-        $(ohtml).children("div.form-actions button").removeAttr("disabled");
-        $("#emailoname").remoteAttr("disbaled");
-
+        type = "email";
     }
     else
     {
-        //It should be username, neither case will be handled in this
+        type = "username";
     }
+
+
+    //Send a request to the site for forgotpassword link
+    $.post("getdata.php",
+            {
+                action: "forgotpassword",
+                type: type,
+                data: userInfo
+            },
+    function (data)
+    {
+        if (ajaxSuccess(data))
+        {
+            //Tell the user, email has been sent.
+            $("#emailoname").siblings(".help-block").val("Reset Password link has been sent to your Email ID");
+        }
+        else if (ajaxError(data))
+        {
+            //Oops now what to do
+            //read out the error cause
+
+            var datajson = $.parseJSON(data);
+            
+
+            if (datajson.message == "NO_USER")
+            {
+                $("#emailoname").siblings(".help-block").val("No User with given Email/Username");
+            }
+            else if (datajson.message == "NO_MAIL")
+            {
+                alert($("#emailoname").siblings(".help-block").length)
+                $("#emailoname").siblings(".help-block").text("We could not sent mail. Sorry about that! Please retry");
+            }
+
+        }
+    });
+
+    //All things done. Lets Reenable the controls
+    $(ohtml).children("div.form-actions button").removeAttr("disabled");
+    $("#emailoname").removeAttr("disbaled");
+
+    //Prevent the form from submitting
+    return false;
 
 }
 //login Form

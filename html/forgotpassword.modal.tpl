@@ -4,7 +4,7 @@
         <button type="button" class="close" data-dismiss="modal">×</button>
     </div>
     <div class="modal-body">
-        <form method="post" onsubmit="return forgotPassword_submit(this)" class="form-horizontal well">
+        <form method="post" onsubmit="return forgotPassword_submit(this, event);" class="form-horizontal well">
             <fieldset>
                 <div class="control-group">
                     <label class="control-label" for="Email Or Username">Username or Email Address</label>
