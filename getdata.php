@@ -12,6 +12,37 @@ global $db;
 //get the type of data to be extracted
 switch ($_POST['action']) {
 
+
+    case "forgotpassword":
+        $type = $_POST['type'];
+        $data = $_POST['data'];
+
+        //Find the member of the given email or username
+        if ($type == "email") {
+            $query = $db->query("select id from member where emailid = '" . $data . "'");
+        } else if ($type == "username") {
+            $query = $db->query("select id from member where username = '" . $data . "'");
+        }
+
+        $searchedID = $db->fetch($query);
+
+        if ($searchedID == null) {
+            //That username/email does not exist. Tell the user
+            trigger_error("NO_USER");
+            break;
+        }
+
+
+        $searchMember = $vanshavali->getmember($searchedID['id']);
+
+        //Send the forgot password link
+        if ($searchMember->sendForgotPassword()) {
+            ajaxSuccess();
+        } else {
+            trigger_error("NO_MAIL");
+        }
+        break;
+
     //when to check whether a given username already exists or not
     case "username_check":
         $username = $_POST['username'];
@@ -80,7 +111,7 @@ switch ($_POST['action']) {
                 } else {
 
                     //Pass the id of the suggest so that proper HTML element can be made disappear
-                    ajaxSuccess(array("suggestid" => $suggest_id));
+                    ajaxSuccess(array("suggestid" => $suggest_id) + $suggest->checkpercent());
                 }
                 break;
             case 1:
@@ -89,7 +120,7 @@ switch ($_POST['action']) {
                     trigger_error("Cannot approved the Suggestion. Error Executing query", E_USER_NOTICE);
                 } else {
                     //Pass the id of the suggest so that proper HTML element can be made disappear
-                    ajaxSuccess(array("suggestid" => $suggest_id));
+                    ajaxSuccess(array("suggestid" => $suggest_id) + $suggest->checkpercent());
                 }
 
                 break;
@@ -100,7 +131,7 @@ switch ($_POST['action']) {
                 } else {
 
                     //Pass the id of the suggest so that proper HMTL element can be made disappear
-                    ajaxSuccess(array('suggestid' => $suggest_id));
+                    ajaxSuccess(array('suggestid' => $suggest_id) + $suggest->checkpercent());
                 }
                 break;
         }
@@ -158,7 +189,7 @@ switch ($_POST['action']) {
         $message = $_POST['message'];
         if (!$db->query("insert into feedback (user_name,user_emailid,feedback_text) 
                 values ('$name','$email','$message')")) {
-            trigger_error("Some error occured");
+            trigger_error("Some error occured with the database query");
         } else {
             ajaxSuccess();
         }

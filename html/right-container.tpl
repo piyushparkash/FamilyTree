@@ -1,19 +1,17 @@
 <div id="right-container" data-intro="Here you will see information about the selected member." data-step="3" data-position="left">
 
     <fieldset>
-        <div class="row username_container">
+        <div class="username_container">
             <div class="span1" >
                 <img src="assets/user_images/{$userimage}" style="width: 50px; height: 50px;" id="display_image"/>
             </div>
             <div class="span3" id="display_name">
             </div>
-
+            <div class="clearfix"></div>
         </div>
-
-            <hr>
         <!-- The div of the username ends her. Now the div of the details -->
 
-        <div class="row otherdetails_container">
+        <div class="otherdetails_container">
             <div class="span4">
                 <div class="row" style="text-align: right">
                     <span class="span2">Date Of Birth:</span>
@@ -46,6 +44,7 @@
                     </div>
                 </div>
             </div>
+            <div class="clearfix"></div>
         </div>    
 
         {if $authenticated}

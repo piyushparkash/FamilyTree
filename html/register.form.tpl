@@ -8,6 +8,15 @@
                 Welcome to Vanshavali! Fill out the form to register.
             {/if}
         </legend>
+        {if $familyid}
+            <input type="hidden" value="{$familyid}" name="familyid" />
+        {/if}
+        <style>
+            body
+            {
+                overflow: scroll;
+            }
+        </style>
         <div class="control-group">
             <label for="register_name" class="control-label">Your Name:</label>
             <div class="controls">
@@ -105,14 +114,14 @@
     {
         //hide the element, insert the text and the tick, and then show
         $("#" + id).parents(".control-group").addClass("success");
-        $("#" + id).siblings(".help-text").css("display", "none").text(display_text)
+        $("#" + id).siblings(".help-block").css("display", "none").text(display_text)
                 .fadeIn(500);
     }
 
     //Function to hide success message when value changed
     function success_hide(id)
     {
-        $("#" + id).siblings("span.help-text").fadeIn("medium");
+        $("#" + id).siblings("span.help-block").fadeIn("medium");
         $("#" + id).parents("div.control-group").removeClass("success");
     }
 
@@ -209,7 +218,10 @@
     //Initialize the date picker
     $("#register_dob").datepicker({
         maxDate: "-1d",
-        dateFormat: "dd/mm/yy"
+        dateFormat: "dd/mm/yy",
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true
     });
 
     //End of Date of Birth Related Checks

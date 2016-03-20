@@ -1,7 +1,7 @@
 <?php
 
 require 'header.php';
-global $template, $vanshavali, $user;
+global $template, $vanshavali, $user, $db;
 
 //If there is submitted data
 if (isset($_POST['register_submit'])) {
@@ -25,14 +25,15 @@ if (isset($_POST['register_submit'])) {
     $gaon = $_POST['register_gaon'];
     $email = $_POST['register_email'];
     $about = $_POST['register_about'];
+    $familyid = $_POST['familyid'];
 
     if ($vanshavali->register(array(
-                $username, $password, $dob, $gender, $relation, $gaon, $email, $about, $id, $membername
+                $username, $password, $dob, $gender, $relation, $gaon, $email, $about, $id, $membername, $familyid
             ))) {
         if ($_POST['is_admin']) {
 
             //Make the just added user admin
-            $vanshavali->makeAdmin(mysql_insert_id()) or trigger_error("Member registered but cannot make member admin. Fatal Error!", E_USER_ERROR);
+            $vanshavali->makeAdmin($db->last_id()) or trigger_error("Member registered but cannot make member admin. Fatal Error!", E_USER_ERROR);
         }
         header("Location:welcome.php");
     }

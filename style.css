@@ -1,14 +1,3 @@
-/*
-255    162      0        iGranati
-0      160      62
-36     168      172
-0      135      203
-152    35       149
-*/
-body
-{
-    overflow: hidden;
-}
 .title
 {
     text-align: center;
@@ -25,12 +14,12 @@ body
 }
 .successbox
 {
-    color: green;
-    font-weight: bold;
+	color: green;
+	font-weight: bold;
 }
 .small
 {
-    font-size: small;
+	font-size: small;
 }
 .alone_title
 {
@@ -75,7 +64,6 @@ body
     font-size:12px;
     border-radius: 3px;
 }
-
 #vanshavali_user
 {
     padding: 5px;
@@ -97,12 +85,15 @@ body
     height:600px;
     margin:0px;
     overflow:hidden;
+    border-right: 1px solid #cac
 }
 
 
 #right-container {
     right:0;
     border-right:1px solid #ddd;
+    color:#686c70;
+    text-align: left;
     overflow: auto;
     position:absolute;
     top:10%;
@@ -123,100 +114,4 @@ body
     background-color: #ddd;
     border-radius: 3px;
     margin-bottom: 5px;
-}
-
-#display_image
-{
-    width: 50px;
-    height: 50px;
-    vertical-align: middle;
-}
-
-#display_name
-{
-
-    font-family: Geneva,Arial,Helvetica,sans-serif;
-    background-color: #d4d7d7;
-    vertical-align: middle;
-    font-size: 1.5em;
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    border-right-color: #cbcbcb;
-    border-left-color: #cbcbcb;
-    border-bottom-color: #cbcbcb;
-    border-top-color: #cbcbcb;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    border-bottom-width: 1px;
-    border-top-width: 1px;
-    border-right-style: solid;
-    border-left-style: solid;
-    border-bottom-style: solid;
-    border-top-style: solid;
-}
-
-.suggest_quest
-{
-    font-weight: bold;
-}
-
-.membername_mention
-{
-    font-weight: bold;
-    font-family: open-sans;
-}
-
-#right-container fieldset
-{
-    //    border: 1px #c7c7c7 solid;
-    border-radius: 6px;
-    //    background-color: #b8e2d8;
-}
-
-.username_container
-{
-    padding: 10px;
-    box-shadow: 0 3px 5px;
-    background-color: rgb(0,135,203);
-    z-index: 1;
-    position: relative;
-    border-radius: 0 10px 0 15px;
-}
-
-.username_container > #display_name 
-{
-    float: left;
-}
-
-.username_container > #display_image
-{
-    float: left;
-}
-
-.otherdetails_container
-{
-    padding: 10px 5px 10px;
-    margin: 0 5px 5px;
-    background-color: rgb(36,168,172);
-    z-index: 0;
-    position: relative;
-}
-
-.otherdetails_container div.span2
-{
-    text-align: left;
-}
-
-#display_dob, #display_relationship, #display_alive, #display_relation
-{
-    font-weight: bold;
-    text-wrap: normal;
-}
-
-.node
-{
-    font-weight: bolder;
-    text-align: center;
-    vertical-align: middle;
 }

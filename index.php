@@ -47,10 +47,18 @@ if ($user->is_authenticated()) {
 }
 
 
+//Show this when the user has arrived from change password page
+if ($_GET['passwordchanged'])
+{
+    $template->display("forgotpassword.success.tpl");
+}
+
+
 
 
 $template->display("right-container.tpl");
 $template->display("login.form.tpl");
+$template->display('forgotpassword.modal.tpl');
 $template->display('search.form.tpl');
 $template->display("feedback.form.tpl");
 $template->display('operations.tpl');

@@ -18,13 +18,33 @@ class suggest_handler {
     public function __construct() {
         
     }
-
+    /** This function prepares the template to display the data to ths user. 
+     * The input $detail here is raw extract of suggest table, where all the
+     * suggestion is stored. It prepares the template and data according to it
+     * 
+     * 
+     * @global \user $user
+     * @global vanshavali $vanshavali
+     * @global \template $template
+     * @param array $detail raw extract of suggest table
+     * @return string|boolean if all goes fine then parsed that is to shown else false
+     */
     public function getviewname($detail) {
 
         global $user, $vanshavali, $template;
         
         //Find the structure of the suggest
         $struct = $this->find_structure($detail['typesuggest']);
+        $suggestion = new suggest($detail['id']);
+        
+        //Get the percent of approval
+        $percentArray = $suggestion->checkpercent();
+        
+        //Assign the percent to template
+        $finalarray['suggestid'] = $detail['id'];
+        $finalarray['yespercent'] = $percentArray[0];
+        $finalarray['nopercent'] = $percentArray[1];
+        $finalarray['dontknowpercent'] = $percentArray[2];
 
         //Now do check here if we have the structure
         //because if not then the program will crash
@@ -32,7 +52,7 @@ class suggest_handler {
         //Here is the needed data
         //from , to , old_value, newvalue, sod
 
-        $finalarray['suggested_by'] = $vanshavali->getmember($user->user['id']);
+        $finalarray['suggested_by'] = $vanshavali->getmember($detail['suggested_by']);
         $finalarray['suggested_to'] = $vanshavali->getmember($detail['suggested_to']);
         $finalarray['oldvalue'] = is_null($detail['old_value']) ? "" : $detail['old_value'];
 

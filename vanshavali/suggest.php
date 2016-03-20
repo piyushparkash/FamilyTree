@@ -64,7 +64,7 @@ class suggest extends member_operation_suggest {
         //Rejects the $id provided in the constructor
         global $db, $user;
         if (!$db->get("Insert into suggest_approved (suggest_id,user_id,action) values
-            ($this->id,".$user->user[0].",0)")) {
+            ($this->id," . $user->user[0] . ",0)")) {
             return false;
         }
 
@@ -84,7 +84,7 @@ class suggest extends member_operation_suggest {
         //Marks suggestion as don'tknow
         global $db, $user;
         if (!$db->get("Insert into suggest_approved (suggest_id,user_id,action)
-            values($this->id,".$user->user[0].",2)")) {
+            values($this->id," . $user->user[0] . ",2)")) {
             return false;
         }
 
@@ -95,20 +95,20 @@ class suggest extends member_operation_suggest {
 
     /**
      * This function is to check the percentage of the approval/rejection/dontknow
-     * of this suggestion
+     * of this suggestion. 
      * @global \db $db Instance of the db class
-     * @return boolean
+     * @return array 
      */
-    private function checkpercent() {
+    public function checkpercent() {
         global $db;
 
         //Get all Rejections, Approvals, Dontknow's
         $query = $db->query("select * from suggest_approved where suggest_id=" . $this->id);
         $row2 = $db->get('select count(*) as totaluser from member where username!="" and password!=""');
-        $total = mysql_num_rows($query);
-        $noapproved = 0;
-        $norejected = 0;
-        $nodontknow = 0;
+        $total = (float) $row2['totaluser'];
+        $noapproved = 0.0;
+        $norejected = 0.0;
+        $nodontknow = 0.0;
 
         //Count the no of approvals/Rejections
         while ($row = $db->fetch($query)) {
@@ -123,18 +123,15 @@ class suggest extends member_operation_suggest {
                     break;
             }
         }
-        $noapproved = ($noapproved / $total) * 100;
-        $nodontknow = ($nodontknow / $total) * 100;
-        $norejected = ($norejected / $total) * 100;
+        $noapproved = (float) ($noapproved / $total) * 100;
+        $nodontknow = (float) ($nodontknow / $total) * 100;
+        $norejected = (float) ($norejected / $total) * 100;
 
         //If approved>50 then accept the suggestion
         //if rejected>50 then reject the suggestion
         //if donknow>50 then even i don't know what to do
-        if ($total == $row2['totaluser']) {
-            return array($noapproved, $norejected, $nodontknow);
-        } else {
-            return false;
-        }
+
+        return array($noapproved, $norejected, $nodontknow);
     }
 
     /**
@@ -145,7 +142,8 @@ class suggest extends member_operation_suggest {
     private function check_decision() {
         $percent = $this->checkpercent();
 
-        if ($percent) {
+        //3rd has the boolean which checks if everyone has voted
+        if ($percent[3]) {
             if ($percent[0] > 50) {
                 //Almost half the people have agreed, So lets add it permanently..
                 $this->apply();
