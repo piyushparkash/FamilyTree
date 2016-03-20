@@ -129,7 +129,7 @@ function forgotPassword_submit(ohtml,e)
 
             if (datajson.message == "NO_USER")
             {
-                $("#emailoname").siblings(".help-block").val("No User with given Email/Username");
+                $("#emailoname").siblings(".help-block").text("No User with given Email/Username");
             }
             else if (datajson.message == "NO_MAIL")
             {
