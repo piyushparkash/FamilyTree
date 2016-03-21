@@ -5,8 +5,8 @@
  *
  * @author piyush
  */
-require_once 'member.php';
-require_once 'constants.php';
+require_once __DIR__  . '/member.php';
+require_once __DIR__  . '/../constants.php';
 
 class vanshavali {
 

@@ -6,7 +6,7 @@
  */
 error_reporting(E_ALL);
 
-require_once 'constants.php';
+require_once __DIR__ . '/constants.php';
 //If config file exists then include it else leave it
 if (file_exists("config.php")) {
     if (is_readable("config.php")) {
@@ -17,12 +17,12 @@ if (file_exists("config.php")) {
 global $db, $template, $user, $vanshavali;
 
 //Initialize Global variables
-require_once 'template/template.php';
-require_once 'db/db.php';
-require_once 'user/user.php';
-require_once 'vanshavali/vanshavali.php';
-require_once 'functions.php';
-require_once 'suggest/suggest_handler.php';
+require_once __DIR__  . '/template/template.php';
+require_once __DIR__  . '/db/db.php';
+require_once __DIR__  . '/user/user.php';
+require_once __DIR__  . '/vanshavali/vanshavali.php';
+require_once __DIR__  . '/functions.php';
+require_once __DIR__  . '/suggest/suggest_handler.php';
 $template = new template();
 $db = new db();
 $vanshavali = new vanshavali();

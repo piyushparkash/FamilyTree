@@ -5,7 +5,7 @@
  * @extends \auth
  * @author piyush
  */
-require("auth/auth.php");
+require(__DIR__  . "/../auth/auth.php");
 
 class user extends auth {
 
