@@ -7,10 +7,11 @@
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/constants.php';
+
 //If config file exists then include it else leave it
-if (file_exists("config.php")) {
-    if (is_readable("config.php")) {
-        require_once("config.php");
+if (file_exists(__DIR__ . "/config.php")) {
+    if (is_readable(__DIR__ . "/config.php")) {
+        require_once(__DIR__ . "/config.php");
     }
 }
 

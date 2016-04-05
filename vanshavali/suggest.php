@@ -6,7 +6,7 @@
  * @extends member_operation_suggest
  * @author piyush
  */
-require_once 'member_operation_suggest.php';
+require_once __DIR__ . '/member_operation_suggest.php';
 
 class suggest extends member_operation_suggest {
 

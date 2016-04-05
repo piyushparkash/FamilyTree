@@ -6,7 +6,7 @@
  * @extends member_operation_suggest
  * @author piyush
  */
-require 'member_operation_suggest.php';
+require __DIR__ . '/member_operation_suggest.php';
 
 abstract class member_operation extends member_operation_suggest {
 

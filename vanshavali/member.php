@@ -5,7 +5,7 @@
  * @extends member_operation
  * @author piyush
  */
-require_once 'member_operation.php';
+require_once __DIR__ . '/member_operation.php';
 
 class member extends member_operation {
 
