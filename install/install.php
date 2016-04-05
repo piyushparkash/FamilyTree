@@ -129,18 +129,16 @@ class install {
             $template->footer();
         } else if ($sub == "firstfamilypost") {
             //This just means that user has submitted the firstfamily form
-            
+
             $vanshavali->addfamily($_POST['family_name']) or trigger_error("Unable to add family. Please try again");
-            
+
             //We have added the first family. Lets proceed to add first member
             header("Location: index.php?mode=setupAdmin&sub=firstmember");
-            
         } else if ($sub == "firstmember") {
             //This is where we find out that there is no member installed
-            
             //We need to first get the family that was just added for this member
             $family = $db->get("select * from family limit 1");
-            
+
             $template->header();
             $template->assign("is_admin", 1);
             $template->assign("familyid", $family['id']);
@@ -166,8 +164,14 @@ class install {
             $username = $_POST['database_username'];
             $password = $_POST['database_password'];
             $database = $_POST['database_name'];
+            $adminEmail = $_POST['admin_email'];
 
-            if (empty($host) || empty($username) || empty($password) || empty($database)) {
+            if (empty($host) ||
+                    empty($username) ||
+                    empty($password) ||
+                    empty($database) ||
+                    empty($adminEmail)) {
+
                 $template->header();
                 $template->assign(array("error" => 1,
                     "message" => "Form not completed. Please complete the form"));
@@ -197,6 +201,7 @@ class install {
                     \n\$config['username']='$username';
                     \n\$config['password']='$password';
                     \n\$config['database']='$database';
+                    \n\$config['admin_email']='$adminEmail';    
                     \n?>";
 
             $wr = fwrite($file, $data);

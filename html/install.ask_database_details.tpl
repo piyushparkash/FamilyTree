@@ -26,6 +26,12 @@
             <input type="password" name="database_password" id="database_name" placeholder="Database Password" />
         </div>
     </div>
+    <div class="control-group">
+        <label for="admin_email" class="control-label">Admin Email</label>
+        <div class="controls">
+            <input type="email" name="admin_email" id="admin_email" placeholder="Admin Email" />
+        </div>
+    </div>
     <div class="form-actions">
         <input type="submit" name="ask_database_name" id="submit" class="btn btn-primary"/>
     </div>
