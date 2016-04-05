@@ -35,6 +35,10 @@ if (isset($_POST['register_submit'])) {
             //Make the just added user admin
             $vanshavali->makeAdmin($db->last_id()) or trigger_error("Member registered but cannot make member admin. Fatal Error!", E_USER_ERROR);
         }
+
+        //Drop a mail to admin regarding this
+        $vanshavali->mailAdmin('mail.admin.newuserregister.tpl', array("membername" => $membername), "New User Joined");
+
         header("Location:welcome.php");
     }
 }

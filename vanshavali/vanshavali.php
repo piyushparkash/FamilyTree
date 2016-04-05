@@ -529,6 +529,20 @@ class vanshavali {
 
         return mail($to, $subject, $body, $headers);
     }
+    
+    /**
+     * 
+     * @param type $templateName
+     * @param type $data
+     * @param type $subject
+     * @return type
+     */
+    function mailAdmin($templateName, $data ,$subject)
+    {
+        $adminEmail = $config['adminEmail'];
+        
+        return $this->mail($templateName, $data, $adminEmail, $subject);
+    }
 
     /**
      * This function is used to used to create structure to used by JIT. It takes

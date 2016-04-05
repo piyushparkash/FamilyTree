@@ -20,5 +20,10 @@ foreach ($column as $key => $value) {
 $new_member->remove();
 
 $user->logout();
+
+//Drop a mail to admin regarding this
+$vanshavali->mailAdmin("mail.thisisme.tpl", array("newmember" => $new_member->data['membername'],
+    "orimember" => $ori_member->data['membername']), "A user merged");
+
 header("Location:index.php");
 
