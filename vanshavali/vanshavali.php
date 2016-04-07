@@ -514,7 +514,7 @@ class vanshavali {
     function mail($template_name, $data, $to, $subject) {
         global $template;
         //Add Global variable of domain
-        $user_email = "me@vanshavali.co.cc";
+        $user_email = $config['admin_email'];
 
         //Fetch body from template
         $template->assign($data);
@@ -539,7 +539,7 @@ class vanshavali {
      */
     function mailAdmin($templateName, $data ,$subject)
     {
-        $adminEmail = $config['adminEmail'];
+        $adminEmail = $config['admin_email'];
         
         return $this->mail($templateName, $data, $adminEmail, $subject);
     }
