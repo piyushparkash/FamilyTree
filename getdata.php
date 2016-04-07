@@ -57,6 +57,21 @@ switch ($_POST['action']) {
         }
         break;
 
+
+    case "email_check":
+        $email = $_POST['email'];
+        $query = $db->query("select count(*) as no from member where emailid='$email'");
+        $row = $db->fetch($query);
+
+        //if count is >1 then there are user with that username
+        if ($row['no'] > 0) {
+            echo json_encode(array("yes" => 1));
+        } else {
+            echo json_encode(array("yes" => 0));
+        }
+        break;
+
+
     //When to get suggestions for approval
     case "getsuggestions":
         global $suggest_handler;

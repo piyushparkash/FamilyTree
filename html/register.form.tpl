@@ -185,14 +185,14 @@
                 $("#register_username").focus();
                 //hide any previous success message
                 success_hide("register_username");
-            }
-            else //else not used and can be used
+            } else //else not used and can be used
             {
                 success_display("register_username", "Valid Username");
             }
         });
     });
     //end of username related checks
+
 
 
     //Password related checks
@@ -202,8 +202,7 @@
         if (this.value == password.val())
         {
             success_display("register_confirmpassword", "Password Matched");
-        }
-        else
+        } else
         {
             alert("Password donot match. Please check again.");
             password.focus();
@@ -237,11 +236,30 @@
             success_hide("register_email");
             alert("Not a valid e-mail address");
             $(this).focus();
-        }
-        else
+        } else
         {
             //display success text
             success_display("register_email", "Valid Email Id");
+            $.post("getdata.php", {
+                action: "email_check",
+                email: this.value
+            }, function (data)
+
+            {
+                var json = $.parseJSON(data);
+                if (json.yes) //if reply is yes the email is already used 
+                {
+                    alert("Email is already registered. Try Forgot Password!");
+
+                    //Cannot use this, pointing to some ajax function
+                    $("#register_email").focus();
+                    //hide any previous success message
+                    success_hide("register_email");
+                } else //else not used and can be used
+                {
+                    success_display("register_email", "Email is good to go");
+                }
+            });
         }
     });
     //end of email related check
