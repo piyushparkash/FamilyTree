@@ -28,6 +28,9 @@ $template = new template();
 $db = new db();
 $vanshavali = new vanshavali();
 
+//Assign the Email Address of admin in the App
+$vanshavali->admin_email = $config['admin_email'];
+
 //Select the default database
 if (isset($config['database']) and !empty($config['database'])) {
     $db->select_db($config['database']);

@@ -5,8 +5,8 @@
  *
  * @author piyush
  */
-require_once __DIR__  . '/member.php';
-require_once __DIR__  . '/../constants.php';
+require_once __DIR__ . '/member.php';
+require_once __DIR__ . '/../constants.php';
 
 class vanshavali {
 
@@ -17,6 +17,8 @@ class vanshavali {
     public function __construct() {
         
     }
+
+    public $admin_email;
 
     public function getHeadofFamily($family_id = null) {
         global $db;
@@ -317,18 +319,17 @@ class vanshavali {
     public function hasAccess($who, $whom) {
 
         //accessArray
-        $accessArray = array(12,13,15,16,0,17,1,2); 
+        $accessArray = array(12, 13, 15, 16, 0, 17, 1, 2);
         ////This contains the relation which have access over each other
         //Basic things. User can edit is own information.
-        
+
         if ($who === $whom) {
             return true;
         }
-        
+
         //Make a check if the person is admin
         $mclass = new member($who);
-        if ($mclass->isAdmin())
-        {
+        if ($mclass->isAdmin()) {
             //The person suggesting is admin. Just do it. :P
             return true;
         }
@@ -514,7 +515,7 @@ class vanshavali {
     function mail($template_name, $data, $to, $subject) {
         global $template;
         //Add Global variable of domain
-        $user_email = $config['admin_email'];
+        $user_email = $this->admin_email;
 
         //Fetch body from template
         $template->assign($data);
@@ -529,7 +530,7 @@ class vanshavali {
 
         return mail($to, $subject, $body, $headers);
     }
-    
+
     /**
      * 
      * @param type $templateName
@@ -537,11 +538,9 @@ class vanshavali {
      * @param type $subject
      * @return type
      */
-    function mailAdmin($templateName, $data ,$subject)
-    {
-        $adminEmail = $config['admin_email'];
-        
-        return $this->mail($templateName, $data, $adminEmail, $subject);
+    function mailAdmin($templateName, $data, $subject) {
+
+        return $this->mail($templateName, $data, $this->admin_email, $subject);
     }
 
     /**
