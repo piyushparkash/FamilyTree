@@ -96,6 +96,7 @@ function display_data(node)
     $("#display_relationship").html(node.data.relationship_status);
     $("#display_alive").html(node.data.alive);
     $("#display_image")[0].src = "assets/user_images/" + node.data.image;
+    $("#display_gaon").html(node.data.gaon);
 
     if (typeof user_id !== "undefined")
     {

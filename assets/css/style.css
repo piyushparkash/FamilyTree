@@ -208,7 +208,7 @@ body
     text-align: left;
 }
 
-#display_dob, #display_relationship, #display_alive, #display_relation
+#display_dob, #display_relationship, #display_alive, #display_relation, #display_gaon
 {
     font-weight: bold;
     text-wrap: normal;

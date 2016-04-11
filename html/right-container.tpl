@@ -37,6 +37,14 @@
                 </div>
             </div>
             <div class="span4">
+                <div class="row" style="text-align:right">
+                    <span class="span2">Village (Gaon):</span>
+                    <div class="span2">
+                        <span id="display_gaon"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="span4">
                 <div class="row" style="text-align: right">
                     <span class="span2">Relation with You:</span>
                     <div class="span2">
@@ -45,7 +53,7 @@
                 </div>
             </div>
             <div class="clearfix"></div>
-        </div>    
+        </div>      
 
         {if $authenticated}
             <div class='span4' style="text-align: center">

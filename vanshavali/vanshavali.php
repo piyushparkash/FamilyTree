@@ -564,6 +564,7 @@ class vanshavali {
             "alive" => ($row['alive'] == 0 ? "Deceased" : "Living"),
             "gender" => $row['gender'],
             "alive_id" => $row['alive'],
+            "gaon" => $row['gaon'],
             'image' => empty($row['profilepic']) ? "common.png" : $row['profilepic'],
             'familyid' => $row['family_id']
 //            'relation' => ($this->calculateRelation($row["id"], $user->user["id"]) ? $user->is_authenticated() : "Login to view relation")
