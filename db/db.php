@@ -29,7 +29,7 @@ class db {
         $username = $username == null ? $config['username'] : $username;
         $password = $password == null ? $config['password'] : $password;
         $database = $database == null ? $config['database'] : $database;
-        if (!empty($host) && !empty($username) && !empty($password)) {
+        if (!empty($host) && !empty($username) && !is_null($password)) {
             $this->connection = mysqli_connect($host, $username, $password);
             if ($this->connection == false) {
                 trigger_error("Cannot connect to database", E_USER_ERROR); //report error in case of failure
@@ -71,7 +71,7 @@ class db {
             $query = mysqli_query($this->connection, $sql);
             if ($query == false) {
                 //Some error occured while querying
-                trigger_error(mysqli_error(), E_USER_NOTICE);
+                trigger_error(mysqli_error($this->connection), E_USER_NOTICE);
                 return false;
             } else {
                 //return the resource
