@@ -1,14 +1,16 @@
-<div class="container">
+<div class="container well">
 
     <div class="row-fluid">
         <div class="span2">
             
             <ul class="nav nav-pills nav-stacked">
-                All Users
+                <a href="index.php?mode=allusers">All Users</a>
             </ul>
 
 
         </div>
-        <div class="span10"></div>
+        <div class="span10">    <!-- The content -->
+            {$bodycontent}
+        </div>
     </div>
 </div>
