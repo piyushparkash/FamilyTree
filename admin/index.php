@@ -7,13 +7,13 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../header.php';
-require_once __DIR__ . '/modules.php';
+require_once __DIR__ . '/module.php';
 
 // first check if the user is allowed over here
 global $user, $vanshavali, $template, $db;
 
 //Initialize modules
-$module = new module();
+
 
 $ft_root_path = "./../";
 
@@ -32,11 +32,15 @@ if ($user->is_authenticated()) {
 //Now that user is authorized..Let him see the content
 
 
-$template->display("header.tpl");
+$template->header();
 
-$module
 //Display content according to mode and submode
+if (empty($_GET['mode'])) {
+    //Lets switch to default module to be loaded
+    header("Location: index.php?mode=adminuser");
+}
 
-$template->display('admin/admin.main.tpl');
+$module = new module($_GET, $template, $db);
 
-$template->display("footer.tpl");
+
+$template->footer();

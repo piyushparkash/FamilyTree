@@ -4,7 +4,7 @@
         <div class="span2">
             
             <ul class="nav nav-pills nav-stacked">
-                <a href="index.php?mode=allusers">All Users</a>
+                <a href="index.php?mode=user&submode=allregistered">All Users</a>
             </ul>
 
 
