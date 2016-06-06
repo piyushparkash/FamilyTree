@@ -109,6 +109,27 @@ class db {
             return false;
         }
     }
+    /**
+     * 
+     * @param type $query
+     * @return boolean
+     */
+    function fetch_all($query)
+    {
+        $rows = $finalarray = array();
+        if ($query === true) {
+            return true;
+        } else if ($query != false) {
+            while($rows = mysqli_fetch_array($query))
+            {
+                $finalarray[] = $rows;
+            }
+            return $finalarray;
+        } else {
+            trigger_error("Invalid Query resource provided", E_USER_NOTICE);
+            return false;
+        }
+    }
 
     /**
      * This function can be used when only a single row is to be fetched from
