@@ -1,10 +1,16 @@
- {* display pagination header *}
-    Member {$paginate.first}-{$paginate.last} out of {$paginate.total} displayed.
+<table class="table table-bordered">
+    <tr>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+    </tr>
 
-    {* display results *}    
-    {section name=res loop=$results}
-        {$results[res]}
-    {/section}
+    {foreach from=$results key=myid item=i}
+        <tr>
+            <td>{$i.membername}</td>
+            <td>{$i.username}</td>
+            <td>{$i.email}</td>
+        </tr>
+    {/foreach}
 
-    {* display pagination info *}
-    {paginate_prev} {paginate_middle} {paginate_next}
+</table>
