@@ -9,7 +9,7 @@
         <tr>
             <td>{$i.membername}</td>
             <td>{$i.username}</td>
-            <td>{$i.email}</td>
+            <td>{$i.emailid}</td>
         </tr>
     {/foreach}
 
