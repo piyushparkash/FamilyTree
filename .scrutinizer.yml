@@ -10,5 +10,5 @@ filter:
         - ajax/jit.js
         - ajax/jquery.js
         - template/libs/
-        - *.min.js
+        - '*.min.js'
         
