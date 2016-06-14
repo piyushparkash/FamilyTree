@@ -1,0 +1,14 @@
+# .scrutinizer.yml
+
+checks:
+    php:
+        code_rating: true
+
+filter:
+    excluded_paths:
+        - ajax/excanvas.js
+        - ajax/jit.js
+        - ajax/jquery.js
+        - template/libs/
+        - '*.min.js'
+        
