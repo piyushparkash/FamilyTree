@@ -1,0 +1,349 @@
+\hypertarget{classsuggest}{\section{suggest Class Reference}
+\label{classsuggest}\index{suggest@{suggest}}
+}
+Inheritance diagram for suggest\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classsuggest}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classsuggest_a6e0521c192159953fda4bd293b01d440}{\-\_\-\-\_\-construct} (\$suggestid)
+\item 
+\hyperlink{classsuggest_a88a3a93bbc97e562d8f4a2b04bc72d14}{approve} ()
+\item 
+\hyperlink{classsuggest_a7786abfabcc1c14520f6199d1e93bbb2}{reject} ()
+\item 
+\hyperlink{classsuggest_aea8963c5a27e226cd1bbc039d14c39bd}{dontknow} ()
+\item 
+\hyperlink{classsuggest_aec18fc5fc3aa1f7ab553f632d822bd91}{checkpercent} ()
+\item 
+\hyperlink{classsuggest_a32f9238a6ea3e85021319f6cec2f6fca}{approval\-\_\-delete} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classsuggest_a803056257d5db2637c35becdc6f8ddc8}{{\bfseries \$id}}\label{classsuggest_a803056257d5db2637c35becdc6f8ddc8}
+
+\item 
+\hypertarget{classsuggest_afde8633e323581d390c204893b54a2f3}{{\bfseries \$suggested\-\_\-value}}\label{classsuggest_afde8633e323581d390c204893b54a2f3}
+
+\item 
+\hypertarget{classsuggest_a8e540fe8897c430a0e0fab8760036b40}{{\bfseries \$typesuggest}}\label{classsuggest_a8e540fe8897c430a0e0fab8760036b40}
+
+\item 
+\hypertarget{classsuggest_a013083c80765c478262f28166c8f1491}{{\bfseries \$suggestedby}}\label{classsuggest_a013083c80765c478262f28166c8f1491}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classsuggest_a9ddef5aac5c98ef0d45e23ac8c802ee0}{check\-\_\-decision} ()
+\item 
+\hyperlink{classsuggest_aaa4dc18391cb837d8c7a5448992790e9}{apply} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Suggestion Class is used to add, remove or edit suggestions Basically a Class to operate on suggested\-\_\-info and suggest\-\_\-approval table
+
+\begin{DoxyAuthor}{Author}
+piyush 
+\end{DoxyAuthor}
+
+
+Definition at line 11 of file suggest.\-php.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classsuggest_a6e0521c192159953fda4bd293b01d440}{\index{suggest@{suggest}!\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}}
+\index{\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}!suggest@{suggest}}
+\subsubsection[{\-\_\-\-\_\-construct}]{\setlength{\rightskip}{0pt plus 5cm}suggest\-::\-\_\-\-\_\-construct (
+\begin{DoxyParamCaption}
+\item[{}]{\$suggestid}
+\end{DoxyParamCaption}
+)}}\label{classsuggest_a6e0521c192159953fda4bd293b01d440}
+Constructor of the class. This gathers the basic information about the suggestion which is to be managed   \$db Instance of the db class 
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$suggestid} & The I\-D of the suggestion to be managed \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 21 of file suggest.\-php.
+
+
+\begin{DoxyCode}
+21                                      \{
+22         global $db;
+23         $this->\textcolor{keywordtype}{id} = $suggestid;
+24         $row = $db->get(\textcolor{stringliteral}{"select * from suggested\_info where id=$suggestid"});
+25         \textcolor{comment}{//$this->suggested\_value = json\_decode($row['suggested\_value'], TRUE);}
+26         $this->typesuggest = $row[\textcolor{stringliteral}{'typesuggest'}];
+27         $this->suggestedby = $row[\textcolor{stringliteral}{'suggested\_by'}];
+28 
+29         \textcolor{comment}{//if typesuggest is remove then suggested value is in json else not}
+30         \textcolor{keywordflow}{if} ($row[\textcolor{stringliteral}{'typesuggest'}] == \textcolor{stringliteral}{"remove"}) \{
+31             $this->suggested\_value = $row[\textcolor{stringliteral}{'suggested\_value'}];
+32         \} \textcolor{keywordflow}{else} \{
+33             $this->suggested\_value = json\_decode($row[\textcolor{stringliteral}{'suggested\_value'}], \textcolor{keyword}{true});
+34         \}
+35     \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classsuggest_aaa4dc18391cb837d8c7a5448992790e9}{\index{suggest@{suggest}!apply@{apply}}
+\index{apply@{apply}!suggest@{suggest}}
+\subsubsection[{apply}]{\setlength{\rightskip}{0pt plus 5cm}suggest\-::apply (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classsuggest_aaa4dc18391cb837d8c7a5448992790e9}
+This function is used to accept the suggestion and apply the changes to the main member table   \$vanshavali Instance of the vanshavali class   \$db Instance of the db class \begin{DoxyReturn}{Returns}
+null 
+\end{DoxyReturn}
+
+
+Definition at line 168 of file suggest.\-php.
+
+
+\begin{DoxyCode}
+168                              \{
+169         global $vanshavali, $db;
+170 
+171         \textcolor{comment}{//Check if suggested\_value was JSON or not}
+172         \textcolor{keywordflow}{if} (is\_array($this->suggested\_value)) \{
+173             $member = $vanshavali->getmember($this->suggested\_value[\textcolor{stringliteral}{'id'}]);
+174         \} \textcolor{keywordflow}{else} \{
+175             $member = $vanshavali->getmember($this->suggested\_value);
+176         \}
+177 
+178 
+179         \textcolor{comment}{//We have the member to be edited. Now apply the given operation}
+180         \textcolor{keywordflow}{switch} ($this->typesuggest) \{
+181             \textcolor{keywordflow}{case} \textcolor{stringliteral}{"child"}:
+182                 $member->add\_son($this->suggested\_value[\textcolor{stringliteral}{'name'}], $this->suggested\_value[\textcolor{stringliteral}{'gender'}]);
+183                 \textcolor{keywordflow}{break};
+184             \textcolor{keywordflow}{case} \textcolor{stringliteral}{"remove"}:
+185                 $member->remove();
+186                 \textcolor{keywordflow}{break};
+187             \textcolor{keywordflow}{case} \textcolor{stringliteral}{"edit"}:
+188                 $member->edit($this->suggested\_value[\textcolor{stringliteral}{'name'}], $this->suggested\_value[\textcolor{stringliteral}{'gender'}], $this->
+      suggested\_value[\textcolor{stringliteral}{'relationship'}], $this->suggested\_value[\textcolor{stringliteral}{'dob'}], $this->suggested\_value[\textcolor{stringliteral}{'alive'}]);
+189                 \textcolor{keywordflow}{break};
+190         \}
+191 
+192         \textcolor{comment}{//Now delete all the suggestion approvals as they are of no use}
+193         $this->\hyperlink{classsuggest_a32f9238a6ea3e85021319f6cec2f6fca}{approval\_delete}();
+194 
+195         \textcolor{comment}{//Now mark the suggestion as applied So that it can be used in future}
+196         $db->get(\textcolor{stringliteral}{"update suggested\_info set approved=1 where id=$this->id"});
+197     \}
+\end{DoxyCode}
+\hypertarget{classsuggest_a32f9238a6ea3e85021319f6cec2f6fca}{\index{suggest@{suggest}!approval\-\_\-delete@{approval\-\_\-delete}}
+\index{approval\-\_\-delete@{approval\-\_\-delete}!suggest@{suggest}}
+\subsubsection[{approval\-\_\-delete}]{\setlength{\rightskip}{0pt plus 5cm}suggest\-::approval\-\_\-delete (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classsuggest_a32f9238a6ea3e85021319f6cec2f6fca}
+This function is used to delete all the data regarding the suggestion approval or rejection. This is to be used when the suggestion is applied and user votes are of no use. Although it is automatically invoked.   \$db \begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 206 of file suggest.\-php.
+
+
+\begin{DoxyCode}
+206                                \{
+207         global $db;
+208 
+209         \textcolor{keywordflow}{if} ($db->get(\textcolor{stringliteral}{"Delete from suggest\_approved where suggest\_id=$this->id"})) \{
+210             \textcolor{keywordflow}{return} TRUE;
+211         \} \textcolor{keywordflow}{else} \{
+212             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+213         \}
+214     \}
+\end{DoxyCode}
+\hypertarget{classsuggest_a88a3a93bbc97e562d8f4a2b04bc72d14}{\index{suggest@{suggest}!approve@{approve}}
+\index{approve@{approve}!suggest@{suggest}}
+\subsubsection[{approve}]{\setlength{\rightskip}{0pt plus 5cm}suggest\-::approve (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classsuggest_a88a3a93bbc97e562d8f4a2b04bc72d14}
+This function is used to add approval to this suggestion. Returns false on error   \$db Instance of the db class   \$user Instance of the user class \begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 44 of file suggest.\-php.
+
+
+\begin{DoxyCode}
+44                        \{
+45         global $db, $user;
+46         \textcolor{keywordflow}{if} (!$db->get(\textcolor{stringliteral}{"Insert into suggest\_approved(suggest\_id,user\_id,action) values($this->id, }
+47 \textcolor{stringliteral}{                "} . $user->user[\textcolor{stringliteral}{'id'}] . \textcolor{stringliteral}{",1)"})) \{
+48             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+49         \}
+50 
+51         \textcolor{comment}{//Check if suggestion has crossed 50% Mark}
+52         $this->\hyperlink{classsuggest_a9ddef5aac5c98ef0d45e23ac8c802ee0}{check\_decision}();
+53         \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+54     \}
+\end{DoxyCode}
+\hypertarget{classsuggest_a9ddef5aac5c98ef0d45e23ac8c802ee0}{\index{suggest@{suggest}!check\-\_\-decision@{check\-\_\-decision}}
+\index{check\-\_\-decision@{check\-\_\-decision}!suggest@{suggest}}
+\subsubsection[{check\-\_\-decision}]{\setlength{\rightskip}{0pt plus 5cm}suggest\-::check\-\_\-decision (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classsuggest_a9ddef5aac5c98ef0d45e23ac8c802ee0}
+This function is used to take a decision whether to approve the suggestion , reject it on the basis percentage of approval or rejection \begin{DoxyReturn}{Returns}
+null 
+\end{DoxyReturn}
+
+
+Definition at line 142 of file suggest.\-php.
+
+
+\begin{DoxyCode}
+142                                       \{
+143         $percent = $this->\hyperlink{classsuggest_aec18fc5fc3aa1f7ab553f632d822bd91}{checkpercent}();
+144 
+145         \textcolor{comment}{//3rd has the boolean which checks if everyone has voted}
+146         \textcolor{keywordflow}{if} ($percent[3]) \{
+147             \textcolor{keywordflow}{if} ($percent[0] > 50) \{
+148                 \textcolor{comment}{//Almost half the people have agreed, So lets add it permanently..}
+149                 $this->\hyperlink{classsuggest_aaa4dc18391cb837d8c7a5448992790e9}{apply}();
+150             \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} ($percent[1] > 50) \{
+151                 \textcolor{comment}{//More than half of the people have rejected it, So lets remove the suggestion}
+152                 $this->\hyperlink{classsuggest_aaa4dc18391cb837d8c7a5448992790e9}{apply}();
+153             \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} ($percent[2] > 50) \{
+154                 \textcolor{comment}{//More than half of the people don't know about it}
+155                 \textcolor{comment}{//So we have no choice lets approve this suggestion}
+156                 $this->\hyperlink{classsuggest_aaa4dc18391cb837d8c7a5448992790e9}{apply}();
+157             \}
+158         \}
+159     \}
+\end{DoxyCode}
+\hypertarget{classsuggest_aec18fc5fc3aa1f7ab553f632d822bd91}{\index{suggest@{suggest}!checkpercent@{checkpercent}}
+\index{checkpercent@{checkpercent}!suggest@{suggest}}
+\subsubsection[{checkpercent}]{\setlength{\rightskip}{0pt plus 5cm}suggest\-::checkpercent (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classsuggest_aec18fc5fc3aa1f7ab553f632d822bd91}
+This function is to check the percentage of the approval/rejection/dontknow of this suggestion.   \$db Instance of the db class \begin{DoxyReturn}{Returns}
+array 
+\end{DoxyReturn}
+
+
+Definition at line 102 of file suggest.\-php.
+
+
+\begin{DoxyCode}
+102                                    \{
+103         global $db;
+104 
+105         \textcolor{comment}{//Get all Rejections, Approvals, Dontknow's}
+106         $query = $db->query(\textcolor{stringliteral}{"select * from suggest\_approved where suggest\_id="} . $this->\textcolor{keywordtype}{id});
+107         $row2 = $db->get(\textcolor{stringliteral}{'select count(*) as totaluser from member where username!="" and password!=""'});
+108         $total = (float) $row2[\textcolor{stringliteral}{'totaluser'}];
+109         $noapproved = 0.0;
+110         $norejected = 0.0;
+111         $nodontknow = 0.0;
+112 
+113         \textcolor{comment}{//Count the no of approvals/Rejections}
+114         \textcolor{keywordflow}{while} ($row = $db->fetch($query)) \{
+115             \textcolor{keywordflow}{switch} (intval($row[\textcolor{stringliteral}{'action'}])) \{
+116                 \textcolor{keywordflow}{case} 0:$norejected++;
+117                     \textcolor{keywordflow}{break};
+118                 \textcolor{keywordflow}{case} 1:$noapproved++;
+119                     \textcolor{keywordflow}{break};
+120                 \textcolor{keywordflow}{case} 2:$nodontknow++;
+121                     \textcolor{keywordflow}{break};
+122                 \textcolor{keywordflow}{default}:
+123                     \textcolor{keywordflow}{break};
+124             \}
+125         \}
+126         $noapproved = (float) ($noapproved / $total) * 100;
+127         $nodontknow = (float) ($nodontknow / $total) * 100;
+128         $norejected = (float) ($norejected / $total) * 100;
+129 
+130         \textcolor{comment}{//If approved>50 then accept the suggestion}
+131         \textcolor{comment}{//if rejected>50 then reject the suggestion}
+132         \textcolor{comment}{//if donknow>50 then even i don't know what to do}
+133 
+134         \textcolor{keywordflow}{return} array($noapproved, $norejected, $nodontknow);
+135     \}
+\end{DoxyCode}
+\hypertarget{classsuggest_aea8963c5a27e226cd1bbc039d14c39bd}{\index{suggest@{suggest}!dontknow@{dontknow}}
+\index{dontknow@{dontknow}!suggest@{suggest}}
+\subsubsection[{dontknow}]{\setlength{\rightskip}{0pt plus 5cm}suggest\-::dontknow (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classsuggest_aea8963c5a27e226cd1bbc039d14c39bd}
+This function is used to mark a suggestion as don't know. Returns false on error   \$db Instance of the db class   \$user Instance of the user class \begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 83 of file suggest.\-php.
+
+
+\begin{DoxyCode}
+83                         \{
+84         \textcolor{comment}{//Marks suggestion as don'tknow}
+85         global $db, $user;
+86         \textcolor{keywordflow}{if} (!$db->get(\textcolor{stringliteral}{"Insert into suggest\_approved (suggest\_id,user\_id,action)}
+87 \textcolor{stringliteral}{            values($this->id,"} . $user->user[0] . \textcolor{stringliteral}{",2)"})) \{
+88             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+89         \}
+90 
+91         \textcolor{comment}{//Check if suggestion has crossed 50% mark}
+92         $this->\hyperlink{classsuggest_a9ddef5aac5c98ef0d45e23ac8c802ee0}{check\_decision}();
+93         \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+94     \}
+\end{DoxyCode}
+\hypertarget{classsuggest_a7786abfabcc1c14520f6199d1e93bbb2}{\index{suggest@{suggest}!reject@{reject}}
+\index{reject@{reject}!suggest@{suggest}}
+\subsubsection[{reject}]{\setlength{\rightskip}{0pt plus 5cm}suggest\-::reject (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classsuggest_a7786abfabcc1c14520f6199d1e93bbb2}
+This function is used to add rejection to the suggestion. Return false on error   \$db Instance of the db class   \$user Instance of user class \begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 63 of file suggest.\-php.
+
+
+\begin{DoxyCode}
+63                       \{
+64         \textcolor{comment}{//Rejects the $id provided in the constructor}
+65         global $db, $user;
+66         \textcolor{keywordflow}{if} (!$db->get(\textcolor{stringliteral}{"Insert into suggest\_approved (suggest\_id,user\_id,action) values}
+67 \textcolor{stringliteral}{            ($this->id,"} . $user->user[0] . \textcolor{stringliteral}{",0)"})) \{
+68             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+69         \}
+70 
+71         \textcolor{comment}{//Check if suggestion has crossed 50% mark}
+72         $this->\hyperlink{classsuggest_a9ddef5aac5c98ef0d45e23ac8c802ee0}{check\_decision}();
+73         \textcolor{keywordflow}{return} TRUE;
+74     \}
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+vanshavali/suggest.\-php\end{DoxyCompactItemize}

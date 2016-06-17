@@ -4,5 +4,6 @@ var classinstall =
     [ "check_directory_permission", "classinstall.html#a4e720dd6e62b63da8033cecf60d5eaed", null ],
     [ "install", "classinstall.html#a6a8bcb2f7b567c588f4a474d46804440", null ],
     [ "installTables", "classinstall.html#a7d4d4748cd5c10e21c951a75e5a55f10", null ],
-    [ "setup_database", "classinstall.html#a8b2e00c7cc9a5031e9c98b4b6aa2c035", null ]
+    [ "setup_database", "classinstall.html#a8b2e00c7cc9a5031e9c98b4b6aa2c035", null ],
+    [ "setupAdmin", "classinstall.html#a5c80f436b583ec38915827619d1e0fa1", null ]
 ];

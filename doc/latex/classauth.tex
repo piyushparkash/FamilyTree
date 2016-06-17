@@ -62,17 +62,13 @@ The constructor of the class
 \end{DoxyParams}
 
 
-Reimplemented in \hyperlink{classuser_acf59e1e14564ce949759964415069581}{user}.
-
-
-
 Definition at line 13 of file auth.\-php.
 
 
 \begin{DoxyCode}
-                                  \{
-        session\_start();
-    \}
+13                                   \{
+14         session\_start();
+15     \}
 \end{DoxyCode}
 
 
@@ -101,34 +97,32 @@ Definition at line 29 of file auth.\-php.
 
 
 \begin{DoxyCode}
-                                                       \{
-        global $db;
-        
-        \textcolor{comment}{//Convert Password in md5 Hash}
-        $password = md5($password);
-        $query = $db->query(\textcolor{stringliteral}{"select * from member where username='$username'
-       and password='$password'"});
-        $row = $db->fetch($query);
-
-        \textcolor{comment}{//if no row found or if user's account is not activated yet then}
-        \textcolor{keywordflow}{if} ($row == \textcolor{keyword}{false}) \{
-            \textcolor{keywordflow}{return} \textcolor{keyword}{false};
-        \}
-        
-        \textcolor{comment}{//Check here for approval if user registration has been approved by the
-       admin. Currently disabled}
-
-        \textcolor{comment}{//Start the session and start storing data about user}
-        global $\_SESSION;
-        $token = $this->\hyperlink{classauth_a4ec05ca8231cd1151246b127f168d457}{generate\_token}($row[\textcolor{stringliteral}{'id'}]);
-        $\_SESSION[\textcolor{stringliteral}{'membername'}] = $row[\textcolor{stringliteral}{'membername'}];
-        $\_SESSION[\textcolor{stringliteral}{'id'}] = $row[\textcolor{stringliteral}{'id'}];
-        $\_SESSION[\textcolor{stringliteral}{'token'}] = $token;
-        $\_SESSION[\textcolor{stringliteral}{'authenticated'}] = \textcolor{keyword}{true};
-
-        \textcolor{comment}{//if everything is alright then return true}
-        \textcolor{keywordflow}{return} \textcolor{keyword}{true};
-    \}
+29                                                        \{
+30         global $db;
+31         
+32         \textcolor{comment}{//Convert Password in md5 Hash}
+33         $password = md5($password);
+34         $query = $db->query(\textcolor{stringliteral}{"select * from member where username='$username' and password='$password'"});
+35         $row = $db->fetch($query);
+36 
+37         \textcolor{comment}{//if no row found or if user's account is not activated yet then}
+38         \textcolor{keywordflow}{if} ($row == \textcolor{keyword}{false}) \{
+39             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+40         \}
+41         
+42         \textcolor{comment}{//Check here for approval if user registration has been approved by the admin. Currently disabled}
+43 
+44         \textcolor{comment}{//Start the session and start storing data about user}
+45         global $\_SESSION;
+46         $token = $this->\hyperlink{classauth_a4ec05ca8231cd1151246b127f168d457}{generate\_token}($row[\textcolor{stringliteral}{'id'}]);
+47         $\_SESSION[\textcolor{stringliteral}{'membername'}] = $row[\textcolor{stringliteral}{'membername'}];
+48         $\_SESSION[\textcolor{stringliteral}{'id'}] = $row[\textcolor{stringliteral}{'id'}];
+49         $\_SESSION[\textcolor{stringliteral}{'token'}] = $token;
+50         $\_SESSION[\textcolor{stringliteral}{'authenticated'}] = \textcolor{keyword}{true};
+51 
+52         \textcolor{comment}{//if everything is alright then return true}
+53         \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+54     \}
 \end{DoxyCode}
 \hypertarget{classauth_ad5c908efc480a57e5625131348f4bf29}{\index{auth@{auth}!check\-\_\-session@{check\-\_\-session}}
 \index{check\-\_\-session@{check\-\_\-session}!auth@{auth}}
@@ -146,20 +140,19 @@ Definition at line 89 of file auth.\-php.
 
 
 \begin{DoxyCode}
-                             \{
-        global $\_SESSION;
-        \textcolor{keywordflow}{if} (isset($\_SESSION[\textcolor{stringliteral}{'membername'}], $\_SESSION[\textcolor{stringliteral}{'id'}], $\_SESSION[\textcolor{stringliteral}{'token'}],
-       $\_SESSION[\textcolor{stringliteral}{'authenticated'}])) \{
-            \textcolor{keywordflow}{if} ($\_SESSION[\textcolor{stringliteral}{'authenticated'}] == \textcolor{keyword}{true}) \{
-                \textcolor{keywordflow}{if} ($this->\hyperlink{classauth_ac2530bf2bba79e22de7e2f3ebb63be3a}{check\_token}($\_SESSION[\textcolor{stringliteral}{'id'}], $\_SESSION[\textcolor{stringliteral}{'
-      token'}])) \{
-                    \textcolor{keywordflow}{return} \textcolor{keyword}{true};
-                \}
-            \}
-        \}
-
-        \textcolor{keywordflow}{return} \textcolor{keyword}{false};
-    \}
+89                              \{
+90         global $\_SESSION;
+91         \textcolor{keywordflow}{if} (isset($\_SESSION[\textcolor{stringliteral}{'membername'}], $\_SESSION[\textcolor{stringliteral}{'id'}], $\_SESSION[\textcolor{stringliteral}{'token'}], $\_SESSION[\textcolor{stringliteral}{'authenticated'}])
+      ) \{
+92             \textcolor{keywordflow}{if} ($\_SESSION[\textcolor{stringliteral}{'authenticated'}] == \textcolor{keyword}{true}) \{
+93                 \textcolor{keywordflow}{if} ($this->\hyperlink{classauth_ac2530bf2bba79e22de7e2f3ebb63be3a}{check\_token}($\_SESSION[\textcolor{stringliteral}{'id'}], $\_SESSION[\textcolor{stringliteral}{'token'}])) \{
+94                     \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+95                 \}
+96             \}
+97         \}
+98 
+99         \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+100     \}
 \end{DoxyCode}
 \hypertarget{classauth_ac2530bf2bba79e22de7e2f3ebb63be3a}{\index{auth@{auth}!check\-\_\-token@{check\-\_\-token}}
 \index{check\-\_\-token@{check\-\_\-token}!auth@{auth}}
@@ -185,17 +178,17 @@ Definition at line 109 of file auth.\-php.
 
 
 \begin{DoxyCode}
-                                      \{
-        $numtoken = preg\_replace(\textcolor{stringliteral}{"/[^0-9]/"}, \textcolor{stringliteral}{""}, $token);
-        $numtoken = (int) $numtoken;
-        \textcolor{keywordflow}{if} ($numtoken == $id) \{
-
-            \textcolor{keywordflow}{return} \textcolor{keyword}{true};
-        \} \textcolor{keywordflow}{else} \{
-
-            \textcolor{keywordflow}{return} \textcolor{keyword}{false};
-        \}
-    \}
+109                                       \{
+110         $numtoken = preg\_replace(\textcolor{stringliteral}{"/[^0-9]/"}, \textcolor{stringliteral}{""}, $token);
+111         $numtoken = (int) $numtoken;
+112         \textcolor{keywordflow}{if} ($numtoken == $id) \{
+113 
+114             \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+115         \} \textcolor{keywordflow}{else} \{
+116 
+117             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+118         \}
+119     \}
 \end{DoxyCode}
 \hypertarget{classauth_adeb7a80afb02aceb540c541d591baf69}{\index{auth@{auth}!destroy\-\_\-session@{destroy\-\_\-session}}
 \index{destroy\-\_\-session@{destroy\-\_\-session}!auth@{auth}}
@@ -213,9 +206,9 @@ Definition at line 167 of file auth.\-php.
 
 
 \begin{DoxyCode}
-    \{
-        session\_unset();
-    \}
+168     \{
+169         session\_unset();
+170     \}
 \end{DoxyCode}
 \hypertarget{classauth_a4ec05ca8231cd1151246b127f168d457}{\index{auth@{auth}!generate\-\_\-token@{generate\-\_\-token}}
 \index{generate\-\_\-token@{generate\-\_\-token}!auth@{auth}}
@@ -238,29 +231,28 @@ Definition at line 140 of file auth.\-php.
 
 
 \begin{DoxyCode}
-                                      \{
-
-        $codelenght = 20;
-        \textcolor{keywordflow}{for} ($newcode = \textcolor{stringliteral}{""}, $newcode\_length = 0; $newcode\_length < $codelenght;
-       $newcode\_length++) \{
-            \textcolor{keywordflow}{if} ($newcode\_length == 5) \{
-                $newcode = $newcode . $id;
-            \}
-            $x = 1;
-            $y = 2;
-            $part = rand($x, $y);
-            \textcolor{keywordflow}{if} ($part == 1) \{
-                $a = 65;
-                $b = 90;
-            \} \textcolor{comment}{// UpperCase}
-            \textcolor{keywordflow}{if} ($part == 2) \{
-                $a = 97;
-                $b = 122;
-            \} \textcolor{comment}{// LowerCase}
-            $newcode = $newcode . chr(rand($a, $b));
-        \}
-        \textcolor{keywordflow}{return} $newcode;
-    \}
+140                                       \{
+141 
+142         $codelenght = 20;
+143         \textcolor{keywordflow}{for} ($newcode = \textcolor{stringliteral}{""}, $newcode\_length = 0; $newcode\_length < $codelenght; $newcode\_length++) \{
+144             \textcolor{keywordflow}{if} ($newcode\_length == 5) \{
+145                 $newcode = $newcode . $id;
+146             \}
+147             $x = 1;
+148             $y = 2;
+149             $part = rand($x, $y);
+150             \textcolor{keywordflow}{if} ($part == 1) \{
+151                 $a = 65;
+152                 $b = 90;
+153             \} \textcolor{comment}{// UpperCase}
+154             \textcolor{keywordflow}{if} ($part == 2) \{
+155                 $a = 97;
+156                 $b = 122;
+157             \} \textcolor{comment}{// LowerCase}
+158             $newcode = $newcode . chr(rand($a, $b));
+159         \}
+160         \textcolor{keywordflow}{return} $newcode;
+161     \}
 \end{DoxyCode}
 \hypertarget{classauth_aebf5c1995f3314883dc475628db61ccc}{\index{auth@{auth}!get\-\_\-user@{get\-\_\-user}}
 \index{get\-\_\-user@{get\-\_\-user}!auth@{auth}}
@@ -283,11 +275,11 @@ Definition at line 77 of file auth.\-php.
 
 
 \begin{DoxyCode}
-                           \{
-        global $db;
-        $row = $db->fetch($db->query(\textcolor{stringliteral}{"select * from member where id=$id"}));
-        \textcolor{keywordflow}{return} $row;
-    \}
+77                            \{
+78         global $db;
+79         $row = $db->fetch($db->query(\textcolor{stringliteral}{"select * from member where id=$id"}));
+80         \textcolor{keywordflow}{return} $row;
+81     \}
 \end{DoxyCode}
 \hypertarget{classauth_a73a5af5d9e12014687cf0d360f5e6356}{\index{auth@{auth}!is\-\_\-authenticated@{is\-\_\-authenticated}}
 \index{is\-\_\-authenticated@{is\-\_\-authenticated}!auth@{auth}}
@@ -305,14 +297,14 @@ Definition at line 126 of file auth.\-php.
 
 
 \begin{DoxyCode}
-                                \{
-        \textcolor{keywordflow}{if} ($this->\hyperlink{classauth_ac2530bf2bba79e22de7e2f3ebb63be3a}{check\_token}($\_SESSION[\textcolor{stringliteral}{'id'}], $\_SESSION[\textcolor{stringliteral}{'token'}]) 
-      && $\_SESSION[\textcolor{stringliteral}{'authenticated'}]) \{
-            \textcolor{keywordflow}{return} \textcolor{keyword}{true};
-        \} \textcolor{keywordflow}{else} \{
-            \textcolor{keywordflow}{return} \textcolor{keyword}{false};
-        \}
-    \}
+126                                 \{
+127         \textcolor{keywordflow}{if} ($this->\hyperlink{classauth_ac2530bf2bba79e22de7e2f3ebb63be3a}{check\_token}($\_SESSION[\textcolor{stringliteral}{'id'}], $\_SESSION[\textcolor{stringliteral}{'token'}]) && $\_SESSION[\textcolor{stringliteral}{'authenticated'}
+      ]) \{
+128             \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+129         \} \textcolor{keywordflow}{else} \{
+130             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+131         \}
+132     \}
 \end{DoxyCode}
 \hypertarget{classauth_a17089bfa7c3b9d0546f80ac9472dfc7b}{\index{auth@{auth}!unauthenticate@{unauthenticate}}
 \index{unauthenticate@{unauthenticate}!auth@{auth}}
@@ -330,28 +322,27 @@ Definition at line 177 of file auth.\-php.
 
 
 \begin{DoxyCode}
-    \{
-        global $db;
-        \textcolor{keywordflow}{if} (!$this->\hyperlink{classauth_a73a5af5d9e12014687cf0d360f5e6356}{is\_authenticated}())
-        \{
-            \textcolor{keywordflow}{return} \textcolor{keyword}{false};
-        \}
-        \textcolor{comment}{//Update the last login timestamp}
-        \textcolor{keywordflow}{if} ($db->query(\textcolor{stringliteral}{"update member set lastlogin="}.time().\textcolor{stringliteral}{" where id="}.
-      $\_SESSION[\textcolor{stringliteral}{'id'}]))
-        \{
-        
-        \textcolor{comment}{//Unset all the session values}
-        $this->\hyperlink{classauth_adeb7a80afb02aceb540c541d591baf69}{destroy\_session}();
-        \textcolor{keywordflow}{if} ($this->\hyperlink{classauth_a73a5af5d9e12014687cf0d360f5e6356}{is\_authenticated}())
-        \{
-            trigger\_error(\textcolor{stringliteral}{"Error Ending Session"},E\_USER\_ERROR);
-            \textcolor{keywordflow}{return} \textcolor{keyword}{false};
-        \}
-        
-        \}
-        \textcolor{keywordflow}{return} \textcolor{keyword}{true};
-    \}
+178     \{
+179         global $db;
+180         \textcolor{keywordflow}{if} (!$this->\hyperlink{classauth_a73a5af5d9e12014687cf0d360f5e6356}{is\_authenticated}())
+181         \{
+182             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+183         \}
+184         \textcolor{comment}{//Update the last login timestamp}
+185         \textcolor{keywordflow}{if} ($db->query(\textcolor{stringliteral}{"update member set lastlogin="}.time().\textcolor{stringliteral}{" where id="}.$\_SESSION[\textcolor{stringliteral}{'id'}]))
+186         \{
+187         
+188         \textcolor{comment}{//Unset all the session values}
+189         $this->\hyperlink{classauth_adeb7a80afb02aceb540c541d591baf69}{destroy\_session}();
+190         \textcolor{keywordflow}{if} ($this->\hyperlink{classauth_a73a5af5d9e12014687cf0d360f5e6356}{is\_authenticated}())
+191         \{
+192             trigger\_error(\textcolor{stringliteral}{"Error Ending Session"},E\_USER\_ERROR);
+193             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+194         \}
+195         
+196         \}
+197         \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+198     \}
 \end{DoxyCode}
 \hypertarget{classauth_a0de1d4416c9fb04b4223cd7a3dd3a623}{\index{auth@{auth}!user\-\_\-account\-\_\-activated@{user\-\_\-account\-\_\-activated}}
 \index{user\-\_\-account\-\_\-activated@{user\-\_\-account\-\_\-activated}!auth@{auth}}
@@ -374,15 +365,15 @@ Definition at line 61 of file auth.\-php.
 
 
 \begin{DoxyCode}
-                                         \{
-
-        $data = $this->\hyperlink{classauth_aebf5c1995f3314883dc475628db61ccc}{get\_user}($id);
-        \textcolor{keywordflow}{if} ($data[\textcolor{stringliteral}{'approved'}] == 0) \{
-            \textcolor{keywordflow}{return} \textcolor{keyword}{false};
-        \} \textcolor{keywordflow}{else} \{
-            \textcolor{keywordflow}{return} \textcolor{keyword}{true};
-        \}
-    \}
+61                                          \{
+62 
+63         $data = $this->\hyperlink{classauth_aebf5c1995f3314883dc475628db61ccc}{get\_user}($id);
+64         \textcolor{keywordflow}{if} ($data[\textcolor{stringliteral}{'approved'}] == 0) \{
+65             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+66         \} \textcolor{keywordflow}{else} \{
+67             \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+68         \}
+69     \}
 \end{DoxyCode}
 
 

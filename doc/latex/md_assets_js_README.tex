@@ -1,0 +1,120 @@
+These are the high-\/level design rules which guide the development of Bootstrap's plugin apis. 
+
+
+
+\subsubsection*{D\-A\-T\-A-\/\-A\-T\-T\-R\-I\-B\-U\-T\-E A\-P\-I}
+
+We believe you should be able to use all plugins provided by Bootstrap purely through the markup A\-P\-I without writing a single line of javascript.
+
+We acknowledge that this isn't always the most performant and sometimes it may be desirable to turn this functionality off altogether. Therefore, as of 2.\-0 we provide the ability to disable the data attribute A\-P\-I by unbinding all events on the body namespaced with {\ttfamily 'data-\/api'}. This looks like this\-: \begin{DoxyVerb}$('body').off('.data-api')
+\end{DoxyVerb}
+
+
+To target a specific plugin, just include the plugins name as a namespace along with the data-\/api namespace like this\-: \begin{DoxyVerb}$('body').off('.alert.data-api')
+\end{DoxyVerb}
+
+
+
+
+
+
+\subsubsection*{P\-R\-O\-G\-R\-A\-M\-A\-T\-I\-C A\-P\-I}
+
+We also believe you should be able to use all plugins provided by Bootstrap purely through the J\-S A\-P\-I.
+
+All public A\-P\-Is should be single, chainable methods, and return the collection acted upon. \begin{DoxyVerb}$(".btn.danger").button("toggle").addClass("fat")
+\end{DoxyVerb}
+
+
+All methods should accept an optional options object, a string which targets a particular method, or null which initiates the default behavior\-: \begin{DoxyVerb}$("#myModal").modal() // initialized with defaults
+$("#myModal").modal({ keyboard: false }) // initialized with now keyboard
+$("#myModal").modal('show') // initializes and invokes show immediately afterqwe2
+\end{DoxyVerb}
+
+
+
+
+
+
+\subsubsection*{O\-P\-T\-I\-O\-N\-S}
+
+Options should be sparse and add universal value. We should pick the right defaults.
+
+All plugins should have a default object which can be modified to effect all instance's default options. The defaults object should be available via {\ttfamily \$.fn.\-plugin.\-defaults}. \begin{DoxyVerb}$.fn.modal.defaults = { … }
+\end{DoxyVerb}
+
+
+An options definition should take the following form\-: \begin{DoxyVerb}*noun*: *adjective* - describes or modifies a quality of an instance
+\end{DoxyVerb}
+
+
+examples\-: \begin{DoxyVerb}backdrop: true
+keyboard: false
+placement: 'top'
+\end{DoxyVerb}
+
+
+
+
+
+
+\subsubsection*{E\-V\-E\-N\-T\-S}
+
+All events should have an infinitive and past participle form. The infinitive is fired just before an action takes place, the past participle on completion of the action. \begin{DoxyVerb}show | shown
+hide | hidden
+\end{DoxyVerb}
+
+
+
+
+
+
+\subsubsection*{C\-O\-N\-S\-T\-R\-U\-C\-T\-O\-R\-S}
+
+Each plugin should expose it's raw constructor on a {\ttfamily Constructor} property -- accessed in the following way\-:
+
+\begin{DoxyVerb}$.fn.popover.Constructor
+\end{DoxyVerb}
+
+
+
+
+
+
+\subsubsection*{D\-A\-T\-A A\-C\-C\-E\-S\-S\-O\-R}
+
+Each plugin stores a copy of the invoked class on an object. This class instance can be accessed directly through j\-Query's data A\-P\-I like this\-: \begin{DoxyVerb}$('[rel=popover]').data('popover') instanceof $.fn.popover.Constructor
+\end{DoxyVerb}
+
+
+
+
+
+
+\subsubsection*{D\-A\-T\-A A\-T\-T\-R\-I\-B\-U\-T\-E\-S}
+
+Data attributes should take the following form\-:
+
+
+\begin{DoxyItemize}
+\item data-\/\{\{verb\}\}=\{\{plugin\}\} -\/ defines main interaction
+\item data-\/target $\vert$$\vert$ href$^\wedge$=\# -\/ defined on \char`\"{}control\char`\"{} element (if element controls an element other than self)
+\item data-\/\{\{noun\}\} -\/ defines class instance options
+\end{DoxyItemize}
+
+examples\-: \begin{DoxyVerb}// control other targets
+data-toggle="modal" data-target="#foo"
+data-toggle="collapse" data-target="#foo" data-parent="#bar"
+
+// defined on element they control
+data-spy="scroll"
+
+data-dismiss="modal"
+data-dismiss="alert"
+
+data-toggle="dropdown"
+
+data-toggle="button"
+data-toggle="buttons-checkbox"
+data-toggle="buttons-radio" \end{DoxyVerb}
+ 

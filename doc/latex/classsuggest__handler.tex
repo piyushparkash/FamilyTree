@@ -1,0 +1,289 @@
+\hypertarget{classsuggest__handler}{\section{suggest\-\_\-handler Class Reference}
+\label{classsuggest__handler}\index{suggest\-\_\-handler@{suggest\-\_\-handler}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classsuggest__handler_a579df011177c3034a8e4d47707f31e55}{getviewname} (\$detail)
+\item 
+\hypertarget{classsuggest__handler_ae7f8d41304727fb1e7af3010996d88b2}{{\bfseries getsuggestions} ()}\label{classsuggest__handler_ae7f8d41304727fb1e7af3010996d88b2}
+
+\item 
+\hyperlink{classsuggest__handler_a23c3431f12e1169890240caee1881184}{register\-\_\-handler} (\$name, \$tpl, \$parameter, \$type)
+\item 
+\hyperlink{classsuggest__handler_a9f5bb474e7d61f299bfb1d8a51075ead}{add\-\_\-suggest} (\$name, \$to, \$new\-\_\-value=N\-U\-L\-L)
+\item 
+\hyperlink{classsuggest__handler_abd64d023e04b128c6bbdd1346592168f}{find\-\_\-structure} (\$name)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 16 of file suggest\-\_\-handler.\-php.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classsuggest__handler_a9f5bb474e7d61f299bfb1d8a51075ead}{\index{suggest\-\_\-handler@{suggest\-\_\-handler}!add\-\_\-suggest@{add\-\_\-suggest}}
+\index{add\-\_\-suggest@{add\-\_\-suggest}!suggest_handler@{suggest\-\_\-handler}}
+\subsubsection[{add\-\_\-suggest}]{\setlength{\rightskip}{0pt plus 5cm}suggest\-\_\-handler\-::add\-\_\-suggest (
+\begin{DoxyParamCaption}
+\item[{}]{\$name, }
+\item[{}]{\$to, }
+\item[{}]{\$new\-\_\-value = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}}\label{classsuggest__handler_a9f5bb474e7d61f299bfb1d8a51075ead}
+db \$db  vanshavali \$vanshavali 
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$name} & \\
+\hline
+string & {\em \$old\-\_\-value} & \\
+\hline
+string & {\em \$new\-\_\-value} & \\
+\hline
+int & {\em \$to} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 147 of file suggest\-\_\-handler.\-php.
+
+
+\begin{DoxyCode}
+147                                                                \{
+148         global $db, $user;
+149 
+150         \textcolor{comment}{//To return at the end}
+151         $success = \textcolor{keyword}{true};
+152         \textcolor{comment}{// First find the parameters and structure of the given suggest}
+153         $suggest\_structure = $this->\hyperlink{classsuggest__handler_abd64d023e04b128c6bbdd1346592168f}{find\_structure}($name);
+154 
+155         \textcolor{keywordflow}{if} (!$suggest\_structure) \{
+156             trigger\_error(\textcolor{stringliteral}{"Wrong Suggestion Name Passed. Please check."}, E\_USER\_ERROR);
+157         \}
+158 
+159         \textcolor{comment}{//The suggest structure is not simple in this case we have three types of suggest}
+160         \textcolor{comment}{// ie add/remove/modify. Find out the type of the suggest}
+161         $suggesttype = $suggest\_structure->type;
+162 
+163         \textcolor{comment}{//Now use switch to do execution according to the type}
+164         \textcolor{keywordflow}{switch} ($suggesttype) \{
+165             \textcolor{keywordflow}{case} ADD:
+166             \textcolor{keywordflow}{case} DEL:
+167                 \textcolor{comment}{//Now in this case we don't have any old value or new value}
+168                 \textcolor{comment}{//So the newvalue and the old value field remains empty in this case}
+169                 \textcolor{comment}{//We don't have to find any old value. So lets implement}
+170                 \textcolor{comment}{//As we have composite value while adding and removing a member i.e. name and gender}
+171                 \textcolor{comment}{//we put it in an array for it to be passed on.}
+172                 \textcolor{keywordflow}{if} (!is\_array($new\_value)) \{
+173                     $new\_value = array($new\_value);
+174                 \}
+175 
+176                 $new\_value = json\_encode($new\_value);
+177                 \textcolor{keywordflow}{if} (!$db->query(\textcolor{stringliteral}{"insert into suggested\_info (typesuggest, new\_value, old\_value,
+       suggested\_by, suggested\_to, ts) values('$name', '$new\_value', null, "} . $user->user[\textcolor{stringliteral}{'id'}] . \textcolor{stringliteral}{", $to, "} . time() . \textcolor{stringliteral}{")"})) 
+      \{
+178                     $success = \textcolor{keyword}{false};
+179                 \}
+180                 \textcolor{keywordflow}{break};
+181             \textcolor{keywordflow}{case} MODIFY:
+182                 \textcolor{comment}{//Now in this case there always will be a new value and a old value. So nothing is empty}
+183                 \textcolor{comment}{//So lets find the old value}
+184                 $query = $db->fetch($db->query(\textcolor{stringliteral}{"select $name from member where id=$to"}));
+185 
+186                 $old\_value = $query[$name]; \textcolor{comment}{// And we have the old value now lets add the suggest}
+187                 \textcolor{comment}{//But first lets check if the old value and the new value are same}
+188                 \textcolor{keywordflow}{if} ($old\_value == $new\_value) \{
+189                     \textcolor{keywordflow}{return};
+190                 \}
+191                 \textcolor{keywordflow}{if} (!$db->query(\textcolor{stringliteral}{"insert into suggested\_info (typesuggest, new\_value, old\_value,
+       suggested\_by, suggested\_to, ts) values('$name', '$new\_value', '$old\_value', "} . $user->user[\textcolor{stringliteral}{'id'}] . \textcolor{stringliteral}{", $to, "} . time() 
+      . \textcolor{stringliteral}{")"})) \{
+192                     $success = \textcolor{keyword}{false};
+193                 \}
+194                 \textcolor{keywordflow}{break};
+195         \}
+196 
+197         \textcolor{keywordflow}{return} $success;
+198     \}
+\end{DoxyCode}
+\hypertarget{classsuggest__handler_abd64d023e04b128c6bbdd1346592168f}{\index{suggest\-\_\-handler@{suggest\-\_\-handler}!find\-\_\-structure@{find\-\_\-structure}}
+\index{find\-\_\-structure@{find\-\_\-structure}!suggest_handler@{suggest\-\_\-handler}}
+\subsubsection[{find\-\_\-structure}]{\setlength{\rightskip}{0pt plus 5cm}suggest\-\_\-handler\-::find\-\_\-structure (
+\begin{DoxyParamCaption}
+\item[{}]{\$name}
+\end{DoxyParamCaption}
+)}}\label{classsuggest__handler_abd64d023e04b128c6bbdd1346592168f}
+
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$name} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean$\vert$suggest\-\_\-storage 
+\end{DoxyReturn}
+
+
+Definition at line 205 of file suggest\-\_\-handler.\-php.
+
+
+\begin{DoxyCode}
+205                                           \{
+206         global $suggests;
+207         $found\_key = NULL;
+208         \textcolor{keywordflow}{foreach} ($suggests as $key => $value) \{
+209             \textcolor{keywordflow}{if} ($value->name == $name) \{
+210                 $found\_key = $key;
+211                 \textcolor{keywordflow}{break};
+212             \}
+213         \}
+214         \textcolor{keywordflow}{if} (!is\_null($found\_key)) \{
+215             \textcolor{keywordflow}{return} $suggests[$found\_key];
+216         \} \textcolor{keywordflow}{else} \{
+217             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+218         \}
+219     \}
+\end{DoxyCode}
+\hypertarget{classsuggest__handler_a579df011177c3034a8e4d47707f31e55}{\index{suggest\-\_\-handler@{suggest\-\_\-handler}!getviewname@{getviewname}}
+\index{getviewname@{getviewname}!suggest_handler@{suggest\-\_\-handler}}
+\subsubsection[{getviewname}]{\setlength{\rightskip}{0pt plus 5cm}suggest\-\_\-handler\-::getviewname (
+\begin{DoxyParamCaption}
+\item[{}]{\$detail}
+\end{DoxyParamCaption}
+)}}\label{classsuggest__handler_a579df011177c3034a8e4d47707f31e55}
+This function prepares the template to display the data to ths user. The input \$detail here is raw extract of suggest table, where all the suggestion is stored. It prepares the template and data according to it
+
+\$user  vanshavali \$vanshavali   \$template 
+\begin{DoxyParams}[1]{Parameters}
+array & {\em \$detail} & raw extract of suggest table \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string$\vert$boolean if all goes fine then parsed that is to shown else false 
+\end{DoxyReturn}
+
+
+Definition at line 32 of file suggest\-\_\-handler.\-php.
+
+
+\begin{DoxyCode}
+32                                          \{
+33 
+34         global $user, $vanshavali, $template;
+35         
+36         \textcolor{comment}{//Find the structure of the suggest}
+37         $struct = $this->\hyperlink{classsuggest__handler_abd64d023e04b128c6bbdd1346592168f}{find\_structure}($detail[\textcolor{stringliteral}{'typesuggest'}]);
+38         $suggestion = \textcolor{keyword}{new} \hyperlink{classsuggest}{suggest}($detail[\textcolor{stringliteral}{'id'}]);
+39         
+40         \textcolor{comment}{//Get the percent of approval}
+41         $percentArray = $suggestion->checkpercent();
+42         
+43         \textcolor{comment}{//Assign the percent to template}
+44         $finalarray[\textcolor{stringliteral}{'suggestid'}] = $detail[\textcolor{stringliteral}{'id'}];
+45         $finalarray[\textcolor{stringliteral}{'yespercent'}] = $percentArray[0];
+46         $finalarray[\textcolor{stringliteral}{'nopercent'}] = $percentArray[1];
+47         $finalarray[\textcolor{stringliteral}{'dontknowpercent'}] = $percentArray[2];
+48 
+49         \textcolor{comment}{//Now do check here if we have the structure}
+50         \textcolor{comment}{//because if not then the program will crash}
+51         \textcolor{comment}{//Collect the data needed}
+52         \textcolor{comment}{//Here is the needed data}
+53         \textcolor{comment}{//from , to , old\_value, newvalue, sod}
+54 
+55         $finalarray[\textcolor{stringliteral}{'suggested\_by'}] = $vanshavali->getmember($detail[\textcolor{stringliteral}{'suggested\_by'}]);
+56         $finalarray[\textcolor{stringliteral}{'suggested\_to'}] = $vanshavali->getmember($detail[\textcolor{stringliteral}{'suggested\_to'}]);
+57         $finalarray[\textcolor{stringliteral}{'oldvalue'}] = is\_null($detail[\textcolor{stringliteral}{'old\_value'}]) ? \textcolor{stringliteral}{""} : $detail[\textcolor{stringliteral}{'old\_value'}];
+58 
+59         \textcolor{comment}{//Now check if new value is a json..}
+60         $decoded = json\_decode($detail[\textcolor{stringliteral}{'new\_value'}], TRUE);
+61         \textcolor{keywordflow}{if} (!is\_null($decoded)) \{
+62             \textcolor{keywordflow}{if} (isset($decoded[NAME])) \{
+63                 $finalarray[\textcolor{stringliteral}{'newvalue'}] = $decoded[NAME];
+64             \} \textcolor{keywordflow}{else} \{
+65                 $finalarray[\textcolor{stringliteral}{'newvalue'}] = $decoded;
+66             \}
+67 
+68             \textcolor{comment}{//Now check if gender is there or not}
+69             \textcolor{keywordflow}{if} (isset($decoded[GENDER])) \{
+70                 $finalarray[\textcolor{stringliteral}{'sod'}] = $decoded[GENDER];
+71             \} \textcolor{keywordflow}{else} \{ \textcolor{comment}{// if not then assign the gender of the to member as it is being modified}
+72                 $finalarray[\textcolor{stringliteral}{'sod'}] = $finalarray[\textcolor{stringliteral}{'suggested\_to'}]->gender();
+73             \}
+74         \} \textcolor{keywordflow}{else} \{
+75             \textcolor{comment}{//This is going to happen when we have suggestion which has no old value or new value}
+76             \textcolor{comment}{//SO better be ready for that}
+77             \textcolor{comment}{//We already have old\_value so prepare new value}
+78             $finalarray[\textcolor{stringliteral}{'newvalue'}] = $detail[\textcolor{stringliteral}{'new\_value'}];
+79 
+80             \textcolor{comment}{//and sod}
+81             $finalarray[\textcolor{stringliteral}{'sod'}] = $finalarray[\textcolor{stringliteral}{'suggested\_to'}]->gender();
+82         \}
+83 
+84 
+85         \textcolor{comment}{//Check if we have all the data that needs to be passed}
+86         $error = \textcolor{keyword}{false};
+87         \textcolor{keywordflow}{foreach} ($struct->parameter as $value) \{
+88             \textcolor{keywordflow}{if} (!isset($finalarray[$value])) \{
+89                 $error = TRUE;
+90                 echo \textcolor{stringliteral}{"we broke at $value"};
+91                 \textcolor{keywordflow}{break};
+92             \}
+93         \}
+94         \textcolor{comment}{//get the template content, We haven't passed any data into it. So check here}
+95         \textcolor{keywordflow}{if} ($error) \{
+96             trigger\_error(\textcolor{stringliteral}{"Not enough parameters to show the suggestion: $detail[1]"}, E\_USER\_ERROR);
+97             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+98         \} \textcolor{keywordflow}{else} \{
+99             $template->assign($finalarray);
+100             $result = $template->fetch($struct->tpl);
+101 
+102             \textcolor{keywordflow}{return} $result;
+103         \}
+104     \}
+\end{DoxyCode}
+\hypertarget{classsuggest__handler_a23c3431f12e1169890240caee1881184}{\index{suggest\-\_\-handler@{suggest\-\_\-handler}!register\-\_\-handler@{register\-\_\-handler}}
+\index{register\-\_\-handler@{register\-\_\-handler}!suggest_handler@{suggest\-\_\-handler}}
+\subsubsection[{register\-\_\-handler}]{\setlength{\rightskip}{0pt plus 5cm}suggest\-\_\-handler\-::register\-\_\-handler (
+\begin{DoxyParamCaption}
+\item[{}]{\$name, }
+\item[{}]{\$tpl, }
+\item[{}]{\$parameter, }
+\item[{}]{\$type}
+\end{DoxyParamCaption}
+)}}\label{classsuggest__handler_a23c3431f12e1169890240caee1881184}
+This method is to be used to register a new suggest type 
+\begin{DoxyParams}[1]{Parameters}
+type & {\em \$name} & The name of the suggest \\
+\hline
+type & {\em \$tpl} & The tpl to be used while showing user the suggest \\
+\hline
+type & {\em \$parameters} & Any parameters required by the suggest \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean Return true if successfully registered 
+\end{DoxyReturn}
+
+
+Definition at line 126 of file suggest\-\_\-handler.\-php.
+
+
+\begin{DoxyCode}
+126                                                                      \{
+127         global $suggests;
+128         \textcolor{keywordflow}{if} (empty($name) || empty($tpl) || empty($parameter) || empty($type)) \{
+129 \textcolor{comment}{// Here raise a serious error and working will be interrupted if}
+130 \textcolor{comment}{// the given suggest is not registered}
+131             trigger\_error(\textcolor{stringliteral}{"$name suggest not registered correctly. Please check"}, E\_USER\_ERROR);
+132             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+133         \}
+134 \textcolor{comment}{// Store all the information of the suggest}
+135         $suggests[] = \textcolor{keyword}{new} \hyperlink{classsuggest__storage}{suggest\_storage}($name, $tpl, $parameter, $type);
+136     \}
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+suggest/suggest\-\_\-handler.\-php\end{DoxyCompactItemize}

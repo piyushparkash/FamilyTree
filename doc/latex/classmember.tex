@@ -16,7 +16,9 @@ Inheritance diagram for member\-:\begin{figure}[H]
 \item 
 \hyperlink{classmember_af93337d3c08cad93fa43b5f30c0215b0}{isfemale} ()
 \item 
-\hyperlink{classmember_ac331cc43c8c076314d05ac004d20e021}{getparent} ()
+\hyperlink{classmember_a551821d3d6d64bbf0c6c4c5d62b3366c}{get\-Father} ()
+\item 
+\hyperlink{classmember_a8c6d2d7c3ad62d4988000e0886d394b2}{get\-Mother} ()
 \item 
 \hyperlink{classmember_af0d9a69479f2b9c859acb90e97bad85c}{get\-\_\-sons} ()
 \item 
@@ -24,9 +26,431 @@ Inheritance diagram for member\-:\begin{figure}[H]
 \item 
 \hyperlink{classmember_a45c3ed97d49c45ce716892b4b5e44bd2}{autofix} ()
 \item 
+\hypertarget{classmember_ae1a0a03869debcb7e7f58eaca72fb2ed}{{\bfseries autofix2} ()}\label{classmember_ae1a0a03869debcb7e7f58eaca72fb2ed}
+
+\item 
 \hyperlink{classmember_ae0f93137fb23a9f5ae9e6a287f6232dd}{set\-\_\-relationship} (\$relationship\-\_\-id)
 \item 
 \hyperlink{classmember_a541afd2c1c096f5810c0b889e33287ba}{related\-\_\-to} (\$related\-\_\-to)
 \item 
 \hyperlink{classmember_aeb52158abb66bf82955ab17670b11eec}{gender} ()
+\item 
+\hyperlink{classmember_a7eccf6c8f3bc1bc775502427de8aaf7c}{get} (\$property\-Name)
+\item 
+\hyperlink{classmember_aa4b22929c0f9688d36c4528b467013d0}{set} (\$property\-Name, \$value)
+\item 
+\hyperlink{classmember_ac330497056943c44df23963f6a4d1288}{spouse} ()
+\item 
+\hyperlink{classmember_a2af2011afe5c6ee0404e2f45b93daf11}{is\-Admin} ()
+\item 
+\hypertarget{classmember_ad691ab2a161f3ad4a5c86435d08e7407}{{\bfseries send\-Forgot\-Password} ()}\label{classmember_ad691ab2a161f3ad4a5c86435d08e7407}
+
+\item 
+\hypertarget{classmember_a1e2c7b73375ee37813a78285b170cb79}{{\bfseries change\-Password} (\$new\-Password)}\label{classmember_a1e2c7b73375ee37813a78285b170cb79}
+
 \end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+This class is used to manipulate user data
+
+\begin{DoxyAuthor}{Author}
+piyush 
+\end{DoxyAuthor}
+
+
+Definition at line 10 of file member.\-php.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classmember_aa2427c65795ffbdc72d64e2e91640463}{\index{member@{member}!\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}}
+\index{\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}!member@{member}}
+\subsubsection[{\-\_\-\-\_\-construct}]{\setlength{\rightskip}{0pt plus 5cm}member\-::\-\_\-\-\_\-construct (
+\begin{DoxyParamCaption}
+\item[{}]{\$memberid}
+\end{DoxyParamCaption}
+)}}\label{classmember_aa2427c65795ffbdc72d64e2e91640463}
+The constructor of the class 
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$memberid} & The I\-D of the member \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+null 
+\end{DoxyReturn}
+
+
+Definition at line 17 of file member.\-php.
+
+
+\begin{DoxyCode}
+17                                            \{
+18         parent::\_\_construct($memberid);
+19         $this->\hyperlink{classmember__operation_aaae269a6cda847ad7aaffad933fe0ee6}{populate\_data}($memberid);
+20         $this->\hyperlink{classmember_a45c3ed97d49c45ce716892b4b5e44bd2}{autofix}();
+21     \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classmember_a45c3ed97d49c45ce716892b4b5e44bd2}{\index{member@{member}!autofix@{autofix}}
+\index{autofix@{autofix}!member@{member}}
+\subsubsection[{autofix}]{\setlength{\rightskip}{0pt plus 5cm}member\-::autofix (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classmember_a45c3ed97d49c45ce716892b4b5e44bd2}
+This function is used to fix any anamolies found in member data such as if user has children but the relationshipstatus is set to Single   \$db \begin{DoxyReturn}{Returns}
+null 
+\end{DoxyReturn}
+
+
+Definition at line 102 of file member.\-php.
+
+
+\begin{DoxyCode}
+102                        \{
+103 
+104         $nosons = $this->\hyperlink{classmember_a024f7356f2279490775b6ae432d51010}{has\_sons}();
+105         \textcolor{keywordflow}{if} ($nosons > 0) \{
+106 \textcolor{comment}{// If the member has sons Change the status to married}
+107 \textcolor{comment}{// Add a wife and add parents to wife and create a new family}
+108             $this->\hyperlink{classmember_ae0f93137fb23a9f5ae9e6a287f6232dd}{set\_relationship}(MARRIED);
+109             $this->\hyperlink{classmember__operation_a98d050cd93cb97b426d8971a827159b1}{addwife}();
+110 
+111 \textcolor{comment}{//Call the second autofix function to fix the wife and }
+112 \textcolor{comment}{//husband of same family issue.}
+113             $this->autofix2();
+114         \}
+115     \}
+\end{DoxyCode}
+\hypertarget{classmember_aeb52158abb66bf82955ab17670b11eec}{\index{member@{member}!gender@{gender}}
+\index{gender@{gender}!member@{member}}
+\subsubsection[{gender}]{\setlength{\rightskip}{0pt plus 5cm}member\-::gender (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classmember_aeb52158abb66bf82955ab17670b11eec}
+Return the gender code of the member 1 = Female 0= Male \begin{DoxyReturn}{Returns}
+integer 
+\end{DoxyReturn}
+
+
+Definition at line 186 of file member.\-php.
+
+
+\begin{DoxyCode}
+186                       \{
+187         \textcolor{keywordflow}{return} $this->data[\textcolor{stringliteral}{'gender'}];
+188     \}
+\end{DoxyCode}
+\hypertarget{classmember_a7eccf6c8f3bc1bc775502427de8aaf7c}{\index{member@{member}!get@{get}}
+\index{get@{get}!member@{member}}
+\subsubsection[{get}]{\setlength{\rightskip}{0pt plus 5cm}member\-::get (
+\begin{DoxyParamCaption}
+\item[{}]{\$property\-Name}
+\end{DoxyParamCaption}
+)}}\label{classmember_a7eccf6c8f3bc1bc775502427de8aaf7c}
+\$db 
+\begin{DoxyParams}[1]{Parameters}
+type & {\em \$property\-Name} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+type 
+\end{DoxyReturn}
+
+
+Definition at line 196 of file member.\-php.
+
+
+\begin{DoxyCode}
+196                                 \{
+197         \textcolor{keywordflow}{return} $this->data[$propertyName];
+198     \}
+\end{DoxyCode}
+\hypertarget{classmember_af0d9a69479f2b9c859acb90e97bad85c}{\index{member@{member}!get\-\_\-sons@{get\-\_\-sons}}
+\index{get\-\_\-sons@{get\-\_\-sons}!member@{member}}
+\subsubsection[{get\-\_\-sons}]{\setlength{\rightskip}{0pt plus 5cm}member\-::get\-\_\-sons (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classmember_af0d9a69479f2b9c859acb90e97bad85c}
+This function is used to get the children of the currenyl logged-\/in user   \$db The instance of the db class \begin{DoxyReturn}{Returns}
+array Array of  
+\end{DoxyReturn}
+
+
+Definition at line 73 of file member.\-php.
+
+
+\begin{DoxyCode}
+73                         \{
+74         global $db;
+75         $finalarray = array();
+76         $query = $db->query(\textcolor{stringliteral}{"select * from member where sonof=$this->id"});
+77         \textcolor{keywordflow}{while} ($row = $db->fetch($query)) \{
+78             array\_push($finalarray, \textcolor{keyword}{new} \hyperlink{classmember}{member}($row[\textcolor{stringliteral}{'id'}]));
+79         \}
+80         \textcolor{keywordflow}{return} $finalarray;
+81     \}
+\end{DoxyCode}
+\hypertarget{classmember_a551821d3d6d64bbf0c6c4c5d62b3366c}{\index{member@{member}!get\-Father@{get\-Father}}
+\index{get\-Father@{get\-Father}!member@{member}}
+\subsubsection[{get\-Father}]{\setlength{\rightskip}{0pt plus 5cm}member\-::get\-Father (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classmember_a551821d3d6d64bbf0c6c4c5d62b3366c}
+This function is used to get the I\-D of the parent of the current logged in user \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 52 of file member.\-php.
+
+
+\begin{DoxyCode}
+52                          \{
+53         \textcolor{keywordflow}{return} \textcolor{keyword}{new} \hyperlink{classmember}{member}($this->data[\textcolor{stringliteral}{'sonof'}]);
+54     \}
+\end{DoxyCode}
+\hypertarget{classmember_a8c6d2d7c3ad62d4988000e0886d394b2}{\index{member@{member}!get\-Mother@{get\-Mother}}
+\index{get\-Mother@{get\-Mother}!member@{member}}
+\subsubsection[{get\-Mother}]{\setlength{\rightskip}{0pt plus 5cm}member\-::get\-Mother (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classmember_a8c6d2d7c3ad62d4988000e0886d394b2}
+\$db \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 61 of file member.\-php.
+
+
+\begin{DoxyCode}
+61                          \{
+62         global $db;
+63         $query = $db->get(\textcolor{stringliteral}{"select related\_to from member where id = "} . $this->data[\textcolor{stringliteral}{'sonof'}]);
+64 
+65         \textcolor{keywordflow}{return} \textcolor{keyword}{new} \hyperlink{classmember}{member}($query[\textcolor{stringliteral}{'related\_to'}]);
+66     \}
+\end{DoxyCode}
+\hypertarget{classmember_a024f7356f2279490775b6ae432d51010}{\index{member@{member}!has\-\_\-sons@{has\-\_\-sons}}
+\index{has\-\_\-sons@{has\-\_\-sons}!member@{member}}
+\subsubsection[{has\-\_\-sons}]{\setlength{\rightskip}{0pt plus 5cm}member\-::has\-\_\-sons (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classmember_a024f7356f2279490775b6ae432d51010}
+This function is used to check if the user has children This function also return the number of children of the user   \$db The instance of the  class \begin{DoxyReturn}{Returns}
+integer 
+\end{DoxyReturn}
+
+
+Definition at line 89 of file member.\-php.
+
+
+\begin{DoxyCode}
+89                         \{
+90         global $db;
+91         $query = $db->query(\textcolor{stringliteral}{"select count(*) as nosons from member where sonof=$this->id"});
+92         $row = $db->fetch($query);
+93         \textcolor{keywordflow}{return} $row[\textcolor{stringliteral}{'nosons'}];
+94     \}
+\end{DoxyCode}
+\hypertarget{classmember_a2af2011afe5c6ee0404e2f45b93daf11}{\index{member@{member}!is\-Admin@{is\-Admin}}
+\index{is\-Admin@{is\-Admin}!member@{member}}
+\subsubsection[{is\-Admin}]{\setlength{\rightskip}{0pt plus 5cm}member\-::is\-Admin (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classmember_a2af2011afe5c6ee0404e2f45b93daf11}
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 231 of file member.\-php.
+
+
+\begin{DoxyCode}
+231                        \{
+232         \textcolor{keywordflow}{return} $this->data[\textcolor{stringliteral}{'admin'}];
+233     \}
+\end{DoxyCode}
+\hypertarget{classmember_af93337d3c08cad93fa43b5f30c0215b0}{\index{member@{member}!isfemale@{isfemale}}
+\index{isfemale@{isfemale}!member@{member}}
+\subsubsection[{isfemale}]{\setlength{\rightskip}{0pt plus 5cm}member\-::isfemale (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classmember_af93337d3c08cad93fa43b5f30c0215b0}
+Returns true if the user is female \begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 39 of file member.\-php.
+
+
+\begin{DoxyCode}
+39                         \{
+40         \textcolor{keywordflow}{if} ($this->data[\textcolor{stringliteral}{'gender'}] == FEMALE) \{
+41             \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+42         \} \textcolor{keywordflow}{else} \{
+43             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+44         \}
+45     \}
+\end{DoxyCode}
+\hypertarget{classmember_a364bea0f1ea59b67e68293ae5da9f413}{\index{member@{member}!ismale@{ismale}}
+\index{ismale@{ismale}!member@{member}}
+\subsubsection[{ismale}]{\setlength{\rightskip}{0pt plus 5cm}member\-::ismale (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classmember_a364bea0f1ea59b67e68293ae5da9f413}
+Return true if the user is male \begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 27 of file member.\-php.
+
+
+\begin{DoxyCode}
+27                       \{
+28         \textcolor{keywordflow}{if} ($this->data[\textcolor{stringliteral}{'gender'}] == MALE) \{
+29             \textcolor{keywordflow}{return} TRUE;
+30         \} \textcolor{keywordflow}{else} \{
+31             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+32         \}
+33     \}
+\end{DoxyCode}
+\hypertarget{classmember_a541afd2c1c096f5810c0b889e33287ba}{\index{member@{member}!related\-\_\-to@{related\-\_\-to}}
+\index{related\-\_\-to@{related\-\_\-to}!member@{member}}
+\subsubsection[{related\-\_\-to}]{\setlength{\rightskip}{0pt plus 5cm}member\-::related\-\_\-to (
+\begin{DoxyParamCaption}
+\item[{}]{\$related\-\_\-to}
+\end{DoxyParamCaption}
+)}}\label{classmember_a541afd2c1c096f5810c0b889e33287ba}
+This function is add wife of the member. Returns true if successful else false. The member to be added as wife should already be created   \$db The instance of the db class 
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$related\-\_\-to} & The I\-D of the member to be added as wife \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 169 of file member.\-php.
+
+
+\begin{DoxyCode}
+169                                      \{
+170         global $db;
+171         \textcolor{keywordflow}{if} ($db->query(\textcolor{stringliteral}{"update member set related\_to=$related\_to where id="} . $this->data[\textcolor{stringliteral}{'id'}])) \{
+172             $this->\hyperlink{classmember_ae0f93137fb23a9f5ae9e6a287f6232dd}{set\_relationship}(MARRIED);
+173 
+174             \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+175         \} \textcolor{keywordflow}{else} \{
+176             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+177         \}
+178     \}
+\end{DoxyCode}
+\hypertarget{classmember_aa4b22929c0f9688d36c4528b467013d0}{\index{member@{member}!set@{set}}
+\index{set@{set}!member@{member}}
+\subsubsection[{set}]{\setlength{\rightskip}{0pt plus 5cm}member\-::set (
+\begin{DoxyParamCaption}
+\item[{}]{\$property\-Name, }
+\item[{}]{\$value}
+\end{DoxyParamCaption}
+)}}\label{classmember_aa4b22929c0f9688d36c4528b467013d0}
+\$db 
+\begin{DoxyParams}[1]{Parameters}
+type & {\em \$property\-Name} & \\
+\hline
+type & {\em \$value} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+type 
+\end{DoxyReturn}
+
+
+Definition at line 207 of file member.\-php.
+
+
+\begin{DoxyCode}
+207                                         \{
+208         global $db;
+209 
+210         $query = $db->query(\textcolor{stringliteral}{"update member set $propertyName = '$value' where id = "} . $this->\textcolor{keywordtype}{id});
+211 
+212         \textcolor{keywordflow}{return} $query;
+213     \}
+\end{DoxyCode}
+\hypertarget{classmember_ae0f93137fb23a9f5ae9e6a287f6232dd}{\index{member@{member}!set\-\_\-relationship@{set\-\_\-relationship}}
+\index{set\-\_\-relationship@{set\-\_\-relationship}!member@{member}}
+\subsubsection[{set\-\_\-relationship}]{\setlength{\rightskip}{0pt plus 5cm}member\-::set\-\_\-relationship (
+\begin{DoxyParamCaption}
+\item[{}]{\$relationship\-\_\-id}
+\end{DoxyParamCaption}
+)}}\label{classmember_ae0f93137fb23a9f5ae9e6a287f6232dd}
+This function is used to set the relationship status of the current user Returns true if successfull else false   \$db The instance of the  class 
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$relationship\-\_\-id} & The relationship I\-D. See Below. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean
+\end{DoxyReturn}
+Relationship I\-D 0 == Single 1 == Married 
+
+Definition at line 153 of file member.\-php.
+
+
+\begin{DoxyCode}
+153                                                 \{
+154         global $db;
+155         \textcolor{keywordflow}{if} (!$db->query(\textcolor{stringliteral}{"update member set relationship\_status=$relationship\_id where id=$this->id"})) \{
+156             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+157         \} \textcolor{keywordflow}{else} \{
+158             \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+159         \}
+160     \}
+\end{DoxyCode}
+\hypertarget{classmember_ac330497056943c44df23963f6a4d1288}{\index{member@{member}!spouse@{spouse}}
+\index{spouse@{spouse}!member@{member}}
+\subsubsection[{spouse}]{\setlength{\rightskip}{0pt plus 5cm}member\-::spouse (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classmember_ac330497056943c44df23963f6a4d1288}
+\begin{DoxyReturn}{Returns}
+boolean$\vert$ 
+\end{DoxyReturn}
+
+
+Definition at line 219 of file member.\-php.
+
+
+\begin{DoxyCode}
+219                       \{
+220         \textcolor{keywordflow}{if} ($this->data[\textcolor{stringliteral}{'relationship\_status'}] == MARRIED) \{
+221             \textcolor{keywordflow}{return} \textcolor{keyword}{new} \hyperlink{classmember}{member}($this->data[\textcolor{stringliteral}{'related\_to'}]);
+222         \} \textcolor{keywordflow}{else} \{
+223             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+224         \}
+225     \}
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+vanshavali/member.\-php\end{DoxyCompactItemize}

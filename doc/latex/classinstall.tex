@@ -8,6 +8,8 @@
 \item 
 \hyperlink{classinstall_a4e720dd6e62b63da8033cecf60d5eaed}{check\-\_\-directory\-\_\-permission} (\$mode, \$sub)
 \item 
+\hyperlink{classinstall_a5c80f436b583ec38915827619d1e0fa1}{setup\-Admin} (\$mode, \$sub)
+\item 
 \hyperlink{classinstall_a27e554353c8f7b9eef9bc401f11765cf}{ask\-\_\-database\-\_\-name} (\$mode, \$sub)
 \end{DoxyCompactItemize}
 \subsection*{Private Member Functions}
@@ -47,77 +49,79 @@ null
 \end{DoxyReturn}
 
 
-Definition at line 118 of file install.\-php.
+Definition at line 156 of file install.\-php.
 
 
 \begin{DoxyCode}
-                                            \{
-        global $template, $db;
-        $sub = ($sub == null) ? 1 : $sub;
-        \textcolor{keywordflow}{if} ($sub == 1) \{
-            $template->header();
-            $template->display(\textcolor{stringliteral}{"install.ask\_database\_details.tpl"});
-        \} elseif ($sub == 2) \{
-            $host = $\_POST[\textcolor{stringliteral}{'database\_host'}];
-            $username = $\_POST[\textcolor{stringliteral}{'database\_username'}];
-            $password = $\_POST[\textcolor{stringliteral}{'database\_password'}];
-            $database = $\_POST[\textcolor{stringliteral}{'database\_name'}];
-
-            \textcolor{keywordflow}{if} (empty($host) || empty($username) || empty($password) || empty(
-      $database)) \{
-                $template->header();
-                $template->assign(array(\textcolor{stringliteral}{"error"} => 1,
-                    \textcolor{stringliteral}{"message"} => \textcolor{stringliteral}{"Form not completed. Please complete the form"}
-      ));
-                $template->display(\textcolor{stringliteral}{"install.ask\_database\_details.tpl"});
-                \textcolor{keywordflow}{return};
-            \}
-
-            \textcolor{comment}{//Connect to database}
-            $db->connect($host, $username, $password);
-
-            \textcolor{comment}{//Create Database}
-            $db->query(\textcolor{stringliteral}{"CREATE DATABASE if not exists $database"});
-
-            \textcolor{comment}{//Select The given database}
-            $db->select\_db($database);
-
-            \textcolor{comment}{//Setup basic database}
-            $this->\hyperlink{classinstall_a8b2e00c7cc9a5031e9c98b4b6aa2c035}{setup\_database}();
-
-            \textcolor{comment}{//Now create the config.php file save it}
-            $file = fopen(\textcolor{stringliteral}{"config.php"}, \textcolor{stringliteral}{"w+"});
-            \textcolor{keywordflow}{if} (!$file) \{
-                trigger\_error(\textcolor{stringliteral}{"Error opening or creating config.php file"}, 
-      E\_USER\_ERROR);
-            \}
-
-            $data = \textcolor{stringliteral}{"<?php\(\backslash\)n\(\backslash\)$config['host']='$host';}
-\textcolor{stringliteral}{                    \(\backslash\)n\(\backslash\)$config['username']='$username';}
-\textcolor{stringliteral}{                    \(\backslash\)n\(\backslash\)$config['password']='$password';}
-\textcolor{stringliteral}{                    \(\backslash\)n\(\backslash\)$config['database']='$database';}
-\textcolor{stringliteral}{                    \(\backslash\)n?>"};
-
-            $wr = fwrite($file, $data);
-            fclose($file);
-
-            \textcolor{comment}{//Set file permission to 0644, Never leave this 0}
-            \textcolor{keywordflow}{if} (!chmod(\textcolor{stringliteral}{"config.php"}, 0644)) \{
-                \textcolor{comment}{//Read and write for the owner and read for everyone else}
-                trigger\_error(\textcolor{stringliteral}{"Cannot set config.php permissions"}, E\_USER\_ERROR
-      );
-
-                \textcolor{comment}{//Check if permissions have been successfull applied or not}
-                \textcolor{keywordflow}{if} (!is\_readable(\textcolor{stringliteral}{"config.php"})) \{
-                    trigger\_error(\textcolor{stringliteral}{"Wrong config.php permissions. Please give
-       config.php file 644 permission. <br> Use the Following command<br>$ chmod 644
-       config.php"}, E\_USER\_ERROR);
-                \}
-            \}
-
-            $template->display(\textcolor{stringliteral}{"database\_success.tpl"});
-        \}
-    \}
+156                                             \{
+157         global $template, $db;
+158         $sub = ($sub == null) ? 1 : $sub;
+159         \textcolor{keywordflow}{if} ($sub == 1) \{
+160             $template->header();
+161             $template->display(\textcolor{stringliteral}{"install.ask\_database\_details.tpl"});
+162         \} elseif ($sub == 2) \{
+163             $host = $\_POST[\textcolor{stringliteral}{'database\_host'}];
+164             $username = $\_POST[\textcolor{stringliteral}{'database\_username'}];
+165             $password = $\_POST[\textcolor{stringliteral}{'database\_password'}];
+166             $database = $\_POST[\textcolor{stringliteral}{'database\_name'}];
+167             $adminEmail = $\_POST[\textcolor{stringliteral}{'admin\_email'}];
+168 
+169             \textcolor{keywordflow}{if} (empty($host) ||
+170                     empty($username) ||
+171                     empty($password) ||
+172                     empty($database) ||
+173                     empty($adminEmail)) \{
+174 
+175                 $template->header();
+176                 $template->assign(array(\textcolor{stringliteral}{"error"} => 1,
+177                     \textcolor{stringliteral}{"message"} => \textcolor{stringliteral}{"Form not completed. Please complete the form"}));
+178                 $template->display(\textcolor{stringliteral}{"install.ask\_database\_details.tpl"});
+179                 \textcolor{keywordflow}{return};
+180             \}
+181 
+182             \textcolor{comment}{//Connect to database}
+183             $db->connect($host, $username, $password);
+184 
+185             \textcolor{comment}{//Create Database}
+186             $db->query(\textcolor{stringliteral}{"CREATE DATABASE if not exists $database"});
+187 
+188             \textcolor{comment}{//Select The given database}
+189             $db->select\_db($database);
+190 
+191             \textcolor{comment}{//Setup basic database}
+192             $this->\hyperlink{classinstall_a8b2e00c7cc9a5031e9c98b4b6aa2c035}{setup\_database}();
+193 
+194             \textcolor{comment}{//Now create the config.php file save it}
+195             $file = fopen(\textcolor{stringliteral}{"config.php"}, \textcolor{stringliteral}{"w+"});
+196             \textcolor{keywordflow}{if} (!$file) \{
+197                 trigger\_error(\textcolor{stringliteral}{"Error opening or creating config.php file"}, E\_USER\_ERROR);
+198             \}
+199 
+200             $data = \textcolor{stringliteral}{"<?php\(\backslash\)n\(\backslash\)$config['host']='$host';}
+201 \textcolor{stringliteral}{                    \(\backslash\)n\(\backslash\)$config['username']='$username';}
+202 \textcolor{stringliteral}{                    \(\backslash\)n\(\backslash\)$config['password']='$password';}
+203 \textcolor{stringliteral}{                    \(\backslash\)n\(\backslash\)$config['database']='$database';}
+204 \textcolor{stringliteral}{                    \(\backslash\)n\(\backslash\)$config['admin\_email']='$adminEmail';    }
+205 \textcolor{stringliteral}{                    \(\backslash\)n?>"};
+206 
+207             $wr = fwrite($file, $data);
+208             fclose($file);
+209 
+210             \textcolor{comment}{//Set file permission to 0644, Never leave this 0}
+211             \textcolor{keywordflow}{if} (!chmod(\textcolor{stringliteral}{"config.php"}, 0644)) \{
+212                 \textcolor{comment}{//Read and write for the owner and read for everyone else}
+213                 trigger\_error(\textcolor{stringliteral}{"Cannot set config.php permissions"}, E\_USER\_ERROR);
+214 
+215                 \textcolor{comment}{//Check if permissions have been successfull applied or not}
+216                 \textcolor{keywordflow}{if} (!is\_readable(\textcolor{stringliteral}{"config.php"})) \{
+217                     trigger\_error(\textcolor{stringliteral}{"Wrong config.php permissions. Please give config.php file 644
+       permission. <br> Use the Following command<br>$ chmod 644 config.php"}, E\_USER\_ERROR);
+218                 \}
+219             \}
+220 
+221             $template->display(\textcolor{stringliteral}{"database\_success.tpl"});
+222         \}
+223     \}
 \end{DoxyCode}
 \hypertarget{classinstall_a4e720dd6e62b63da8033cecf60d5eaed}{\index{install@{install}!check\-\_\-directory\-\_\-permission@{check\-\_\-directory\-\_\-permission}}
 \index{check\-\_\-directory\-\_\-permission@{check\-\_\-directory\-\_\-permission}!install@{install}}
@@ -136,73 +140,70 @@ integer & {\em \$sub} & \\
 \end{DoxyParams}
 
 
-Definition at line 52 of file install.\-php.
+Definition at line 55 of file install.\-php.
 
 
 \begin{DoxyCode}
-                                                     \{
-        global $template;
-        $cache = \textcolor{keyword}{false};
-        $compile = \textcolor{keyword}{false};
-        $main = \textcolor{keyword}{false};
-
-        \textcolor{comment}{//Check if directories are writable}
-        \textcolor{comment}{//Template Cache directory}
-        \textcolor{keywordflow}{if} (dir\_iswritable(\textcolor{stringliteral}{"template/cache"})) \{
-            $cache = TRUE;
-            $template->assign(\textcolor{stringliteral}{"cache"}, \textcolor{keyword}{true});
-        \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!file\_exists(\textcolor{stringliteral}{"template/cache"})) \{
-            \textcolor{comment}{//try making the directory if possible}
-            @mkdir(\textcolor{stringliteral}{"template/cache"}, 0755);
-        \}
-
-        \textcolor{comment}{//Template compile directory}
-        \textcolor{keywordflow}{if} (dir\_iswritable(\textcolor{stringliteral}{"template/compile"})) \{
-            $compile = \textcolor{keyword}{true};
-            $template->assign(\textcolor{stringliteral}{"compile"}, \textcolor{keyword}{true});
-        \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!file\_exists(\textcolor{stringliteral}{"template/compile"})) \{
-            \textcolor{comment}{//Trying to make the directory myself here}
-            @mkdir(\textcolor{stringliteral}{"template/cache"}, 0755);
-        \}
-
-        \textcolor{comment}{//Family Tree main directory}
-        $template->assign(\textcolor{stringliteral}{"dir"}, \textcolor{stringliteral}{"config.php"});
-        \textcolor{keywordflow}{if} (dir\_iswritable(\textcolor{stringliteral}{"."})) \{
-            $main = \textcolor{keyword}{true};
-            $template->assign(\textcolor{stringliteral}{"main"}, TRUE);
-        \}
-
-        \textcolor{keywordflow}{if} ($cache && $compile && $main) \{
-            header(\textcolor{stringliteral}{"Location: index.php?mode=ask\_database\_name"});
-        \}
-
-        \textcolor{comment}{//Apparently we cannot use template as we have not write permission in
-       compile directory}
-        \textcolor{comment}{//So read the tpl file and output it as it is.}
-        \textcolor{comment}{// We are using @ just in case we don't have permission to read}
-        $output = file\_get\_contents(\textcolor{stringliteral}{"html/install.directory\_check.tpl"});
-
-        \textcolor{keywordflow}{if} ($output === \textcolor{keyword}{false}) \{
-            \textcolor{comment}{//We also cannot read that file so just print a simple plain
-       message}
-            echo \textcolor{stringliteral}{"Please give permission to the root folder i.e. ./FamilyTree
-       <br /> The template cache folder (template/cache) <br /> The template compile
-       folder (template/compile) and refresh this page"};
-            \textcolor{keywordflow}{return} \textcolor{keyword}{false};
-        \}
-
-        echo $output;
-
-        \textcolor{keywordflow}{if} (!$cache) \{
-            echo \textcolor{stringliteral}{"<h4>Cannot write in template/cache folder</h4><br>"};
-        \}
-        \textcolor{keywordflow}{if} (!$compile) \{
-            echo \textcolor{stringliteral}{"<h4>Cannot write in template/compile folder</h4><br>"};
-        \}
-        \textcolor{keywordflow}{if} (!$main) \{
-            echo \textcolor{stringliteral}{"<h4>Cannot write in FamilyTree's Directory</h4><br>"};
-        \}
-    \}
+55                                                      \{
+56         global $template;
+57         $cache = \textcolor{keyword}{false};
+58         $compile = \textcolor{keyword}{false};
+59         $main = \textcolor{keyword}{false};
+60 
+61         \textcolor{comment}{//Check if directories are writable}
+62         \textcolor{comment}{//Template Cache directory}
+63         \textcolor{keywordflow}{if} (dir\_iswritable(\textcolor{stringliteral}{"template/cache"})) \{
+64             $cache = TRUE;
+65             $template->assign(\textcolor{stringliteral}{"cache"}, \textcolor{keyword}{true});
+66         \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!file\_exists(\textcolor{stringliteral}{"template/cache"})) \{
+67             \textcolor{comment}{//try making the directory if possible}
+68             @mkdir(\textcolor{stringliteral}{"template/cache"}, 0755);
+69         \}
+70 
+71         \textcolor{comment}{//Template compile directory}
+72         \textcolor{keywordflow}{if} (dir\_iswritable(\textcolor{stringliteral}{"template/compile"})) \{
+73             $compile = \textcolor{keyword}{true};
+74             $template->assign(\textcolor{stringliteral}{"compile"}, \textcolor{keyword}{true});
+75         \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!file\_exists(\textcolor{stringliteral}{"template/compile"})) \{
+76             \textcolor{comment}{//Trying to make the directory myself here}
+77             @mkdir(\textcolor{stringliteral}{"template/cache"}, 0755);
+78         \}
+79 
+80         \textcolor{comment}{//Family Tree main directory}
+81         $template->assign(\textcolor{stringliteral}{"dir"}, \textcolor{stringliteral}{"config.php"});
+82         \textcolor{keywordflow}{if} (dir\_iswritable(\textcolor{stringliteral}{"."})) \{
+83             $main = \textcolor{keyword}{true};
+84             $template->assign(\textcolor{stringliteral}{"main"}, TRUE);
+85         \}
+86 
+87         \textcolor{keywordflow}{if} ($cache && $compile && $main) \{
+88             header(\textcolor{stringliteral}{"Location: index.php?mode=ask\_database\_name"});
+89         \}
+90 
+91         \textcolor{comment}{//Apparently we cannot use template as we have not write permission in compile directory}
+92         \textcolor{comment}{//So read the tpl file and output it as it is.}
+93         \textcolor{comment}{// We are using @ just in case we don't have permission to read}
+94         $output = file\_get\_contents(\textcolor{stringliteral}{"html/install.directory\_check.tpl"});
+95 
+96         \textcolor{keywordflow}{if} ($output === \textcolor{keyword}{false}) \{
+97             \textcolor{comment}{//We also cannot read that file so just print a simple plain message}
+98             echo \textcolor{stringliteral}{"Please give permission to the root folder i.e. ./FamilyTree <br /> The template cache
+       folder (template/cache) <br /> The template compile folder (template/compile) and refresh this page"};
+99             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+100         \}
+101 
+102         echo $output;
+103 
+104         \textcolor{keywordflow}{if} (!$cache) \{
+105             echo \textcolor{stringliteral}{"<h4>Cannot write in template/cache folder</h4><br>"};
+106         \}
+107         \textcolor{keywordflow}{if} (!$compile) \{
+108             echo \textcolor{stringliteral}{"<h4>Cannot write in template/compile folder</h4><br>"};
+109         \}
+110         \textcolor{keywordflow}{if} (!$main) \{
+111             echo \textcolor{stringliteral}{"<h4>Cannot write in FamilyTree's Directory</h4><br>"};
+112         \}
+113     \}
 \end{DoxyCode}
 \hypertarget{classinstall_a6a8bcb2f7b567c588f4a474d46804440}{\index{install@{install}!install@{install}}
 \index{install@{install}!install@{install}}
@@ -220,32 +221,33 @@ Definition at line 19 of file install.\-php.
 
 
 \begin{DoxyCode}
-                       \{
-        global $mode, $sub;
-        \textcolor{comment}{//make sure to run this only if database is not installed}
-        \textcolor{comment}{//So check if database is installed}
-        \textcolor{keywordflow}{if} (!empty($config) and file\_exists(\textcolor{stringliteral}{"../config.php"})) \{
-            \textcolor{comment}{//its installed! Return to index.php}
-            header(\textcolor{stringliteral}{"Location:../index.php"});
-        \}
-
-        \textcolor{comment}{//Reached here huh? Installtion will begin now}
-        \textcolor{comment}{//Check mode and perform actions}
-        \textcolor{keywordflow}{switch} ($mode) \{
-            \textcolor{comment}{//All the other option will be above ask\_database\_name as it is
-       also the default}
-
-
-            \textcolor{keywordflow}{case} \textcolor{stringliteral}{"ask\_database\_name"}:
-                $this->\hyperlink{classinstall_a27e554353c8f7b9eef9bc401f11765cf}{ask\_database\_name}($mode, $sub);
-                \textcolor{keywordflow}{break};
-            \textcolor{keywordflow}{case} \textcolor{stringliteral}{"check\_directory\_permission"}:
-            \textcolor{keywordflow}{default} :
-                $this->\hyperlink{classinstall_a4e720dd6e62b63da8033cecf60d5eaed}{check\_directory\_permission}(
-      $mode, $sub);
-                \textcolor{keywordflow}{break};
-        \}
-    \}
+19                        \{
+20         global $mode, $sub;
+21         \textcolor{comment}{//make sure to run this only if database is not installed}
+22         \textcolor{comment}{//So check if database is installed}
+23         \textcolor{keywordflow}{if} (!empty($config) and file\_exists(\textcolor{stringliteral}{"../config.php"})) \{
+24             \textcolor{comment}{//its installed! Return to index.php}
+25             header(\textcolor{stringliteral}{"Location:../index.php"});
+26         \}
+27 
+28         \textcolor{comment}{//Reached here huh? Installtion will begin now}
+29         \textcolor{comment}{//Check mode and perform actions}
+30         \textcolor{keywordflow}{switch} ($mode) \{
+31             \textcolor{comment}{//All the other option will be above ask\_database\_name as it is also the default}
+32 
+33 
+34             \textcolor{keywordflow}{case} \textcolor{stringliteral}{"ask\_database\_name"}:
+35                 $this->\hyperlink{classinstall_a27e554353c8f7b9eef9bc401f11765cf}{ask\_database\_name}($mode, $sub);
+36                 \textcolor{keywordflow}{break};
+37             \textcolor{keywordflow}{case} \textcolor{stringliteral}{"setupAdmin"}:
+38                 $this->\hyperlink{classinstall_a5c80f436b583ec38915827619d1e0fa1}{setupAdmin}($mode, $sub);
+39                 \textcolor{keywordflow}{break};
+40             \textcolor{keywordflow}{case} \textcolor{stringliteral}{"check\_directory\_permission"}:
+41             \textcolor{keywordflow}{default} :
+42                 $this->\hyperlink{classinstall_a4e720dd6e62b63da8033cecf60d5eaed}{check\_directory\_permission}($mode, $sub);
+43                 \textcolor{keywordflow}{break};
+44         \}
+45     \}
 \end{DoxyCode}
 \hypertarget{classinstall_a7d4d4748cd5c10e21c951a75e5a55f10}{\index{install@{install}!install\-Tables@{install\-Tables}}
 \index{install\-Tables@{install\-Tables}!install@{install}}
@@ -259,92 +261,91 @@ boolean
 \end{DoxyReturn}
 
 
-Definition at line 199 of file install.\-php.
+Definition at line 244 of file install.\-php.
 
 
 \begin{DoxyCode}
-                                     \{
-        global $db;
-        $family = $db->query(\textcolor{stringliteral}{"Create table family (}
-\textcolor{stringliteral}{            id int(11) not null primary key auto\_increment,}
-\textcolor{stringliteral}{            family\_name mediumtext not null,}
-\textcolor{stringliteral}{            ts int(11) not null )"});
-
-
-        $member = $db->query(\textcolor{stringliteral}{"create table member (}
-\textcolor{stringliteral}{            id int(11) null primary key auto\_increment,}
-\textcolor{stringliteral}{            membername mediumtext not null,}
-\textcolor{stringliteral}{            username mediumtext default null,}
-\textcolor{stringliteral}{            password mediumtext default null,}
-\textcolor{stringliteral}{            sonof int(11) null default null,}
-\textcolor{stringliteral}{            profilepic varchar(255) default 'common.png',}
-\textcolor{stringliteral}{            dob int(11) default null,}
-\textcolor{stringliteral}{            gender int(1) default 0,}
-\textcolor{stringliteral}{            relationship\_status int(11) default 0,}
-\textcolor{stringliteral}{            gaon mediumtext default null,}
-\textcolor{stringliteral}{            related\_to int(11) null default null,}
-\textcolor{stringliteral}{            emailid text default null,}
-\textcolor{stringliteral}{            alive int(1) default 0,}
-\textcolor{stringliteral}{            aboutme longtext default null,}
-\textcolor{stringliteral}{            lastlogin int(11) default null,}
-\textcolor{stringliteral}{            joined int(11) default null,}
-\textcolor{stringliteral}{            approved int(1) default 0,}
-\textcolor{stringliteral}{            tokenforact text default null,}
-\textcolor{stringliteral}{            dontshow int(1) default 0,}
-\textcolor{stringliteral}{            family\_id int(11) default 1,}
-\textcolor{stringliteral}{            foreign key (family\_id) references family(id),}
-\textcolor{stringliteral}{            foreign key (related\_to) references member(id) );"});
-
-        $feedback = $db->query(\textcolor{stringliteral}{"create table feedback (}
-\textcolor{stringliteral}{            id int(11) not null primary key auto\_increment,}
-\textcolor{stringliteral}{            user\_name text not null,}
-\textcolor{stringliteral}{            user\_emailid text not null,}
-\textcolor{stringliteral}{            feedback\_text text not null,}
-\textcolor{stringliteral}{            seen int(1) default 0 );"});
-
-        $joinrequest = $db->query(\textcolor{stringliteral}{"create table joinrequest (}
-\textcolor{stringliteral}{            id int(11) not null primary key auto\_increment,}
-\textcolor{stringliteral}{            formember int(11) not null,}
-\textcolor{stringliteral}{            pic text default null,}
-\textcolor{stringliteral}{            personalmessage text default null,}
-\textcolor{stringliteral}{            emailid text not null,}
-\textcolor{stringliteral}{            tokenforact varchar(20) default null,}
-\textcolor{stringliteral}{            approved int(1) default 0,}
-\textcolor{stringliteral}{            foreign key(formember) references member(id) );"});
-
-        $suggested\_info = $db->query(\textcolor{stringliteral}{"create table suggested\_info (}
-\textcolor{stringliteral}{            id int(11) not null primary key auto\_increment,}
-\textcolor{stringliteral}{            typesuggest mediumtext not null,}
-\textcolor{stringliteral}{            new\_value text default null,}
-\textcolor{stringliteral}{            old\_value text default null,}
-\textcolor{stringliteral}{            suggested\_by int(11) not null,}
-\textcolor{stringliteral}{            suggested\_to int(11) not null,}
-\textcolor{stringliteral}{            ts int(11) not null,}
-\textcolor{stringliteral}{            approved int(1) default 0,}
-\textcolor{stringliteral}{            foreign key(from) references member(id),}
-\textcolor{stringliteral}{            foreign key(to) references member(id) );"});
-
-        $suggest\_approved = $db->query(\textcolor{stringliteral}{"create table suggest\_approved (}
-\textcolor{stringliteral}{            id int(11) not null primary key auto\_increment,}
-\textcolor{stringliteral}{            suggest\_id int(11) not null,}
-\textcolor{stringliteral}{            user\_id int(11) not null,}
-\textcolor{stringliteral}{            action int(2) not null,}
-\textcolor{stringliteral}{            foreign key (suggest\_id) references suggested\_info(id),}
-\textcolor{stringliteral}{            foreign key (user\_id) references member(id) );"});
-
-        $dasfamily = $db->query(\textcolor{stringliteral}{"insert into family (family\_name,ts)
-       values('Das Family',"} . time() . \textcolor{stringliteral}{");"});
-
-
-        \textcolor{comment}{//Now the data that we already have}
-        $memberdata = file\_get\_contents(\textcolor{stringliteral}{"member\_data.sql"});
-
-        $memberdata\_sql = $db->query($memberdata);
-
-        \textcolor{keywordflow}{return} $member && $feedback && $joinrequest && $suggested\_info
-                && $suggest\_approved && $memberdata\_sql && $family && 
-      $dasfamily;
-    \}
+244                                      \{
+245         global $db;
+246         $family = $db->query(\textcolor{stringliteral}{"Create table if not exists family (}
+247 \textcolor{stringliteral}{            id int(11) primary key auto\_increment,}
+248 \textcolor{stringliteral}{            family\_name mediumtext not null,}
+249 \textcolor{stringliteral}{            ts int(11) not null )"});
+250 
+251 
+252         $member = $db->query(\textcolor{stringliteral}{"create table if not exists member (}
+253 \textcolor{stringliteral}{            id int(11) null primary key auto\_increment,}
+254 \textcolor{stringliteral}{            membername mediumtext not null,}
+255 \textcolor{stringliteral}{            username mediumtext default null,}
+256 \textcolor{stringliteral}{            password mediumtext default null,}
+257 \textcolor{stringliteral}{            sonof int(11) null default null,}
+258 \textcolor{stringliteral}{            profilepic varchar(255) default 'common.png',}
+259 \textcolor{stringliteral}{            dob int(11) default null,}
+260 \textcolor{stringliteral}{            gender int(1) default 0,}
+261 \textcolor{stringliteral}{            relationship\_status int(11) default 0,}
+262 \textcolor{stringliteral}{            gaon mediumtext default null,}
+263 \textcolor{stringliteral}{            related\_to int(11) null default null,}
+264 \textcolor{stringliteral}{            emailid varchar(256) default null unique,}
+265 \textcolor{stringliteral}{            alive int(1) default 0,}
+266 \textcolor{stringliteral}{            aboutme longtext default null,}
+267 \textcolor{stringliteral}{            lastlogin int(11) default null,}
+268 \textcolor{stringliteral}{            joined int(11) default null,}
+269 \textcolor{stringliteral}{            approved int(1) default 0,}
+270 \textcolor{stringliteral}{            tokenforact text default null,}
+271 \textcolor{stringliteral}{            dontshow int(1) default 0,}
+272 \textcolor{stringliteral}{            family\_id int(11) null default null,}
+273 \textcolor{stringliteral}{            foreign key (family\_id) references family(id),}
+274 \textcolor{stringliteral}{            foreign key (related\_to) references member(id),}
+275 \textcolor{stringliteral}{            admin int(1) default 0 )"});
+276 
+277         $feedback = $db->query(\textcolor{stringliteral}{"create table if not exists feedback (}
+278 \textcolor{stringliteral}{            id int(11) not null primary key auto\_increment,}
+279 \textcolor{stringliteral}{            user\_name text not null,}
+280 \textcolor{stringliteral}{            user\_emailid text not null,}
+281 \textcolor{stringliteral}{            feedback\_text text not null,}
+282 \textcolor{stringliteral}{            seen int(1) default 0 );"});
+283 
+284         $joinrequest = $db->query(\textcolor{stringliteral}{"create table if not exists joinrequest (}
+285 \textcolor{stringliteral}{            id int(11) not null primary key auto\_increment,}
+286 \textcolor{stringliteral}{            formember int(11) not null,}
+287 \textcolor{stringliteral}{            pic text default null,}
+288 \textcolor{stringliteral}{            personalmessage text default null,}
+289 \textcolor{stringliteral}{            emailid text not null,}
+290 \textcolor{stringliteral}{            tokenforact varchar(20) default null,}
+291 \textcolor{stringliteral}{            approved int(1) default 0,}
+292 \textcolor{stringliteral}{            foreign key(formember) references member(id) );"});
+293 
+294         $suggested\_info = $db->query(\textcolor{stringliteral}{"create table if not exists suggested\_info (}
+295 \textcolor{stringliteral}{            id int(11) not null primary key auto\_increment,}
+296 \textcolor{stringliteral}{            typesuggest mediumtext not null,}
+297 \textcolor{stringliteral}{            new\_value text default null,}
+298 \textcolor{stringliteral}{            old\_value text default null,}
+299 \textcolor{stringliteral}{            suggested\_by int(11) not null,}
+300 \textcolor{stringliteral}{            suggested\_to int(11) not null,}
+301 \textcolor{stringliteral}{            ts int(11) not null,}
+302 \textcolor{stringliteral}{            approved int(1) default 0,}
+303 \textcolor{stringliteral}{            foreign key(suggested\_by) references member(id),}
+304 \textcolor{stringliteral}{            foreign key(suggested\_to) references member(id) );"});
+305 
+306         $suggest\_approved = $db->query(\textcolor{stringliteral}{"create table if not exists suggest\_approved (}
+307 \textcolor{stringliteral}{            id int(11) not null primary key auto\_increment,}
+308 \textcolor{stringliteral}{            suggest\_id int(11) not null,}
+309 \textcolor{stringliteral}{            user\_id int(11) not null,}
+310 \textcolor{stringliteral}{            action int(2) not null,}
+311 \textcolor{stringliteral}{            foreign key (suggest\_id) references suggested\_info(id),}
+312 \textcolor{stringliteral}{            foreign key (user\_id) references member(id) );"});
+313 
+314         \textcolor{comment}{//Commenting this out as we have ask user about the new family from now on.}
+315         \textcolor{comment}{//$dasfamily = $db->query("insert into family (family\_name,ts) values('Das Family'," . time() .
+       ");");}
+316         \textcolor{comment}{//Now the data that we already have}
+317         \textcolor{comment}{//Commenting this out, as we don't have any default family data from now on.}
+318         \textcolor{comment}{//$memberdata = file\_get\_contents("member\_data.sql");}
+319         \textcolor{comment}{//$memberdata\_sql = $db->query($memberdata);}
+320 
+321         \textcolor{keywordflow}{return} $member && $feedback && $joinrequest && $suggested\_info && $suggest\_approved \textcolor{comment}{/* &&
+       $memberdata\_sql */} && $family \textcolor{comment}{/* && $dasfamily */};
+322     \}
 \end{DoxyCode}
 \hypertarget{classinstall_a8b2e00c7cc9a5031e9c98b4b6aa2c035}{\index{install@{install}!setup\-\_\-database@{setup\-\_\-database}}
 \index{setup\-\_\-database@{setup\-\_\-database}!install@{install}}
@@ -355,18 +356,68 @@ Definition at line 199 of file install.\-php.
 )\hspace{0.3cm}{\ttfamily [private]}}}\label{classinstall_a8b2e00c7cc9a5031e9c98b4b6aa2c035}
 This is a private function used to setup the database   \$db 
 
-Definition at line 184 of file install.\-php.
+Definition at line 229 of file install.\-php.
 
 
 \begin{DoxyCode}
-                                      \{
-        global $db;
-        \textcolor{comment}{//Install the tables}
+229                                       \{
+230         global $db;
+231         \textcolor{comment}{//Install the tables}
+232 
+233         \textcolor{keywordflow}{if} (!$this->\hyperlink{classinstall_a7d4d4748cd5c10e21c951a75e5a55f10}{installTables}()) \{
+234             trigger\_error(\textcolor{stringliteral}{"Cannot create Tables"}, E\_USER\_ERROR);
+235         \}
+236     \}
+\end{DoxyCode}
+\hypertarget{classinstall_a5c80f436b583ec38915827619d1e0fa1}{\index{install@{install}!setup\-Admin@{setup\-Admin}}
+\index{setup\-Admin@{setup\-Admin}!install@{install}}
+\subsubsection[{setup\-Admin}]{\setlength{\rightskip}{0pt plus 5cm}install\-::setup\-Admin (
+\begin{DoxyParamCaption}
+\item[{}]{\$mode, }
+\item[{}]{\$sub}
+\end{DoxyParamCaption}
+)}}\label{classinstall_a5c80f436b583ec38915827619d1e0fa1}
+\$template   \$db 
+\begin{DoxyParams}[1]{Parameters}
+type & {\em \$mode} & \\
+\hline
+type & {\em \$sub} & \\
+\hline
+\end{DoxyParams}
 
-        \textcolor{keywordflow}{if} (!$this->\hyperlink{classinstall_a7d4d4748cd5c10e21c951a75e5a55f10}{installTables}()) \{
-            trigger\_error(\textcolor{stringliteral}{"Cannot create Tables"}, E\_USER\_ERROR);
-        \}
-    \}
+
+Definition at line 122 of file install.\-php.
+
+
+\begin{DoxyCode}
+122                                      \{
+123         global $template, $db, $vanshavali;
+124         $sub = ($sub == null) ? \textcolor{stringliteral}{"firstfamily"} : $sub;
+125 
+126         \textcolor{keywordflow}{if} ($sub == \textcolor{stringliteral}{"firstfamily"}) \{
+127             $template->header();
+128             $template->display(\textcolor{stringliteral}{"family.form.tpl"});
+129             $template->footer();
+130         \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} ($sub == \textcolor{stringliteral}{"firstfamilypost"}) \{
+131             \textcolor{comment}{//This just means that user has submitted the firstfamily form}
+132 
+133             $vanshavali->addfamily($\_POST[\textcolor{stringliteral}{'family\_name'}]) or trigger\_error(\textcolor{stringliteral}{"Unable to add family. Please
+       try again"});
+134 
+135             \textcolor{comment}{//We have added the first family. Lets proceed to add first member}
+136             header(\textcolor{stringliteral}{"Location: index.php?mode=setupAdmin&sub=firstmember"});
+137         \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} ($sub == \textcolor{stringliteral}{"firstmember"}) \{
+138             \textcolor{comment}{//This is where we find out that there is no member installed}
+139             \textcolor{comment}{//We need to first get the family that was just added for this member}
+140             $family = $db->get(\textcolor{stringliteral}{"select * from family limit 1"});
+141 
+142             $template->header();
+143             $template->assign(\textcolor{stringliteral}{"is\_admin"}, 1);
+144             $template->assign(\textcolor{stringliteral}{"familyid"}, $family[\textcolor{stringliteral}{'id'}]);
+145             $template->display(\textcolor{stringliteral}{"register.form.tpl"});
+146             $template->footer();
+147         \}
+148     \}
 \end{DoxyCode}
 
 
