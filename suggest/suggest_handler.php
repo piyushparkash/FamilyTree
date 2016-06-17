@@ -186,7 +186,7 @@ class suggest_handler {
                 $old_value = $query[$name]; // And we have the old value now lets add the suggest
                 //But first lets check if the old value and the new value are same
                 if ($old_value == $new_value) {
-                    return;
+                    return true;
                 }
                 if (!$db->query("insert into suggested_info (typesuggest, new_value, old_value, suggested_by, suggested_to, ts) values('$name', '$new_value', '$old_value', " . $user->user['id'] . ", $to, " . time() . ")")) {
                     $success = false;
