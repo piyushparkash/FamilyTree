@@ -27,10 +27,10 @@ class suggest extends member_operation_suggest {
         $this->suggestedby = $row['suggested_by'];
 
         //if typesuggest is remove then suggested value is in json else not
-        if ($row['typesuggest'] == "remove") {
-            $this->suggested_value = $row['suggested_value'];
+        if (in_array($row['typesuggest'], array(DEL, ADD))) {
+            $this->suggested_value = $row['new_value'];
         } else {
-            $this->suggested_value = json_decode($row['suggested_value'], true);
+            $this->suggested_value = json_decode($row['new_value'], true);
         }
     }
 
@@ -166,7 +166,7 @@ class suggest extends member_operation_suggest {
      * @return null
      */
     private function apply() {
-        global $vanshavali, $db;
+        global $vanshavali, $db, $suggest_handler;
 
         //Check if suggested_value was JSON or not
         if (is_array($this->suggested_value)) {
@@ -175,23 +175,25 @@ class suggest extends member_operation_suggest {
             $member = $vanshavali->getmember($this->suggested_value);
         }
 
+        //Get the sub type of suggest to be passed below
+        $struct = $suggest_handler->find_structure($this->typesuggest);
+
 
         //We have the member to be edited. Now apply the given operation
-        switch ($this->typesuggest) {
-            case "child":
+        switch ($struct->type) {
+            case ADD:
                 $member->add_son($this->suggested_value['name'], $this->suggested_value['gender']);
                 break;
-            case "remove":
+            case DEL:
                 $member->remove();
                 break;
-            case "edit":
+            case MODIFY:
                 $member->edit($this->suggested_value['name'], $this->suggested_value['gender'], $this->suggested_value['relationship'], $this->suggested_value['dob'], $this->suggested_value['alive']);
                 break;
         }
 
         //Now delete all the suggestion approvals as they are of no use
-        $this->approval_delete();
-
+        //$this->approval_delete();
         //Now mark the suggestion as applied So that it can be used in future
         $db->get("update suggested_info set approved=1 where id=$this->id");
     }
