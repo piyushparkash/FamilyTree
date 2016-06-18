@@ -24,6 +24,8 @@ require_once __DIR__  . '/user/user.php';
 require_once __DIR__  . '/vanshavali/vanshavali.php';
 require_once __DIR__  . '/functions.php';
 require_once __DIR__  . '/suggest/suggest_handler.php';
+
+
 $template = new template();
 $db = new db();
 $vanshavali = new vanshavali();
