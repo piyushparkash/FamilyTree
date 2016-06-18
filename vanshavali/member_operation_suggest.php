@@ -60,10 +60,10 @@ abstract class member_operation_suggest {
 
         //We need the removed members father name to show
         //firstly accquire the current member details
-        
+
         $current = $vanshavali->getmember($id);
         $father = $vanshavali->getmember($current->data['sonof']);
-        
+
         return $suggest_handler->add_suggest(DELMEMBER, $id, $father->data['membername']);
 
         /* Old method
@@ -94,8 +94,12 @@ abstract class member_operation_suggest {
     function edit_suggest($name, $gender, $relationship, $dob, $alive, $id) {
         global $db, $user, $suggest_handler;
 
-        preg_match("/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})/", $dob, $matches);
-        $dob = mktime(0, 0, 0, $matches[2], $matches[1], $matches[3]);
+        //Check if dob has some value or not
+        if (!empty($dob)) {
+
+            preg_match("/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})/", $dob, $matches);
+            $dob = mktime(0, 0, 0, $matches[2], $matches[1], $matches[3]);
+        }
 
 
         return $suggest_handler->add_suggest(NAME, $id, $name) &&

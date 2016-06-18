@@ -4,11 +4,7 @@ require "header.php";
 
 global $db, $vanshavali, $user;
 
-if ($user->is_authenticated()) {
-    $familyid = $user->user['family_id'];
-} else {
-    $familyid = null;
-}
+$familyid = $_GET['familyid'];
 
 $head = $vanshavali->getHeadofFamily($familyid);
 $head = new member($head);

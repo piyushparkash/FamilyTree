@@ -1,0 +1,247 @@
+\hypertarget{classuser}{\section{user Class Reference}
+\label{classuser}\index{user@{user}}
+}
+Inheritance diagram for user\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classuser}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuser_acf59e1e14564ce949759964415069581}{\-\_\-\-\_\-construct} ()
+\item 
+\hyperlink{classuser_a0846994f392a18a32bfcae200cb33974}{login} (\$username, \$password)
+\item 
+\hyperlink{classuser_acb8e72f7d45579e3f07e071e06d11ac8}{logout} ()
+\item 
+\hyperlink{classuser_aad321ca58463f653b456dae243737c7e}{populate\-\_\-data} (\$id)
+\item 
+\hyperlink{classuser_a309159734946cdb67542dc0110055ae0}{remove\-\_\-data} ()
+\item 
+\hyperlink{classuser_a9538d09a879e3d85c9cedcc634df5751}{update\-\_\-lastlogin} ()
+\item 
+\hyperlink{classuser_a317fcb7a9feaf538c182b28fb7c9844c}{get\-\_\-lastlogin} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classuser_a60824fccae7197959b184fb04a6de2b9}{{\bfseries \$user} = array()}\label{classuser_a60824fccae7197959b184fb04a6de2b9}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class handles all the user-\/related functions
+
+\begin{DoxyAuthor}{Author}
+piyush 
+\end{DoxyAuthor}
+
+
+Definition at line 10 of file user.\-php.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuser_acf59e1e14564ce949759964415069581}{\index{user@{user}!\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}}
+\index{\-\_\-\-\_\-construct@{\-\_\-\-\_\-construct}!user@{user}}
+\subsubsection[{\-\_\-\-\_\-construct}]{\setlength{\rightskip}{0pt plus 5cm}user\-::\-\_\-\-\_\-construct (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classuser_acf59e1e14564ce949759964415069581}
+Constructor of the class  type \$\-\_\-\-S\-E\-S\-S\-I\-O\-N The Superglobal session variable 
+
+Definition at line 22 of file user.\-php.
+
+
+\begin{DoxyCode}
+22                                   \{
+23         parent::\_\_construct();
+24         global $\_SESSION;
+25         \textcolor{keywordflow}{if} ($this->\hyperlink{classauth_ad5c908efc480a57e5625131348f4bf29}{check\_session}() == \textcolor{keyword}{true}) \{
+26             \textcolor{comment}{//populate user data and set class variables to authenticated else normal}
+27             $this->\hyperlink{classuser_aad321ca58463f653b456dae243737c7e}{populate\_data}($\_SESSION[\textcolor{stringliteral}{'id'}]);
+28 
+29             \textcolor{comment}{//Insert this recent activity time in the database}
+30             $this->\hyperlink{classuser_a9538d09a879e3d85c9cedcc634df5751}{update\_lastlogin}();
+31         \}
+32     \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuser_a317fcb7a9feaf538c182b28fb7c9844c}{\index{user@{user}!get\-\_\-lastlogin@{get\-\_\-lastlogin}}
+\index{get\-\_\-lastlogin@{get\-\_\-lastlogin}!user@{user}}
+\subsubsection[{get\-\_\-lastlogin}]{\setlength{\rightskip}{0pt plus 5cm}user\-::get\-\_\-lastlogin (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classuser_a317fcb7a9feaf538c182b28fb7c9844c}
+This function is used to get the last login time of the user   \$db Instance of the db class \begin{DoxyReturn}{Returns}
+integer Time\-Stamp of the last login 
+\end{DoxyReturn}
+
+
+Definition at line 113 of file user.\-php.
+
+
+\begin{DoxyCode}
+113                              \{
+114         global $db;
+115         $query = $db->query(\textcolor{stringliteral}{"select lastlogin from member where id="} . $this->
+      \hyperlink{classuser}{user}[\textcolor{stringliteral}{'lastlogin'}]);
+116 
+117         $row = $db->fetch($query);
+118 
+119         \textcolor{keywordflow}{return} $row[\textcolor{stringliteral}{'lastlogin'}];
+120     \}
+\end{DoxyCode}
+\hypertarget{classuser_a0846994f392a18a32bfcae200cb33974}{\index{user@{user}!login@{login}}
+\index{login@{login}!user@{user}}
+\subsubsection[{login}]{\setlength{\rightskip}{0pt plus 5cm}user\-::login (
+\begin{DoxyParamCaption}
+\item[{}]{\$username, }
+\item[{}]{\$password}
+\end{DoxyParamCaption}
+)}}\label{classuser_a0846994f392a18a32bfcae200cb33974}
+This function is used to log-\/in the user and populate the \$user variable with all the user data. Returns true if successful else false  array \$\-\_\-\-S\-E\-S\-S\-I\-O\-N The Superglobal Session variable 
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$username} & The username of the user \\
+\hline
+string & {\em \$password} & The password of the user \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Definition at line 42 of file user.\-php.
+
+
+\begin{DoxyCode}
+42                                          \{
+43         global $\_SESSION, $vanshavali;
+44 
+45         \textcolor{comment}{//Login}
+46         $ret = $this->\hyperlink{classauth_a019d664334a621e770043d9fb4210836}{authenticate}($username, $password);
+47 
+48         \textcolor{comment}{//Populate the user array only if user has logged in}
+49         \textcolor{keywordflow}{if} ($ret == \textcolor{keyword}{true} and ! is\_array($ret)) \{
+50             $this->\hyperlink{classuser_aad321ca58463f653b456dae243737c7e}{populate\_data}($\_SESSION[\textcolor{stringliteral}{'id'}]);
+51             \textcolor{comment}{//Drop a mail to admin regarding this}
+52             $vanshavali->mailAdmin(\textcolor{stringliteral}{"mail.userloggedin.tpl"}, array(\textcolor{stringliteral}{"username"} => $username), \textcolor{stringliteral}{"User Logged in
+      "});
+53         \}
+54 
+55         \textcolor{comment}{//And return as it was previously doing before populate data was added}
+56         \textcolor{keywordflow}{return} $ret;
+57     \}
+\end{DoxyCode}
+\hypertarget{classuser_acb8e72f7d45579e3f07e071e06d11ac8}{\index{user@{user}!logout@{logout}}
+\index{logout@{logout}!user@{user}}
+\subsubsection[{logout}]{\setlength{\rightskip}{0pt plus 5cm}user\-::logout (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classuser_acb8e72f7d45579e3f07e071e06d11ac8}
+This function is used to log-\/out the user and destroy the session \begin{DoxyReturn}{Returns}
+null 
+\end{DoxyReturn}
+
+
+Definition at line 63 of file user.\-php.
+
+
+\begin{DoxyCode}
+63                       \{
+64         \textcolor{comment}{//Remove all the session variables and remove user data}
+65         $this->\hyperlink{classauth_a17089bfa7c3b9d0546f80ac9472dfc7b}{unauthenticate}();
+66         $this->\hyperlink{classuser_a309159734946cdb67542dc0110055ae0}{remove\_data}();
+67     \}
+\end{DoxyCode}
+\hypertarget{classuser_aad321ca58463f653b456dae243737c7e}{\index{user@{user}!populate\-\_\-data@{populate\-\_\-data}}
+\index{populate\-\_\-data@{populate\-\_\-data}!user@{user}}
+\subsubsection[{populate\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}user\-::populate\-\_\-data (
+\begin{DoxyParamCaption}
+\item[{}]{\$id}
+\end{DoxyParamCaption}
+)}}\label{classuser_aad321ca58463f653b456dae243737c7e}
+This function is used to populate the \$user variable with all the user data   \$db The instance of the db class 
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$id} & The I\-D of the user to fetch the data of. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+null 
+\end{DoxyReturn}
+
+
+Definition at line 75 of file user.\-php.
+
+
+\begin{DoxyCode}
+75                                 \{
+76         \textcolor{comment}{// Fill user variable with user data}
+77         global $db;
+78         $query = $db->query(\textcolor{stringliteral}{"Select * from member where id=$id"});
+79         $row = $db->fetch($query);
+80         $this->\hyperlink{classuser}{user} = $row;
+81     \}
+\end{DoxyCode}
+\hypertarget{classuser_a309159734946cdb67542dc0110055ae0}{\index{user@{user}!remove\-\_\-data@{remove\-\_\-data}}
+\index{remove\-\_\-data@{remove\-\_\-data}!user@{user}}
+\subsubsection[{remove\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}user\-::remove\-\_\-data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classuser_a309159734946cdb67542dc0110055ae0}
+This is the opposite of \hyperlink{classuser_aad321ca58463f653b456dae243737c7e}{populate\-\_\-data()} function. This function is used to remove the data from the \$user variable. \begin{DoxyReturn}{Returns}
+null 
+\end{DoxyReturn}
+
+
+Definition at line 88 of file user.\-php.
+
+
+\begin{DoxyCode}
+88                            \{
+89         \textcolor{comment}{//Remove data filled in user variable}
+90         unset($this->\hyperlink{classuser}{user});
+91         $this->\hyperlink{classuser}{user} = array();
+92     \}
+\end{DoxyCode}
+\hypertarget{classuser_a9538d09a879e3d85c9cedcc634df5751}{\index{user@{user}!update\-\_\-lastlogin@{update\-\_\-lastlogin}}
+\index{update\-\_\-lastlogin@{update\-\_\-lastlogin}!user@{user}}
+\subsubsection[{update\-\_\-lastlogin}]{\setlength{\rightskip}{0pt plus 5cm}user\-::update\-\_\-lastlogin (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classuser_a9538d09a879e3d85c9cedcc634df5751}
+This function is used to get the last activity time of the user   \$db Instance of the db class \begin{DoxyReturn}{Returns}
+boolean True if successfull else false on unsuccessfull 
+\end{DoxyReturn}
+
+
+Definition at line 99 of file user.\-php.
+
+
+\begin{DoxyCode}
+99                                 \{
+100         global $db;
+101         \textcolor{keywordflow}{if} ($db->query(\textcolor{stringliteral}{"update member set lastlogin="} . time() . \textcolor{stringliteral}{" where id="} . $this->
+      \hyperlink{classuser}{user}[\textcolor{stringliteral}{'id'}])) \{
+102             \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+103         \} \textcolor{keywordflow}{else} \{
+104             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+105         \}
+106     \}
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+user/user.\-php\end{DoxyCompactItemize}
