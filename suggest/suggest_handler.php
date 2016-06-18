@@ -169,9 +169,7 @@ class suggest_handler {
                 //We don't have to find any old value. So lets implement
                 //As we have composite value while adding and removing a member i.e. name and gender
                 //we put it in an array for it to be passed on.
-                if (!is_array($new_value)) {
-                    $new_value = array($new_value);
-                }
+                
 
                 $new_value = json_encode($new_value);
                 if (!$db->query("insert into suggested_info (typesuggest, new_value, old_value, suggested_by, suggested_to, ts) values('$name', '$new_value', null, " . $user->user['id'] . ", $to, " . time() . ")")) {
