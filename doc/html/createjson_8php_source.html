@@ -112,21 +112,17 @@ $(document).ready(function(){initNavTree('createjson_8php_source.html','');});
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;global $db, $vanshavali, $user;</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keywordflow">if</span> ($user-&gt;is_authenticated()) {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    $familyid = $user-&gt;user[<span class="stringliteral">&#39;family_id&#39;</span>];</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;} <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    $familyid = null;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;}</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;$head = $vanshavali-&gt;getHeadofFamily($familyid);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;$head = <span class="keyword">new</span> <a class="code" href="classmember.html">member</a>($head);</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;$familyid = $_GET[<span class="stringliteral">&#39;familyid&#39;</span>];</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;$head = $vanshavali-&gt;getHeadofFamily($familyid);</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;$head = <span class="keyword">new</span> <a class="code" href="classmember.html">member</a>($head);</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">//Create a infovis struct</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;$finalkey = $vanshavali-&gt;createstruct($head-&gt;data);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;$finalkey[<span class="stringliteral">&#39;children&#39;</span>] = $vanshavali-&gt;getwife($head-&gt;data[<span class="stringliteral">&#39;id&#39;</span>]);</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">//Create a infovis struct</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;$finalkey = $vanshavali-&gt;createstruct($head-&gt;data);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;$finalkey[<span class="stringliteral">&#39;children&#39;</span>] = $vanshavali-&gt;getwife($head-&gt;data[<span class="stringliteral">&#39;id&#39;</span>]);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;echo json_encode($finalkey);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;?&gt;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;echo json_encode($finalkey);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;?&gt;</div>
 <div class="ttc" id="classmember_html"><div class="ttname"><a href="classmember.html">member</a></div><div class="ttdef"><b>Definition:</b> <a href="member_8php_source.html#l00010">member.php:10</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -134,7 +130,7 @@ $(document).ready(function(){initNavTree('createjson_8php_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>createjson.php</b></li>
-    <li class="footer">Generated on Sun Jun 12 2016 20:56:15 for Family Tree by
+    <li class="footer">Generated on Sat Jun 18 2016 23:00:10 for Family Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
