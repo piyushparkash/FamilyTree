@@ -1,5 +1,5 @@
-[FamilyTree](http://vanshavali.ratupar.in)
-==========
+[FamilyTree](http://vanshavali.ratupar.in) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/piyushparkash/FamilyTree/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/piyushparkash/FamilyTree/?branch=master)
+========================================================================================================================================================================
 
 **[FamilyTree](http://vanshavali.ratupar.in)** is simple PHP Application targetting the collection of family data which can viewed with beautiful visualisation. You can add/update data, play with the visualisation, show you children their roots, add new members as they enter your family.
 

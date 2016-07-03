@@ -168,7 +168,6 @@ class install {
 
             if (empty($host) ||
                     empty($username) ||
-                    empty($password) ||
                     empty($database) ||
                     empty($adminEmail)) {
 
@@ -197,14 +196,15 @@ class install {
                 trigger_error("Error opening or creating config.php file", E_USER_ERROR);
             }
 
-            $data = "<?php\n\$config['host']='$host';
-                    \n\$config['username']='$username';
-                    \n\$config['password']='$password';
-                    \n\$config['database']='$database';
-                    \n\$config['admin_email']='$adminEmail';    
-                    \n?>";
+            $data = "<?php\n\$config = ".var_export(array(
+					'host'=>$host,
+					'username' => $username,
+                    'password' =>$password,
+                    'database' => $database,
+                    'admin_email' => $adminEmail,
+				), true);
 
-            $wr = fwrite($file, $data);
+            fwrite($file, $data);
             fclose($file);
 
             //Set file permission to 0644, Never leave this 0
