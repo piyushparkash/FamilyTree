@@ -169,9 +169,9 @@ body
 
 #right-container fieldset
 {
-    //    border: 1px #c7c7c7 solid;
+    /*    border: 1px #c7c7c7 solid; */
     border-radius: 6px;
-    //    background-color: #b8e2d8;
+    /*    background-color: #b8e2d8; */
 }
 
 .username_container
