@@ -162,7 +162,7 @@ class install {
             return false;
         }
 
-        $wpapi_vars = json_decode($output);
+        $wpapi_vars = json_decode($output, true);
 
         return
                 array("namespace" => $wpapi_vars["namespaces"][0],
@@ -260,7 +260,7 @@ class install {
                 $filedata = $filedata + $wp_vars;
             }
 
-            $data = "<?php\n\$config = " . var_export($filedata, true);
+            $data = "<?php\n\$config = " . var_export($filedata, true) . ";";
 
             fwrite($file, $data);
             fclose($file);
