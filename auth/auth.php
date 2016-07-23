@@ -29,15 +29,7 @@ class auth {
     public function wp_login_init() {
         //Initiate the oauth process
         //Get the Urls
-        $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, $this->endPoint);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $output = curl_exec($ch);
-        curl_close($ch);
-
-        $wpapi_vars = json_decode($output);
         
         //We have all the information..
         //Time to assign variables and proceed forward
