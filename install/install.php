@@ -190,7 +190,7 @@ class install {
             $password = $_POST['database_password'];
             $database = $_POST['database_name'];
             $adminEmail = $_POST['admin_email'];
-            $consumerKey = $_POST['consumber_key'];
+            $consumerKey = $_POST['consumer_key'];
             $consumerKeySecret = $_POST['consumer_key_secret'];
             $endPoint = $_POST['end_point'];
 
@@ -212,7 +212,7 @@ class install {
                 if (empty($consumerKey) || empty($consumerKeySecret) || empty($endPoint)) {
                     $template->header();
                     $template->assign(array("error" => 1,
-                        "message" => "Form not completed. Please complete the form"));
+                        "message" => "Incomplete OAuth Details. Please provide all information."));
                     $template->display("install.ask_database_details.tpl");
                     return;
                 } else {
