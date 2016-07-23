@@ -147,6 +147,31 @@ class install {
         }
     }
 
+    function get_wp_vars($endpoint) {
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $endpoint);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $output = curl_exec($ch);
+
+        curl_close($ch);
+
+        if (!$output) { //if curl request fails
+            return false;
+        }
+
+        $wpapi_vars = json_decode($output);
+
+        return
+                array("namespace" => $wpapi_vars["namespaces"][0],
+                    "requesturl" => $wpapi_vars['authentication']["oauth1"]["request"],
+                    "authurl" => $wpapi_vars['authentication']["oauth1"]["authorize"],
+                    "accessurl" => $wpapi_vars['authentication']["oauth1"]["access"]
+        );
+    }
+
     /**
      * This function is used ask the user about the database details
      * @param string $mode Describes which phase is currently running
@@ -165,6 +190,9 @@ class install {
             $password = $_POST['database_password'];
             $database = $_POST['database_name'];
             $adminEmail = $_POST['admin_email'];
+            $consumerKey = $_POST['consumber_key'];
+            $consumerKeySecret = $_POST['consumer_key_secret'];
+            $endPoint = $_POST['end_point'];
 
             if (empty($host) ||
                     empty($username) ||
@@ -176,6 +204,27 @@ class install {
                     "message" => "Form not completed. Please complete the form"));
                 $template->display("install.ask_database_details.tpl");
                 return;
+            }
+
+            $wp_vars = array();
+            if (!empty($consumerKey) || !empty($consumerKeySecret) || !empty($endPoint)) {
+                //If even one of them is empty
+                if (empty($consumerKey) || empty($consumerKeySecret) || empty($endPoint)) {
+                    $template->header();
+                    $template->assign(array("error" => 1,
+                        "message" => "Form not completed. Please complete the form"));
+                    $template->display("install.ask_database_details.tpl");
+                    return;
+                } else {
+                    $wp_vars = $this->get_wp_vars($endPoint);
+                    if (!$wp_vars) {
+                        $template->header();
+                        $template->assign(array("error" => 1,
+                            "message" => "Could not reach endPoint mentioned. Please check and retry"));
+                        $template->display("install.ask_database_details.tpl");
+                        return;
+                    }
+                }
             }
 
             //Connect to database
@@ -196,13 +245,22 @@ class install {
                 trigger_error("Error opening or creating config.php file", E_USER_ERROR);
             }
 
-            $data = "<?php\n\$config = ".var_export(array(
-					'host'=>$host,
-					'username' => $username,
-                    'password' =>$password,
-                    'database' => $database,
-                    'admin_email' => $adminEmail,
-				), true);
+            $filedata = array(
+                'host' => $host,
+                'username' => $username,
+                'password' => $password,
+                'database' => $database,
+                'admin_email' => $adminEmail,
+                'consumer_key' => $consumerKey,
+                'consumer_key_secret' => $consumerKeySecret,
+                'end_point' => $endPoint
+            );
+
+            if (!empty($wp_vars)) {
+                $filedata = $filedata + $wp_vars;
+            }
+
+            $data = "<?php\n\$config = " . var_export($filedata, true);
 
             fwrite($file, $data);
             fclose($file);
@@ -272,7 +330,8 @@ class install {
             family_id int(11) null default null,
             foreign key (family_id) references family(id),
             foreign key (related_to) references member(id),
-            admin int(1) default 0 )");
+            admin int(1) default 0,
+            wordpress_user int(11) default null )");
 
         $feedback = $db->query("create table if not exists feedback (
             id int(11) not null primary key auto_increment,

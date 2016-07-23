@@ -12,6 +12,15 @@ global $db;
 //get the type of data to be extracted
 switch ($_POST['action']) {
 
+    case "check_wp_login":
+        if ($vanshavali->wp_login) {
+            // If it is defined that just means that it is enabled
+            ajaxSuccess();
+        } else {
+            ajaxError();
+        }
+        break;
+
 
     case "forgotpassword":
         $type = $_POST['type'];

@@ -7,6 +7,12 @@
 require "header.php";
 global $user;
 
+//Check for wp-login
+if ($_GET['action'] == "wp_login" && $vanshavali->wp_login) {
+    $user->wp_login_init();
+    die();
+}
+
 if (isset($_POST['username'], $_POST['password'])) {
     $username = strtolower($_POST['username']);
     $pass = $_POST['password'];

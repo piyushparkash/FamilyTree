@@ -32,6 +32,24 @@
             <input type="email" name="admin_email" id="admin_email" placeholder="Admin Email" />
         </div>
     </div>
+    <div class="control-group">
+        <label for="consumer_key" class="control-label">Consumer Key</label>
+        <div class="controls">
+            <input type="text" name="consumer_key" id="consumer_key" placeholder="Wordpress Consumer Key" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="consumer_key_secret" class="control-label">Consumer Key Secret</label>
+        <div class="controls">
+            <input type="text" name="consumer_key_secret" id="consumer_key_secret" placeholder="Wordpress Consumer Key Secret" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="end_point" class="control-label">WP API End Point</label>
+        <div class="controls">
+            <input type="text" name="end_point" id="end_point" placeholder="WP API End Point" />
+        </div>
+    </div>
     <div class="form-actions">
         <input type="submit" name="ask_database_name" id="submit" class="btn btn-primary"/>
     </div>

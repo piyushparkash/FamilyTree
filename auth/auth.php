@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This class is used to create and destroy sessions. It also handles User Authentication
  * @param none
@@ -6,12 +7,44 @@
  */
 class auth {
 
+    protected $consumerKey, $consumerSecret, $endPoint;
+    protected $oauth;
+
     /**
      * The constructor of the class
      * @param null
      */
     public function __construct() {
         session_start();
+    }
+
+    public function setConsumerToken($consumerkey, $consumersecret, $endpoint) {
+        $this->consumerKey = $consumerkey;
+        $this->consumerSecret = $consumersecret;
+        $this->endPoint = $endpoint;
+
+        $this->oauth = new OAuth($consumerkey, $consumersecret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
+    }
+
+    public function wp_login_init() {
+        //Initiate the oauth process
+        //Get the Urls
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $this->endPoint);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $output = curl_exec($ch);
+        curl_close($ch);
+
+        $wpapi_vars = json_decode($output);
+        
+        //We have all the information..
+        //Time to assign variables and proceed forward
+        
+
+
+        //$this->oauth->getRequestToken()
     }
 
     /**
@@ -28,7 +61,7 @@ class auth {
      */
     public function authenticate($username, $password) {
         global $db;
-        
+
         //Convert Password in md5 Hash
         $password = md5($password);
         $query = $db->query("select * from member where username='$username' and password='$password'");
@@ -38,9 +71,8 @@ class auth {
         if ($row == false) {
             return false;
         }
-        
-        //Check here for approval if user registration has been approved by the admin. Currently disabled
 
+        //Check here for approval if user registration has been approved by the admin. Currently disabled
         //Start the session and start storing data about user
         global $_SESSION;
         $token = $this->generate_token($row['id']);
@@ -159,40 +191,34 @@ class auth {
         }
         return $newcode;
     }
-    
+
     /**
      * This function is used to destroy the session created
      * @return null
      */
-    function destroy_session()
-    {
+    function destroy_session() {
         session_unset();
     }
-    
+
     /**
      * This function is used to log-out the user
      * @global \db $db The instance of the db class
      * @return boolean
      */
-    function unauthenticate()
-    {
+    function unauthenticate() {
         global $db;
-        if (!$this->is_authenticated())
-        {
+        if (!$this->is_authenticated()) {
             return false;
         }
         //Update the last login timestamp
-        if ($db->query("update member set lastlogin=".time()." where id=".$_SESSION['id']))
-        {
-        
-        //Unset all the session values
-        $this->destroy_session();
-        if ($this->is_authenticated())
-        {
-            trigger_error("Error Ending Session",E_USER_ERROR);
-            return false;
-        }
-        
+        if ($db->query("update member set lastlogin=" . time() . " where id=" . $_SESSION['id'])) {
+
+            //Unset all the session values
+            $this->destroy_session();
+            if ($this->is_authenticated()) {
+                trigger_error("Error Ending Session", E_USER_ERROR);
+                return false;
+            }
         }
         return true;
     }

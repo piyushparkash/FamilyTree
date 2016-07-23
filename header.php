@@ -5,6 +5,7 @@
  * @copyright 2011
  */
 error_reporting(E_ALL);
+ini_set("display_errors", "On");
 
 require_once __DIR__ . '/constants.php';
 
@@ -18,12 +19,12 @@ if (file_exists(__DIR__ . "/config.php")) {
 global $db, $template, $user, $vanshavali;
 
 //Initialize Global variables
-require_once __DIR__  . '/template/template.php';
-require_once __DIR__  . '/db/db.php';
-require_once __DIR__  . '/user/user.php';
-require_once __DIR__  . '/vanshavali/vanshavali.php';
-require_once __DIR__  . '/functions.php';
-require_once __DIR__  . '/suggest/suggest_handler.php';
+require_once __DIR__ . '/template/template.php';
+require_once __DIR__ . '/db/db.php';
+require_once __DIR__ . '/user/user.php';
+require_once __DIR__ . '/vanshavali/vanshavali.php';
+require_once __DIR__ . '/functions.php';
+require_once __DIR__ . '/suggest/suggest_handler.php';
 
 
 $template = new template();
@@ -34,12 +35,18 @@ $vanshavali = new vanshavali();
 $vanshavali->admin_email = $config['admin_email'];
 
 //Select the default database
-if (isset($config['database']) and !empty($config['database'])) {
+if (isset($config['database']) and ! empty($config['database'])) {
     $db->select_db($config['database']);
 }
 
 $user = new user();
 $suggest_handler = new suggest_handler();
+
+//Check if Wordpress is enabled or not
+if (!(empty($config['consumer_key']) && empty($config['consumer_key_secret']))) {
+    $vanshavali->wp_login = true;
+    $user->setConsumerToken($config['consumer_key'], $config['consumer_key_secret'], $config['end_point']);
+}
 
 //Register the basic suggests
 
