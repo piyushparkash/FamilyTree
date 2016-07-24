@@ -180,7 +180,9 @@ class install {
      */
     function ask_database_name($mode, $sub) {
         global $template, $db;
+
         $sub = ($sub == null) ? 1 : $sub;
+
         if ($sub == 1) {
             $template->header();
             $template->display("install.ask_database_details.tpl");
@@ -227,6 +229,8 @@ class install {
                 }
             }
 
+
+
             //Connect to database
             $db->connect($host, $username, $password);
 
@@ -251,6 +255,7 @@ class install {
                 'password' => $password,
                 'database' => $database,
                 'admin_email' => $adminEmail,
+                'hostname' => $_SERVER['SERVER_NAME'],
                 'consumer_key' => $consumerKey,
                 'consumer_key_secret' => $consumerKeySecret,
                 'end_point' => $endPoint
