@@ -10,7 +10,11 @@ global $user;
 //Check for wp-login
 if ($_GET['action'] == "wp_login" && $vanshavali->wp_login) {
     $user->wp_login_init();
-    die();
+}
+
+if ($_GET['action'] == "wp_login" && $_GET['sub'] == 2 && $vanshavali->wp_login)
+{
+    $user->authenticate_wp();
 }
 
 if (isset($_POST['username'], $_POST['password'])) {

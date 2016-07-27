@@ -37,6 +37,9 @@ class install {
             case "setupAdmin":
                 $this->setupAdmin($mode, $sub);
                 break;
+            case "check_wp_login":
+                $this->check_wp_login($mode, $sub);
+                break;
             case "check_directory_permission":
             default :
                 $this->check_directory_permission($mode, $sub);
@@ -144,6 +147,35 @@ class install {
             $template->assign("familyid", $family['id']);
             $template->display("register.form.tpl");
             $template->footer();
+        }
+    }
+
+    function check_wp_login($mode, $sub) {
+        global $template, $db, $user, $vanshavali;
+
+        //Calculate the callback to be used
+        $callback = $vanshavali->hostname . '/login.php?action=wp_login&sub=2';
+
+        $sub = ($sub == null) ? 1 : $sub;
+
+        if ($sub == 1) {
+            $template->header();
+            $template->assign("callback", $callback);
+            $template->display("install.check_wp_login.tpl");
+            $template->footer();
+            return;
+        } elseif ($sub == 2) {
+            if (!$user->oauth->init_request_process($callback)) {
+                //Callback is not proper as the request didn't go through
+                $template->header();
+                $template->assign("callback", $callback);
+                $template->assign(array("error" => 1,
+                    "message" => "We are not able to make request to Wordpress. Can you please check the Callback and set it to the below mentioned URL"));
+                $template->display("install.check_wp_login.tpl");
+                $template->footer();
+            } else {
+                header("Location:index.php?mode=setupAdmin");
+            }
         }
     }
 

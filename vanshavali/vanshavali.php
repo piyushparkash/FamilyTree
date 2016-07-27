@@ -18,7 +18,7 @@ class vanshavali {
         
     }
 
-    public $admin_email, $wp_login;
+    public $admin_email, $wp_login, $hostname;
 
     public function getHeadofFamily($family_id = null) {
         global $db;

@@ -5,10 +5,11 @@
  * @param none
  * @author piyush
  */
+require_once __DIR__ . '/OAuthHandler.php';
+
 class auth {
 
-    protected $consumerKey, $consumerSecret, $endPoint;
-    protected $oauth;
+    public $oauth;
 
     /**
      * The constructor of the class
@@ -18,25 +19,35 @@ class auth {
         session_start();
     }
 
-    public function setConsumerToken($consumerkey, $consumersecret, $endpoint) {
-        $this->consumerKey = $consumerkey;
-        $this->consumerSecret = $consumersecret;
-        $this->endPoint = $endpoint;
+    public function setConsumerToken($consumerkey, $consumersecret, $endpoint, $namespace) {
 
-        $this->oauth = new OAuth($consumerkey, $consumersecret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
+        $this->oauth = new OAuthHandler($consumerkey, $consumersecret, $endpoint, $namespace);
     }
 
     public function wp_login_init() {
         //Initiate the oauth process
-        //Get the Urls
+        //get the request token
+        if (!$this->oauth->init_request_process())
+            return false;
 
-        
-        //We have all the information..
-        //Time to assign variables and proceed forward
-        
+        //Authorize...
+        if (!$this->oauth->init_auth_process())
+            return false;
 
+        return true;
+    }
 
-        //$this->oauth->getRequestToken()
+    public function authenticate_wp() {
+        //Second phase of oauth
+
+        if (!$this->oauth->init_access_process())
+            return false;
+
+        //Get the user details of wordpress user
+        $wp_user = $this->oauth_fetch("users/me");
+
+        print_r($wp_user);
+        exit();
     }
 
     /**
