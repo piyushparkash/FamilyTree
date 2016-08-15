@@ -24,10 +24,10 @@ class auth {
         $this->oauth = new OAuthHandler($consumerkey, $consumersecret, $endpoint, $namespace);
     }
 
-    public function wp_login_init() {
+    public function wp_login_init($callback) {
         //Initiate the oauth process
         //get the request token
-        if (!$this->oauth->init_request_process())
+        if (!$this->oauth->init_request_process($callback))
             return false;
 
         //Authorize...
@@ -37,17 +37,24 @@ class auth {
         return true;
     }
 
-    public function authenticate_wp() {
+    public function authenticate_wp($authverifier) {
         //Second phase of oauth
 
-        if (!$this->oauth->init_access_process())
+
+        $accesstoken = $this->oauth->init_access_process($authverifier);
+
+        if (!$accesstoken) {
             return false;
+        }
 
         //Get the user details of wordpress user
-        $wp_user = $this->oauth_fetch("users/me");
+        $wp_user = $this->oauth->auth_fetch("users/me");
 
-        print_r($wp_user);
-        exit();
+        if (!$wp_user) {
+            return false;
+        }
+
+        return array($accesstoken, $wp_user);
     }
 
     /**

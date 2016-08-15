@@ -5,7 +5,7 @@
  * @copyright 2011
  */
 error_reporting(E_ALL);
-//ini_set("display_errors", "On");
+ini_set("display_errors", "On");
 
 require_once __DIR__ . '/constants.php';
 
@@ -33,6 +33,7 @@ $vanshavali = new vanshavali();
 
 //Assign the Email Address of admin in the App
 $vanshavali->admin_email = $config['admin_email'];
+$vanshavali->hostname = $config['hostname'];
 
 //Select the default database
 if (isset($config['database']) and ! empty($config['database'])) {
@@ -45,7 +46,8 @@ $suggest_handler = new suggest_handler();
 //Check if Wordpress is enabled or not
 if (!(empty($config['consumer_key']) && empty($config['consumer_key_secret']))) {
     $vanshavali->wp_login = true;
-    $user->setConsumerToken($config['consumer_key'], $config['consumer_key_secret'], $config['end_point']);
+    $user->setConsumerToken($config['consumer_key'], $config['consumer_key_secret'], $config['end_point'], $config['namespace']);
+    $user->oauth->setUrl($config['requesturl'], $config['authurl'], $config['accessurl']);
 }
 
 //Register the basic suggests

@@ -154,7 +154,7 @@ class install {
         global $template, $db, $user, $vanshavali;
 
         //Calculate the callback to be used
-        $callback = $vanshavali->hostname . '/login.php?action=wp_login&sub=2';
+        $callback = $vanshavali->hostname . CALLBACK;
 
         $sub = ($sub == null) ? 1 : $sub;
 
@@ -202,6 +202,19 @@ class install {
                     "authurl" => $wpapi_vars['authentication']["oauth1"]["authorize"],
                     "accessurl" => $wpapi_vars['authentication']["oauth1"]["access"]
         );
+    }
+
+    function getFullURL() {
+        $base_dir = __DIR__; // Absolute path to your installation, ex: /var/www/mywebsite
+        $doc_root = preg_replace("!${_SERVER['SCRIPT_NAME']}$!", '', $_SERVER['SCRIPT_FILENAME']); # ex: /var/www
+        $base_url = preg_replace("!^${doc_root}!", '', $base_dir); # ex: '' or '/mywebsite'
+        $protocol = empty($_SERVER['HTTPS']) ? 'http' : 'https';
+        $port = $_SERVER['SERVER_PORT'];
+        $disp_port = ($protocol == 'http' && $port == 80 || $protocol == 'https' && $port == 443) ? '' : ":$port";
+        $domain = $_SERVER['SERVER_NAME'];
+        $full_url = "${protocol}://${domain}${disp_port}${base_url}";
+
+        return $full_url;
     }
 
     /**
@@ -287,7 +300,7 @@ class install {
                 'password' => $password,
                 'database' => $database,
                 'admin_email' => $adminEmail,
-                'hostname' => $_SERVER['SERVER_NAME'],
+                'hostname' => $this->getFullURL(),
                 'consumer_key' => $consumerKey,
                 'consumer_key_secret' => $consumerKeySecret,
                 'end_point' => $endPoint

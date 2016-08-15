@@ -151,7 +151,7 @@ function login() {
     $.post("getdata.php", {action: "check_wp_login"}, function (data)
     {
         if (ajaxSuccess(data)) {
-            window.location = "login.php?action=wp_login"
+            window.location = "login.php?action=wp_login&sub=1"
         } else
         {
             //Normal login, so show modal

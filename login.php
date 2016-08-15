@@ -5,19 +5,20 @@
  * @copyright 2012
  */
 require "header.php";
-global $user;
+global $user, $vanshavali;
 
 //Check for wp-login
-if ($_GET['action'] == "wp_login" && $vanshavali->wp_login) {
-    $user->wp_login_init();
-}
-
-if ($_GET['action'] == "wp_login" && $_GET['sub'] == 2 && $vanshavali->wp_login)
-{
-    $user->authenticate_wp();
-}
-
-if (isset($_POST['username'], $_POST['password'])) {
+if ($_GET['action'] == "wp_login" && $vanshavali->wp_login && $_GET['sub'] == 1) {
+    if (!$user->wp_login_init($vanshavali->hostname . CALLBACK)) {
+        //There is some error. Was not able to get the callback;
+        trigger_error("There is some error. Was not able to get login through WP REST", E_USER_ERROR);
+    }
+} else if ($_GET['action'] == "wp_login" && $_GET['sub'] == 2 && $vanshavali->wp_login) {
+    $usr_details = $user->authenticate_wp($_GET['oauth_verifier']);
+    
+    //We have the user details.
+    exit();
+} else if (isset($_POST['username'], $_POST['password'])) {
     $username = strtolower($_POST['username']);
     $pass = $_POST['password'];
 

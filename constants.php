@@ -1,13 +1,12 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
 // All the contants used in the project is used
-
 //Anything Unknown is this
 define("UNKNOWN", -255);
 
@@ -22,3 +21,6 @@ define("FEMALE", 1);
 //ALIVE
 define("LIVING", 1);
 define("DECEASED", 0);
+
+define("CALLBACK", '/login.php?action=wp_login&sub=2&XDEBUG_SESSION_START=netbeans-xdebug');
+

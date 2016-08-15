@@ -26,6 +26,12 @@ class OAuthHandler {
     }
 
     public function init_request_process($callback) {
+
+        //Check if we have already a session setup
+        if ($_SESSION['oauthstate'] == "access") {
+            return true;
+        }
+
         try {
             $requestToken = $this->oauth->getRequestToken($this->urls['requrl'], $callback, "POST");
             if (!$requestToken)
@@ -50,6 +56,9 @@ class OAuthHandler {
             header("Location:" . $this->urls['authurl'] .
                     "?oauth_token=" . $_SESSION['oauth_token'] .
                     "&oauth_token_secret=" . $_SESSION['oauth_token_secret']);
+            return true;
+        } else if ($_SESSION['oauthstate'] == "access") {
+            return TRUE;
         } else
             return false;
     }
@@ -58,23 +67,63 @@ class OAuthHandler {
         if (session_status() != PHP_SESSION_ACTIVE)
             return false;
 
+        if ($_SESSION['oauthstate'] == "access") {
+            // We are already logged in, so use session tokens
+            return true;
+        }
+
         //set the previous tokens
         $this->oauth->setToken($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
 
         try {
             $accessToken = $this->oauth->getAccessToken(
-                    $this->urls['accessurls'], null, $authverifier);
+                    $this->urls['accessurl'], null, $authverifier);
             if (!$accessToken)
                 return false;
+
+            //Set the new token in the session
+            $_SESSION['oauth_token'] = $accessToken['oauth_token'];
+            $_SESSION['oauth_token_secret'] = $accessToken['oauth_token_secret'];
+            $_SESSION['oauthstate'] = 'access';
+
 
             //Set the new token
             $this->oauth->setToken($accessToken['oauth_token'], $accessToken['oauth_token_secret']);
             $this->oauth->setAuthType(OAUTH_AUTH_TYPE_URI);
 
             //everything done
-            return TRUE;
+            return $accessToken;
         } catch (OAuthException $ex) {
+            echo $ex->getMessage();
             return false;
+        }
+    }
+
+    function auth_fetch($directive) {
+        //check if previous process have comleted or not
+
+        echo "We have not entered this thing only";
+        if ($_SESSION['oauthstate'] == "access") {
+            //We have all the right set of tokens
+            $this->oauth->setToken($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
+            $this->oauth->setAuthType(OAUTH_AUTH_TYPE_URI);
+
+            //Build Url from directive
+            $url = $this->endpoint . $this->namespace . "/" . $directive;
+            echo $url;
+            try {
+                if (!$this->oauth->fetch($url)) {
+                    return false;
+                } else {
+                    //We have got the information
+
+                    echo 'We are in the return portion';
+
+                    return $this->oauth->getLastResponse();
+                }
+            } catch (OAuthException $ex) {
+                return $ex->lastResponse;
+            }
         }
     }
 
