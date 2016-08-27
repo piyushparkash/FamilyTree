@@ -25,6 +25,7 @@
                 <span  class="help-block"></span>
             </div>
         </div>
+        {if !$is_wordpress_enabled}
         <div class="control-group">
             <label for="register_username" class="control-label">Username</label>
             <div class="controls">
@@ -45,6 +46,7 @@
                 <span class="help-block" ></span>
             </div>
         </div>
+        {/if}
     </fieldset>
     <div class="control-group">
         <label class="control-label" for="register_dob">Date Of Birth</label>

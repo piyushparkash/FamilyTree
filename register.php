@@ -43,8 +43,21 @@ if (isset($_POST['register_submit'])) {
     }
 }
 
+if ($vanshavali->wp_login && $_POST['sending']) //Are we redirected from sendtopage 
+{
+    echo print_r($_POST);
+    
+}
+else
+{
+    //We need user details so 
+    $_SESSION['sendtopage'] = 'register.php';
+    header("Location:login.php?action=wp_login&sub=1");
+}
+
 
 $template->header();
+$template->assign("is_wordpress_enabled", $vanshavali->wp_login);
 $template->display('user.main.tpl');
 $template->display('register.form.tpl');
 $template->footer();
