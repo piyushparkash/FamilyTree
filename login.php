@@ -17,21 +17,18 @@ if ($_GET['action'] == "wp_login" && $vanshavali->wp_login && $_GET['sub'] == 1)
 
     //Get the current user details
     $usr_details = $user->authenticate_wp($_GET['oauth_verifier']);
+    $usr_details = array_merge($usr_details[0], $usr_details[1]);
 
     //Check if we have to send data to some other page
     if ($_SESSION['sendtopage']) {
-        $template->assign('data', $usr_details[0] + $usr_details[1]);
+        $template->assign('data', $usr_details);
         $template->assign('sendtopage', $_SESSION['sendtopage']);
         $template->display('sendtopage.tpl');
         unset($_SESSION['sendtopage']);
         exit();
     }
-    
+
     //Lets log the user in
-
-
-
-
     //@TODO: get the wordpress user details and match the local user
     // and then login the user
 
