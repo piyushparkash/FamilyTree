@@ -102,7 +102,7 @@ class OAuthHandler {
     function auth_fetch($directive) {
         //check if previous process have comleted or not
 
-        echo "We have not entered this thing only";
+        
         if ($_SESSION['oauthstate'] == "access") {
             //We have all the right set of tokens
             $this->oauth->setToken($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
@@ -110,14 +110,12 @@ class OAuthHandler {
 
             //Build Url from directive
             $url = $this->endpoint . $this->namespace . "/" . $directive;
-            echo $url;
             try {
                 if (!$this->oauth->fetch($url)) {
                     return false;
                 } else {
                     //We have got the information
 
-                    echo 'We are in the return portion';
 
                     return $this->oauth->getLastResponse();
                 }
