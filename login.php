@@ -23,6 +23,7 @@ if ($_GET['action'] == "wp_login" && $vanshavali->wp_login && $_GET['sub'] == 1)
         $template->assign('data', $usr_details[0] + $usr_details[1]);
         $template->assign('sendtopage', $_SESSION['sendtopage']);
         $template->display('sendtopage.tpl');
+        unset($_SESSION['sendtopage']);
         exit();
     }
     

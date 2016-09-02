@@ -136,14 +136,28 @@ class install {
             $vanshavali->addfamily($_POST['family_name']) or trigger_error("Unable to add family. Please try again");
 
             //We have added the first family. Lets proceed to add first member
-            header("Location: index.php?mode=setupAdmin&sub=firstmember");
+            //Get the wordpress user first if wordpress login is enabled
+            if ($vanshavali->wp_login) {
+                $_SESSION['sendtopage'] = 'index.php?mode=setupAdmin&sub=firstmember';
+                header("Location: login.php?action=wp_login&sub=1");
+            } else {
+                header("Location: index.php?mode=setupAdmin&sub=firstmember");
+            }
         } else if ($sub == "firstmember") {
             //This is where we find out that there is no member installed
             //We need to first get the family that was just added for this member
             $family = $db->get("select * from family limit 1");
 
+            //We would have got information about wordpress user if wordpress is enabled
+            if ($_POST['sending']) {
+
+                //We have WP Enabled
+                $template->assign($_POST);
+            }
+
             $template->header();
             $template->assign("is_admin", 1);
+            $template->assign("is_wordpress_enabled", $vanshavali->wp_login);
             $template->assign("familyid", $family['id']);
             $template->display("register.form.tpl");
             $template->footer();

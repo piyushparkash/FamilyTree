@@ -17,6 +17,9 @@
                 overflow: scroll;
             }
         </style>
+        <input type="hidden" name="wp_id" value="{$id}" />
+        <input type="hidden" name="wp_oauth_token" value="{$oauth_token}" />
+        <input type="hidden" name="wp_oauth_token_secret" value="{$oauth_token_secret}" />
         <div class="control-group">
             <label for="register_name" class="control-label">Your Name:</label>
             <div class="controls">
