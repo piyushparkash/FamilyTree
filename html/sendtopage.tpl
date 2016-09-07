@@ -8,7 +8,7 @@
         </form>
         <script type="text/javascript">
             alert("Now I would redirect to the given page");
-            document.sendtopage.submit();
+            //document.sendtopage.submit();
         </script>
     </body>
 </html>
