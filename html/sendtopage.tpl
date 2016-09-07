@@ -7,6 +7,7 @@
             <input type="hidden" name="sending" value="sending" />
         </form>
         <script type="text/javascript">
+            alert("Now I would redirect to the given page");
             document.sendtopage.submit();
         </script>
     </body>

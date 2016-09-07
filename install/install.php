@@ -153,6 +153,7 @@ class install {
 
                 //We have WP Enabled
                 $template->assign($_POST);
+                print_r($_POST);
             }
 
             $template->header();
