@@ -52,6 +52,8 @@ class auth {
 
         if (!$wp_user) {
             return false;
+        } else {
+            $wp_user = json_decode($wp_user, true);
         }
 
         return array($accesstoken, $wp_user);

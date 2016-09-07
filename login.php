@@ -19,12 +19,12 @@ if ($_GET['action'] == "wp_login" && $vanshavali->wp_login && $_GET['sub'] == 1)
     $usr_details = $user->authenticate_wp($_GET['oauth_verifier']);
     $usr_details = array_merge($usr_details[0], $usr_details[1]);
 
+
     //Check if we have to send data to some other page
     if ($_SESSION['sendtopage']) {
         $template->assign('data', $usr_details);
-        print_r($usr_details);
         $template->assign('sendtopage', $_SESSION['sendtopage']);
-        //$template->display('sendtopage.tpl');
+        $template->display('sendtopage.tpl');
         unset($_SESSION['sendtopage']);
         exit();
     }
