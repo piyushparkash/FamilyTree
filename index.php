@@ -4,7 +4,7 @@ require 'header.php';
 //If config.php doesn't exist, probably not installed
 if (!file_exists("config.php") or $vanshavali->firstTime() or $vanshavali->firstTimeFamily()) {
     require_once(__DIR__  . "/install/install.php");
-    $install = new install();
+    $install = new install(getFullURL());
     exit();
 }
 

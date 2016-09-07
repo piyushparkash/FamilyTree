@@ -5,6 +5,9 @@
  * @package install
  * @author piyush
  */
+require_once __DIR__ . '/../functions.php';
+
+
 $mode = @$_GET['mode'];
 $sub = @$_GET['sub'];
 
@@ -16,7 +19,7 @@ class install {
      * @global integer $sub
      * @return null
      */
-    function install() {
+    function install($base) {
         global $mode, $sub;
         //make sure to run this only if database is not installed
         //So check if database is installed
@@ -219,19 +222,6 @@ class install {
         );
     }
 
-    function getFullURL() {
-        $base_dir = __DIR__; // Absolute path to your installation, ex: /var/www/mywebsite
-        $doc_root = preg_replace("!${_SERVER['SCRIPT_NAME']}$!", '', $_SERVER['SCRIPT_FILENAME']); # ex: /var/www
-        $base_url = preg_replace("!^${doc_root}!", '', $base_dir); # ex: '' or '/mywebsite'
-        $protocol = empty($_SERVER['HTTPS']) ? 'http' : 'https';
-        $port = $_SERVER['SERVER_PORT'];
-        $disp_port = ($protocol == 'http' && $port == 80 || $protocol == 'https' && $port == 443) ? '' : ":$port";
-        $domain = $_SERVER['SERVER_NAME'];
-        $full_url = "${protocol}://${domain}${disp_port}${base_url}";
-
-        return $full_url;
-    }
-
     /**
      * This function is used ask the user about the database details
      * @param string $mode Describes which phase is currently running
@@ -315,7 +305,7 @@ class install {
                 'password' => $password,
                 'database' => $database,
                 'admin_email' => $adminEmail,
-                'hostname' => $this->getFullURL(),
+                'hostname' => getFullURL(),
                 'consumer_key' => $consumerKey,
                 'consumer_key_secret' => $consumerKeySecret,
                 'end_point' => $endPoint
