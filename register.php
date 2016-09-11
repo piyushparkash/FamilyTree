@@ -51,6 +51,13 @@ if (isset($_POST['register_submit'])) {
 }
 
 
+if ($vanshavali->wp_login) { //get the user wordpress details
+
+    $_SESSION['sendtopage'] = 'register.php';
+    header("Location: login.php?action=wp_login&sub=1");
+    exit();
+}
+
 $template->header();
 $template->assign("is_wordpress_enabled", $vanshavali->wp_login);
 $template->display('user.main.tpl');
