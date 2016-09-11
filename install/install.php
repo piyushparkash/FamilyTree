@@ -385,7 +385,9 @@ class install {
             foreign key (family_id) references family(id),
             foreign key (related_to) references member(id),
             admin int(1) default 0,
-            wordpress_user int(11) default null unique )");
+            wordpress_user int(11) default null unique,
+            wordpress_access_token varchar(100) default null,
+            wordpress_access_token_secret varchar(100) default null )");
 
         $feedback = $db->query("create table if not exists feedback (
             id int(11) not null primary key auto_increment,

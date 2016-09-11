@@ -480,10 +480,11 @@ class vanshavali {
         //Sql Statement
         if (!empty($details[8])) { //If member is not already connected to Family Tree then insert else update
             $sql = "update member set membername='$details[9]',username='$details[0]',password='$details[1]',dob=$details[2],gender=$details[3],relationship_status=$details[4],gaon='$details[5]',
-	emailid='$details[6]',alive=1,aboutme='$details[7]',joined=" . time() . ",tokenforact='$token' where id=$details[8]";
+	emailid='$details[6]',alive=1,aboutme='$details[7]',joined=" . time() . ",tokenforact='$token', wordpress_id=$details[11], wordpress_access_token='$details[12]', wordpress_access_token_secret='$details[13]' where id=$details[8]";
         } else {
-            $sql = "insert into member (membername,username,password,dob,gender,relationship_status,gaon,emailid,alive,aboutme,joined,tokenforact, family_id)
-                values('$details[9]','$details[0]','$details[1]',$details[2],$details[3],$details[4],'$details[5]','$details[6]',1,'$details[7]'," . time() . ",'$token', $details[10])";
+            $sql = "insert into member (membername,username,password,dob,gender,relationship_status,gaon,emailid,alive,aboutme,joined,tokenforact, family_id, wordpress_id, wordpress_access_token, wordpress_access_token_secret)
+                values('$details[9]','$details[0]','$details[1]',$details[2],$details[3],$details[4],'$details[5]','$details[6]',1,'$details[7]',"
+                    . time() . ",'$token', $details[10], $details[11] , '$details[12]','$details[13]')";
         }
         //Finally execute the sql
         $ret = $db->query($sql);
@@ -492,7 +493,8 @@ class vanshavali {
         $mail_options = array(
             'username' => $details[0],
             'email' => $details[6],
-            'not_connected' => !empty($details[8]) ? true : false
+            'not_connected' => !empty($details[8]) ? true : false,
+            'wp_login' => $vanshavali->wp_login
         );
         if ($ret != false) {
             $this->mail("mail.register.confirm.tpl", $mail_options, $details[6], 'Welcome to Vanshavali | Email Confirmation');
@@ -559,7 +561,7 @@ class vanshavali {
         $obj['data'] = array(
             "dob" => ($row['dob'] ? strftime("%d/%m/%Y", $row['dob']) : ""),
             "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
-                    "Married"),
+            "Married"),
             "relationship_status_id" => $row['relationship_status'],
             "alive" => ($row['alive'] == 0 ? "Deceased" : "Living"),
             "gender" => $row['gender'],

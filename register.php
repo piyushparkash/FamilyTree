@@ -27,8 +27,15 @@ if (isset($_POST['register_submit'])) {
     $about = $_POST['register_about'];
     $familyid = $_POST['familyid'];
 
+    if ($vanshavali->wp_login) {
+        $wp_id = $_POST['wp_id'];
+        $wp_oauth_token = $_POST['wp_oauth_token'];
+        $wp_oauth_token_secret = $_POST['wp_oauth_token_secret'];
+    }
+
     if ($vanshavali->register(array(
-                $username, $password, $dob, $gender, $relation, $gaon, $email, $about, $id, $membername, $familyid
+                $username, $password, $dob, $gender, $relation, $gaon, $email, $about, $id, $membername, $familyid,
+                $wp_id, $wp_oauth_token, $wp_oauth_token_secret
             ))) {
         if ($_POST['is_admin']) {
 
