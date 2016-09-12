@@ -173,6 +173,11 @@ class install {
         //Calculate the callback to be used
         $callback = $vanshavali->hostname . CALLBACK;
 
+        if (!$vanshavali->wp_login) {
+            header("Location:index.php?mode=setupAdmin");
+            return;
+        }
+
         $sub = ($sub == null) ? 1 : $sub;
 
         if ($sub == 1) {
