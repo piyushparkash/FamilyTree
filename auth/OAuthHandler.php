@@ -99,10 +99,10 @@ class OAuthHandler {
         }
     }
 
-    function auth_fetch($directive) {
+    public function auth_fetch($directive) {
         //check if previous process have comleted or not
 
-        
+
         if ($_SESSION['oauthstate'] == "access") {
             //We have all the right set of tokens
             $this->oauth->setToken($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);

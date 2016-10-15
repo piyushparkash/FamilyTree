@@ -126,7 +126,7 @@ class install {
      * @param type $sub
      */
     function setupAdmin($mode, $sub) {
-        global $template, $db, $vanshavali;
+        global $template, $db, $vanshavali, $user;
         $sub = ($sub == null) ? "firstfamily" : $sub;
 
         if ($sub == "firstfamily") {
@@ -139,23 +139,20 @@ class install {
             $vanshavali->addfamily($_POST['family_name']) or trigger_error("Unable to add family. Please try again");
 
             //We have added the first family. Lets proceed to add first member
-            //Get the wordpress user first if wordpress login is enabled
-            if ($vanshavali->wp_login) {
-                $_SESSION['sendtopage'] = 'index.php?mode=setupAdmin&sub=firstmember';
-                header("Location: login.php?action=wp_login&sub=1");
-            } else {
-                header("Location: index.php?mode=setupAdmin&sub=firstmember");
-            }
+
+            header("Location: index.php?mode=setupAdmin&sub=firstmember");
         } else if ($sub == "firstmember") {
             //This is where we find out that there is no member installed
             //We need to first get the family that was just added for this member
             $family = $db->get("select * from family limit 1");
 
             //We would have got information about wordpress user if wordpress is enabled
-            if ($_POST['sending']) {
+            if ($vanshavali->wp_login) {
 
                 //We have WP Enabled
-                $template->assign($_POST);
+                $wp_user = $user->oauth->auth_fetch("users/me");
+                $wp_user = json_decode($wp_user, true);
+                $template->assign("id", $wp_user['id']);
             }
 
             $template->header();
@@ -196,8 +193,28 @@ class install {
                 $template->display("install.check_wp_login.tpl");
                 $template->footer();
             } else {
-                header("Location:index.php?mode=setupAdmin");
+
+                //Complete the other WP workflow here only.
+                $_SESSION['sendtopage'] = 'index.php?mode=check_wp_login&sub=3';
+                header("Location:login.php?action=wp_login&sub=1");
             }
+        } elseif ($sub == 3) {
+            //We would have gotten WP Rest Details via $_POST
+            require 'config.php';
+
+            $new_config = array_merge($config, array("oauth_token" => $_POST['oauth_token'],
+                "oauth_token_secret" => $_POST['oauth_token_secret']));
+
+            $configfile = fopen("config.php", "w+");
+
+            $data = "<?php\n\$config = " . var_export($new_config, true) . ";";
+
+            fwrite($configfile, $data);
+
+            fclose($new_config);
+
+            //Setup the admin. He only is logged in right now.
+            header("Location:index.php?mode=setupAdmin");
         }
     }
 
@@ -390,9 +407,7 @@ class install {
             foreign key (family_id) references family(id),
             foreign key (related_to) references member(id),
             admin int(1) default 0,
-            wordpress_user int(11) default null unique,
-            wordpress_access_token varchar(100) default null,
-            wordpress_access_token_secret varchar(100) default null )");
+            wordpress_user int(11) default null unique )");
 
         $feedback = $db->query("create table if not exists feedback (
             id int(11) not null primary key auto_increment,
