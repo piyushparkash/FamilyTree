@@ -202,7 +202,7 @@ class install {
                     'password' =>$password,
                     'database' => $database,
                     'admin_email' => $adminEmail,
-				), true);
+				), true) . ";";
 
             fwrite($file, $data);
             fclose($file);
