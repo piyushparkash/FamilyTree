@@ -250,7 +250,7 @@ class install {
 
 
         $member = $db->query("create table if not exists member (
-            id int(11) null primary key auto_increment,
+            id int(11) primary key auto_increment,
             membername mediumtext not null,
             username mediumtext default null,
             password mediumtext default null,
