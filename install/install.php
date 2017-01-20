@@ -378,7 +378,7 @@ class install {
             relationship_status int(11) default 0,
             gaon mediumtext default null,
             related_to int(11) null default null,
-            emailid varchar(256) default null unique,
+            emailid varchar(255) default null unique,
             alive int(1) default 0,
             aboutme longtext default null,
             lastlogin int(11) default null,
