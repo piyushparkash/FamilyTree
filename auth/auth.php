@@ -34,7 +34,7 @@ class auth {
     public function authenticate_wp($authverifier) {
         //Second phase of oauth
 
-        $accesstoken = $this->oauth->init_access_process($authverifier, $redirect);
+        $accesstoken = $this->oauth->init_access_process($authverifier);
 
         if (!$accesstoken) {
             return false;
