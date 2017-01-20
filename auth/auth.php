@@ -8,7 +8,7 @@
 require_once __DIR__ . '/OAuthHandler.php';
 
 class auth {
-    //public $oauth;
+    public $oauth;
 
     /**
      * The constructor of the class
