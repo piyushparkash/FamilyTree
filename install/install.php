@@ -370,7 +370,7 @@ class install {
             id int(11) null primary key auto_increment,
             membername mediumtext not null,
             username mediumtext default null,
-            password mediumtext default null,
+            `password` mediumtext default null,
             sonof int(11) null default null,
             profilepic varchar(255) default 'common.png',
             dob int(11) default null,
