@@ -8,8 +8,7 @@
 require_once __DIR__ . '/OAuthHandler.php';
 
 class auth {
-
-    public $oauth;
+    //public $oauth;
 
     /**
      * The constructor of the class
@@ -24,24 +23,18 @@ class auth {
         $this->oauth = new OAuthHandler($consumerkey, $consumersecret, $endpoint, $namespace);
     }
 
-    public function wp_login_init($callback) {
+    public function wp_login_init() {
         //Initiate the oauth process
-        //get the request token
-        if (!$this->oauth->init_request_process($callback))
-            return false;
-
         //Authorize...
         if (!$this->oauth->init_auth_process())
             return false;
-
         return true;
     }
-
+    
     public function authenticate_wp($authverifier) {
         //Second phase of oauth
 
-
-        $accesstoken = $this->oauth->init_access_process($authverifier);
+        $accesstoken = $this->oauth->init_access_process($authverifier, $redirect);
 
         if (!$accesstoken) {
             return false;
@@ -52,8 +45,6 @@ class auth {
 
         if (!$wp_user) {
             return false;
-        } else {
-            $wp_user = json_decode($wp_user, true);
         }
 
         return array($accesstoken, $wp_user);
@@ -97,6 +88,31 @@ class auth {
         return true;
     }
 
+
+    public function authenticate_thr_wp($wordpresID) {
+        //Get the corresponding user id for the wordpress id
+        global $db;
+
+        $query = $db->query("select * from member where wordpress_user=$wordpresID");
+        $row = mysqli_fetch_array($query);
+
+        global $_SESSION;
+        if (is_null($row))
+        {
+            //Just set the wordpress user details
+            $_SESSION['wpid'] = $wordpresID;
+            $_SESSION['authenticated'] = true;
+            return true;
+        }
+        
+        //else if we have FamilyTree Details also then that also
+        $token = $this->generate_token($row['id']);
+        $_SESSION['membername'] = $row['membername'];
+        $_SESSION['id'] = $row['id'];
+        $_SESSION['token'] = $token;
+        $_SESSION['authenticated'] = true;
+    }
+
     /**
      * This function is used to check if user's account has been approved by the admin
      * @param type $id The ID of the user to check for
@@ -138,6 +154,11 @@ class auth {
                     return true;
                 }
             }
+        }
+        //When we have wordpress enabled
+        else if (isset($_SESSION['wpid'], $_SESSION['authenticated']))
+        {
+            return true;
         }
 
         return false;

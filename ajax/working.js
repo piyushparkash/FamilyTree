@@ -151,10 +151,10 @@ function login() {
     $.post("getdata.php", {action: "check_wp_login"}, function (data)
     {
         if (ajaxSuccess(data)) {
-            window.location = "login.php?action=wp_login&sub=1"
+            //Normal login as there are user without wordpress id, so show modal
+            window.location='oauthlogin.php';
         } else
         {
-            //Normal login, so show modal
             $("#login").modal();
         }
     });

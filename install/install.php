@@ -138,22 +138,23 @@ class install {
 
             $vanshavali->addfamily($_POST['family_name']) or trigger_error("Unable to add family. Please try again");
 
-            //We have added the first family. Lets proceed to add first member
 
-            header("Location: index.php?mode=setupAdmin&sub=firstmember");
+            //We have added the first family. Lets proceed to add first member
+            header("Location:index.php?mode=setupAdmin&sub=firstmember");
+            
         } else if ($sub == "firstmember") {
             //This is where we find out that there is no member installed
             //We need to first get the family that was just added for this member
             $family = $db->get("select * from family limit 1");
 
+
             //We would have got information about wordpress user if wordpress is enabled
             if ($vanshavali->wp_login) {
 
                 //We have WP Enabled
-                $wp_user = $user->oauth->auth_fetch("users/me");
-                $wp_user = json_decode($wp_user, true);
-                $template->assign("id", $wp_user['id']);
+                $template->assign("id", $_SESSION['wpid']);
             }
+
 
             $template->header();
             $template->assign("is_admin", 1);
@@ -184,7 +185,7 @@ class install {
             $template->footer();
             return;
         } elseif ($sub == 2) {
-            if (!$user->oauth->init_request_process($callback)) {
+            if (!$user->oauth->check_callback($callback)) {
                 //Callback is not proper as the request didn't go through
                 $template->header();
                 $template->assign("callback", $callback);
@@ -193,28 +194,10 @@ class install {
                 $template->display("install.check_wp_login.tpl");
                 $template->footer();
             } else {
-
                 //Complete the other WP workflow here only.
-                $_SESSION['sendtopage'] = 'index.php?mode=check_wp_login&sub=3';
-                header("Location:login.php?action=wp_login&sub=1");
+                $_SESSION['redirect_to'] = "index.php?mode=setupAdmin";
+                header("Location:oauthlogin.php");
             }
-        } elseif ($sub == 3) {
-            //We would have gotten WP Rest Details via $_POST
-            require 'config.php';
-
-            $new_config = array_merge($config, array("oauth_token" => $_POST['oauth_token'],
-                "oauth_token_secret" => $_POST['oauth_token_secret']));
-
-            $configfile = fopen("config.php", "w+");
-
-            $data = "<?php\n\$config = " . var_export($new_config, true) . ";";
-
-            fwrite($configfile, $data);
-
-            fclose($new_config);
-
-            //Setup the admin. He only is logged in right now.
-            header("Location:index.php?mode=setupAdmin");
         }
     }
 
@@ -235,12 +218,7 @@ class install {
 
         $wpapi_vars = json_decode($output, true);
 
-        return
-                array("namespace" => $wpapi_vars["namespaces"][0],
-                    "requesturl" => $wpapi_vars['authentication']["oauth1"]["request"],
-                    "authurl" => $wpapi_vars['authentication']["oauth1"]["authorize"],
-                    "accessurl" => $wpapi_vars['authentication']["oauth1"]["access"]
-        );
+        return array("namespace" => $wpapi_vars["namespaces"][0]);
     }
 
     /**
@@ -265,8 +243,9 @@ class install {
             $adminEmail = $_POST['admin_email'];
             $consumerKey = $_POST['consumer_key'];
             $consumerKeySecret = $_POST['consumer_key_secret'];
-            $endPoint = $_POST['end_point'];
-
+            $auth_endPoint = $_POST['auth_end_point'];
+            $access_endPoint = $_POST['access_end_point'];
+            $endpoint = $_POST['end_point'];
             if (empty($host) ||
                     empty($username) ||
                     empty($database) ||
@@ -279,17 +258,18 @@ class install {
                 return;
             }
 
+
             $wp_vars = array();
-            if (!empty($consumerKey) || !empty($consumerKeySecret) || !empty($endPoint)) {
+            if (!empty($consumerKey) || !empty($consumerKeySecret) || !empty($endpoint) || !empty($access_endPoint) || !empty($auth_endPoint)) {
                 //If even one of them is empty
-                if (empty($consumerKey) || empty($consumerKeySecret) || empty($endPoint)) {
+                if (empty($consumerKey) || empty($consumerKeySecret) || empty($endpoint) || empty($access_endPoint) || empty($auth_endPoint)) {
                     $template->header();
                     $template->assign(array("error" => 1,
                         "message" => "Incomplete OAuth Details. Please provide all information."));
                     $template->display("install.ask_database_details.tpl");
                     return;
                 } else {
-                    $wp_vars = $this->get_wp_vars($endPoint);
+                    $wp_vars = $this->get_wp_vars($endpoint);
                     if (!$wp_vars) {
                         $template->header();
                         $template->assign(array("error" => 1,
@@ -329,8 +309,11 @@ class install {
                 'hostname' => getFullURL(),
                 'consumer_key' => $consumerKey,
                 'consumer_key_secret' => $consumerKeySecret,
-                'end_point' => $endPoint
+                'end_point' => $endpoint,
+                'auth_end_point' => $auth_endPoint,
+                'access_end_point' => $access_endPoint
             );
+
 
             if (!empty($wp_vars)) {
                 $filedata = $filedata + $wp_vars;

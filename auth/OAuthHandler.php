@@ -10,118 +10,113 @@ class OAuthHandler {
     public $oauth, $consumerkey, $consumersecret, $endpoint, $namespace, $urls;
 
     public function __construct($consumerkey, $consumersecret, $endpoint, $namespace) {
-        $this->oauth = new OAuth($consumerkey, $consumersecret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
+        $this->oauth = new OAuth2\Client($consumerkey, $consumersecret);
         $this->consumerkey = $consumerkey;
         $this->consumersecret = $consumersecret;
         $this->endpoint = $endpoint;
         $this->namespace = $namespace;
     }
 
-    function setUrl($requesturl, $authurl, $accessurl) {
+    function setUrl($authurl, $accessurl) {
         $this->urls = array(
-            "requrl" => $requesturl,
             "authurl" => $authurl,
             "accessurl" => $accessurl
         );
     }
 
-    public function init_request_process($callback) {
+    function setToken($oauth_token) {
+        $this->oauth->setAccessToken($oauth_token);
+    }
 
-        //Check if we have already a session setup
-        if ($_SESSION['oauthstate'] == "access") {
+    public function check_callback($callback) {
+
+        //Make a curl request to auth url to check the output
+
+        $gen_auth_url = $this->oauth->getAuthenticationUrl($this->urls['authurl'], $callback);
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $gen_auth_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $output = curl_exec($ch);
+
+        $lasturl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+//        var_dump($lasturl);
+
+        if (strpos($lasturl, CALLBACK)) {
+            //it took us to redirect page which means it is working
             return true;
         }
 
-        try {
-            $requestToken = $this->oauth->getRequestToken($this->urls['requrl'], $callback, "POST");
-            if (!$requestToken)
-                return false;
+        $output = json_decode($output, TRUE);
 
-            //Set the variables here in session and proceed in auth process
-            if (session_status() == PHP_SESSION_ACTIVE) {
-                $_SESSION['oauthstate'] = 'auth';
-                $_SESSION['oauth_token'] = $requestToken['oauth_token'];
-                $_SESSION['oauth_token_secret'] = $requestToken['oauth_token_secret'];
-                return true;
-            } else {
-                return false;
-            }
-        } catch (OAuthException $ex) {
+        if (empty($output)) {
+            return true;
+        }
+
+        if ($output['error'] == 'redirect_uri_mismatch') {
+            return FALSE;
+        }
+
+        curl_close($ch);
+
+        if (!$output && empty($output)) { //if curl request fails
             return false;
         }
     }
 
     function init_auth_process() {
-        if (session_status() == PHP_SESSION_ACTIVE && $_SESSION['oauthstate'] == "auth") {
-            header("Location:" . $this->urls['authurl'] .
-                    "?oauth_token=" . $_SESSION['oauth_token'] .
-                    "&oauth_token_secret=" . $_SESSION['oauth_token_secret']);
+        global $vanshavali;
+        if (session_status() == PHP_SESSION_ACTIVE) {
+
+            $final_redirect = $vanshavali->hostname . CALLBACK;
+
+            $authurl = $this->oauth->getAuthenticationUrl($this->urls['authurl'], $final_redirect);
+            header("Location:$authurl");
             return true;
-        } else if ($_SESSION['oauthstate'] == "access") {
-            return TRUE;
-        } else
+        } else {
             return false;
+        }
     }
 
     function init_access_process($authverifier) {
+        global $vanshavali;
         if (session_status() != PHP_SESSION_ACTIVE)
             return false;
 
-        if ($_SESSION['oauthstate'] == "access") {
-            // We are already logged in, so use session tokens
-            return true;
-        }
+        $callback = $vanshavali->hostname . CALLBACK; //. "?" . http_build_query($redirect);
 
-        //set the previous tokens
-        $this->oauth->setToken($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
+        $params = array('code' => $authverifier, 'redirect_uri' => $callback);
 
-        try {
-            $accessToken = $this->oauth->getAccessToken(
-                    $this->urls['accessurl'], null, $authverifier);
-            if (!$accessToken)
-                return false;
-
-            //Set the new token in the session
-            $_SESSION['oauth_token'] = $accessToken['oauth_token'];
-            $_SESSION['oauth_token_secret'] = $accessToken['oauth_token_secret'];
-            $_SESSION['oauthstate'] = 'access';
-
-
-            //Set the new token
-            $this->oauth->setToken($accessToken['oauth_token'], $accessToken['oauth_token_secret']);
-            $this->oauth->setAuthType(OAUTH_AUTH_TYPE_URI);
-
-            //everything done
-            return $accessToken;
-        } catch (OAuthException $ex) {
-            echo $ex->getMessage();
+        $response = $this->oauth->getAccessToken($this->urls['accessurl'], 'authorization_code', $params, array('User-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36'));
+        $accessToken = $response['result'];
+        if (!$accessToken)
             return false;
-        }
+
+        //Set the new token in the session
+        $_SESSION['access_token'] = $accessToken['access_token'];
+
+        //Set the new token
+        $this->oauth->setAccessToken($accessToken['access_token']);
+
+        //everything done
+        return $accessToken;
     }
 
     public function auth_fetch($directive) {
         //check if previous process have comleted or not
+        //Build Url from directive
+        $url = $this->endpoint . $this->namespace . "/" . $directive;
+        
+        $details = $this->oauth->fetch($url);
 
-
-        if ($_SESSION['oauthstate'] == "access") {
-            //We have all the right set of tokens
-            $this->oauth->setToken($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
-            $this->oauth->setAuthType(OAUTH_AUTH_TYPE_URI);
-
-            //Build Url from directive
-            $url = $this->endpoint . $this->namespace . "/" . $directive;
-            try {
-                if (!$this->oauth->fetch($url)) {
-                    return false;
-                } else {
-                    //We have got the information
-
-
-                    return $this->oauth->getLastResponse();
-                }
-            } catch (OAuthException $ex) {
-                return $ex->lastResponse;
-            }
+        if (!$details) {
+            return false;
+        }
+        else
+        {
+            return $details;
         }
     }
 

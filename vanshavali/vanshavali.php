@@ -478,6 +478,7 @@ class vanshavali {
         $token = $user->generate_token();
 
         //Sql Statement
+        //@todo: wordpress user when not provided will fail
         if (!empty($details[8])) { //If member is not already connected to Family Tree then insert else update
             $sql = "update member set membername='$details[9]',username='$details[0]',password='$details[1]',dob=$details[2],gender=$details[3],relationship_status=$details[4],gaon='$details[5]',
 	emailid='$details[6]',alive=1,aboutme='$details[7]',joined=" . time() . ",tokenforact='$token', wordpress_user=$details[11] where id=$details[8]";

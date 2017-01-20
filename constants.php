@@ -22,5 +22,5 @@ define("FEMALE", 1);
 define("LIVING", 1);
 define("DECEASED", 0);
 
-define("CALLBACK", '/login.php?action=wp_login&sub=2&XDEBUG_SESSION_START=netbeans-xdebug');
+define("CALLBACK", '/oauthlogin.php');
 

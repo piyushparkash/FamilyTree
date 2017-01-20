@@ -18,6 +18,7 @@ if (isset($_POST['register_submit'])) {
 
 //Convert date to Unix TimeStamp
     preg_match("/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})/", $_POST['register_dob'], $matches);
+    var_dump($matches);
     $dob = mktime(0, 0, 0, $matches[2], $matches[1], $matches[3]);
 
     $gender = $_POST['register_gender'];
@@ -28,7 +29,7 @@ if (isset($_POST['register_submit'])) {
     $familyid = $_POST['familyid'];
 
     if ($vanshavali->wp_login) {
-        $wp_id = $_POST['wp_id'];
+        $wp_id = $_SESSION['wpid']; //Current wordpress user
     }
 
     if ($vanshavali->register(array(
@@ -48,13 +49,14 @@ if (isset($_POST['register_submit'])) {
     }
 }
 
+/*
+  if ($vanshavali->wp_login) { //get the user wordpress details
 
-if ($vanshavali->wp_login) { //get the user wordpress details
-
-    $_SESSION['sendtopage'] = 'register.php';
-    header("Location: login.php?action=wp_login&sub=1");
-    exit();
-}
+  $_SESSION['sendtopage'] = 'register.php';
+  header("Location: login.php?action=wp_login&sub=1");
+  exit();
+  }
+ */
 
 $template->header();
 $template->assign("is_wordpress_enabled", $vanshavali->wp_login);

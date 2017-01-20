@@ -7,6 +7,7 @@
 error_reporting(E_ALL);
 ini_set("display_errors", "On");
 
+require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/constants.php';
 
 //If config file exists then include it else leave it
@@ -43,11 +44,17 @@ if (isset($config['database']) and ! empty($config['database'])) {
 $user = new user();
 $suggest_handler = new suggest_handler();
 
+
 //Check if Wordpress is enabled or not
 if (!(empty($config['consumer_key']) && empty($config['consumer_key_secret']))) {
     $vanshavali->wp_login = true;
     $user->setConsumerToken($config['consumer_key'], $config['consumer_key_secret'], $config['end_point'], $config['namespace']);
-    $user->oauth->setUrl($config['requesturl'], $config['authurl'], $config['accessurl']);
+    $user->oauth->setUrl($config['auth_end_point'], $config['access_end_point']);
+}
+
+if (!(empty($config['loginurl']) && empty($config['currentuser'])))
+{
+    $vanshavali->wp_login = true;
 }
 
 //Register the basic suggests

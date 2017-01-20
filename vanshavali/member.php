@@ -17,7 +17,6 @@ class member extends member_operation {
     public function __construct($memberid) {
         parent::__construct($memberid);
         $this->populate_data($memberid);
-        $this->autofix();
     }
 
     /**
@@ -92,53 +91,8 @@ class member extends member_operation {
         $row = $db->fetch($query);
         return $row['nosons'];
     }
-
-    /**
-     * This function is used to fix any anamolies found in member data
-     * such as if user has children but the relationshipstatus is set to Single 
-     * @global \db $db
-     * @return null
-     */
-    function autofix() {
-
-        $nosons = $this->has_sons();
-        if ($nosons > 0) {
-// If the member has sons Change the status to married
-// Add a wife and add parents to wife and create a new family
-            $this->set_relationship(MARRIED);
-            $this->addwife();
-
-//Call the second autofix function to fix the wife and 
-//husband of same family issue.
-            $this->autofix2();
-        }
-    }
-
-    function autofix2() {
-//check which records were overwritten
-        $logfile = fopen("logfile.txt", "w+");
-        global $vanshavali;
-//This check should only run for wifes
-        $spouse = new member($this->data['related_to']);
-
-//Check if it is wife
-        if ($spouse->isfemale()) {
-//Now check if we have different family for the wife here
-            if ($spouse->data['family_id'] == $this->data['family_id']) {
-                $new_family_id = $vanshavali->addfamily($spouse->data['membername']);
-                if ($new_family_id == false) {
-                    fwrite($logfile, "Could not add a new family");
-                    fclose($logfile);
-                    return;
-                }
-                $spouse->set("family_id", $new_family_id);
-                fwrite($logfile, "$spouse->id--corrected" . "\n");
-//And we are done.
-            }
-        }
-        fclose($logfile);
-    }
-
+    
+    
     /**
      * This function is used to set the relationship status of the current user
      * Returns true if successfull else false
