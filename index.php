@@ -18,6 +18,25 @@ if (!is_readable("config.php")) {
     exit();
 }
 
+//Check for wordpress id and redirect if not
+if ($vanshavali->wp_login)
+{
+    $wpid = $user->get("wordpress_user");
+    
+    if (empty($wpid))
+    {
+        $_SESSION['redirect_to'] = "index.php?set_wordpress_id=true";
+        header("Location:oauthlogin.php");
+    }
+}
+
+//If they have come back from the page with the wpid
+if ($vanshavali->wp_login && $_GET['set_wordpress_id'] == "true")
+{
+    $current_user = $vanshavali->getmember($_SESSION['id']);
+    $current_user->set("wordpress_user", $_SESSION['wpid']);
+}
+
 
 //Display the header and basic contents
 $template->header();
