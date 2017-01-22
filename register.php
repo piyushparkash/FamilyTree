@@ -18,7 +18,6 @@ if (isset($_POST['register_submit'])) {
 
 //Convert date to Unix TimeStamp
     preg_match("/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})/", $_POST['register_dob'], $matches);
-    var_dump($matches);
     $dob = mktime(0, 0, 0, $matches[2], $matches[1], $matches[3]);
 
     $gender = $_POST['register_gender'];

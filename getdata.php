@@ -21,11 +21,17 @@ switch ($_POST['action']) {
             if ($row['membercount'] > 0)
             {
                 ajaxError();
+                break;
             }
             else
             {
                 ajaxSuccess();
+                break;
             }
+        }
+        else
+        {
+            ajaxError();
         }
         break;
 
