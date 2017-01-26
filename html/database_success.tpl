@@ -8,6 +8,6 @@
         {
             window.location.assign("index.php?mode=check_wp_login");
         }
-        ,3000);
+        ,1000000);
     </script>
 </div>

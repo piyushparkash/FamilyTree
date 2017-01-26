@@ -5,7 +5,7 @@
     }
 </style>
 <form name="ask_database_name" method="post" class="single-dialog form-horizontal well" action="index.php?mode=ask_database_name&sub=2">
-    {if $error eq 1}
+    {if isset($error)}
         {include file="error_low.tpl"}
     {/if}
     <div class="control-group">

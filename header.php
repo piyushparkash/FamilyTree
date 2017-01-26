@@ -7,8 +7,13 @@
 error_reporting(E_ALL);
 ini_set("display_errors", "On");
 
+//Include core php extensions
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/constants.php';
+require_once __DIR__ . '/functions.php';
+require_once __DIR__ . '/template/template.php';
+require_once __DIR__ . '/db/db.php';
+require_once __DIR__ . '/vanshavali/vanshavali.php';
 
 //If config file exists then include it else leave it
 if (file_exists(__DIR__ . "/config.php")) {
@@ -17,30 +22,49 @@ if (file_exists(__DIR__ . "/config.php")) {
     }
 }
 
-global $db, $template, $user, $vanshavali;
 
-//Initialize Global variables
-require_once __DIR__ . '/template/template.php';
-require_once __DIR__ . '/db/db.php';
-require_once __DIR__ . '/user/user.php';
-require_once __DIR__ . '/vanshavali/vanshavali.php';
-require_once __DIR__ . '/functions.php';
-require_once __DIR__ . '/suggest/suggest_handler.php';
-
-
+//Initialize them
+global $db, $template, $vanshavali;
 $template = new template();
 $db = new db();
-$vanshavali = new vanshavali();
-
-//Assign the Email Address of admin in the App
-$vanshavali->admin_email = $config['admin_email'];
-$vanshavali->hostname = $config['hostname'];
 
 //Select the default database
 if (isset($config['database']) and ! empty($config['database'])) {
     $db->select_db($config['database']);
 }
 
+
+//Initialize core FamilyTree class
+$vanshavali = new vanshavali();
+
+//If config.php doesn't exist, probably not installed
+if ((!file_exists("config.php"))) {
+    require_once(__DIR__ . "/install/install.php");
+    $install = new install(getFullURL());
+    exit();
+} else if ($vanshavali->firstTime() or $vanshavali->firstTimeFamily()) {
+    //installation still imcomplete
+    require_once(__DIR__ . "/install/install.php");
+    $install = new install(getFullURL());
+    exit();
+}
+
+
+
+global $user;
+//Include FamilyTree modules
+require_once __DIR__ . '/user/user.php';
+require_once __DIR__ . '/suggest/suggest_handler.php';
+
+
+
+
+//Assign the Email Address of admin in the App
+$vanshavali->admin_email = $config['admin_email'];
+$vanshavali->hostname = $config['hostname'];
+
+
+//Initialize supporting Familytree modules
 $user = new user();
 $suggest_handler = new suggest_handler();
 
@@ -52,8 +76,7 @@ if (!(empty($config['consumer_key']) && empty($config['consumer_key_secret']))) 
     $user->oauth->setUrl($config['auth_end_point'], $config['access_end_point']);
 }
 
-if (!(empty($config['loginurl']) && empty($config['currentuser'])))
-{
+if (!(empty($config['loginurl']) && empty($config['currentuser']))) {
     $vanshavali->wp_login = true;
 }
 
