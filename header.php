@@ -37,17 +37,15 @@ if (isset($config['database']) and ! empty($config['database'])) {
 //Initialize core FamilyTree class
 $vanshavali = new vanshavali();
 
-//If config.php doesn't exist, probably not installed
-if ((!file_exists("config.php"))) {
-    require_once(__DIR__ . "/install/install.php");
-    $install = new install(getFullURL());
-    exit();
-} else if ($vanshavali->firstTime() or $vanshavali->firstTimeFamily()) {
-    //installation still imcomplete
-    require_once(__DIR__ . "/install/install.php");
-    $install = new install(getFullURL());
-    exit();
+//Check if Wordpress is enabled or not
+if (!(empty($config['consumer_key']) && empty($config['consumer_key_secret']))) {
+    $vanshavali->wp_login = true;
 }
+
+//Assign the Email Address of admin in the App
+$vanshavali->admin_email = $config['admin_email'];
+$vanshavali->hostname = $config['hostname'];
+
 
 
 
@@ -57,28 +55,21 @@ require_once __DIR__ . '/user/user.php';
 require_once __DIR__ . '/suggest/suggest_handler.php';
 
 
-
-
-//Assign the Email Address of admin in the App
-$vanshavali->admin_email = $config['admin_email'];
-$vanshavali->hostname = $config['hostname'];
-
-
 //Initialize supporting Familytree modules
 $user = new user();
 $suggest_handler = new suggest_handler();
 
 
-//Check if Wordpress is enabled or not
-if (!(empty($config['consumer_key']) && empty($config['consumer_key_secret']))) {
-    $vanshavali->wp_login = true;
+if ($vanshavali->wp_login) {
     $user->setConsumerToken($config['consumer_key'], $config['consumer_key_secret'], $config['end_point'], $config['namespace']);
     $user->oauth->setUrl($config['auth_end_point'], $config['access_end_point']);
 }
 
-if (!(empty($config['loginurl']) && empty($config['currentuser']))) {
-    $vanshavali->wp_login = true;
-}
+
+
+
+
+
 
 //Register the basic suggests
 

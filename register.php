@@ -30,7 +30,7 @@ if (isset($_POST['register_submit'])) {
     if ($vanshavali->wp_login) {
         $wp_id = $_SESSION['wpid']; //Current wordpress user
     }
-
+    
     if ($vanshavali->register(array(
                 $username, $password, $dob, $gender, $relation, $gaon, $email, $about, $id, $membername, $familyid,
                 $wp_id
@@ -48,14 +48,6 @@ if (isset($_POST['register_submit'])) {
     }
 }
 
-/*
-  if ($vanshavali->wp_login) { //get the user wordpress details
-
-  $_SESSION['sendtopage'] = 'register.php';
-  header("Location: login.php?action=wp_login&sub=1");
-  exit();
-  }
- */
 
 $template->header();
 $template->assign("is_wordpress_enabled", $vanshavali->wp_login);

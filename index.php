@@ -1,6 +1,17 @@
 <?php
 
 require 'header.php';
+//If config.php doesn't exist, probably not installed
+if ((!file_exists("config.php"))) {
+    require_once(__DIR__ . "/install/install.php");
+    $install = new install(getFullURL());
+    exit();
+} else if ($vanshavali->firstTime() or $vanshavali->firstTimeFamily()) {
+    //installation still imcomplete
+    require_once(__DIR__ . "/install/install.php");
+    $install = new install(getFullURL());
+    exit();
+}
 
 //Now that the things are installed
 global $template, $user;
@@ -13,9 +24,9 @@ if (!is_readable("config.php")) {
 }
 
 //Check for wordpress id and redirect if not
-if ($vanshavali->wp_login)
+if ($vanshavali->wp_login && $user->is_authenticated())
 {
-    $wpid = $user->get("wordpress_user");
+    $wpid = $user->user['wordpress_user'];
     
     if (empty($wpid))
     {

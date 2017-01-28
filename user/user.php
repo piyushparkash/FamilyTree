@@ -24,18 +24,6 @@ class user extends auth {
         global $_SESSION;
         if ($this->check_session() == true) {
             
-            //Check if just authenticated in wordpress not in familytree
-            if (isset($_SESSION['wpid']) && !isset($_SESSION['id']))
-            {
-                global $db;
-                $query = $db->query("select * from member where wordpress_user=". $_SESSION['wpid']);
-                $row = mysqli_fetch_array($query);
-                
-                //If the user is there now
-                $_SESSION['id'] = $row['id'];
-                $_SESSION['membername'] = $row['membername'];
-            }
-            
             //populate user data and set class variables to authenticated else normal
             $this->populate_data($_SESSION['id']);
 

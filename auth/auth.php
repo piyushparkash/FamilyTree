@@ -101,7 +101,6 @@ class auth {
         {
             //Just set the wordpress user details
             $_SESSION['wpid'] = $wordpresID;
-            $_SESSION['authenticated'] = true;
             return true;
         }
         
@@ -154,11 +153,6 @@ class auth {
                     return true;
                 }
             }
-        }
-        //When we have wordpress enabled
-        else if (isset($_SESSION['wpid'], $_SESSION['authenticated']))
-        {
-            return true;
         }
 
         return false;

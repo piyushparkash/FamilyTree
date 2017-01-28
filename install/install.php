@@ -126,7 +126,7 @@ class install {
      * @param type $sub
      */
     function setupAdmin($mode, $sub) {
-        global $template, $db, $vanshavali, $user;
+        global $template, $db, $vanshavali;
         $sub = ($sub == null) ? "firstfamily" : $sub;
 
         if ($sub == "firstfamily") {
