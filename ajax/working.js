@@ -146,19 +146,7 @@ function forgotPassword_submit(ohtml, e)
 }
 //login Form
 function login() {
-
-    //First we need to check for WP_LOGIN is enabled or not
-    $.post("getdata.php", {action: "check_wp_login"}, function (data)
-    {
-        if (ajaxSuccess(data)) {
-            //Normal login as there are user without wordpress id, so show modal
-            window.location='oauthlogin.php';
-        } else
-        {
-            $("#login").modal();
-        }
-    });
-
+    $("#login").modal();
 }
 function login_submit() {
     //get the username and password

@@ -76,6 +76,7 @@ if ($_GET['passwordchanged']) {
 
 
 $template->display("right-container.tpl");
+$template->assign("wp_login", $vanshavali->wp_login);
 $template->display("login.form.tpl");
 $template->display('forgotpassword.modal.tpl');
 $template->display('search.form.tpl');

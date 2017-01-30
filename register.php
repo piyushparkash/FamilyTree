@@ -48,6 +48,19 @@ if (isset($_POST['register_submit'])) {
     }
 }
 
+//Redirect if user is already logged in
+if ($user->is_authenticated())
+{
+    header("Location:index.php");
+}
+
+//If WP Login then wpid should be set
+if (!$_SESSION['wpid'])
+{
+    $_SESSION['redirect_to'] = "register.php";
+    header("Location:index.php");
+}
+
 
 $template->header();
 $template->assign("is_wordpress_enabled", $vanshavali->wp_login);
