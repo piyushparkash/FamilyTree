@@ -123,7 +123,7 @@ class user extends auth {
     static function check_all_wordpress()
     {
         global $db;
-        $query = $db->query("select count(*) as membercount where username!='' and password!='' and wordpress_user is null");
+        $query = $db->query("select count(*) as membercount from member where username!='' and password!='' and wordpress_user is null");
         $row = $db->fetch($query);
         
         if ($row['membercount'] == 0)
