@@ -77,6 +77,10 @@ $template->display("right-container.tpl");
 if ($user::check_all_wordpress()) {
     $template->assign("wp_login", $vanshavali->wp_login);
 }
+else
+{
+    $template->assign("wp_login", false);
+}
 
 $template->display("login.form.tpl");
 $template->display('forgotpassword.modal.tpl');
