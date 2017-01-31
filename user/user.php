@@ -126,13 +126,13 @@ class user extends auth {
         $query = $db->query("select count(*) as membercount where username!='' and password!='' and wordpress_user is null");
         $row = $db->fetch($query);
         
-        if ($row['membercount'] > 0)
+        if ($row['membercount'] == 0)
         {
-            return false;
+            return true;
         }
         else
         {
-            return true;
+            return false;
         }
     }
 
