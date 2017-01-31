@@ -6,8 +6,8 @@
     <div class="modal-body">
         {if $wp_login}
             <div class="text-center">
-                <a href="oauthlogin.php" style="margin: 0 auto;" class="btn btn-large">Sign into Ratupar</a>
-                <a href="register.php" style="margin: 0 auto;" class="btn btn-large btn-success">Join Family</a>
+                <a href="oauthlogin.php" class="btn btn-large">Sign into Ratupar</a>
+                <a href="register.php" class="btn btn-large btn-success">Join Family</a>
             </div>
         {else}
             <form method="post" onsubmit="return login_submit()" class="form-horizontal well">

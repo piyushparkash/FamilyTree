@@ -119,6 +119,22 @@ class user extends auth {
 
         return $row['lastlogin'];
     }
+    
+    static function check_all_wordpress()
+    {
+        global $db;
+        $query = $db->query("select count(*) as membercount where username!='' and password!='' and wordpress_user is null");
+        $row = $db->fetch($query);
+        
+        if ($row['membercount'] > 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
 }
 
