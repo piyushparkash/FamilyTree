@@ -58,7 +58,7 @@ if ($user->is_authenticated())
 if (!$_SESSION['wpid'])
 {
     $_SESSION['redirect_to'] = "register.php";
-    header("Location:index.php");
+    header("Location:oauthlogin.php");
 }
 
 
