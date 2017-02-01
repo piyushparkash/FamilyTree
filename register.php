@@ -55,7 +55,7 @@ if ($user->is_authenticated())
 }
 
 //If WP Login then wpid should be set
-if (!$_SESSION['wpid'])
+if (!$_SESSION['wpid'] && $vanshavali->wp_login)
 {
     $_SESSION['redirect_to'] = "register.php";
     header("Location:oauthlogin.php");
