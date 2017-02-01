@@ -1,10 +1,14 @@
 <?php
+
 /**
  * This class is used to create and destroy sessions. It also handles User Authentication
  * @param none
  * @author piyush
  */
+require_once __DIR__ . '/OAuthHandler.php';
+
 class auth {
+    public $oauth;
 
     /**
      * The constructor of the class
@@ -12,6 +16,38 @@ class auth {
      */
     public function __construct() {
         session_start();
+    }
+
+    public function setConsumerToken($consumerkey, $consumersecret, $endpoint, $namespace) {
+
+        $this->oauth = new OAuthHandler($consumerkey, $consumersecret, $endpoint, $namespace);
+    }
+
+    public function wp_login_init() {
+        //Initiate the oauth process
+        //Authorize...
+        if (!$this->oauth->init_auth_process())
+            return false;
+        return true;
+    }
+    
+    public function authenticate_wp($authverifier) {
+        //Second phase of oauth
+
+        $accesstoken = $this->oauth->init_access_process($authverifier);
+
+        if (!$accesstoken) {
+            return false;
+        }
+
+        //Get the user details of wordpress user
+        $wp_user = $this->oauth->auth_fetch("users/me");
+
+        if (!$wp_user) {
+            return false;
+        }
+
+        return array($accesstoken, $wp_user);
     }
 
     /**
@@ -28,7 +64,7 @@ class auth {
      */
     public function authenticate($username, $password) {
         global $db;
-        
+
         //Convert Password in md5 Hash
         $password = md5($password);
         $query = $db->query("select * from member where username='$username' and password='$password'");
@@ -38,9 +74,8 @@ class auth {
         if ($row == false) {
             return false;
         }
-        
-        //Check here for approval if user registration has been approved by the admin. Currently disabled
 
+        //Check here for approval if user registration has been approved by the admin. Currently disabled
         //Start the session and start storing data about user
         global $_SESSION;
         $token = $this->generate_token($row['id']);
@@ -51,6 +86,30 @@ class auth {
 
         //if everything is alright then return true
         return true;
+    }
+
+
+    public function authenticate_thr_wp($wordpresID) {
+        //Get the corresponding user id for the wordpress id
+        global $db;
+
+        $query = $db->query("select * from member where wordpress_user=$wordpresID");
+        $row = mysqli_fetch_array($query);
+
+        global $_SESSION;
+        if (is_null($row))
+        {
+            //Just set the wordpress user details
+            $_SESSION['wpid'] = $wordpresID;
+            return true;
+        }
+        
+        //else if we have FamilyTree Details also then that also
+        $token = $this->generate_token($row['id']);
+        $_SESSION['membername'] = $row['membername'];
+        $_SESSION['id'] = $row['id'];
+        $_SESSION['token'] = $token;
+        $_SESSION['authenticated'] = true;
     }
 
     /**
@@ -159,40 +218,34 @@ class auth {
         }
         return $newcode;
     }
-    
+
     /**
      * This function is used to destroy the session created
      * @return null
      */
-    function destroy_session()
-    {
+    function destroy_session() {
         session_unset();
     }
-    
+
     /**
      * This function is used to log-out the user
      * @global \db $db The instance of the db class
      * @return boolean
      */
-    function unauthenticate()
-    {
+    function unauthenticate() {
         global $db;
-        if (!$this->is_authenticated())
-        {
+        if (!$this->is_authenticated()) {
             return false;
         }
         //Update the last login timestamp
-        if ($db->query("update member set lastlogin=".time()." where id=".$_SESSION['id']))
-        {
-        
-        //Unset all the session values
-        $this->destroy_session();
-        if ($this->is_authenticated())
-        {
-            trigger_error("Error Ending Session",E_USER_ERROR);
-            return false;
-        }
-        
+        if ($db->query("update member set lastlogin=" . time() . " where id=" . $_SESSION['id'])) {
+
+            //Unset all the session values
+            $this->destroy_session();
+            if ($this->is_authenticated()) {
+                trigger_error("Error Ending Session", E_USER_ERROR);
+                return false;
+            }
         }
         return true;
     }

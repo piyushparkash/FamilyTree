@@ -30,7 +30,15 @@ Few directories in FamilyTree need write permissions which are not there by defa
 	
 	`Database: mention any name`
 
-5) If everything goes right, It will install FamilyTree with sample data in it and you will be able to see the Family with the visualisation.
+5. Wordpress OAuth has been introduced which works with [Wordpress OAuth Server](https://wordpress.org/plugins/oauth2-provider/) and [Wordpress REST API](https://wordpress.org/plugins/rest-api/).
+
+If you want to use it, you would have to install the above plugin in Wordpress and provide FamilyTree details such as Client ID, Secret Key, Auth and Token End Point.
+
+Redirect URI will be provided during the installation. Update the URL in Wordpress OAuth Server
+
+6. Don't forget to do `composer install`
+
+6. If everything goes right, It will install FamilyTree  and you will be able to see the Family with the visualization.
 
 Facing Problems?
 -----------------------

@@ -5,6 +5,9 @@
  * @package install
  * @author piyush
  */
+require_once __DIR__ . '/../functions.php';
+
+
 $mode = @$_GET['mode'];
 $sub = @$_GET['sub'];
 
@@ -16,7 +19,7 @@ class install {
      * @global integer $sub
      * @return null
      */
-    function install() {
+    function install($base) {
         global $mode, $sub;
         //make sure to run this only if database is not installed
         //So check if database is installed
@@ -36,6 +39,9 @@ class install {
                 break;
             case "setupAdmin":
                 $this->setupAdmin($mode, $sub);
+                break;
+            case "check_wp_login":
+                $this->check_wp_login($mode, $sub);
                 break;
             case "check_directory_permission":
             default :
@@ -132,19 +138,87 @@ class install {
 
             $vanshavali->addfamily($_POST['family_name']) or trigger_error("Unable to add family. Please try again");
 
+
             //We have added the first family. Lets proceed to add first member
-            header("Location: index.php?mode=setupAdmin&sub=firstmember");
+            header("Location:index.php?mode=setupAdmin&sub=firstmember");
+            
         } else if ($sub == "firstmember") {
             //This is where we find out that there is no member installed
             //We need to first get the family that was just added for this member
             $family = $db->get("select * from family limit 1");
 
+
+            //We would have got information about wordpress user if wordpress is enabled
+            if ($vanshavali->wp_login) {
+
+                //We have WP Enabled
+                $template->assign("id", $_SESSION['wpid']);
+            }
+
+
             $template->header();
             $template->assign("is_admin", 1);
+            $template->assign("is_wordpress_enabled", $vanshavali->wp_login);
             $template->assign("familyid", $family['id']);
             $template->display("register.form.tpl");
             $template->footer();
         }
+    }
+
+    function check_wp_login($mode, $sub) {
+        global $template, $db, $user, $vanshavali;
+
+        //Calculate the callback to be used
+        $callback = $vanshavali->hostname . CALLBACK;
+
+        if (!$vanshavali->wp_login) {
+            header("Location:index.php?mode=setupAdmin");
+            return;
+        }
+
+        $sub = ($sub == null) ? 1 : $sub;
+
+        if ($sub == 1) {
+            $template->header();
+            $template->assign("callback", $callback);
+            $template->display("install.check_wp_login.tpl");
+            $template->footer();
+            return;
+        } elseif ($sub == 2) {
+            if (!$user->oauth->check_callback($callback)) {
+                //Callback is not proper as the request didn't go through
+                $template->header();
+                $template->assign("callback", $callback);
+                $template->assign(array("error" => 1,
+                    "message" => "We are not able to make request to Wordpress. Can you please check the Callback and set it to the below mentioned URL"));
+                $template->display("install.check_wp_login.tpl");
+                $template->footer();
+            } else {
+                //Complete the other WP workflow here only.
+                $_SESSION['redirect_to'] = "index.php?mode=setupAdmin";
+                header("Location:oauthlogin.php");
+            }
+        }
+    }
+
+    function get_wp_vars($endpoint) {
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $endpoint);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $output = curl_exec($ch);
+
+        curl_close($ch);
+
+        if (!$output) { //if curl request fails
+            return false;
+        }
+
+        $wpapi_vars = json_decode($output, true);
+
+        return array("namespace" => $wpapi_vars["namespaces"][0]);
     }
 
     /**
@@ -155,7 +229,9 @@ class install {
      */
     function ask_database_name($mode, $sub) {
         global $template, $db;
+
         $sub = ($sub == null) ? 1 : $sub;
+
         if ($sub == 1) {
             $template->header();
             $template->display("install.ask_database_details.tpl");
@@ -165,7 +241,11 @@ class install {
             $password = $_POST['database_password'];
             $database = $_POST['database_name'];
             $adminEmail = $_POST['admin_email'];
-
+            $consumerKey = $_POST['consumer_key'];
+            $consumerKeySecret = $_POST['consumer_key_secret'];
+            $auth_endPoint = $_POST['auth_end_point'];
+            $access_endPoint = $_POST['access_end_point'];
+            $endpoint = $_POST['end_point'];
             if (empty($host) ||
                     empty($username) ||
                     empty($database) ||
@@ -177,6 +257,30 @@ class install {
                 $template->display("install.ask_database_details.tpl");
                 return;
             }
+
+
+            $wp_vars = array();
+            if (!empty($consumerKey) || !empty($consumerKeySecret) || !empty($endpoint) || !empty($access_endPoint) || !empty($auth_endPoint)) {
+                //If even one of them is empty
+                if (empty($consumerKey) || empty($consumerKeySecret) || empty($endpoint) || empty($access_endPoint) || empty($auth_endPoint)) {
+                    $template->header();
+                    $template->assign(array("error" => 1,
+                        "message" => "Incomplete OAuth Details. Please provide all information."));
+                    $template->display("install.ask_database_details.tpl");
+                    return;
+                } else {
+                    $wp_vars = $this->get_wp_vars($endpoint);
+                    if (!$wp_vars) {
+                        $template->header();
+                        $template->assign(array("error" => 1,
+                            "message" => "Could not reach endPoint mentioned. Please check and retry"));
+                        $template->display("install.ask_database_details.tpl");
+                        return;
+                    }
+                }
+            }
+
+
 
             //Connect to database
             $db->connect($host, $username, $password);
@@ -196,13 +300,26 @@ class install {
                 trigger_error("Error opening or creating config.php file", E_USER_ERROR);
             }
 
-            $data = "<?php\n\$config = ".var_export(array(
-					'host'=>$host,
-					'username' => $username,
-                    'password' =>$password,
-                    'database' => $database,
-                    'admin_email' => $adminEmail,
-				), true);
+            $filedata = array(
+                'host' => $host,
+                'username' => $username,
+                'password' => $password,
+                'database' => $database,
+                'admin_email' => $adminEmail,
+                'hostname' => getFullURL(),
+                'consumer_key' => $consumerKey,
+                'consumer_key_secret' => $consumerKeySecret,
+                'end_point' => $endpoint,
+                'auth_end_point' => $auth_endPoint,
+                'access_end_point' => $access_endPoint
+            );
+
+
+            if (!empty($wp_vars)) {
+                $filedata = $filedata + $wp_vars;
+            }
+
+            $data = "<?php\n\$config = " . var_export($filedata, true) . ";";
 
             fwrite($file, $data);
             fclose($file);
@@ -253,7 +370,7 @@ class install {
             id int(11) null primary key auto_increment,
             membername mediumtext not null,
             username mediumtext default null,
-            password mediumtext default null,
+            `password` mediumtext default null,
             sonof int(11) null default null,
             profilepic varchar(255) default 'common.png',
             dob int(11) default null,
@@ -261,7 +378,7 @@ class install {
             relationship_status int(11) default 0,
             gaon mediumtext default null,
             related_to int(11) null default null,
-            emailid varchar(256) default null unique,
+            emailid varchar(255) default null unique,
             alive int(1) default 0,
             aboutme longtext default null,
             lastlogin int(11) default null,
@@ -272,7 +389,8 @@ class install {
             family_id int(11) null default null,
             foreign key (family_id) references family(id),
             foreign key (related_to) references member(id),
-            admin int(1) default 0 )");
+            admin int(1) default 0,
+            wordpress_user int(11) default null unique )");
 
         $feedback = $db->query("create table if not exists feedback (
             id int(11) not null primary key auto_increment,

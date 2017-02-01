@@ -6,7 +6,7 @@
     <script type="text/javascript">
         setTimeout(function ()
         {
-            window.location.assign("index.php?mode=setupAdmin");
+            window.location.assign("index.php?mode=check_wp_login");
         }
         ,3000);
     </script>
