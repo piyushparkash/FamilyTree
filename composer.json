@@ -1,5 +1,20 @@
 {
-	"require": {
-		"adoy/oauth2": "*"
-	}
+    "name": "piyushparkash/FamilyTree",
+    "type": "library",
+    "description": "FamilyTree is simple PHP Application targetting the collection of family data which can viewed with beautiful visualisation. You can add/update data, play with the visualisation, show you children their roots, add new members as they enter your family.",
+    "keywords": ["log","logging"],
+    "homepage": "https://github.com/piyushparkash/FamilyTree",
+    "authors": [
+        {
+            "name": "Piyush Parkash",
+            "email": "achyutapiyush@gmail.com",
+            "homepage": "vanshavali.ratupar.in",
+            "role": "Author"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "adoy/oauth2": "*",
+        "ext-curl": "*"
+    }
 }
