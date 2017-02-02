@@ -64,8 +64,7 @@ function validateEmail(emailID)
     if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= emailID.length)
     {
         return false;
-    }
-    else
+    } else
     {
         return true;
     }
@@ -80,12 +79,12 @@ function forgotPassword()
     $("#forgotPassword").modal();
 }
 
-function forgotPassword_submit(ohtml,e)
+function forgotPassword_submit(ohtml, e)
 {
-    
+
     //Disable the event from happening first
     e.preventDefault();
-    
+
     //Disable the reset button
     $(ohtml).children("div.form-actions button").attr("disabled", "yes");
 
@@ -98,8 +97,7 @@ function forgotPassword_submit(ohtml,e)
     if (isEmail)
     {
         type = "email";
-    }
-    else
+    } else
     {
         type = "username";
     }
@@ -112,33 +110,31 @@ function forgotPassword_submit(ohtml,e)
                 type: type,
                 data: userInfo
             },
-    function (data)
-    {
-        if (ajaxSuccess(data))
-        {
-            //Tell the user, email has been sent.
-            $("#emailoname").siblings(".help-block").val("Reset Password link has been sent to your Email ID");
-        }
-        else if (ajaxError(data))
-        {
-            //Oops now what to do
-            //read out the error cause
-
-            var datajson = $.parseJSON(data);
-            
-
-            if (datajson.message == "NO_USER")
+            function (data)
             {
-                $("#emailoname").siblings(".help-block").text("No User with given Email/Username");
-            }
-            else if (datajson.message == "NO_MAIL")
-            {
-                alert($("#emailoname").siblings(".help-block").length)
-                $("#emailoname").siblings(".help-block").text("We could not sent mail. Sorry about that! Please retry");
-            }
+                if (ajaxSuccess(data))
+                {
+                    //Tell the user, email has been sent.
+                    $("#emailoname").siblings(".help-block").val("Reset Password link has been sent to your Email ID");
+                } else if (ajaxError(data))
+                {
+                    //Oops now what to do
+                    //read out the error cause
 
-        }
-    });
+                    var datajson = $.parseJSON(data);
+
+
+                    if (datajson.message == "NO_USER")
+                    {
+                        $("#emailoname").siblings(".help-block").text("No User with given Email/Username");
+                    } else if (datajson.message == "NO_MAIL")
+                    {
+                        alert($("#emailoname").siblings(".help-block").length)
+                        $("#emailoname").siblings(".help-block").text("We could not sent mail. Sorry about that! Please retry");
+                    }
+
+                }
+            });
 
     //All things done. Lets Reenable the controls
     $(ohtml).children("div.form-actions button").removeAttr("disabled");
@@ -220,8 +216,7 @@ function submit_feedback() {
         {
             alert("Some error Occured. Pleae try again");
             window.location.reload();
-        }
-        else if (ajaxSuccess(data))
+        } else if (ajaxSuccess(data))
         {
             $("#feedback_form").modal("hide");
             alert("Thank you for contributing!");
@@ -265,8 +260,7 @@ function operation_addmember_submit() {
             $("#operation_add_gender").removeAttr("disabled");
             $("#operation_add").slideUp();
             return false;
-        }
-        else if (ajaxSuccess(data))
+        } else if (ajaxSuccess(data))
         {
             //enable the controls and set the value to ""
             $("#operation_add_name").removeAttr("disabled").val("");
@@ -379,8 +373,7 @@ function editmember_submit()
         {
             alert("Some Error Occured. Please try again.");
             return false;
-        }
-        else if (ajaxSuccess(data))
+        } else if (ajaxSuccess(data))
         {
             var x = $("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
         #operation_edit_dob,#operation_edit_alive,#operation_edit_id");
@@ -451,20 +444,19 @@ function deletemember_submit()
         type: "remove",
         "memberid": member_id
     },
-    function (data) {
-        //Check for Ajax Error
-        if (ajaxError(data))
-        {
-            alert("Some Error Occured. Please try again");
-            return false;
-        }
-        else if (ajaxSuccess(data))
-        {
-            alert("Member will be removed once it is confirmed by other members");
-            return true;
-        }
+            function (data) {
+                //Check for Ajax Error
+                if (ajaxError(data))
+                {
+                    alert("Some Error Occured. Please try again");
+                    return false;
+                } else if (ajaxSuccess(data))
+                {
+                    alert("Member will be removed once it is confirmed by other members");
+                    return true;
+                }
 
-    });
+            });
 }
 
 function suggest()
@@ -499,8 +491,7 @@ function suggest_action(e, actionid)
         {
             alert("Some error occured. Please try again");
             return false;
-        }
-        else if (ajaxSuccess(data))
+        } else if (ajaxSuccess(data))
         {
             data = $.parseJSON(data);
             //Success now hide the suggestion
@@ -517,14 +508,12 @@ function ajaxSuccess(response)
     {
         alert("Error Occured while parsing response JSON");
         return false;
-    }
-    else
+    } else
     {
         if (json.success == 1)
         {
             return true;
-        }
-        else
+        } else
         {
             return false;
         }
@@ -538,14 +527,12 @@ function ajaxError(response)
     {
         alert("Error Occured while parsing response JSON");
         return false;
-    }
-    else
+    } else
     {
         if (json.success == 0)
         {
             return true;
-        }
-        else
+        } else
         {
             return false;
         }
@@ -559,8 +546,7 @@ function thisisme()
     {
         alert("Please Select a member on the Tree and then clock on This is me.");
         return false;
-    }
-    else
+    } else
     {
         var res = confirm("Are you sure?");
         if (res)
@@ -574,8 +560,7 @@ function thisisme()
                 {
                     window.location.assign("thisisme.php?id=" + selected_member);
                     return true;
-                }
-                else if (ajaxError(data))
+                } else if (ajaxError(data))
                 {
 
                     alert("Someone is already registered with that name");
@@ -621,8 +606,7 @@ function operation_addwife_submit()
             $("#operation_addwife_husband_name").text("");
             $("#operation_addwife").slideUp();
             return false;
-        }
-        else if (ajaxSuccess(data))
+        } else if (ajaxSuccess(data))
         {
             //enable the controls and set the value to ""
             $("#operation_addwife_name").removeAttr("disabled").val("");
@@ -681,8 +665,7 @@ function operation_addhusband_submit()
             $("#operation_addhusband_wife_name").text("");
             $("#operation_addhusband").slideUp();
             return false;
-        }
-        else if (ajaxSuccess(data))
+        } else if (ajaxSuccess(data))
         {
             //enable the controls and set the value to ""
             $("#operation_addhusband_name").removeAttr("disabled").val("");

@@ -13,6 +13,9 @@
             <ul class="nav nav-pills nav-stacked">
                 <a href="index.php?mode=adminuser&submode=allregistered">All Users</a>
             </ul>
+            <ul class="nav nav-pills nav-stacked">
+                <a href="index.php?mode=suggestion&submode=allsuggestion">All Suggestion</a>
+            </ul>
 
 
         </div>

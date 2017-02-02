@@ -12,6 +12,7 @@ var searchData=
   ['getjson_5fnew',['getJson_new',['../classvanshavali.html#aaff3d01d67e94c2371c39adabf1aba1e',1,'vanshavali']]],
   ['getmember',['getmember',['../classvanshavali.html#a91783e3f043278513c32ec2cca7f4c15',1,'vanshavali']]],
   ['getmother',['getMother',['../classmember.html#a8c6d2d7c3ad62d4988000e0886d394b2',1,'member']]],
+  ['getsuggestions',['getsuggestions',['../classsuggest__handler.html#ae7f8d41304727fb1e7af3010996d88b2',1,'suggest_handler']]],
   ['getviewname',['getviewname',['../classsuggest__handler.html#a579df011177c3034a8e4d47707f31e55',1,'suggest_handler']]],
   ['getwife',['getwife',['../classvanshavali.html#a3ff1ca4043648fa9961a6fe2c1f94087',1,'vanshavali']]],
   ['getwife_5fnew',['getwife_new',['../classvanshavali.html#ac63d3c3e833350cc3af38d9ba335be4c',1,'vanshavali']]]

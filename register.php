@@ -27,8 +27,13 @@ if (isset($_POST['register_submit'])) {
     $about = $_POST['register_about'];
     $familyid = $_POST['familyid'];
 
+    if ($vanshavali->wp_login) {
+        $wp_id = $_SESSION['wpid']; //Current wordpress user
+    }
+    
     if ($vanshavali->register(array(
-                $username, $password, $dob, $gender, $relation, $gaon, $email, $about, $id, $membername, $familyid
+                $username, $password, $dob, $gender, $relation, $gaon, $email, $about, $id, $membername, $familyid,
+                $wp_id
             ))) {
         if ($_POST['is_admin']) {
 
@@ -43,8 +48,22 @@ if (isset($_POST['register_submit'])) {
     }
 }
 
+//Redirect if user is already logged in
+if ($user->is_authenticated())
+{
+    header("Location:index.php");
+}
+
+//If WP Login then wpid should be set
+if (!$_SESSION['wpid'])
+{
+    $_SESSION['redirect_to'] = "register.php";
+    header("Location:index.php");
+}
+
 
 $template->header();
+$template->assign("is_wordpress_enabled", $vanshavali->wp_login);
 $template->display('user.main.tpl');
 $template->display('register.form.tpl');
 $template->footer();

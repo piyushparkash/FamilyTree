@@ -103,6 +103,14 @@ class suggest_handler {
         }
     }
 
+    
+    /**
+     * This function shows all the suggestion on which the user has to give his
+     * approval and has not given any as of now. It directly echos the template
+     * rather than returning the suggestion
+     * @global \db $db
+     * @global \user $user
+     */
     public function getsuggestions() {
         global $db, $user;
 
@@ -134,16 +142,19 @@ class suggest_handler {
 // Store all the information of the suggest
         $suggests[] = new suggest_storage($name, $tpl, $parameter, $type);
     }
-
-    /**
-     * 
-     * @global db $db
-     * @global vanshavali $vanshavali
-     * @param string $name
-     * @param string $old_value
-     * @param string $new_value
-     * @param int $to
-     */
+/**
+ * This is a global function which is called when we need to any suggestion
+ * is to be added in the database. It checks the type of suggestion
+ * and adds the suggestion accordingly in the database.
+ * 
+ * @global \db $db
+ * @global \user $user
+ * @param string $name This is the type of the suggestion we are adding eg ADDMEMBER etc
+ * @param int $to This is new value which is to be updated and varies
+ * according to the type of the suggestion. Default value of this is NULL for add/del type of suggestion
+ * @param array|null $new_value ID of the member to which the suggestion is to be applied
+ * @return boolean
+ */
     public function add_suggest($name, $to, $new_value = NULL) {
         global $db, $user;
 
@@ -169,9 +180,7 @@ class suggest_handler {
                 //We don't have to find any old value. So lets implement
                 //As we have composite value while adding and removing a member i.e. name and gender
                 //we put it in an array for it to be passed on.
-                if (!is_array($new_value)) {
-                    $new_value = array($new_value);
-                }
+                
 
                 $new_value = json_encode($new_value);
                 if (!$db->query("insert into suggested_info (typesuggest, new_value, old_value, suggested_by, suggested_to, ts) values('$name', '$new_value', null, " . $user->user['id'] . ", $to, " . time() . ")")) {

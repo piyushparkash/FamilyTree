@@ -23,6 +23,7 @@ class user extends auth {
         parent::__construct();
         global $_SESSION;
         if ($this->check_session() == true) {
+            
             //populate user data and set class variables to authenticated else normal
             $this->populate_data($_SESSION['id']);
 
@@ -117,6 +118,22 @@ class user extends auth {
         $row = $db->fetch($query);
 
         return $row['lastlogin'];
+    }
+    
+    static function check_all_wordpress()
+    {
+        global $db;
+        $query = $db->query("select count(*) as membercount from member where username!='' and password!='' and wordpress_user is null");
+        $row = $db->fetch($query);
+        
+        if ($row['membercount'] == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }

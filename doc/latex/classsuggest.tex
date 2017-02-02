@@ -86,10 +86,10 @@ Definition at line 21 of file suggest.\-php.
 27         $this->suggestedby = $row[\textcolor{stringliteral}{'suggested\_by'}];
 28 
 29         \textcolor{comment}{//if typesuggest is remove then suggested value is in json else not}
-30         \textcolor{keywordflow}{if} ($row[\textcolor{stringliteral}{'typesuggest'}] == \textcolor{stringliteral}{"remove"}) \{
-31             $this->suggested\_value = $row[\textcolor{stringliteral}{'suggested\_value'}];
+30         \textcolor{keywordflow}{if} (in\_array($row[\textcolor{stringliteral}{'typesuggest'}], array(DEL, ADD))) \{
+31             $this->suggested\_value = $row[\textcolor{stringliteral}{'new\_value'}];
 32         \} \textcolor{keywordflow}{else} \{
-33             $this->suggested\_value = json\_decode($row[\textcolor{stringliteral}{'suggested\_value'}], \textcolor{keyword}{true});
+33             $this->suggested\_value = json\_decode($row[\textcolor{stringliteral}{'new\_value'}], \textcolor{keyword}{true});
 34         \}
 35     \}
 \end{DoxyCode}
@@ -113,7 +113,7 @@ Definition at line 168 of file suggest.\-php.
 
 \begin{DoxyCode}
 168                              \{
-169         global $vanshavali, $db;
+169         global $vanshavali, $db, $suggest\_handler;
 170 
 171         \textcolor{comment}{//Check if suggested\_value was JSON or not}
 172         \textcolor{keywordflow}{if} (is\_array($this->suggested\_value)) \{
@@ -122,27 +122,29 @@ Definition at line 168 of file suggest.\-php.
 175             $member = $vanshavali->getmember($this->suggested\_value);
 176         \}
 177 
-178 
-179         \textcolor{comment}{//We have the member to be edited. Now apply the given operation}
-180         \textcolor{keywordflow}{switch} ($this->typesuggest) \{
-181             \textcolor{keywordflow}{case} \textcolor{stringliteral}{"child"}:
-182                 $member->add\_son($this->suggested\_value[\textcolor{stringliteral}{'name'}], $this->suggested\_value[\textcolor{stringliteral}{'gender'}]);
-183                 \textcolor{keywordflow}{break};
-184             \textcolor{keywordflow}{case} \textcolor{stringliteral}{"remove"}:
-185                 $member->remove();
+178         \textcolor{comment}{//Get the sub type of suggest to be passed below}
+179         $struct = $suggest\_handler->find\_structure($this->typesuggest);
+180 
+181 
+182         \textcolor{comment}{//We have the member to be edited. Now apply the given operation}
+183         \textcolor{keywordflow}{switch} ($struct->type) \{
+184             \textcolor{keywordflow}{case} ADD:
+185                 $member->add\_son($this->suggested\_value[\textcolor{stringliteral}{'name'}], $this->suggested\_value[\textcolor{stringliteral}{'gender'}]);
 186                 \textcolor{keywordflow}{break};
-187             \textcolor{keywordflow}{case} \textcolor{stringliteral}{"edit"}:
-188                 $member->edit($this->suggested\_value[\textcolor{stringliteral}{'name'}], $this->suggested\_value[\textcolor{stringliteral}{'gender'}], $this->
-      suggested\_value[\textcolor{stringliteral}{'relationship'}], $this->suggested\_value[\textcolor{stringliteral}{'dob'}], $this->suggested\_value[\textcolor{stringliteral}{'alive'}]);
+187             \textcolor{keywordflow}{case} DEL:
+188                 $member->remove();
 189                 \textcolor{keywordflow}{break};
-190         \}
-191 
-192         \textcolor{comment}{//Now delete all the suggestion approvals as they are of no use}
-193         $this->\hyperlink{classsuggest_a32f9238a6ea3e85021319f6cec2f6fca}{approval\_delete}();
+190             \textcolor{keywordflow}{case} MODIFY:
+191                 $member->edit($this->suggested\_value[\textcolor{stringliteral}{'name'}], $this->suggested\_value[\textcolor{stringliteral}{'gender'}], $this->
+      suggested\_value[\textcolor{stringliteral}{'relationship'}], $this->suggested\_value[\textcolor{stringliteral}{'dob'}], $this->suggested\_value[\textcolor{stringliteral}{'alive'}]);
+192                 \textcolor{keywordflow}{break};
+193         \}
 194 
-195         \textcolor{comment}{//Now mark the suggestion as applied So that it can be used in future}
-196         $db->get(\textcolor{stringliteral}{"update suggested\_info set approved=1 where id=$this->id"});
-197     \}
+195         \textcolor{comment}{//Now delete all the suggestion approvals as they are of no use}
+196         \textcolor{comment}{//$this->approval\_delete();}
+197         \textcolor{comment}{//Now mark the suggestion as applied So that it can be used in future}
+198         $db->get(\textcolor{stringliteral}{"update suggested\_info set approved=1 where id=$this->id"});
+199     \}
 \end{DoxyCode}
 \hypertarget{classsuggest_a32f9238a6ea3e85021319f6cec2f6fca}{\index{suggest@{suggest}!approval\-\_\-delete@{approval\-\_\-delete}}
 \index{approval\-\_\-delete@{approval\-\_\-delete}!suggest@{suggest}}
@@ -156,19 +158,19 @@ boolean
 \end{DoxyReturn}
 
 
-Definition at line 206 of file suggest.\-php.
+Definition at line 208 of file suggest.\-php.
 
 
 \begin{DoxyCode}
-206                                \{
-207         global $db;
-208 
-209         \textcolor{keywordflow}{if} ($db->get(\textcolor{stringliteral}{"Delete from suggest\_approved where suggest\_id=$this->id"})) \{
-210             \textcolor{keywordflow}{return} TRUE;
-211         \} \textcolor{keywordflow}{else} \{
-212             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
-213         \}
-214     \}
+208                                \{
+209         global $db;
+210 
+211         \textcolor{keywordflow}{if} ($db->get(\textcolor{stringliteral}{"Delete from suggest\_approved where suggest\_id=$this->id"})) \{
+212             \textcolor{keywordflow}{return} TRUE;
+213         \} \textcolor{keywordflow}{else} \{
+214             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+215         \}
+216     \}
 \end{DoxyCode}
 \hypertarget{classsuggest_a88a3a93bbc97e562d8f4a2b04bc72d14}{\index{suggest@{suggest}!approve@{approve}}
 \index{approve@{approve}!suggest@{suggest}}

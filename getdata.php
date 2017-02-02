@@ -7,10 +7,33 @@
  */
 require "header.php";
 require "vanshavali/suggest.php";
-global $db;
+global $db, $user;
 
 //get the type of data to be extracted
 switch ($_POST['action']) {
+
+    case "check_wp_login":
+        if ($vanshavali->wp_login)
+        {
+            //Check if all the members have wordpressid
+            $query = $db->query("select count(*) as membercount from member where username!='' and password!='' and wordpress_user=''");
+            $row = mysqli_fetch_array($query);
+            if ($row['membercount'] > 0)
+            {
+                ajaxError();
+                break;
+            }
+            else
+            {
+                ajaxSuccess();
+                break;
+            }
+        }
+        else
+        {
+            ajaxError();
+        }
+        break;
 
 
     case "forgotpassword":

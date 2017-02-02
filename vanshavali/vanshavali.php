@@ -11,14 +11,14 @@ require_once __DIR__ . '/../constants.php';
 class vanshavali {
 
     /**
-     * 
+     *
      * Constructor of the class
      */
     public function __construct() {
         
     }
 
-    public $admin_email;
+    public $admin_email, $wp_login, $hostname;
 
     public function getHeadofFamily($family_id = null) {
         global $db;
@@ -33,7 +33,7 @@ class vanshavali {
     }
 
     /**
-     * 
+     *
      * @param type $member
      * @param type $samefamily
      * @return int
@@ -182,7 +182,7 @@ class vanshavali {
     );
 
     /**
-     * 
+     *
      * @param type $array
      * @return boolean
      */
@@ -250,11 +250,11 @@ class vanshavali {
     }
 
     /**
-     * 
+     *
      * @param type $from
      * @param type $to
      * @return string|boolean
-     * 
+     *
      * Constants
      * 0 brothers
      * 1 mother
@@ -283,7 +283,7 @@ class vanshavali {
      * 24 bahoo cousin
      * 25 nata
      * 26 nati
-     * 
+     *
      */
     public function calculateRelation($from, $to) {
         if ($from === $to) {
@@ -311,7 +311,7 @@ class vanshavali {
     }
 
     /**
-     * 
+     *
      * @param type $who
      * @param type $whom
      * @return boolean
@@ -344,7 +344,7 @@ class vanshavali {
     }
 
     /**
-     * 
+     *
      * @global \db $db
      * @param type $member
      * @return type
@@ -358,7 +358,7 @@ class vanshavali {
     }
 
     /**
-     * 
+     *
      * @global \db $db
      * @return boolean
      */
@@ -378,7 +378,7 @@ class vanshavali {
     }
 
     /**
-     * 
+     *
      * @global \db $db
      * @return boolean
      */
@@ -483,7 +483,19 @@ class vanshavali {
 	emailid='$details[6]',alive=1,aboutme='$details[7]',joined=" . time() . ",tokenforact='$token' where id=$details[8]";
         } else {
             $sql = "insert into member (membername,username,password,dob,gender,relationship_status,gaon,emailid,alive,aboutme,joined,tokenforact, family_id)
-                values('$details[9]','$details[0]','$details[1]',$details[2],$details[3],$details[4],'$details[5]','$details[6]',1,'$details[7]'," . time() . ",'$token', $details[10])";
+                values('$details[9]','$details[0]','$details[1]',$details[2],$details[3],$details[4],'$details[5]','$details[6]',1,'$details[7]',"
+                    . time() . ",'$token', $details[10])";
+        }
+
+        if ($this->wp_login) {
+            if (!empty($details[8])) { //If member is not already connected to Family Tree then insert else update
+                $sql = "update member set membername='$details[9]',username='$details[0]',password='$details[1]',dob=$details[2],gender=$details[3],relationship_status=$details[4],gaon='$details[5]',
+	emailid='$details[6]',alive=1,aboutme='$details[7]',joined=" . time() . ",tokenforact='$token', wordpress_user=$details[11] where id=$details[8]";
+            } else {
+                $sql = "insert into member (membername,username,password,dob,gender,relationship_status,gaon,emailid,alive,aboutme,joined,tokenforact, family_id, wordpress_user)
+                values('$details[9]','$details[0]','$details[1]',$details[2],$details[3],$details[4],'$details[5]','$details[6]',1,'$details[7]',"
+                        . time() . ",'$token', $details[10], $details[11])";
+            }
         }
         //Finally execute the sql
         $ret = $db->query($sql);
@@ -492,7 +504,8 @@ class vanshavali {
         $mail_options = array(
             'username' => $details[0],
             'email' => $details[6],
-            'not_connected' => !empty($details[8]) ? true : false
+            'not_connected' => !empty($details[8]) ? true : false,
+            'wp_login' => $vanshavali->wp_login
         );
         if ($ret != false) {
             $this->mail("mail.register.confirm.tpl", $mail_options, $details[6], 'Welcome to Vanshavali | Email Confirmation');
@@ -532,7 +545,7 @@ class vanshavali {
     }
 
     /**
-     * 
+     *
      * @param type $templateName
      * @param type $data
      * @param type $subject
@@ -545,7 +558,7 @@ class vanshavali {
 
     /**
      * This function is used to used to create structure to used by JIT. It takes
-     * input the array of a row from member table and converts it into the JIT 
+     * input the array of a row from member table and converts it into the JIT
      * structure.
      * @param array $row
      * @return array
@@ -559,7 +572,7 @@ class vanshavali {
         $obj['data'] = array(
             "dob" => ($row['dob'] ? strftime("%d/%m/%Y", $row['dob']) : ""),
             "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
-                    "Married"),
+            "Married"),
             "relationship_status_id" => $row['relationship_status'],
             "alive" => ($row['alive'] == 0 ? "Deceased" : "Living"),
             "gender" => $row['gender'],
@@ -573,7 +586,7 @@ class vanshavali {
     }
 
     /**
-     * This function is used to get the child of the given member to be fetched 
+     * This function is used to get the child of the given member to be fetched
      * to the JIT. It fetches the details of the given member from the database
      * and uses createstruct() to convert it into JIT structure.
      * @global \db $db Instance of the db class
