@@ -16,11 +16,16 @@ function search() {
     //Show the dialog
     $("#search").modal();
 
+    $("#search").children(".modal-body").children("form").submit(function (e) {
+        e.preventDefault();
+        return false;
+    });
+
     //Initialize the autocomplete widget
     $("#search_term").autocomplete({
         source: function (request, response) {
             var newarray = new Array() //This array will hold all the results
-
+            var helpblock = $("#search").children(".modal-body").children("form").children(".help-block")[0];
 
             $.getJSON("register_username.php?action=search&pt=" + request.term, "", function (data) {
                 $.each(data, function (key, value) {
@@ -33,6 +38,17 @@ function search() {
                     newarray.push(obj);
 
                 });
+
+                //if newarray is empty
+                if (newarray.length === 0)
+                {
+                    //Tell user there is no one with this name
+                    helpblock.innerHTML="No User found with this name";
+                    console.log("We got empty response. No user with this name");
+                } else
+                {
+                    helpblock.innerHTML = "Type the name and click search";
+                }
 
                 response(newarray);
             });
