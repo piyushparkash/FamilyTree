@@ -368,9 +368,9 @@
 
         check2 = $("#register_name,#register_username,#register_password,#register_confirmpassword,#register_email");
         $.each(check2, function(index, val) {
-            if (!isValidated(index))
+            if (!isValidated(val.id))
             {
-                console.log("we could not validate everything" + index);
+                console.log("we could not validate everything" + val.id);
                 passed = false;
             }
         });
