@@ -9,33 +9,33 @@
         {include file="error_low.tpl"}
     {/if}
     <div class="control-group">
-        <label for="database_name" class="control-label">Database name:</label>
+        <label for="database_name" class="control-label">Database name*</label>
         <div class=controls>
-            <input type="text" name="database_name" id="database_name" placeholder="Database Name" />
+            <input type="text" name="database_name" id="database_name" placeholder="Database Name" required />
         </div>
     </div>
     <div class="control-group">
-        <label for="database_host" class="control-label">Hostname:</label>
+        <label for="database_host" class="control-label">Hostname*</label>
         <div class=controls>
-            <input type="text" name="database_host" id="database_host" placeholder="Database Host" />
+            <input type="text" name="database_host" id="database_host" placeholder="Database Host" required/>
         </div>
     </div>
     <div class="control-group">
-        <label for="database_username" class="control-label">Database Username</label>
+        <label for="database_username" class="control-label">Database Username*</label>
         <div class=controls>
-            <input type="text" name="database_username" id="database_username" placeholder="Database Username" />
+            <input type="text" name="database_username" id="database_username" placeholder="Database Username" required/>
         </div>
     </div>
     <div class="control-group">
-        <label for="database_password" class="control-label">Database Password:</label>
+        <label for="database_password" class="control-label">Database Password*</label>
         <div class=controls>
-            <input type="password" name="database_password" id="database_name" placeholder="Database Password" />
+            <input type="password" name="database_password" id="database_name" placeholder="Database Password" required/>
         </div>
     </div>
     <div class="control-group">
-        <label for="admin_email" class="control-label">Admin Email</label>
+        <label for="admin_email" class="control-label">Admin Email*</label>
         <div class="controls">
-            <input type="email" name="admin_email" id="admin_email" placeholder="Admin Email" />
+            <input type="email" name="admin_email" id="admin_email" placeholder="Admin Email" required/>
         </div>
     </div>
     <div class="control-group">
