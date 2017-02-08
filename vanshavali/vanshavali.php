@@ -497,7 +497,6 @@ class vanshavali {
                         . time() . ",'$token', $details[10], $details[11])";
             }
         }
-        echo $sql;
         //Finally execute the sql
         $ret = $db->query($sql);
 
