@@ -71,13 +71,21 @@ switch ($_POST['action']) {
         $username = $_POST['username'];
         $query = $db->query("select count(*) as no from member where username='$username'");
         $row = $db->fetch($query);
+        $arrRet = array("yes" => 0);
 
         //if count is >1 then there are user with that username
         if ($row['no'] > 0) {
-            echo json_encode(array("yes" => 1));
-        } else {
-            echo json_encode(array("yes" => 0));
+            $arrRet['yes'] = 1;
         }
+
+        //If the format of username not correct
+        if(!preg_match('/^\w{5,}$/', $username)) { 
+            $arrRet['yes'] = -1;
+        }
+
+        echo json_encode($arrRet);
+
+        
         break;
 
 
