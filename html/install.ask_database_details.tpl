@@ -8,6 +8,7 @@
     {if isset($error)}
         {include file="error_low.tpl"}
     {/if}
+    <legend>Database Details</legend>
     <div class="control-group">
         <label for="database_name" class="control-label">Database name*</label>
         <div class=controls>
@@ -38,6 +39,8 @@
             <input type="email" name="admin_email" id="admin_email" placeholder="Admin Email" required/>
         </div>
     </div>
+
+    <legend>Wordpress Details (Optional)</legend>
     <div class="control-group">
         <label for="consumer_key" class="control-label">Consumer Key</label>
         <div class="controls">
