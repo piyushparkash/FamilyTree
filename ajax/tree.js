@@ -191,7 +191,7 @@ function init() {
                 overridable: true
             },
             Label: {
-                type: "SVG",
+                type: "HTML",
                 overridable: true,
                 style: 'bold',
                 color: "#000"
