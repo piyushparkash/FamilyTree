@@ -52,6 +52,7 @@
         <label class="control-label" for="register_dob">Date Of Birth</label>
         <div class="controls">
             <input type="text" id="register_dob" name="register_dob" validated="no"/>
+            <span class="help-block">Format: dd-mm-yyyy</span>
         </div>
     </div>
     <div class="control-group">
