@@ -46,6 +46,12 @@ if (!(empty($config['consumer_key']) && empty($config['consumer_key_secret']))) 
 $vanshavali->admin_email = $config['admin_email'];
 $vanshavali->hostname = $config['hostname'];
 
+//If config is not initialized, don't go further
+if (!isset($config))
+{
+    return;
+}
+
 
 
 
