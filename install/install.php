@@ -341,7 +341,7 @@ class install {
                     trigger_error("Wrong config.php permissions. Please give config.php file 644 permission. <br> Use the Following command<br>$ chmod 644 config.php", E_USER_ERROR);
                 }
             }
-
+            $template->header();
             $template->display("database_success.tpl");
         }
     }

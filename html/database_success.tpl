@@ -1,4 +1,3 @@
-{include file="header.tpl"}
 <div style="text-align: center;">
     <div class="single-dialog alert alert-success alert-block">
         Database Setup Done! Moving On!
