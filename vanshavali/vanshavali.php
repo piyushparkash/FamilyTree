@@ -418,7 +418,7 @@ class vanshavali
     {
         global $db;
         if ($db->query("insert into member (membername,gender,family_id) values ('$membername',$gender,$familyid)")) {
-            return mysql_insert_id();
+            return $db->last_id();
         } else {
             return false;
         }

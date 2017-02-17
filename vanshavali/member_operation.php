@@ -108,7 +108,7 @@ abstract class member_operation extends member_operation_suggest {
                     trigger_error("Cannot add member. Error executing the query");
                     return false;
                 }
-                return mysql_insert_id();
+                return $db->last_id();
             } else {
                 return false;
             }
@@ -144,6 +144,9 @@ abstract class member_operation extends member_operation_suggest {
      */
     function addwife($name = "Wife", $suggest = false) {
         global $vanshavali, $user;
+        
+        //Check for member to member access
+        $hasAccess = $vanshavali->hasAccess($user->user['id'], $this->id);
 
         if ($suggest && !$hasAccess) {
             return parent::addwife_suggest($name, $this->id);
