@@ -25,6 +25,11 @@ template/compile/*
 .builds
 *.dotCover
 
+###########
+MACOS
+###########
+.DS_Store
+
 
 
 
