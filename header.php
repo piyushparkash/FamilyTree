@@ -88,6 +88,7 @@ $suggest_handler->register_handler(ALIVE, "suggest.edit.alive.tpl", array("sugge
 $suggest_handler->register_handler(GENDER, "suggest.edit.gender.tpl", array("suggested_by", "suggested_to", "oldvalue", "newvalue", "sod"), MODIFY);
 $suggest_handler->register_handler(DELMEMBER, "suggest.del.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue", "sod"), MODIFY);
 $suggest_handler->register_handler(ADDSPOUSE, "suggest.add.spouse.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue", "sod"), ADD);
+$suggest_handler->register_handler(ADDMOTHER, "suggest.add.parent.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue"), ADD);
 
 //Initialize custom error handler
 function vanshavali_error($level, $message, $file, $line, $context) {

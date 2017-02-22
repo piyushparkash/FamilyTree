@@ -166,7 +166,7 @@ abstract class member_operation_suggest {
      * @return boolean
      */
     function addhusband_suggest($name, $id) {
-        global $db, $user, $suggest_handler;
+        global $suggest_handler;
 
         return $suggest_handler->add_suggest(ADDSPOUSE, $id, array(NAME => $name, GENDER => MALE));
 
@@ -189,6 +189,16 @@ abstract class member_operation_suggest {
           /*
          * ENd of the old method
          */
+    }
+
+    function addParent_suggest($name, $gender) {
+        global $suggest_handler;
+
+        if (!in_array($gender, array(MALE, FEMALE))) {
+            return false;
+        }
+
+        return $suggest_handler->add_suggest(ADDMOTHER, $id, array(NAME => $name, GENDER => MALE));
     }
 
 }

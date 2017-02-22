@@ -299,5 +299,10 @@ abstract class member_operation extends member_operation_suggest {
         //If reached till here, then the operation is complete
         return True;
     }
+    
+    function addParent($name)
+    {
+        
+    }
 
 }
