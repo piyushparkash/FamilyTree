@@ -9,9 +9,9 @@ abstract class member_operation_suggest {
 
     /**
      * This function is used to add suggestion about addition of a child.
-     * 
+     *
      * Returns true on successfull operation else returns false
-     * 
+     *
      * @global \db $db The instance of the \db class
      * @global \user $user Instanec of the \user class
      * @param string $name The name of the member to be added
@@ -48,7 +48,7 @@ abstract class member_operation_suggest {
 
     /**
      * This function is used to add a suggestion of removal of a member from FamilyTree
-     * 
+     *
      * Returns true on successfull run else false
      * @global \db $db Instance of the db class
      * @global \user $user Instance of the user class
@@ -79,7 +79,7 @@ abstract class member_operation_suggest {
     }
 
     /**
-     * This function is used to add suggestion regarding modification of user 
+     * This function is used to add suggestion regarding modification of user
      * detail modification. Returns false on error.
      * @global \db $db Instance of the db class
      * @global \user $user Instance of the user class
@@ -172,7 +172,7 @@ abstract class member_operation_suggest {
 
         /*
          * Old method
-         * 
+         *
           //fill array with data
           $finalarray = array('name' => $name, 'id' => $id);
 
@@ -191,14 +191,14 @@ abstract class member_operation_suggest {
          */
     }
 
-    function addParent_suggest($name, $gender) {
+    function addParent_suggest($name, $gender, $id) {
         global $suggest_handler;
 
         if (!in_array($gender, array(MALE, FEMALE))) {
             return false;
         }
 
-            return $suggest_handler->add_suggest(ADDMOTHER, $id, array(NAME => $name, GENDER => MALE));
+            return $suggest_handler->add_suggest(ADDMOTHER, $id, array(NAME => $name, GENDER => $gender));
     }
 
 }

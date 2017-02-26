@@ -50,7 +50,7 @@ abstract class member_operation extends member_operation_suggest {
 
     /**
      * @TODO: Change name of the function. Misleading it is as it also works for daughters.
-     * 
+     *
      * This function is used to add a child of the member. Returns false on error
      * @global \db $db The instance of db class
      * @param string $name The name of the new member
@@ -96,10 +96,10 @@ abstract class member_operation extends member_operation_suggest {
                 //Prepare the sql according to the gender
                 $sql = "";
                 if (intval($this->data['gender']) === FEMALE) {
-                    $sql = "Insert into member(membername,gender,sonof,family_id) 
+                    $sql = "Insert into member(membername,gender,sonof,family_id)
                 values('$name',$gender," . $this->data['related_to'] . ",$familyid)";
                 } else {
-                    $sql = "Insert into member(membername,gender,sonof,family_id) 
+                    $sql = "Insert into member(membername,gender,sonof,family_id)
                 values('$name',$gender," . $this->data['id'] . ",$familyid)";
                 }
 
@@ -144,7 +144,7 @@ abstract class member_operation extends member_operation_suggest {
      */
     function addwife($name = "Wife", $suggest = false) {
         global $vanshavali, $user;
-        
+
         //Check for member to member access
         $hasAccess = $vanshavali->hasAccess($user->user['id'], $this->id);
 
@@ -182,7 +182,7 @@ abstract class member_operation extends member_operation_suggest {
     }
 
     /**
-     * This function is used to add husband to the member. It returns true on 
+     * This function is used to add husband to the member. It returns true on
      * successfull operation.
      * @global \vanshavali $vanshavali Instance of the \vanshavali class
      * @global \db $db Instance of the \db class
@@ -264,15 +264,15 @@ abstract class member_operation extends member_operation_suggest {
      * @param Integer $alive The living status of the member
      * @param boolean $suggest Set to true if this is a suggest
      * @return boolean
-     * 
+     *
      * Gender
      * 0 == Male
      * 1 == Female
-     * 
+     *
      * Relationship Status
      * 0 == Single
      * 1 == Married
-     * 
+     *
      * Alive
      * 0 == Deceased
      * 1 == Living
@@ -299,10 +299,22 @@ abstract class member_operation extends member_operation_suggest {
         //If reached till here, then the operation is complete
         return True;
     }
-    
-    function addParent($name)
+
+    function addParent($name, $gender, $suggest = FALSE)
     {
-        
+        $hasAccess = $vanshavali->hasAccess($user->user['id'], $this-id);
+
+        if ($suggest && !$hasAccess)
+        {
+          return parent::addParent_suggest($name, $gender, $this->data['id']);
+        } else {
+          {
+            global $db;
+
+            //Code goes here to add mother/father
+          }
+        }
+
     }
 
 }
