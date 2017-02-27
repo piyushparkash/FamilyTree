@@ -307,7 +307,7 @@ abstract class member_operation extends member_operation_suggest {
         return True;
     }
 
-    function addParent($name, $gender, $suggest = FALSE)
+    function addParent($fathername, $mothername, $suggest = FALSE)
     {
         $hasAccess = vanshavali::hasAccess($user->user['id'], $this-id);
 
@@ -318,10 +318,20 @@ abstract class member_operation extends member_operation_suggest {
           {
             global $db;
 
-            //Add a member explicitly
-            $parentID = vanshavali::addmember_explicit($name, $gender);
+            $fatherid = vanshavali::addmember_explicit($fathername, MALE, $this->data['family_id']);
+                $motherid = vanshavali::addmember_explicit($mothername, FEMALE, $this->data['family_id']);
 
-            $this->set
+                $father = vanshavali::getmember($fatherid);
+                $mother = vanshavali::getmember($motherid);
+
+                $mother->related_to($fatherid);
+                $father->related_to($motherid);
+
+            //Set this member sonof to fatherID
+            $this->set("sonof", $fatherid);
+
+            //Set relationship status of all to married
+
           }
         }
 
