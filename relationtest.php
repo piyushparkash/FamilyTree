@@ -8,7 +8,7 @@
 
 require_once 'header.php';
 
-global $db, $vanshavali;
+global $db;
 
 $from = $_POST['from'];
 $to = $_POST['to'];
@@ -17,7 +17,7 @@ if (empty($from) or empty($to))
 {
     echo "Login to view relation";
 }
-$result = $vanshavali->calculateRelation($from, $to);
+$result = vanshavali::calculateRelation($from, $to);
 if (is_array($result))
 {
     echo $result[0];

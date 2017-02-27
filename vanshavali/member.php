@@ -187,13 +187,12 @@ class member extends member_operation {
     }
 
     function sendForgotPassword() {
-        global $vanshavali;
 
         //generate the Url
         $url = $_SERVER['SERVER_NAME'] . "/forgotpassword.php?token=" . $this->data['tokenforact'];
 
         //Get the values to send.
-        return $vanshavali->mail("mail.forgotpassword.tpl", [
+        return vanshavali::mail("mail.forgotpassword.tpl", [
                     "url" => $url,
                     "membername" => $this->data['membername']
                         ], $this->data['emailid'], "Forgot Password?");

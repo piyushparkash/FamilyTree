@@ -20,9 +20,9 @@ class vanshavali
 
     }
 
-    public $admin_email, $wp_login, $hostname;
+    public static $admin_email, $wp_login, $hostname;
 
-    public function getHeadofFamily($family_id = null)
+    public static function getHeadofFamily($family_id = null)
     {
         global $db;
         if (is_null($family_id)) {
@@ -41,7 +41,7 @@ class vanshavali
      * @param type $samefamily
      * @return int
      */
-    public function distanceFromTop($member, $samefamily = true)
+    public static function distanceFromTop($member, $samefamily = true)
     {
 
         //While we are going up. We will first go to mother and then we will
@@ -50,7 +50,7 @@ class vanshavali
 
         if (!$samefamily) {
             //Since the family is not same. We will first switch to husband
-            $member = $this->getmember($member->data['related_to']);
+            $member = self::getmember($member->data['related_to']);
         } //else we continue with normal execution
 
         $distance = 0;
@@ -60,7 +60,7 @@ class vanshavali
             if ($mother) {
                 //Get father
                 //echo "\nget the father to get mother. Father id = " . $member->data['sonof'];
-                $member = $this->getmember($member->data['sonof']);
+                $member = self::getmember($member->data['sonof']);
 
                 if ($member === false) {
 //                    echo "\nWent into first part break. Couldn't get the above given father";
@@ -68,7 +68,7 @@ class vanshavali
                 }
 
                 //Get mother through him
-                $member = $this->getmember($member->data['related_to']);
+                $member = self::getmember($member->data['related_to']);
 //                echo " \nhere we should get the mother. Mother id = " . $member->id;
 
                 $mother = false; //next turn is for father
@@ -82,7 +82,7 @@ class vanshavali
                     break;
                 }
                 //Previous loop was for mother. This one would be for father
-                $member = $this->getmember($member->data['related_to']);
+                $member = self::getmember($member->data['related_to']);
 
                 if ($member == false) {
 //                    echo " we can't find a husband to this wife.\n";
@@ -104,7 +104,7 @@ class vanshavali
         return $distance;
     }
 
-    public function memberDistance($to, $from)
+    public static function memberDistance($to, $from)
     {
         $sameFamily = false;
         $sameFather = false;
@@ -149,7 +149,7 @@ class vanshavali
             }
         }
 
-        $levelDistance = $this->distanceFromTop($from) - $this->distanceFromTop($to, $sameFamily);
+        $levelDistance = self::distanceFromTop($from) - self::distanceFromTop($to, $sameFamily);
 
         return array("is_child" => $is_child,
             "is_parent"             => $is_parent,
@@ -162,7 +162,7 @@ class vanshavali
         );
     }
 
-    private $relation_array = array(
+    private static $relation_array = array(
         array(false, false, true, MALE, false, false, true, -1, "Wife", 12),
         array(false, false, true, FEMALE, false, false, true, -1, "Husband", 13),
         array(false, false, false, FEMALE, false, false, true, -1, "Brother-in-law (Devar)", 14),
@@ -188,7 +188,7 @@ class vanshavali
      * @param type $array
      * @return boolean
      */
-    private function comparerelationArray($array)
+    private static function comparerelationArray($array)
     {
         //Initialize all the parameters
         $is_child        = $is_parent        = $is_spouse        = $gender        = $sameFamily        = $sameFather        = $diffsex        = $levelDistance        = false;
@@ -196,7 +196,7 @@ class vanshavali
         $approx_relation = false;
 
         //Now compare this array with all options that we have
-        foreach ($this->relation_array as $key => $singlerelation) {
+        foreach (self::relation_array as $key => $singlerelation) {
             $is_child      = ($singlerelation[0] == $array['is_child']);
             $is_parent     = ($singlerelation[1] == $array['is_parent']);
             $is_spouse     = ($singlerelation[2] == $array['is_spouse']);
@@ -287,7 +287,7 @@ class vanshavali
      * 26 nati
      *
      */
-    public function calculateRelation($from, $to)
+    public static function calculateRelation($from, $to)
     {
         if ($from === $to) {
             return false;
@@ -297,13 +297,13 @@ class vanshavali
             return false;
         }
 
-        $from = $this->getmember($from);
-        $to   = $this->getmember($to);
+        $from = self::getmember($from);
+        $to   = self::getmember($to);
 
         //Get the parameters between them
-        $relationparam = $this->memberDistance($to, $from);
+        $relationparam = self::memberDistance($to, $from);
 
-        $result = $this->comparerelationArray($relationparam);
+        $result = self::comparerelationArray($relationparam);
 
         if (is_array($result)) {
             return $result;
@@ -319,7 +319,7 @@ class vanshavali
      * @param type $whom
      * @return boolean
      */
-    public function hasAccess($who, $whom)
+    public static function hasAccess($who, $whom)
     {
 
         //accessArray
@@ -338,7 +338,7 @@ class vanshavali
             return true;
         }
 
-        $relation = $this->calculateRelation($who, $whom);
+        $relation = self::calculateRelation($who, $whom);
 
         if (in_array($relation, $accessArray)) {
             return true;
@@ -353,7 +353,7 @@ class vanshavali
      * @param type $member
      * @return type
      */
-    public function makeAdmin($member)
+    public static function makeAdmin($member)
     {
         global $db;
 
@@ -367,7 +367,7 @@ class vanshavali
      * @global \db $db
      * @return boolean
      */
-    public function firstTimeFamily()
+    public static function firstTimeFamily()
     {
         global $db;
 
@@ -388,7 +388,7 @@ class vanshavali
      * @global \db $db
      * @return boolean
      */
-    public function firstTime()
+    public static function firstTime()
     {
         global $db;
 
@@ -427,14 +427,19 @@ class vanshavali
     /**
      * This function is used to add family in the Tree.
      * Returns the ID of the new family created or returns false if any error
-     * occured
+     * occurred
      * @global \db $db Instance of db class
-     * @param string $name The name of the Family
+     * @param string $name The name of the Family with 's Family at the end.
+     * It will append Family in the end automatically
      * @return integer ID of the new Family
      */
-    public function addfamily($name)
+    public static function addfamily($name)
     {
         global $db;
+        
+        //Escape any apostrophe
+        $name = $db->real_escape_string($name);
+        
         if ($db->query("insert into family (family_name,ts) values('$name Family'," . time() . ")")) {
             return $db->last_id();
         } else {
@@ -448,7 +453,7 @@ class vanshavali
      * @param integer $id ID of the member whose details is to be fetched
      * @return \member
      */
-    public function getmember($id)
+    public static function getmember($id)
     {
 
         //Before doing anything. Lets check if we have everything
@@ -478,7 +483,7 @@ class vanshavali
      * @param array $details Array containing details about the new member
      * @return boolean
      */
-    public function register($details)
+    public static function register($details)
     {
         global $db, $user;
 
@@ -522,7 +527,7 @@ class vanshavali
             'wp_login'      => $vanshavali->wp_login,
         );
         if ($ret != false) {
-            $this->mail("mail.register.confirm.tpl", $mail_options, $details[6], 'Welcome to Vanshavali | Email Confirmation');
+            self::mail("mail.register.confirm.tpl", $mail_options, $details[6], 'Welcome to Vanshavali | Email Confirmation');
             return true;
         } else {
             trigger_error("Cannot Connect to the database. Please try again by refreshing the page", E_USER_ERROR);
@@ -539,11 +544,11 @@ class vanshavali
      * @param string $subject The subject of the Mail
      * @return boolean
      */
-    public function mail($template_name, $data, $to, $subject)
+    public static function mail($template_name, $data, $to, $subject)
     {
         global $template;
         //Add Global variable of domain
-        $user_email = $this->admin_email;
+        $user_email = self::admin_email;
 
         //Fetch body from template
         $template->assign($data);
@@ -566,10 +571,10 @@ class vanshavali
      * @param type $subject
      * @return type
      */
-    public function mailAdmin($templateName, $data, $subject)
+    public static function mailAdmin($templateName, $data, $subject)
     {
 
-        return $this->mail($templateName, $data, $this->admin_email, $subject);
+        return self::mail($templateName, $data, self::admin_email, $subject);
     }
 
     /**
@@ -579,7 +584,7 @@ class vanshavali
      * @param array $row
      * @return array
      */
-    public function createstruct($row)
+    public static function createstruct($row)
     {
         global $user;
 
@@ -597,7 +602,7 @@ class vanshavali
             "gaon"                   => $row['gaon'],
             'image'                  => empty($row['profilepic']) ? "common.png" : $row['profilepic'],
             'familyid'               => $row['family_id'],
-//            'relation' => ($this->calculateRelation($row["id"], $user->user["id"]) ? $user->is_authenticated() : "Login to view relation")
+//            'relation' => (self::calculateRelation($row["id"], $user->user["id"]) ? $user->is_authenticated() : "Login to view relation")
         );
         return $obj;
     }
@@ -610,14 +615,14 @@ class vanshavali
      * @param integer $id Ihe of the member whose children are to be fetched
      * @return array
      */
-    public function getchild($id)
+    public static function getchild($id)
     {
         global $db;
         $finalarray = array();
         $query      = $db->query("select * from member where sonof=$id and dontshow=0");
         while ($row = $db->fetch($query)) {
-            $obj             = $this->createstruct($row);
-            $obj['children'] = $this->getwife($row['id']);
+            $obj             = self::createstruct($row);
+            $obj['children'] = self::getwife($row['id']);
             array_push($finalarray, $obj);
         }
         return $finalarray;
@@ -631,7 +636,7 @@ class vanshavali
      * @param integer $id ID of the member whose wife is to be fetched
      * @return array|null
      */
-    public function getwife($id)
+    public static function getwife($id)
     {
         global $db;
         $finalarray = array();
@@ -639,8 +644,8 @@ class vanshavali
         $obj        = array();
         // Space Tree Object if he has a wife
         if ($row) {
-            $obj             = $this->createstruct($row);
-            $obj['children'] = $this->getchild($id);
+            $obj             = self::createstruct($row);
+            $obj['children'] = self::getchild($id);
             array_push($finalarray, $obj);
             return $finalarray;
         } else {
@@ -657,7 +662,7 @@ class vanshavali
      * By default members of Family 1 are shown
      * @return array|boolean
      */
-    public function getJson_new($familyid = 1)
+    public static function getJson_new($familyid = 1)
     {
 
         global $db;
@@ -670,8 +675,8 @@ class vanshavali
 
         //Now feed the row to function and in return get the array interface
         if (is_array($row)) {
-            $obj = $this->infovisstruct($row);
-            //$obj['children'] = $this->getwife($row['id']);
+            $obj = self::infovisstruct($row);
+            //$obj['children'] = self::getwife($row['id']);
 
             array_push($finalarray, $obj);
             return $finalarray;
@@ -687,14 +692,14 @@ class vanshavali
      * @param integer $id ID of the member whose children are to be fetched
      * @return array
      */
-    public function getchild_new($id)
+    public static function getchild_new($id)
     {
         global $db;
         $finalarray = array();
         $query      = $db->query("select * from member where sonof=$id and dontshow=0");
         while ($row = $db->fetch($query)) {
-            $obj             = $this->infovisstruct($row);
-            $obj['children'] = $this->getwife($row['id']);
+            $obj             = self::infovisstruct($row);
+            $obj['children'] = self::getwife($row['id']);
             array_push($finalarray, $obj);
         }
         return $finalarray;
@@ -707,7 +712,7 @@ class vanshavali
      * @param integer $id ID of the member whose wife is to be fetched
      * @return array|null
      */
-    public function getwife_new($id)
+    public static function getwife_new($id)
     {
         global $db;
         $finalarray = array();
@@ -715,8 +720,8 @@ class vanshavali
         $obj        = array();
         // Space Tree Object if he has a wife
         if ($row) {
-            $obj             = $this->infovisstruct($row);
-            $obj['children'] = $this->getchild($id);
+            $obj             = self::infovisstruct($row);
+            $obj['children'] = self::getchild($id);
             array_push($finalarray, $obj);
             return $finalarray;
         } else {

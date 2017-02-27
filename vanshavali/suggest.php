@@ -166,13 +166,13 @@ class suggest extends member_operation_suggest {
      * @return null
      */
     private function apply() {
-        global $vanshavali, $db, $suggest_handler;
+        global $db, $suggest_handler;
 
         //Check if suggested_value was JSON or not
         if (is_array($this->suggested_value)) {
-            $member = $vanshavali->getmember($this->suggested_value['id']);
+            $member = vanshavali::getmember($this->suggested_value['id']);
         } else {
-            $member = $vanshavali->getmember($this->suggested_value);
+            $member = vanshavali::getmember($this->suggested_value);
         }
 
         //Get the sub type of suggest to be passed below
