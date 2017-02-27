@@ -114,10 +114,10 @@
     </form>
 
 
-    <form method="post" onsubmit="return operation_addhusband_submit()" class="well hide" style='margin:10px' id="operation_husband" >
-        <label for="operation_husband_name" class="control-label">Name:</label>
-        <input type="text" id="operation_husband_name" />
-        <label for="operation_husband_wife_name" class="control-label" >Wife:&nbsp;&nbsp;
+    <form method="post" onsubmit="return operation_addhusband_submit()" class="well hide" style='margin:10px' id="operation_addhusband" >
+        <label for="operation_addhusband_name" class="control-label">Name:</label>
+        <input type="text" id="operation_addhusband_name" />
+        <label for="operation_addhusband_wife_name" class="control-label" >Wife:&nbsp;&nbsp;
             <span id='operation_addhusband_wife_name'></span>
         </label>
         <input type="hidden" id="operation_addhusband_wife_id" /><br />

@@ -654,7 +654,7 @@ function addhusband()
     //Fill in the details of the husband
     $("#operation_addhusband_wife_name").text(member.name);
     $("#operation_addhusband_wife_id").val(member.id);
-    $("#operation_husband").slideDown();
+    $("#operation_addhusband").slideDown();
 }
 
 
