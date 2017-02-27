@@ -24,7 +24,7 @@ if (file_exists(__DIR__ . "/config.php")) {
 
 
 //Initialize them
-global $db, $template, $vanshavali;
+global $db, $template;
 $template = new template();
 $db = new db();
 
@@ -34,8 +34,6 @@ if (isset($config['database']) and ! empty($config['database'])) {
 }
 
 
-//Initialize core FamilyTree class
-$vanshavali = new vanshavali();
 
 //Check if Wordpress is enabled or not
 if (!(empty($config['consumer_key']) && empty($config['consumer_key_secret']))) {
@@ -43,8 +41,8 @@ if (!(empty($config['consumer_key']) && empty($config['consumer_key_secret']))) 
 }
 
 //Assign the Email Address of admin in the App
-$vanshavali->admin_email = $config['admin_email'];
-$vanshavali->hostname = $config['hostname'];
+vanshavali::$admin_email = $config['admin_email'];
+vanshavali::$hostname = $config['hostname'];
 
 //If config is not initialized, don't go further
 if (!isset($config))

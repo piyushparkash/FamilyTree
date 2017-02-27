@@ -41,7 +41,7 @@ class user extends auth {
      * @return boolean
      */
     function login($username, $password) {
-        global $_SESSION, $vanshavali;
+        global $_SESSION;
 
         //Login
         $ret = $this->authenticate($username, $password);
@@ -50,7 +50,7 @@ class user extends auth {
         if ($ret == true and ! is_array($ret)) {
             $this->populate_data($_SESSION['id']);
             //Drop a mail to admin regarding this
-            $vanshavali->mailAdmin("mail.userloggedin.tpl", array("username" => $username), "User Logged in");
+            vanshavali::mailAdmin("mail.userloggedin.tpl", array("username" => $username), "User Logged in");
         }
 
         //And return as it was previously doing before populate data was added

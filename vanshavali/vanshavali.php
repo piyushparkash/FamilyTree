@@ -20,9 +20,9 @@ class vanshavali
 
     }
 
-    public $admin_email, $wp_login, $hostname;
+    public static $admin_email, $wp_login, $hostname;
 
-    public function getHeadofFamily($family_id = null)
+    public static function getHeadofFamily($family_id = null)
     {
         global $db;
         if (is_null($family_id)) {
@@ -41,7 +41,7 @@ class vanshavali
      * @param type $samefamily
      * @return int
      */
-    public function distanceFromTop($member, $samefamily = true)
+    public static function distanceFromTop($member, $samefamily = true)
     {
 
         //While we are going up. We will first go to mother and then we will
@@ -104,7 +104,7 @@ class vanshavali
         return $distance;
     }
 
-    public function memberDistance($to, $from)
+    public static function memberDistance($to, $from)
     {
         $sameFamily = false;
         $sameFather = false;
@@ -162,7 +162,7 @@ class vanshavali
         );
     }
 
-    private $relation_array = array(
+    private static $relation_array = array(
         array(false, false, true, MALE, false, false, true, -1, "Wife", 12),
         array(false, false, true, FEMALE, false, false, true, -1, "Husband", 13),
         array(false, false, false, FEMALE, false, false, true, -1, "Brother-in-law (Devar)", 14),
@@ -188,7 +188,7 @@ class vanshavali
      * @param type $array
      * @return boolean
      */
-    private function comparerelationArray($array)
+    private static function comparerelationArray($array)
     {
         //Initialize all the parameters
         $is_child        = $is_parent        = $is_spouse        = $gender        = $sameFamily        = $sameFather        = $diffsex        = $levelDistance        = false;
@@ -287,7 +287,7 @@ class vanshavali
      * 26 nati
      *
      */
-    public function calculateRelation($from, $to)
+    public static function calculateRelation($from, $to)
     {
         if ($from === $to) {
             return false;
@@ -319,7 +319,7 @@ class vanshavali
      * @param type $whom
      * @return boolean
      */
-    public function hasAccess($who, $whom)
+    public static function hasAccess($who, $whom)
     {
 
         //accessArray
@@ -353,7 +353,7 @@ class vanshavali
      * @param type $member
      * @return type
      */
-    public function makeAdmin($member)
+    public static function makeAdmin($member)
     {
         global $db;
 
@@ -367,7 +367,7 @@ class vanshavali
      * @global \db $db
      * @return boolean
      */
-    public function firstTimeFamily()
+    public static function firstTimeFamily()
     {
         global $db;
 
@@ -388,7 +388,7 @@ class vanshavali
      * @global \db $db
      * @return boolean
      */
-    public function firstTime()
+    public static function firstTime()
     {
         global $db;
 
@@ -427,14 +427,19 @@ class vanshavali
     /**
      * This function is used to add family in the Tree.
      * Returns the ID of the new family created or returns false if any error
-     * occured
+     * occurred
      * @global \db $db Instance of db class
-     * @param string $name The name of the Family
+     * @param string $name The name of the Family with 's Family at the end.
+     * It will append Family in the end automatically
      * @return integer ID of the new Family
      */
-    public function addfamily($name)
+    public static function addfamily($name)
     {
         global $db;
+        
+        //Escape any apostrophe
+        $name = $db->real_escape_string($name);
+        
         if ($db->query("insert into family (family_name,ts) values('$name Family'," . time() . ")")) {
             return $db->last_id();
         } else {
@@ -448,7 +453,7 @@ class vanshavali
      * @param integer $id ID of the member whose details is to be fetched
      * @return \member
      */
-    public function getmember($id)
+    public static function getmember($id)
     {
 
         //Before doing anything. Lets check if we have everything
@@ -478,7 +483,7 @@ class vanshavali
      * @param array $details Array containing details about the new member
      * @return boolean
      */
-    public function register($details)
+    public static function register($details)
     {
         global $db, $user;
 
@@ -539,7 +544,7 @@ class vanshavali
      * @param string $subject The subject of the Mail
      * @return boolean
      */
-    public function mail($template_name, $data, $to, $subject)
+    public static function mail($template_name, $data, $to, $subject)
     {
         global $template;
         //Add Global variable of domain
@@ -566,7 +571,7 @@ class vanshavali
      * @param type $subject
      * @return type
      */
-    public function mailAdmin($templateName, $data, $subject)
+    public static function mailAdmin($templateName, $data, $subject)
     {
 
         return $this->mail($templateName, $data, $this->admin_email, $subject);
@@ -579,7 +584,7 @@ class vanshavali
      * @param array $row
      * @return array
      */
-    public function createstruct($row)
+    public static function createstruct($row)
     {
         global $user;
 
@@ -610,7 +615,7 @@ class vanshavali
      * @param integer $id Ihe of the member whose children are to be fetched
      * @return array
      */
-    public function getchild($id)
+    public static function getchild($id)
     {
         global $db;
         $finalarray = array();
@@ -631,7 +636,7 @@ class vanshavali
      * @param integer $id ID of the member whose wife is to be fetched
      * @return array|null
      */
-    public function getwife($id)
+    public static function getwife($id)
     {
         global $db;
         $finalarray = array();
@@ -657,7 +662,7 @@ class vanshavali
      * By default members of Family 1 are shown
      * @return array|boolean
      */
-    public function getJson_new($familyid = 1)
+    public static function getJson_new($familyid = 1)
     {
 
         global $db;
@@ -687,7 +692,7 @@ class vanshavali
      * @param integer $id ID of the member whose children are to be fetched
      * @return array
      */
-    public function getchild_new($id)
+    public static function getchild_new($id)
     {
         global $db;
         $finalarray = array();
@@ -707,7 +712,7 @@ class vanshavali
      * @param integer $id ID of the member whose wife is to be fetched
      * @return array|null
      */
-    public function getwife_new($id)
+    public static function getwife_new($id)
     {
         global $db;
         $finalarray = array();

@@ -1,7 +1,7 @@
 <?php
 
 require 'header.php';
-global $template, $db, $vanshavali;
+global $template, $db;
 
 if ($_POST['forgotpasswordform']) {
     //Validations are done. Just do the job here.
@@ -10,7 +10,7 @@ if ($_POST['forgotpasswordform']) {
     $member = $db->get("select * from member where tokenforact=" . $_POST['tokenforact']);
 
     //Get the member class
-    $member = $vanshavali->getmember($member['id']);
+    $member = vanshavali::getmember($member['id']);
 
     //Check if the old password provided is correct
     if (md5($oldPassword) != $member->get("password")) {

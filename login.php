@@ -5,7 +5,7 @@
  * @copyright 2012
  */
 require "header.php";
-global $user, $vanshavali;
+global $user;
 /*
   //Check for wp-login
   if ($_GET['action'] == "wp_login" && $vanshavali->wp_login && $_GET['sub'] == 1) {

@@ -59,10 +59,10 @@ abstract class member_operation extends member_operation_suggest {
      * @return integer The ID of the new member just added
      */
     function add_son($name, $gender, $suggest = false) {
-        global $vanshavali, $user;
+        global $user;
 
         //Check for member to member access
-        $hasAccess = $vanshavali->hasAccess($user->user['id'], $this->id);
+        $hasAccess = vanshavali::hasAccess($user->user['id'], $this->id);
 
         if ($suggest & !$hasAccess) {
             if (intval($this->data['gender']) == MALE) {
@@ -143,10 +143,10 @@ abstract class member_operation extends member_operation_suggest {
      * @return boolean
      */
     function addwife($name = "Wife", $suggest = false) {
-        global $vanshavali, $user;
+        global $user;
 
         //Check for member to member access
-        $hasAccess = $vanshavali->hasAccess($user->user['id'], $this->id);
+        $hasAccess = vanshavali::hasAccess($user->user['id'], $this->id);
 
         if ($suggest && !$hasAccess) {
             return parent::addwife_suggest($name, $this->id);
@@ -155,15 +155,15 @@ abstract class member_operation extends member_operation_suggest {
             //Firstly to check if the member already has a wife
             if (!$this->hasspouse()) {
                 //Add wife directly in the database
-                $father_family_id = $vanshavali->addfamily($name);
-                $mother_family_id = $vanshavali->addfamily($name);
+                $father_family_id = vanshavali::addfamily($name);
+                $mother_family_id = vanshavali::addfamily($name);
                 if ($father_family_id && $mother_family_id) {
                     // Now add parents with that family id
-                    $fatherid = $vanshavali->addmember_explicit("Father", MALE, $father_family_id);
-                    $motherid = $vanshavali->addmember_explicit("Mother", FEMALE, $mother_family_id);
+                    $fatherid = vanshavali::addmember_explicit("Father", MALE, $father_family_id);
+                    $motherid = vanshavali::addmember_explicit("Mother", FEMALE, $mother_family_id);
 
-                    $father = $vanshavali->getmember($fatherid);
-                    $mother = $vanshavali->getmember($motherid);
+                    $father = vanshavali::getmember($fatherid);
+                    $mother = vanshavali::getmember($motherid);
 
                     $mother->related_to($fatherid);
                     $father->related_to($motherid);
@@ -191,23 +191,23 @@ abstract class member_operation extends member_operation_suggest {
      * @return boolean
      */
     function addhusband($name = "Husband", $suggest = false) {
-        global $vanshavali, $user;
+        global $user;
 
-        $hasAccess = $vanshavali->hasAccess($user->user['id'], $this->id);
+        $hasAccess = vanshavali::hasAccess($user->user['id'], $this->id);
 
         if ($suggest && !$hasAccess) {
             return parent::addhusband_suggest($name, $this->id);
         } else {
 
             //Add wife directly in the database
-            $family_id = $vanshavali->addfamily($name . "'s Family");
+            $family_id = vanshavali::addfamily($name);
             if ($family_id) {
                 // Now add parents with that family id
-                $fatherid = $vanshavali->addmember_explicit("Father", 0, $family_id);
-                $motherid = $vanshavali->addmember_explicit("Mother", 1, $family_id);
+                $fatherid = vanshavali::addmember_explicit("Father", 0, $family_id);
+                $motherid = vanshavali::addmember_explicit("Mother", 1, $family_id);
 
-                $father = $vanshavali->getmember($fatherid);
-                $mother = $vanshavali->getmember($motherid);
+                $father = vanshavali::getmember($fatherid);
+                $mother = vanshavali::getmember($motherid);
 
                 $mother->related_to($fatherid);
                 $father->related_to($motherid);
@@ -233,9 +233,9 @@ abstract class member_operation extends member_operation_suggest {
      */
     function remove($suggest = false) {
 
-        global $vanshavali, $user;
+        global $user;
 
-        $hasAccess = $vanshavali->hasAccess($user->user['id'], $this->id);
+        $hasAccess = vanshavali::hasAccess($user->user['id'], $this->id);
         if ($suggest && !$hasAccess) {
             return parent::remove_suggest($this->data['id']);
         } else {
@@ -278,9 +278,9 @@ abstract class member_operation extends member_operation_suggest {
      * 1 == Living
      */
     function edit($name, $gender, $relationship, $dob, $alive, $suggest = FALSE) {
-        global $vanshavali, $user;
+        global $user;
 
-        $hasAccess = $vanshavali->hasAccess($user->user['id'], $this->id);
+        $hasAccess = vanshavali::hasAccess($user->user['id'], $this->id);
 
         if ($suggest && !$hasAccess) {
             return parent::edit_suggest($name, $gender, $relationship, $dob, $alive, $this->data['id']);
@@ -302,7 +302,7 @@ abstract class member_operation extends member_operation_suggest {
 
     function addParent($name, $gender, $suggest = FALSE)
     {
-        $hasAccess = $vanshavali->hasAccess($user->user['id'], $this-id);
+        $hasAccess = vanshavali::hasAccess($user->user['id'], $this-id);
 
         if ($suggest && !$hasAccess)
         {

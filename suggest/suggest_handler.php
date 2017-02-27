@@ -31,7 +31,7 @@ class suggest_handler {
      */
     public function getviewname($detail) {
 
-        global $user, $vanshavali, $template;
+        global $user, $template;
         
         //Find the structure of the suggest
         $struct = $this->find_structure($detail['typesuggest']);
@@ -52,8 +52,8 @@ class suggest_handler {
         //Here is the needed data
         //from , to , old_value, newvalue, sod
 
-        $finalarray['suggested_by'] = $vanshavali->getmember($detail['suggested_by']);
-        $finalarray['suggested_to'] = $vanshavali->getmember($detail['suggested_to']);
+        $finalarray['suggested_by'] = vanshavali::getmember($detail['suggested_by']);
+        $finalarray['suggested_to'] = vanshavali::getmember($detail['suggested_to']);
         $finalarray['oldvalue'] = is_null($detail['old_value']) ? "" : $detail['old_value'];
 
         //Now check if new value is a json..
