@@ -24,7 +24,7 @@ if (!is_readable("config.php")) {
 }
 
 //Check for wordpress id and redirect if not
-if (vanshavali::wp_login && $user->is_authenticated()) {
+if (vanshavali::$wp_login && $user->is_authenticated()) {
     $wpid = $user->user['wordpress_user'];
 
     if (empty($wpid)) {
@@ -34,7 +34,7 @@ if (vanshavali::wp_login && $user->is_authenticated()) {
 }
 
 //If they have come back from the page with the wpid
-if (vanshavali::wp_login && $_GET['set_wordpress_id'] == "true") {
+if (vanshavali::$wp_login && $_GET['set_wordpress_id'] == "true") {
     $current_user = vanshavali::getmember($_SESSION['id']);
     $current_user->set("wordpress_user", $_SESSION['wpid']);
 }

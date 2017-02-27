@@ -37,7 +37,7 @@ if (isset($config['database']) and ! empty($config['database'])) {
 
 //Check if Wordpress is enabled or not
 if (!(empty($config['consumer_key']) && empty($config['consumer_key_secret']))) {
-    $vanshavali->wp_login = true;
+    vanshavali::$wp_login = true;
 }
 
 //Assign the Email Address of admin in the App
@@ -64,7 +64,7 @@ $user = new user();
 $suggest_handler = new suggest_handler();
 
 
-if ($vanshavali->wp_login) {
+if (vanshavali::$wp_login) {
     $user->setConsumerToken($config['consumer_key'], $config['consumer_key_secret'], $config['end_point'], $config['namespace']);
     $user->oauth->setUrl($config['auth_end_point'], $config['access_end_point']);
 }
