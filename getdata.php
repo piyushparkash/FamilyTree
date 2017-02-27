@@ -13,7 +13,7 @@ global $db, $user;
 switch ($_POST['action']) {
 
     case "check_wp_login":
-        if (vanshavali::wp_login)
+        if (vanshavali::$wp_login)
         {
             //Check if all the members have wordpressid
             $query = $db->query("select count(*) as membercount from member where username!='' and password!='' and wordpress_user=''");

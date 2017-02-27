@@ -287,6 +287,13 @@ abstract class member_operation extends member_operation_suggest {
         } else {
             //Change the details directly...
             global $db;
+            
+            //Check if any of the variables is empty
+            $name = empty($name) ? "NULL" : $name;
+            $gender = empty($gender) ? "NULL" : $gender;
+            $relationship = empty($relationship) ? "NULL" : $relationship;
+            $dob = empty($dob) ? "NULL" : $dob;
+            $alive = empty($alive) ? "NULL" : $alive;
 
             //Prepare the sql and execute it...
             if (!$db->get("Update member set membername='$name',gender=$gender,
