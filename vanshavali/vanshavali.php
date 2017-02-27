@@ -640,7 +640,7 @@ class vanshavali
     {
         global $db;
         $finalarray = array();
-        $row        = $db->get("select * from member where id in (select related_to from member where id=$id)");
+        $row        = $db->get("select * from member where id in (select related_to from member where id=$id and dontshow!=1)");
         $obj        = array();
         // Space Tree Object if he has a wife
         if ($row) {

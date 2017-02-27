@@ -93,43 +93,6 @@ class member extends member_operation {
     }
     
     
-    /**
-     * This function is used to set the relationship status of the current user
-     * Returns true if successfull else false
-     * @global \db $db The instance of the \db class
-     * @param integer $relationship_id The relationship ID. See Below.
-     * @return boolean
-     * 
-     * Relationship ID
-     * 0 == Single
-     * 1 == Married
-     */
-    function set_relationship($relationship_id) {
-        global $db;
-        if (!$db->query("update member set relationship_status=$relationship_id where id=$this->id")) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * This function is add wife of the member. Returns true if successful
-     * else false. The member to be added as wife should already be created
-     * @global \db $db The instance of the db class
-     * @param integer $related_to The ID of the member to be added as wife
-     * @return boolean
-     */
-    function related_to($related_to) {
-        global $db;
-        if ($db->query("update member set related_to=$related_to where id=" . $this->data['id'])) {
-            $this->set_relationship(MARRIED);
-
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * Return the gender code of the member
@@ -149,21 +112,6 @@ class member extends member_operation {
      */
     function get($propertyName) {
         return $this->data[$propertyName];
-    }
-
-    /**
-     * 
-     * @global \db $db
-     * @param type $propertyName
-     * @param type $value
-     * @return type
-     */
-    function set($propertyName, $value) {
-        global $db;
-
-        $query = $db->query("update member set $propertyName = '$value' where id = " . $this->id);
-
-        return $query;
     }
 
     /**

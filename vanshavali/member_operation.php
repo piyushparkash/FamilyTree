@@ -203,8 +203,8 @@ abstract class member_operation extends member_operation_suggest {
             $family_id = vanshavali::addfamily($name);
             if ($family_id) {
                 // Now add parents with that family id
-                $fatherid = vanshavali::addmember_explicit("Father", 0, $family_id);
-                $motherid = vanshavali::addmember_explicit("Mother", 1, $family_id);
+                $fatherid = vanshavali::addmember_explicit("Father", MALE, $family_id);
+                $motherid = vanshavali::addmember_explicit("Mother", FEMALE, $family_id);
 
                 $father = vanshavali::getmember($fatherid);
                 $mother = vanshavali::getmember($motherid);
@@ -214,9 +214,9 @@ abstract class member_operation extends member_operation_suggest {
 
                 $wife = new member($father->add_son("Wife", 0));
                 $this->related_to($wife->id);
-                $this->set_relationship(1);
+                $this->set_relationship(MARRIED);
                 $wife->related_to($this->id);
-                $wife->set_relationship(1);
+                $wife->set_relationship(MARRIED);
                 return true;
             } else {
                 return false;
@@ -318,10 +318,68 @@ abstract class member_operation extends member_operation_suggest {
           {
             global $db;
 
-            //Code goes here to add mother/father
+            //Add a member explicitly
+            $parentID = vanshavali::addmember_explicit($name, $gender);
+
+            $this->set
           }
         }
 
+    }
+
+        /**
+     * This function is used to set the relationship status of the current user
+     * Returns true if successfull else false
+     * @global \db $db The instance of the \db class
+     * @param integer $relationship_id The relationship ID. See Below.
+     * @return boolean
+     * 
+     * Relationship ID
+     * 0 == Single
+     * 1 == Married
+     */
+    function set_relationship($relationship_id) {
+        global $db;
+        if (!$this->set("relationship_status", $relationship_id)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+        /**
+     * This function is add wife of the member. Returns true if successful
+     * else false. The member to be added as wife should already be created
+     * @global \db $db The instance of the db class
+     * @param integer $related_to The ID of the member to be added as wife
+     * @return boolean
+     */
+    function related_to($related_to) {
+        global $db;
+        if ($this->set("related_to", $related_to)) {
+            $this->set_relationship(MARRIED);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * This function is used to set value of specific column for the given member
+     * @global \db $db
+     * @param type $propertyName The name of the column to update
+     * @param type $value The new value of the column to be updated
+     * @return type Returns true or false based on db transaction
+     */
+    function set($propertyName, $value) {
+        global $db;
+
+        $value = $db->real_escape_string($value);
+
+        $query = $db->query("update member set $propertyName = '$value' where id = " . $this->id);
+
+        return $query;
     }
 
 }
