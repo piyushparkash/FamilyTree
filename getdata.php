@@ -190,7 +190,7 @@ switch ($_POST['action']) {
             $member = vanshavali::getmember($_POST['sonof']);
 
             //add son suggestion to it
-            if (!$member->add_son($_POST['name'], $_POST['gender'], TRUE)) {
+            if (!$member->addChild($_POST['name'], $_POST['gender'], TRUE)) {
                 trigger_error("Cannot add member. Some error Occured.");
             } else {
                 ajaxSuccess();

@@ -58,7 +58,7 @@ abstract class member_operation extends member_operation_suggest {
      * @param boolean $suggest If this is a suggestion then set this to true
      * @return integer The ID of the new member just added
      */
-    function add_son($name, $gender, $suggest = false) {
+    function addChild($name, $gender, $suggest = false) {
         global $user;
 
         //Check for member to member access
@@ -68,11 +68,11 @@ abstract class member_operation extends member_operation_suggest {
             if (intval($this->data['gender']) == MALE) {
 
                 //If a male member then send his id
-                return parent::add_son_suggest($name, $gender, $this->data['id']);
+                return parent::addChild_suggest($name, $gender, $this->data['id']);
             } else {
 
                 //If not a male member then send the id of the spouse
-                return parent::add_son_suggest($name, $gender, $this->data['related_to']);
+                return parent::addChild_suggest($name, $gender, $this->data['related_to']);
             }
         } else {
 
@@ -82,10 +82,18 @@ abstract class member_operation extends member_operation_suggest {
                 //Add son directly to the Member database
                 global $db;
 
-                //Get the familyid of the parent
-
-                /* @var $familyid integer */
-                $familyid = $this->data['family_id'];
+                //Check whether is father or mother
+                If ($this->data['gender'] == FEMALE)
+                {
+                    //Get the family id of father
+                    $father = vanshavali::getmember($this->data['related_to']);
+                    $familyID = $father->data['family_id'];
+                }
+                else
+                {
+                    //It is the father, get $this family id
+                    $familyid = $this->data['family_id'];
+                }
                 if (empty($familyid)) {
 
                     //If family id is not defined than assume that he/she belongs to the default family
@@ -168,7 +176,7 @@ abstract class member_operation extends member_operation_suggest {
                     $mother->related_to($fatherid);
                     $father->related_to($motherid);
 
-                    $wife = new member($father->add_son("Wife", FEMALE));
+                    $wife = new member($father->addChild($name, FEMALE));
                     $this->related_to($wife->id);
                     $this->set_relationship(MARRIED);
                     $wife->related_to($this->id);
@@ -212,14 +220,45 @@ abstract class member_operation extends member_operation_suggest {
                 $mother->related_to($fatherid);
                 $father->related_to($motherid);
 
-                $wife = new member($father->add_son("Wife", 0));
-                $this->related_to($wife->id);
+                $husband = new member($father->addChild($name, MALE));
+                $this->related_to($husband->id);
                 $this->set_relationship(MARRIED);
-                $wife->related_to($this->id);
-                $wife->set_relationship(MARRIED);
+                $husband->related_to($this->id);
+                $husband->set_relationship(MARRIED);
                 return true;
             } else {
                 return false;
+            }
+        }
+    }
+
+    function addSpouse($name = array(MALE => "Husband", FEMALE => "Wife"), $suggest = false)
+    {
+        global $user;
+
+        $hasAccess = vanshavali::hasAccess($user->user['id'], $this-id);
+        if ($suggest && !$hasAccess)
+        {
+            return parent::addSpouse_suggest($name, $this->id);
+        }
+        else
+        {
+            //Check if the member already has a spouse
+            if ($this->hasspouse())
+            {
+                return false;
+            }
+            else
+            {
+                //Add the spouse in the database
+                
+                //Add family for the spouse
+                $familyid = vanshavali::addfamily($name);
+                if ($familyid)
+                {
+                    //Add parents of the spouse
+                    $fatherid = vanshavali::addmember_explicit("Father", MALE, $familyid);
+                }
             }
         }
     }
@@ -329,8 +368,6 @@ abstract class member_operation extends member_operation_suggest {
 
             //Set this member sonof to fatherID
             $this->set("sonof", $fatherid);
-
-            //Set relationship status of all to married
 
           }
         }

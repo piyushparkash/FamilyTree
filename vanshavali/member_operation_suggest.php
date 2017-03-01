@@ -19,7 +19,7 @@ abstract class member_operation_suggest {
      * @param integer $id The ID of the member whose child addition suggestion is being added
      * @return boolean
      */
-    function add_son_suggest($name, $gender, $id) {
+    function addChild_suggest($name, $gender, $id) {
         global $db, $user, $suggest_handler;
 
         //Add the suggestion
