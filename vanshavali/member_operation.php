@@ -258,6 +258,7 @@ abstract class member_operation extends member_operation_suggest {
                 {
                     //Add parents of the spouse
                     $fatherid = vanshavali::addmember_explicit("Father", MALE, $familyid);
+                    $motherid = vanshavali::addmember_explicit("Mother", FEMALE, )
                 }
             }
         }
