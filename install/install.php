@@ -169,9 +169,9 @@ class install {
         global $template, $db, $user, $vanshavali;
 
         //Calculate the callback to be used
-        $callback = vanshavali::hostname . CALLBACK;
+        $callback = vanshavali::$hostname . CALLBACK;
 
-        if (!vanshavali::wp_login) {
+        if (!vanshavali::$wp_login) {
             header("Location:index.php?mode=setupAdmin");
             return;
         }
