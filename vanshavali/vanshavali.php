@@ -26,7 +26,7 @@ class vanshavali
     {
         global $db;
         if (is_null($family_id)) {
-            $query = $db->query("select * from member where sonof is null and dontshow = 0 and family_id in (select family_id from member where admin = 1)");
+            $query = $db->query("select * from member where sonof is null and dontshow = 0 and gender=". MALE ." and family_id in (select family_id from member where admin = 1)");
         } else {
             $query = $db->query("select id from member where sonof is null and dontshow=0 and gender=" . MALE . " and family_id=$family_id");
         }
@@ -196,7 +196,7 @@ class vanshavali
         $approx_relation = false;
 
         //Now compare this array with all options that we have
-        foreach (self::relation_array as $key => $singlerelation) {
+        foreach (self::$relation_array as $key => $singlerelation) {
             $is_child      = ($singlerelation[0] == $array['is_child']);
             $is_parent     = ($singlerelation[1] == $array['is_parent']);
             $is_spouse     = ($singlerelation[2] == $array['is_spouse']);
@@ -548,7 +548,7 @@ class vanshavali
     {
         global $template;
         //Add Global variable of domain
-        $user_email = self::admin_email;
+        $user_email = self::$admin_email;
 
         //Fetch body from template
         $template->assign($data);
@@ -574,7 +574,7 @@ class vanshavali
     public static function mailAdmin($templateName, $data, $subject)
     {
 
-        return self::mail($templateName, $data, self::admin_email, $subject);
+        return self::mail($templateName, $data, self::$admin_email, $subject);
     }
 
     /**
