@@ -27,7 +27,7 @@ if (isset($_POST['register_submit'])) {
     $about = $_POST['register_about'];
     $familyid = $_POST['familyid'];
 
-    if (vanshavali::wp_login) {
+    if (vanshavali::$wp_login) {
         $wp_id = $_SESSION['wpid']; //Current wordpress user
     }
     
@@ -55,7 +55,7 @@ if ($user->is_authenticated())
 }
 
 //If WP Login then wpid should be set
-if (!$_SESSION['wpid'] && vanshavali::wp_login)
+if (!$_SESSION['wpid'] && vanshavali::$wp_login)
 {
     $_SESSION['redirect_to'] = "register.php";
     header("Location:oauthlogin.php");
@@ -63,7 +63,7 @@ if (!$_SESSION['wpid'] && vanshavali::wp_login)
 
 
 $template->header();
-$template->assign("is_wordpress_enabled", vanshavali::wp_login);
+$template->assign("is_wordpress_enabled", vanshavali::$wp_login);
 $template->display('user.main.tpl');
 $template->display('register.form.tpl');
 $template->footer();
