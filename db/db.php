@@ -93,6 +93,11 @@ class db {
         return mysqli_insert_id($this->connection);
     }
 
+    function real_escape_string($noescapestring)
+    {
+        return mysqli_real_escape_string($this->connection, $noescapestring);
+    }
+
     /**
      * Fetches a row from the query resource. Triggers error if invalid resource
      * is provided

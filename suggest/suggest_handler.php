@@ -29,16 +29,16 @@ class suggest_handler {
      * @param array $detail raw extract of suggest table
      * @return string|boolean if all goes fine then parsed that is to shown else false
      */
-    public function getviewname($detail) {
+    public function getviewname($detail, $approved = false) {
 
-        global $user, $vanshavali, $template;
+        global $user, $template;
         
         //Find the structure of the suggest
         $struct = $this->find_structure($detail['typesuggest']);
         $suggestion = new suggest($detail['id']);
         
         //Get the percent of approval
-        $percentArray = $suggestion->checkpercent();
+        $percentArray = $suggestion->checkpercent(); 
         
         //Assign the percent to template
         $finalarray['suggestid'] = $detail['id'];
@@ -52,8 +52,8 @@ class suggest_handler {
         //Here is the needed data
         //from , to , old_value, newvalue, sod
 
-        $finalarray['suggested_by'] = $vanshavali->getmember($detail['suggested_by']);
-        $finalarray['suggested_to'] = $vanshavali->getmember($detail['suggested_to']);
+        $finalarray['suggested_by'] = vanshavali::getmember($detail['suggested_by']);
+        $finalarray['suggested_to'] = vanshavali::getmember($detail['suggested_to']);
         $finalarray['oldvalue'] = is_null($detail['old_value']) ? "" : $detail['old_value'];
 
         //Now check if new value is a json..
@@ -91,6 +91,22 @@ class suggest_handler {
                 break;
             }
         }
+
+        //Check if only to show approved data
+        if ($approved)
+        {
+            $template->assign("approvedonly", true);
+
+            //Get the result of the suggest and show it
+            $suggestResult = $this->getSuggestResult($detail['id']);
+
+            $suggestResultText = array(0 => "Rejected", 1=> "Approved", 2=> "Don't Know");
+
+            //Assign the result of the suggest in the template
+            $template->assign("suggestionResult", $suggestResultText[$suggestResult]);
+            
+        }
+
         //get the template content, We haven't passed any data into it. So check here
         if ($error) {
             trigger_error("Not enough parameters to show the suggestion: $detail[1]", E_USER_ERROR);
@@ -100,6 +116,28 @@ class suggest_handler {
             $result = $template->fetch($struct->tpl);
 
             return $result;
+        }
+    }
+
+    function getSuggestResult($id)
+    {
+        global $db;
+
+        $suggest = new suggest($id);
+        $percentArray = $suggest->checkpercent();
+
+        //Check which percent is up
+        if ($percentArray[0] > 50)
+        {
+            return 1; // It was approved
+        }
+        else if ($percentArray[1] > 50)
+        {
+            return 0; // It was rejected
+        }
+        else if ($percentArray[2] > 50)
+        {
+            return 2; //People Didn't knew about it
         }
     }
 
@@ -121,6 +159,19 @@ class suggest_handler {
         //Now prepare the data to be shown
         while ($row = $db->fetch($query)) {
             echo $this->getviewname($row);
+        }
+    }
+
+    public function getApprovedSuggestions()
+    {
+        global $user, $db;
+
+        //Query for the approved suggestion by this user
+        $query = $db->query("select * from suggested_info where id in (select suggest_id from suggest_approved where user_id = ". $user->user['id'] . ")");
+        
+        while($row = $db->fetch($query))
+        {
+            echo $this->getviewname($row, true);
         }
     }
 
@@ -203,7 +254,11 @@ class suggest_handler {
                 break;
         }
 
-        return $success;
+        // If all goes well return return new ID just made
+        if ($success)
+        {
+            return $db->last_id();
+        }
     }
 
     /**
@@ -228,5 +283,3 @@ class suggest_handler {
     }
 
 }
-
-;

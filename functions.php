@@ -57,6 +57,7 @@ function dir_iswritable($dirname) {
     }
     //If file was created then we have the permission
     else {
+        fclose($testfile);
         unlink($dirname . "/test_lock_file");
         return true;
     }

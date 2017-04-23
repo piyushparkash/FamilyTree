@@ -2,16 +2,16 @@
 
 require "header.php";
 
-global $db, $vanshavali, $user;
+global $db, $user;
 
 $familyid = $_GET['familyid'];
 
-$head = $vanshavali->getHeadofFamily($familyid);
+$head = vanshavali::getHeadofFamily($familyid);
 $head = new member($head);
 
 //Create a infovis struct
-$finalkey = $vanshavali->createstruct($head->data);
-$finalkey['children'] = $vanshavali->getwife($head->data['id']);
+$finalkey = vanshavali::createstruct($head->data);
+$finalkey['children'] = vanshavali::getwife($head->data['id']);
 
 echo json_encode($finalkey);
 ?>
