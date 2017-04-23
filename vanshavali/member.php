@@ -46,19 +46,31 @@ class member extends member_operation {
     /**
      * This function is used to get the ID of the parent of the
      * current logged in user
-     * @return \member
+     * @return \member|false
      */
     function getFather() {
+        if (empty($this->data['sonof']))
+        {
+            return false;
+        }
+
         return new member($this->data['sonof']);
     }
 
     /**
      * 
      * @global \db $db
-     * @return \member
+     * @return \member|false
      */
     function getMother() {
         global $db;
+        
+        if (empty($this->data['sonof']))
+        {
+            //There is no father for this member
+            return false;
+        }
+
         $query = $db->get("select related_to from member where id = " . $this->data['sonof']);
 
         return new member($query['related_to']);
@@ -72,7 +84,7 @@ class member extends member_operation {
     function get_sons() {
         global $db;
         $finalarray = array();
-        $query = $db->query("select * from member where sonof=$this->id");
+        $query = $db->query("select * from member where sonof=$this->id and dontshow=0");
         while ($row = $db->fetch($query)) {
             array_push($finalarray, new member($row['id']));
         }
@@ -87,7 +99,7 @@ class member extends member_operation {
      */
     function has_sons() {
         global $db;
-        $query = $db->query("select count(*) as nosons from member where sonof=$this->id");
+        $query = $db->query("select count(*) as nosons from member where dontshow=0 and sonof=$this->id");
         $row = $db->fetch($query);
         return $row['nosons'];
     }

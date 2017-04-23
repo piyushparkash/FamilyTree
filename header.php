@@ -84,9 +84,11 @@ $suggest_handler->register_handler(GAON, "suggest.edit.gaon.tpl", array("suggest
 $suggest_handler->register_handler(RELATIONSHIP, "suggest.edit.relationship.tpl", array("suggested_by", "suggested_to", "oldvalue", "newvalue", "sod"), MODIFY);
 $suggest_handler->register_handler(ALIVE, "suggest.edit.alive.tpl", array("suggested_by", "suggested_to", "oldvalue", "newvalue", "sod"), MODIFY);
 $suggest_handler->register_handler(GENDER, "suggest.edit.gender.tpl", array("suggested_by", "suggested_to", "oldvalue", "newvalue", "sod"), MODIFY);
-$suggest_handler->register_handler(DELMEMBER, "suggest.del.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue", "sod"), MODIFY);
+$suggest_handler->register_handler(DELMEMBER, "suggest.del.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue", "sod"), DEL);
 $suggest_handler->register_handler(ADDSPOUSE, "suggest.add.spouse.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue", "sod"), ADD);
-$suggest_handler->register_handler(ADDPARENT, "suggest.add.parent.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue"), ADD);
+$suggest_handler->register_handler(ADDPARENTS, "suggest.add.parents.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue"), ADD);
+$suggest_handler->register_handler(REMOVEPARENTS, "suggest.remove.parent.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue"), DEL);
+$suggest_handler->register_handler(REMOVESPOUSE, "suggest.remove.spouse.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue"), DEL);
 
 //Initialize custom error handler
 function vanshavali_error($level, $message, $file, $line, $context) {

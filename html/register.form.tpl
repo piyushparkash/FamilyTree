@@ -289,7 +289,7 @@
     //Initialize the date picker
     $("#register_dob").datepicker({
         maxDate: "-1d",
-        dateFormat: "dd-mm-yyyy",
+        dateFormat: "dd-mm-yy",
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true

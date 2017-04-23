@@ -2,8 +2,8 @@
 
     <fieldset>
         <div class="username_container">
-            <div class="span1" >
-                <img src="assets/user_images/{$userimage}" style="width: 50px; height: 50px;" id="display_image"/>
+            <div class="span1">
+                <img src="assets/user_images/{$userimage}" style="width: 50px; height: 50px;" id="display_image" />
             </div>
             <div class="span3" id="display_name">
             </div>
@@ -53,37 +53,39 @@
                 </div>
             </div>
             <div class="clearfix"></div>
-        </div>      
+        </div>
 
         {if $authenticated}
-            <div class='span4' style="text-align: center">
-                <div class="btn-group">
-                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" data-intro="Click on member you want to edit. And use this to add/remove/modify any member" data-step="4" data-position="left">
+        <div class='span4' style="text-align: center">
+            <div class="btn-group">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" data-intro="Click on member you want to edit. And use this to add/remove/modify any member"
+                    data-step="4" data-position="left">
                         Edit Member
                         <span class="caret"></span>
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="javascript:operation_addmember()">Add Son/Daughter</a></li>
-                        <li><a href="javascript:deletemember()">Remove Member</a></li>
-                        <li><a href="javascript:editmember()">Edit Member</a></li>
-                        <li><a href="javascript:addwife()" id='wifeoperation' style="display:none" >Add Wife</a>
-                        <li><a href="javascript:addhusband()" id="husbandoperation" style="display:none" > Add Husband</a></li>
-                    </ul>
-                </div>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:operation_addmember()">Add Son/Daughter</a></li>
+                    <li><a href="javascript:deletemember()">Remove Member</a></li>
+                    <li><a href="javascript:editmember()">Edit Member</a></li>
+                    <li><a href="javascript:addwife()" id='wifeoperation' style="display:none">Add Wife</a></li>
+                    <li><a href="javascript:addhusband()" id="husbandoperation" style="display:none"> Add Husband</a></li>
+                    <li><a href="javascript:Vanshavali.addParents.showModal()" id="parentOperation">Add Parents</a></li>
+                </ul>
             </div>
+        </div>
 
 
         {/if}
 
-</fieldset>
-<div style="text-align:center; margin-top:20px;" id='girlfamilybutton' class='hide'>
-    <button class='btn btn-success' onclick='viewfamily(this)'>View Family</button>
-</div>
-{if $authenticated}
-    <form method="post" onsubmit="return operation_addmember_submit()" class="well hide" style='margin:10px' id="operation_add" >
+    </fieldset>
+    <div style="text-align:center; margin-top:20px;" id='girlfamilybutton' class='hide'>
+        <button class='btn btn-success' onclick='viewfamily(this)'>View Family</button>
+    </div>
+    {if $authenticated}
+    <form method="post" onsubmit="return operation_addmember_submit()" class="well hide" style='margin:10px' id="operation_add">
         <label for="operation_add_name" class="control-label">Name:</label>
         <input type="text" id="operation_add_name" />
-        <label for="operation_add_sonof_name" class="control-label" >Child of:&nbsp;
+        <label for="operation_add_sonof_name" class="control-label">Child of:&nbsp;
             <span id='operation_add_sonof_name'></span>
         </label>
         <input type="hidden" id="operation_add_sonof_id" />
@@ -101,10 +103,10 @@
         <button class="btn" type="reset">Reset</button>
     </form>
 
-    <form method="post" onsubmit="return operation_addwife_submit()" class="well hide" style='margin:10px' id="operation_addwife" >
+    <form method="post" onsubmit="return operation_addwife_submit()" class="well hide" style='margin:10px' id="operation_addwife">
         <label for="operation_addwife_name" class="control-label">Name:</label>
         <input type="text" id="operation_addwife_name" />
-        <label for="operation_addwife_husband_name" class="control-label" >Husband:&nbsp;&nbsp;
+        <label for="operation_addwife_husband_name" class="control-label">Husband:&nbsp;&nbsp;
             <span id='operation_addwife_husband_name'></span>
         </label>
         <input type="hidden" id="operation_addwife_husband_id" /><br />
@@ -113,11 +115,25 @@
         <button class="btn" type="reset">Reset</button>
     </form>
 
+    <form method="post" onsubmit="return vanshavali.addSpouse.submit()" class="well hide" style="margin: 10px" id='operation_addSpouse'>
+        <label for="operation_addSpouse_name" class="control-label">Name</label>
+        <input type="text" id="operation_addSpouse_name" required />
+        <label for="operation_addSpouse_otherSpousename" class="control-label">Spouse Name</label>
+        <input type="text" disabled id="operation_addSpouse_otherSpousename" />
+        <input type="hidden" id="operation_addSpouse_otherSpouseID" />
+        <br />
+        <button class="btn btn-success" type="submit">Add Spouse</button>
+        <button class="btn" onclick="vanshavali.addSpouse.submit()"></button>
+        <button class="btn" type="reset">Reset</button>
+    </form>
 
-    <form method="post" onsubmit="return operation_addhusband_submit()" class="well hide" style='margin:10px' id="operation_addhusband" >
+    {include file='operations.addparents.form.tpl'}
+
+
+    <form method="post" onsubmit="return operation_addhusband_submit()" class="well hide" style='margin:10px' id="operation_addhusband">
         <label for="operation_addhusband_name" class="control-label">Name:</label>
         <input type="text" id="operation_addhusband_name" />
-        <label for="operation_addhusband_wife_name" class="control-label" >Wife:&nbsp;&nbsp;
+        <label for="operation_addhusband_wife_name" class="control-label">Wife:&nbsp;&nbsp;
             <span id='operation_addhusband_wife_name'></span>
         </label>
         <input type="hidden" id="operation_addhusband_wife_id" /><br />
@@ -126,7 +142,7 @@
         <button class="btn" type="reset">Reset</button>
     </form>
 
-    <form method="post" onsubmit="return editmember_submit()" class="well hide" style='margin:10px' id="operation_edit" >
+    <form method="post" onsubmit="return editmember_submit()" class="well hide" style='margin:10px' id="operation_edit">
         <label for="operation_edit_name" class="control-label">Name:</label>
         <input type="text" id="operation_edit_name" />
         <input type="hidden" id="operation_edit_id" />
@@ -163,15 +179,26 @@
         <button class="btn btn-success" type="submit">Add</button>
         <button class="btn" onclick="$('#operation_edit').slideUp()" type="button">Cancel</button>
     </form>
-{/if}
-{if $user_not_connected eq True}
+
+    <form method="post" onsubmit="return operation_addparent_submit()" class="well hide" style="margin: 10ox" id="operation_addparent">
+        <label for="operation_addparent_father_name" class="control-label">Father Name</label>
+        <input type="text" id="operation_addparent_father_name" />
+        <label for="operation_addparent_mother_name" class="control-label">Mother Name</label>
+        <input type="text" id="operation_addparent_mother_name" />
+        <br>
+        <button class="btn btn-success" type="submit">Add Spouse</button>
+        <button class="btn" onclick="$('#operation_addparent').slideUp()">Cancel</button>
+    </form>
+
+    {/if} {if $user_not_connected eq True}
     <div class="alert alert-info" style="margin-top: 10px">
-        You are not connected to any member of the family. Please connect yourself to the family.Select Yourself in the Tree and click This is me.
+        You are not connected to any member of the family. Please connect yourself to the family.Select Yourself in the Tree and
+        click This is me.
     </div>
     <div style="text-align:center">
         <button class="btn btn-success" onclick="thisisme()">
             This is me
         </button>
     </div>
-{/if}    
+    {/if}
 </div>

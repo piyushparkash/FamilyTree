@@ -109,37 +109,39 @@ switch ($_POST['action']) {
         $suggest_handler->getsuggestions();
         break;
 
+    case "getapprovedsuggestion":
+        global $suggest_handler;
+        $suggest_handler->getApprovedSuggestions();
+        break;
+
 
     //When adding wife
-    case "operation_addwife":
+    case "operationAddSpouse":
 
         //Get the member to be changed
         $member = vanshavali::getmember($_POST['husband']);
 
         //Add wife to the member
-        if ($member->addwife($_POST['name'], TRUE)) {
+        if ($member->addSpouse($_POST['name'], TRUE)) {
             ajaxSuccess();
         } else {
             ajaxError();
         }
         break;
 
+    case "operationAddParents":
 
-    //When adding husband
-    case "operation_addhusband":
-        global $vanshavali;
+        //Get the member whose parents are to be added
 
-        //Get the member to be changed
-        $member = vanshavali::getmember($_POST['wife']);
+        $member = vanshavali::getmember($_POST['parentsof']);
 
-        //Add wife to the member
-        if ($member->addhusband($_POST['name'], TRUE)) {
+        if ($member->addParents($_POST['fathername'], $_POST['mothername'], true))
+        {
             ajaxSuccess();
         } else {
             ajaxError();
         }
         break;
-
 
     //When to approve suggestions
     case "suggestionapproval":

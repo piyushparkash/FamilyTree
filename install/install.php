@@ -149,7 +149,7 @@ class install {
 
 
             //We would have got information about wordpress user if wordpress is enabled
-            if (vanshavali::wp_login) {
+            if (vanshavali::$wp_login) {
 
                 //We have WP Enabled
                 $template->assign("id", $_SESSION['wpid']);
@@ -158,7 +158,7 @@ class install {
 
             $template->header();
             $template->assign("is_admin", 1);
-            $template->assign("is_wordpress_enabled", vanshavali::wp_login);
+            $template->assign("is_wordpress_enabled", vanshavali::$wp_login);
             $template->assign("familyid", $family['id']);
             $template->display("register.form.tpl");
             $template->footer();
@@ -381,7 +381,7 @@ class install {
             sonof int(11) null default null,
             profilepic varchar(255) default 'common.png',
             dob int(11) default null,
-            gender int(1) default 0,
+            gender int(1),
             relationship_status int(11) default 0,
             gaon mediumtext default null,
             related_to int(11) null default null,

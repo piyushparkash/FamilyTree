@@ -5,6 +5,9 @@
         Is <span class='membername_mention'>{$suggested_to->data['membername']}</span> male?
     {/if}
     <span class='suggest_quest'>Is this correct?</span>
+    {if $approvedonly}
+    <span class="suggest_quest">Your Action</span> {$suggestionResult}
+    {else}
     <div class="row">
 
         <div class="span4">
@@ -37,4 +40,5 @@
             <button class="btn" onclick="suggest_action(this, 2);">Don't Know</button>
         </div>
     </div>
+    {/if}
 </div>

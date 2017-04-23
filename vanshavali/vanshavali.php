@@ -137,7 +137,13 @@ class vanshavali
         //Check if the second member is the parent of the first member
         $mother = $from->getMother();
         $father = $from->getFather();
-        if ($to->id == $mother->id or $to->id == $father->id) {
+        
+        //If there is no mother or father for the given member
+        if (!$mother && !$father)
+        {
+            $is_parent = false;
+        } 
+        else if ($to->id == $mother->id or $to->id == $father->id) {
             $is_parent = true;
         }
 
@@ -340,7 +346,7 @@ class vanshavali
 
         $relation = self::calculateRelation($who, $whom);
 
-        if (in_array($relation, $accessArray)) {
+        if (in_array($relation, $accessArray, true)) {
             return true;
         } else {
             return false;
@@ -414,7 +420,7 @@ class vanshavali
      * @param integer $familyid The Family ID of the new member
      * @return integer ID of the new member created
      */
-    public function addmember_explicit($membername, $gender, $familyid)
+    public static function addmember_explicit($membername, $gender, $familyid)
     {
         global $db;
         if ($db->query("insert into member (membername,gender,family_id) values ('$membername',$gender,$familyid)")) {
@@ -727,6 +733,19 @@ class vanshavali
         } else {
             return null;
         }
+    }
+
+    public static function delFamily($familyid)
+    {
+        global $db;
+
+        if ($db->query("delete from member where family_id = $familyid"))
+        {
+            $db->query("delete from family where id = $familyid");
+            return true;
+        }
+
+        return false;
     }
 
 }

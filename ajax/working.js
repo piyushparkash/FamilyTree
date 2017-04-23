@@ -1,3 +1,106 @@
+var Vanshavali = {};
+
+//Defining some constants
+Vanshavali.MALE = 0;
+Vanshavali.FEMALE = 1;
+Vanshavali.SINGLE = 0;
+Vanshavali.MARRIED = 1
+Vanshavali.LIVING = 1;
+Vanshavali.DECEASED = 0;
+
+Vanshavali.makeAJAX = function (URL, data, success, error)
+{
+    simpleError = function (response)
+    {
+        //Just pass the response text
+        error(response.responseText);
+    }
+
+    simpleSuccess = function (response)
+    {
+        //Just pass the response text
+        success(response.responseText);
+    }
+    $.ajax(URL,
+    {
+        data: data,
+        error: simpleError,
+        success: simpleSuccess,
+        method:'POST'
+    });
+}
+
+Vanshavali.statusModal = {};
+
+Vanshavali.statusModal.show = function (text, isError)
+{
+    //function to show alert to the user
+}
+
+//The Basic API's to used all over Vanshavali
+Vanshavali.Operation = {};
+
+Vanshavali.Operation.addChild = function(name, gender, father, success, error)
+{
+    //We have parameters, send Ajax Call
+    Vanshavali.makeAJAX('getdata.php',
+    {
+        action:"operationAdd",
+        name:name,
+        gender:gender,
+        sonof: father
+    },
+    function ()
+    {
+        Vanshavali.statusModal.show("Your changes will be permnantly visible on FamilyTree once it is approved by other members. Thank you for your contribution");
+    },
+    function ()
+    {
+        Vanshavali.statusModal.show('Oops! There was an error while adding new member. Please try again.', true)
+    }
+    );
+}
+
+Vanshavali.Operation.addParent = function (fathername, mothername, child)
+{
+    //Make the AJAX request
+    Vanshavali.makeAJAX('getdata.php',
+    {
+        action:"operationAddParents",
+        fathername:fathername,
+        mothername: mothername,
+        parentsof: child
+    },
+    function ()
+    {
+        Vanshavali.statusModal.show("Changes will be visible once it approved by other members. Thank you for your contribution");
+    },
+    function()
+    {
+        Vanshavali.statusModal.show("Oops! Something went wrong. Please try again", true);
+    });
+}
+
+Vanshavali.Operation.addSpouse = function(name, otherSpouse)
+{
+    //Make the AJAX request
+    Vanshavali.makeAJAX('getdata.php',
+    {
+        action:'operationAddSpouse',
+        name:name,
+        otherSpouse:otherSpouse
+    },
+    function ()
+    {
+        Vanshavali.statusModal.show("Changes will be visible once it is approved by other members. Thank you for your contribution");
+    },
+    function()
+    {
+        Vanshavali.statusModal.show("Oops! Something went wrong. Pleae try again");
+    });
+}
+
+
 var is_authenticated = false;
 $(document).ready(function () {
     //Adjust the size of the canvas according to size of the screen
@@ -482,9 +585,43 @@ function suggest()
     }, function (data)
 
     {
-        $("#suggest").modal().children(".modal-body").html(data);
+        //Update the modal with data first
+        $("#suggest-data").html(data);
+
+        //Check if we have datato show
+
+        if (!data.trim())
+        {
+            $("#suggest-data").html("<div class='alert alert-success'>Wohoo! You have completed all your suggestions</div>")
+        }
+
+        //Show the modal now
+        $("#suggest").modal();
+
+
     });
 
+}
+
+function approvedSuggestion()
+{
+    $("#approvedsuggest-data").html("<div class='alert alert-success'>Loading...</div>");
+
+    $.post("getdata.php",{
+        action: "getapprovedsuggestion"
+    },function (data) {
+        //Update the modal with the data
+        $("#approvedsuggest-data").html(data);
+
+        //Check if there is no data to show
+        if (!data.trim())
+        {
+            $("#approvedsuggest-data").html("<div class='alert alert-success'>You have not approved or rejected any suggestion</div>");
+        }
+
+        $("#suggest").modal();
+
+    });
 }
 
 function suggest_action(e, actionid)
@@ -586,16 +723,94 @@ function thisisme()
         }
     }
 }
+//Declaring the basic Family APIS
+Vanshavali.addParents = {};
+Vanshavali.addSpouse = {};
+Vanshavali.addChild = {};
+Vanshavali.removeChild = {};
+Vanshavali.removeParents = {};
+Vanshavali.removeChild = {};
+Vanshavali.modifyMember = {};
 
-function addwife()
+//Add Spouse Code
+Vanshavali.addSpouse.showModal = function ()
 {
     //Get the member whose wife is to be added
     var member = tree.graph.getNode(selected_member);
 
     //Fill in the details of the husband
-    $("#operation_addwife_husband_name").text(member.name);
-    $("#operation_addwife_husband_id").val(member.id);
-    $("#operation_addwife").slideDown();
+    $("#operation_addSpouse_otherSpousename").text(member.name);
+    $("#operation_addSpouse_otherSpouseID").val(member.id);
+    $("#operation_addSpouse").slideDown();
+}
+
+Vanshavali.addSpouse.hideModal = function ()
+{
+    //Code to hide the modal
+    $("#operation_addSpouse").slideUp();
+
+    //Remove values from the field
+    $("#operation_addSpouse_otherSpousename").val('');
+    $("#operation_addSpouse_otherSpouseID").val('');
+    $("#operation_addSpouse_name").val('');
+}
+
+Vanshavali.addSpouse.submit = function ()
+{
+    //Code to read from the form and submit
+    var name = $("#operation_addSpouse_name").val();
+    var otherSpouse = $("#operation_addSpouse_otherSpouseID").val('');    
+    Vanshavali.Operation.addSpouse(name, otherSpouse);
+    Vanshavali.Operation.hideModal();
+}
+
+//End of AppSpouse Code
+
+//Add Parent Code
+
+Vanshavali.addParents.showModal = function ()
+{
+    $("#operation_addParents").slideDown();
+
+    //Set the parents of value of the field
+    var currentMember = tree.graph.getNode(selected_member);
+    $("#operation_addParents_parentsof").hide().show().val(currentMember.name);
+    $("#operation_addParents_parentsofid").val(currentMember.id);
+}
+
+Vanshavali.addParents.submit = function (e)
+{
+    //Code to read from the form and submit
+    var fathername = $("#operation_addParents_Fathername");
+    var mothername = $("#operation_addParents_Mothername");
+
+    //Whose parents are they
+    var parentsof = $("#operation_addParents_parentsofid"); 
+
+    //set the request to Vanshavali API
+    Vanshavali.Operation.addParent(fathername.val(),mothername.val(), parentsof.val());
+
+    //Hide the modal
+    Vanshavali.addParents.hideModal();
+
+    //Always return false, as it handles forms
+    return false;
+}
+
+Vanshavali.addParents.hideModal = function ()
+{
+    $("#operation_addParents").slideUp(); 
+
+    //Remove previous parents of values from the field
+    $("#operation_addParents_parentsof").val('');
+    $("#operation_addParents_parentsofid").val('');
+    $("#operation_addParents_Fathername").val('');
+    $("#operation_addParents_Mothername").val('');
+}
+
+function addwife()
+{
+
 }
 
 

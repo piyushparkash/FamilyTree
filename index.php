@@ -75,7 +75,7 @@ if ($_GET['passwordchanged']) {
 $template->display("right-container.tpl");
 //Check if all the members have wordpress ID
 if ($user::check_all_wordpress()) {
-    $template->assign("wp_login", vanshavali::wp_login);
+    $template->assign("wp_login", vanshavali::$wp_login);
 }
 else
 {
