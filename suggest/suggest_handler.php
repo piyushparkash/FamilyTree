@@ -100,7 +100,7 @@ class suggest_handler {
             //Get the result of the suggest and show it
             $suggestResult = $this->getSuggestResult($detail['id']);
 
-            $suggestResultText = array(0 => "Rejected", 1=> "Approved", 2=> "Don't Know");
+            $suggestResultText = array(0 => "Rejected", 1=> "Approved", 2=> "Don't Know", 3 => "Pending");
 
             //Assign the result of the suggest in the template
             $template->assign("suggestionResult", $suggestResultText[$suggestResult]);
@@ -138,6 +138,10 @@ class suggest_handler {
         else if ($percentArray[2] > 50)
         {
             return 2; //People Didn't knew about it
+        }
+        else
+        {
+            return 3;
         }
     }
 
