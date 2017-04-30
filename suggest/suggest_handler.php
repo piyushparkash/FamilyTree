@@ -100,12 +100,21 @@ class suggest_handler {
             //Get the result of the suggest and show it
             $suggestResult = $this->getSuggestResult($detail['id']);
 
-            $suggestResultText = array(0 => "Rejected", 1=> "Approved", 2=> "Don't Know", 3 => "Pending");
+            $suggestResultText = array(0 => "<span class='label label-warning'>Rejected</span>",
+             1=> "<span class='label label-success'>Approved</span>",
+             2=> "<span class='label label-info'>Don't Know</span>",
+             3 => "<span class='label'>Pending</span>");
+            $userActionText = array(0 => "<span class='label label-warning'>Rejected</span>",
+             1 => "<span class='label label-success'>Approved</span>",
+             2 => "<span class='label label-info'>Don't Know</span>");
 
             
 
             //Assign the result of the suggest in the template
-            $template->assign("suggestionResult", $suggestResultText[$suggestResult]);
+            $template->assign("suggestionResult", $suggestResultText[$suggestResult[0]]);
+
+            //Assign the action taken by the user
+            $template->assign("userAction", $userActionText[$suggestResult[1]]);
             
         }
 
@@ -144,7 +153,7 @@ class suggest_handler {
         }
         else
         {
-            return 3;
+            return array(3, $userAction);
         }
     }
 

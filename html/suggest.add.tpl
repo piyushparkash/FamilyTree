@@ -1,8 +1,24 @@
-<div class="suggest-box" suggest-id="{$suggestid}">
+<div class="suggest-box container-fluid" suggest-id="{$suggestid}">
     Is <span class='membername_mention'>{$newvalue}</span> {if !$sod}son{else}daughter{/if} of <span class='membername_mention'>{$suggested_to->data['membername']}</span>?
-    <span class='suggest_quest'>Is this correct?</span>
+    <p class='suggest_quest'>Is this correct?</p>
     {if $approvedonly}
-    <span class="suggest_quest">Your Action</span> {$suggestionResult}
+        <div class="row-fluid">
+        <div class="span4">
+            <span class="suggest_quest">Your Action:</span>
+        </div>
+        <div class="span4">
+            {$userAction}
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span4">
+            <span class="suggest_quest">Suggestion Result:</span>
+        </div>
+        <div class="span4">
+            {$suggestionResult}
+        </div>
+    </div>
     {else}
     <div class="row">
         <div class="span4">

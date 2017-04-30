@@ -100,7 +100,7 @@ class suggest extends member_operation_suggest {
 
         $result = $db->get("select * from suggest_approved where suggest_id = $this->id and user_id = " . $user->user['id']);
 
-        if (!$result)
+        if ($result)
         {
             return $result['action'];
         } else
