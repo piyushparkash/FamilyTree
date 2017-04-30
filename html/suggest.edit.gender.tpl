@@ -1,10 +1,12 @@
 <div class='suggest-box container-fluid' suggest-id="{$suggestid}">
-    {if $newvalue}   <!-- Hard coded value, assumes 1 is female -->
-        Is <span class='membername_mention'>{$suggested_to->data['membername']}</span> a female?
-    {else}
-        Is <span class='membername_mention'>{$suggested_to->data['membername']}</span> male?
-    {/if}
-    <p class='suggest_quest'>Is this correct?</p>
+    <div class="well well-small">
+        {if $newvalue}   <!-- Hard coded value, assumes 1 is female -->
+            Is <span class='membername_mention'>{$suggested_to->data['membername']}</span> a female?
+        {else}
+            Is <span class='membername_mention'>{$suggested_to->data['membername']}</span> male?
+        {/if}
+        <p class='suggest_quest'>Is this correct?</p>
+    </div>
     {if $approvedonly}
         <div class="row-fluid">
             <div class="span4">

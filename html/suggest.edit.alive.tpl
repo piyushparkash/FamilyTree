@@ -1,10 +1,12 @@
 <div class='suggest-box container-fluid' suggest-id="{$suggestid}">
-    {if !$newvalue}
-        Is <span class='membername_mention'>{$suggested_to->data['membername']}</span> still alive?
-    {else}
-        Is <span class='membername_mention'>{$suggested_to->data['membername']}</span> deceased?
-    {/if}
-    <p class='suggest_quest'>Is this correct?</p>
+    <div class="well well-small">
+        {if !$newvalue}
+            Is <span class='membername_mention'>{$suggested_to->data['membername']}</span> still alive?
+        {else}
+            Is <span class='membername_mention'>{$suggested_to->data['membername']}</span> deceased?
+        {/if}
+        <p class='suggest_quest'>Is this correct?</p>
+    </div>
     {if $approvedonly}
         <div class="row-fluid">
             <div class="span4">

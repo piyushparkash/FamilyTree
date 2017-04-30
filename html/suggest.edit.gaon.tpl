@@ -1,6 +1,8 @@
 <div class='suggest-box container-fluid' suggest-id="{$suggestid}">
-    Is <span class='membername_mention'>{$suggested_to->data['membername']}</span> from {$newvalue}?
-    <p class='suggest_quest'>Is this correct?</p>
+    <div class="well well-small">
+        Is <span class='membername_mention'>{$suggested_to->data['membername']}</span> from {$newvalue}?
+        <p class='suggest_quest'>Is this correct?</p>
+    </div>
     {if $approvedonly}
         <div class="row-fluid">
             <div class="span4">
