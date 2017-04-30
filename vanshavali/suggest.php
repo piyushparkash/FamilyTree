@@ -94,6 +94,22 @@ class suggest extends member_operation_suggest {
         return true;
     }
 
+    public function getUserAction()
+    {
+        global $db, $user;
+
+        $result = $db->get("select * from suggest_approved where suggest_id = $this->id and user_id = " . $user->user['id']);
+
+        if (!$result)
+        {
+            return $result['action'];
+        } else
+        {
+            return false;
+        }
+
+    }
+
     /**
      * This function is to check the percentage of the approval/rejection/dontknow
      * of this suggestion. 

@@ -102,6 +102,8 @@ class suggest_handler {
 
             $suggestResultText = array(0 => "Rejected", 1=> "Approved", 2=> "Don't Know", 3 => "Pending");
 
+            
+
             //Assign the result of the suggest in the template
             $template->assign("suggestionResult", $suggestResultText[$suggestResult]);
             
@@ -125,19 +127,20 @@ class suggest_handler {
 
         $suggest = new suggest($id);
         $percentArray = $suggest->checkpercent();
+        $userAction = $suggest->getUserAction();
 
         //Check which percent is up
         if ($percentArray[0] > 50)
         {
-            return 1; // It was approved
+            return array(1, $userAction); // It was approved
         }
         else if ($percentArray[1] > 50)
         {
-            return 0; // It was rejected
+            return array(0, $userAction); // It was rejected
         }
         else if ($percentArray[2] > 50)
         {
-            return 2; //People Didn't knew about it
+            return array(2, $userAction); //People Didn't knew about it
         }
         else
         {
