@@ -6,7 +6,7 @@ if ((!file_exists("config.php"))) {
     require_once(__DIR__ . "/install/install.php");
     $install = new install(getFullURL());
     exit();
-} else if ($vanshavali->firstTime() or $vanshavali->firstTimeFamily()) {
+} else if (vanshavali::firstTime() or vanshavali::firstTimeFamily()) {
     //installation still imcomplete
     require_once(__DIR__ . "/install/install.php");
     $install = new install(getFullURL());
@@ -24,7 +24,7 @@ if (!is_readable("config.php")) {
 }
 
 //Check for wordpress id and redirect if not
-if ($vanshavali->wp_login && $user->is_authenticated()) {
+if (vanshavali::$wp_login && $user->is_authenticated()) {
     $wpid = $user->user['wordpress_user'];
 
     if (empty($wpid)) {
@@ -34,8 +34,8 @@ if ($vanshavali->wp_login && $user->is_authenticated()) {
 }
 
 //If they have come back from the page with the wpid
-if ($vanshavali->wp_login && $_GET['set_wordpress_id'] == "true") {
-    $current_user = $vanshavali->getmember($_SESSION['id']);
+if (vanshavali::$wp_login && $_GET['set_wordpress_id'] == "true") {
+    $current_user = vanshavali::getmember($_SESSION['id']);
     $current_user->set("wordpress_user", $_SESSION['wpid']);
 }
 
@@ -75,7 +75,7 @@ if ($_GET['passwordchanged']) {
 $template->display("right-container.tpl");
 //Check if all the members have wordpress ID
 if ($user::check_all_wordpress()) {
-    $template->assign("wp_login", $vanshavali->wp_login);
+    $template->assign("wp_login", vanshavali::$wp_login);
 }
 else
 {

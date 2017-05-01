@@ -46,19 +46,31 @@ class member extends member_operation {
     /**
      * This function is used to get the ID of the parent of the
      * current logged in user
-     * @return \member
+     * @return \member|false
      */
     function getFather() {
+        if (empty($this->data['sonof']))
+        {
+            return false;
+        }
+
         return new member($this->data['sonof']);
     }
 
     /**
      * 
      * @global \db $db
-     * @return \member
+     * @return \member|false
      */
     function getMother() {
         global $db;
+        
+        if (empty($this->data['sonof']))
+        {
+            //There is no father for this member
+            return false;
+        }
+
         $query = $db->get("select related_to from member where id = " . $this->data['sonof']);
 
         return new member($query['related_to']);
@@ -72,7 +84,7 @@ class member extends member_operation {
     function get_sons() {
         global $db;
         $finalarray = array();
-        $query = $db->query("select * from member where sonof=$this->id");
+        $query = $db->query("select * from member where sonof=$this->id and dontshow=0");
         while ($row = $db->fetch($query)) {
             array_push($finalarray, new member($row['id']));
         }
@@ -87,49 +99,12 @@ class member extends member_operation {
      */
     function has_sons() {
         global $db;
-        $query = $db->query("select count(*) as nosons from member where sonof=$this->id");
+        $query = $db->query("select count(*) as nosons from member where dontshow=0 and sonof=$this->id");
         $row = $db->fetch($query);
         return $row['nosons'];
     }
     
     
-    /**
-     * This function is used to set the relationship status of the current user
-     * Returns true if successfull else false
-     * @global \db $db The instance of the \db class
-     * @param integer $relationship_id The relationship ID. See Below.
-     * @return boolean
-     * 
-     * Relationship ID
-     * 0 == Single
-     * 1 == Married
-     */
-    function set_relationship($relationship_id) {
-        global $db;
-        if (!$db->query("update member set relationship_status=$relationship_id where id=$this->id")) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * This function is add wife of the member. Returns true if successful
-     * else false. The member to be added as wife should already be created
-     * @global \db $db The instance of the db class
-     * @param integer $related_to The ID of the member to be added as wife
-     * @return boolean
-     */
-    function related_to($related_to) {
-        global $db;
-        if ($db->query("update member set related_to=$related_to where id=" . $this->data['id'])) {
-            $this->set_relationship(MARRIED);
-
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * Return the gender code of the member
@@ -153,21 +128,6 @@ class member extends member_operation {
 
     /**
      * 
-     * @global \db $db
-     * @param type $propertyName
-     * @param type $value
-     * @return type
-     */
-    function set($propertyName, $value) {
-        global $db;
-
-        $query = $db->query("update member set $propertyName = '$value' where id = " . $this->id);
-
-        return $query;
-    }
-
-    /**
-     * 
      * @return boolean|\member
      */
     function spouse() {
@@ -187,13 +147,12 @@ class member extends member_operation {
     }
 
     function sendForgotPassword() {
-        global $vanshavali;
 
         //generate the Url
         $url = $_SERVER['SERVER_NAME'] . "/forgotpassword.php?token=" . $this->data['tokenforact'];
 
         //Get the values to send.
-        return $vanshavali->mail("mail.forgotpassword.tpl", [
+        return vanshavali::mail("mail.forgotpassword.tpl", [
                     "url" => $url,
                     "membername" => $this->data['membername']
                         ], $this->data['emailid'], "Forgot Password?");

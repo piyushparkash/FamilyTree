@@ -10,7 +10,7 @@ require_once __DIR__ . '/member_operation_suggest.php';
 
 class suggest extends member_operation_suggest {
 
-    public $id, $suggested_value, $typesuggest, $suggestedby;
+    public $id, $suggested_value, $typesuggest, $suggestedby, $suggestedto;
 
     /**
      * Constructor of the class. This gathers the basic information about
@@ -25,6 +25,7 @@ class suggest extends member_operation_suggest {
         //$this->suggested_value = json_decode($row['suggested_value'], TRUE);
         $this->typesuggest = $row['typesuggest'];
         $this->suggestedby = $row['suggested_by'];
+        $this->suggestedto = $row['suggested_to'];
 
         //if typesuggest is remove then suggested value is in json else not
         if (in_array($row['typesuggest'], array(DEL, ADD))) {
@@ -93,6 +94,22 @@ class suggest extends member_operation_suggest {
         return true;
     }
 
+    public function getUserAction()
+    {
+        global $db, $user;
+
+        $result = $db->get("select * from suggest_approved where suggest_id = $this->id and user_id = " . $user->user['id']);
+
+        if ($result)
+        {
+            return $result['action'];
+        } else
+        {
+            return false;
+        }
+
+    }
+
     /**
      * This function is to check the percentage of the approval/rejection/dontknow
      * of this suggestion. 
@@ -103,9 +120,13 @@ class suggest extends member_operation_suggest {
         global $db;
 
         //Get all Rejections, Approvals, Dontknow's
+        $suggestcount = $db->get("select count(*) as totalapproval from suggest_approved where suggest_id = $this->id");
         $query = $db->query("select * from suggest_approved where suggest_id=" . $this->id);
         $row2 = $db->get('select count(*) as totaluser from member where username!="" and password!=""');
         $total = (float) $row2['totaluser'];
+        
+        //No of votes should be same to no of user/ one vote per user
+        $allVoted   = ($suggestcount['totalapproval'] == $total) ? true : false;
         $noapproved = 0.0;
         $norejected = 0.0;
         $nodontknow = 0.0;
@@ -131,7 +152,7 @@ class suggest extends member_operation_suggest {
         //if rejected>50 then reject the suggestion
         //if donknow>50 then even i don't know what to do
 
-        return array($noapproved, $norejected, $nodontknow);
+        return array($noapproved, $norejected, $nodontknow, $allVoted);
     }
 
     /**
@@ -165,15 +186,11 @@ class suggest extends member_operation_suggest {
      * @global \db $db Instance of the db class
      * @return null
      */
-    private function apply() {
-        global $vanshavali, $db, $suggest_handler;
+    public function apply() {
+        global $db, $suggest_handler;
 
         //Check if suggested_value was JSON or not
-        if (is_array($this->suggested_value)) {
-            $member = $vanshavali->getmember($this->suggested_value['id']);
-        } else {
-            $member = $vanshavali->getmember($this->suggested_value);
-        }
+        $member = vanshavali::getmember($this->suggestedto);
 
         //Get the sub type of suggest to be passed below
         $struct = $suggest_handler->find_structure($this->typesuggest);
@@ -182,10 +199,35 @@ class suggest extends member_operation_suggest {
         //We have the member to be edited. Now apply the given operation
         switch ($struct->type) {
             case ADD:
-                $member->add_son($this->suggested_value['name'], $this->suggested_value['gender']);
+                //Check here for the sub types of suggest
+                if ($struct->name == ADDSPOUSE)
+                {
+                    $member->addSpouse($this->suggested_value[NAME]);
+                } 
+                else if ($struct->name == ADDMEMBER)
+                {
+                    $member->addChild($this->suggested_value[NAME], $this->suggested_value[GENDER]);
+                } 
+                else if ($struct->name == ADDPARENTS)
+                {
+                    $member->addParents($this->suggested_value['fathername'], $this->suggested_value['mothername']);
+                }
+                
                 break;
             case DEL:
-                $member->remove();
+                if ($struct->name == REMOVEPARENTS)
+                {
+                    $member->removeParents();
+                }
+                else if ($struct->name == REMOVESPOUSE)
+                {
+                    $member->removeSpouse();
+                }
+                else if ($struct->name == DELMEMBER)
+                {
+                    $member->remove();
+                }
+
                 break;
             case MODIFY:
                 $member->edit($this->suggested_value['name'], $this->suggested_value['gender'], $this->suggested_value['relationship'], $this->suggested_value['dob'], $this->suggested_value['alive']);

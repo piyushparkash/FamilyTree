@@ -126,7 +126,7 @@ class install {
      * @param type $sub
      */
     function setupAdmin($mode, $sub) {
-        global $template, $db, $vanshavali;
+        global $template, $db;
         $sub = ($sub == null) ? "firstfamily" : $sub;
 
         if ($sub == "firstfamily") {
@@ -136,7 +136,7 @@ class install {
         } else if ($sub == "firstfamilypost") {
             //This just means that user has submitted the firstfamily form
 
-            $vanshavali->addfamily($_POST['family_name']) or trigger_error("Unable to add family. Please try again");
+            vanshavali::addfamily($_POST['family_name']) or trigger_error("Unable to add family. Please try again");
 
 
             //We have added the first family. Lets proceed to add first member
@@ -149,7 +149,7 @@ class install {
 
 
             //We would have got information about wordpress user if wordpress is enabled
-            if ($vanshavali->wp_login) {
+            if (vanshavali::$wp_login) {
 
                 //We have WP Enabled
                 $template->assign("id", $_SESSION['wpid']);
@@ -158,7 +158,7 @@ class install {
 
             $template->header();
             $template->assign("is_admin", 1);
-            $template->assign("is_wordpress_enabled", $vanshavali->wp_login);
+            $template->assign("is_wordpress_enabled", vanshavali::$wp_login);
             $template->assign("familyid", $family['id']);
             $template->display("register.form.tpl");
             $template->footer();
@@ -169,9 +169,9 @@ class install {
         global $template, $db, $user, $vanshavali;
 
         //Calculate the callback to be used
-        $callback = $vanshavali->hostname . CALLBACK;
+        $callback = vanshavali::$hostname . CALLBACK;
 
-        if (!$vanshavali->wp_login) {
+        if (!vanshavali::$wp_login) {
             header("Location:index.php?mode=setupAdmin");
             return;
         }
@@ -300,6 +300,13 @@ class install {
                 trigger_error("Error opening or creating config.php file", E_USER_ERROR);
             }
 
+            $data = "<?php\n\$config = ".var_export(array(
+					'host'=>$host,
+					'username' => $username,
+                    'password' =>$password,
+                    'database' => $database,
+                    'admin_email' => $adminEmail,
+				), true) . ";";
             $filedata = array(
                 'host' => $host,
                 'username' => $username,
@@ -334,7 +341,7 @@ class install {
                     trigger_error("Wrong config.php permissions. Please give config.php file 644 permission. <br> Use the Following command<br>$ chmod 644 config.php", E_USER_ERROR);
                 }
             }
-
+            $template->header();
             $template->display("database_success.tpl");
         }
     }
@@ -367,14 +374,14 @@ class install {
 
 
         $member = $db->query("create table if not exists member (
-            id int(11) null primary key auto_increment,
+            id int(11) primary key auto_increment,
             membername mediumtext not null,
             username mediumtext default null,
             `password` mediumtext default null,
             sonof int(11) null default null,
             profilepic varchar(255) default 'common.png',
             dob int(11) default null,
-            gender int(1) default 0,
+            gender int(1),
             relationship_status int(11) default 0,
             gaon mediumtext default null,
             related_to int(11) null default null,

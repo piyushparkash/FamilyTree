@@ -1,12 +1,12 @@
 <?php
 
 require "header.php";
-global $vanshavali, $db, $user;
+global $db, $user;
 
 //The original member present in tree
-$ori_member = $vanshavali->getmember($_GET['id']);
+$ori_member = vanshavali::getmember($_GET['id']);
 
-$new_member = $vanshavali->getmember($user->user['id']);
+$new_member = vanshavali::getmember($user->user['id']);
 
 //Copy the details of the new member to the original member
 $details_changed = array('membername', 'username', 'password', 'dob', 'gender',
@@ -22,7 +22,7 @@ $new_member->remove();
 $user->logout();
 
 //Drop a mail to admin regarding this
-$vanshavali->mailAdmin("mail.thisisme.tpl", array("newmember" => $new_member->data['membername'],
+vanshavali::mailAdmin("mail.thisisme.tpl", array("newmember" => $new_member->data['membername'],
     "orimember" => $ori_member->data['membername']), "A user merged");
 
 header("Location:index.php");

@@ -17,6 +17,9 @@ define("GAON", "gaon");
 define("ADDMEMBER", "addmember");
 define("ADDSPOUSE", "addspouse");
 define("DELMEMBER", "delmember");
+define("ADDPARENTS", "addparents");
+define("REMOVEPARENTS","removeparents");
+define("REMOVESPOUSE", "removespouse");
 
 //Define the suggest types
 define("ADD", "add");

@@ -13,7 +13,7 @@ global $db, $user;
 switch ($_POST['action']) {
 
     case "check_wp_login":
-        if ($vanshavali->wp_login)
+        if (vanshavali::$wp_login)
         {
             //Check if all the members have wordpressid
             $query = $db->query("select count(*) as membercount from member where username!='' and password!='' and wordpress_user=''");
@@ -56,7 +56,7 @@ switch ($_POST['action']) {
         }
 
 
-        $searchMember = $vanshavali->getmember($searchedID['id']);
+        $searchMember = vanshavali::getmember($searchedID['id']);
 
         //Send the forgot password link
         if ($searchMember->sendForgotPassword()) {
@@ -71,13 +71,21 @@ switch ($_POST['action']) {
         $username = $_POST['username'];
         $query = $db->query("select count(*) as no from member where username='$username'");
         $row = $db->fetch($query);
+        $arrRet = array("yes" => 0);
 
         //if count is >1 then there are user with that username
         if ($row['no'] > 0) {
-            echo json_encode(array("yes" => 1));
-        } else {
-            echo json_encode(array("yes" => 0));
+            $arrRet['yes'] = 1;
         }
+
+        //If the format of username not correct
+        if(!preg_match('/^\w{5,}$/', $username)) { 
+            $arrRet['yes'] = -1;
+        }
+
+        echo json_encode($arrRet);
+
+        
         break;
 
 
@@ -101,38 +109,39 @@ switch ($_POST['action']) {
         $suggest_handler->getsuggestions();
         break;
 
+    case "getapprovedsuggestion":
+        global $suggest_handler;
+        $suggest_handler->getApprovedSuggestions();
+        break;
+
 
     //When adding wife
-    case "operation_addwife":
-        global $vanshavali;
+    case "operationAddSpouse":
 
         //Get the member to be changed
-        $member = $vanshavali->getmember($_POST['husband']);
+        $member = vanshavali::getmember($_POST['husband']);
 
         //Add wife to the member
-        if ($member->addwife($_POST['name'], TRUE)) {
+        if ($member->addSpouse($_POST['name'], TRUE)) {
             ajaxSuccess();
         } else {
             ajaxError();
         }
         break;
 
+    case "operationAddParents":
 
-    //When adding husband
-    case "operation_addhusband":
-        global $vanshavali;
+        //Get the member whose parents are to be added
 
-        //Get the member to be changed
-        $member = $vanshavali->getmember($_POST['wife']);
+        $member = vanshavali::getmember($_POST['parentsof']);
 
-        //Add wife to the member
-        if ($member->addhusband($_POST['name'], TRUE)) {
+        if ($member->addParents($_POST['fathername'], $_POST['mothername'], true))
+        {
             ajaxSuccess();
         } else {
             ajaxError();
         }
         break;
-
 
     //When to approve suggestions
     case "suggestionapproval":
@@ -175,16 +184,15 @@ switch ($_POST['action']) {
         }
         break;
     case "operation_add":
-        global $vanshavali;
 
         //Variables should have some value
         if (isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['sonof'])) {
 
             //get the member to be modified
-            $member = $vanshavali->getmember($_POST['sonof']);
+            $member = vanshavali::getmember($_POST['sonof']);
 
             //add son suggestion to it
-            if (!$member->add_son($_POST['name'], $_POST['gender'], TRUE)) {
+            if (!$member->addChild($_POST['name'], $_POST['gender'], TRUE)) {
                 trigger_error("Cannot add member. Some error Occured.");
             } else {
                 ajaxSuccess();
@@ -193,10 +201,9 @@ switch ($_POST['action']) {
         break;
 
     case "operation_remove":
-        global $vanshavali;
         if (!empty($_POST['memberid']) && !empty($_POST['type'])) {
             //get the member to be deleted
-            $member = $vanshavali->getmember($_POST['memberid']);
+            $member = vanshavali::getmember($_POST['memberid']);
 
             //add removal suggestion
             if (!$member->remove(TRUE)) {
@@ -207,10 +214,9 @@ switch ($_POST['action']) {
         }
         break;
     case "operation_edit":
-        global $vanshavali;
         if (isset($_POST['type']) && isset($_POST['name']) && isset($_POST['gender']) && isset($_POST['relationship']) && isset($_POST['dob']) && isset($_POST['alive']) && isset($_POST['memberid'])) {
             //Get the member
-            $member = $vanshavali->getmember($_POST['memberid']);
+            $member = vanshavali::getmember($_POST['memberid']);
 
             //Now add the suggestion
             if (!$member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive'], TRUE)) {
@@ -234,8 +240,8 @@ switch ($_POST['action']) {
         break;
 
     case "checkregistered":
-        global $db, $vanshavali;
-        $res = $vanshavali->getmember($_POST['id']);
+        global $db;
+        $res = vanshavali::getmember($_POST['id']);
         if (empty($res->data['username']) && empty($res->data['password'])) {
             ajaxSuccess();
         } else {

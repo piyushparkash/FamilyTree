@@ -101,19 +101,17 @@ function display_data(node)
     if (typeof user_id !== "undefined")
     {
         $("#display_relation").html("Calculating relation with you").load('relationtest.php', {"from": user_id, "to": node.id});
-    }
-    else
+    } else
     {
         $("#display_relation").html("Login to view relation");
     }
-    
+
     //Now decide whether to show Girls Family Button or not
 
     if (rootfamily() != node.data.familyid)
     {
         $("#girlfamilybutton").fadeIn("medium").removeClass("hide");
-    }
-    else
+    } else
     {
         $("#girlfamilybutton").fadeOut("medium").addClass("hide");
     }
@@ -130,18 +128,21 @@ function display_data(node)
 
     //Now check if she already has a husband
     memberchild = node.getParents();
-    if (node.data.familyid != memberchild[0].data.familyid && parseInt(memberchild[0].data.gender) == 0)
+    if (memberchild.length != 0)
     {
-        return; // as the person being pointed is a wife
+        if (node.data.familyid != memberchild[0].data.familyid && parseInt(memberchild[0].data.gender) == 0)
+        {
+            return; // as the person being pointed is a wife
+        }
     }
+
 
     //Show option to add wife only if the member is not a girl
     if (parseInt(node.data.gender) == 0)
     {
         $("#wifeoperation").show();
         $("husbandoperation").hide();
-    }
-    else
+    } else
     {
         $("#wifeoperation").hide();
         $("#husbandoperation").show();
@@ -170,7 +171,7 @@ function init() {
             //enable panning
             Navigation: {
                 enable: true,
-                panning: false
+                panning: true
             },
             //set node and edge styles
             //set overridable=true for styling individual
@@ -235,8 +236,7 @@ function init() {
                 if (node.selected) {
                     node.data.$color = "#fcff00";
 
-                }
-                else {
+                } else {
 
                     delete node.data.$color;
                     //if the node belongs to the last plotted level
@@ -244,8 +244,7 @@ function init() {
                     if (node.data.gender == "0")
                     {
                         node.data.$color = "#C7E9FF";
-                    }
-                    else
+                    } else
                     {
                         node.data.$color = "#F9C7FF";
                     }
@@ -262,8 +261,7 @@ function init() {
                 if (adj.nodeFrom.selected && adj.nodeTo.selected) {
                     adj.data.$color = "#eed";
                     adj.data.$lineWidth = 3;
-                }
-                else {
+                } else {
                     delete adj.data.$color;
                     delete adj.data.$lineWidth;
                 }

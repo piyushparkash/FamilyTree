@@ -6,6 +6,7 @@ checks:
 
 filter:
     excluded_paths:
+        - doc/
         - ajax/excanvas.js
         - ajax/jit.js
         - ajax/jquery.js

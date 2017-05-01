@@ -24,7 +24,7 @@ if (file_exists(__DIR__ . "/config.php")) {
 
 
 //Initialize them
-global $db, $template, $vanshavali;
+global $db, $template;
 $template = new template();
 $db = new db();
 
@@ -34,17 +34,21 @@ if (isset($config['database']) and ! empty($config['database'])) {
 }
 
 
-//Initialize core FamilyTree class
-$vanshavali = new vanshavali();
 
 //Check if Wordpress is enabled or not
 if (!(empty($config['consumer_key']) && empty($config['consumer_key_secret']))) {
-    $vanshavali->wp_login = true;
+    vanshavali::$wp_login = true;
 }
 
 //Assign the Email Address of admin in the App
-$vanshavali->admin_email = $config['admin_email'];
-$vanshavali->hostname = $config['hostname'];
+vanshavali::$admin_email = $config['admin_email'];
+vanshavali::$hostname = $config['hostname'];
+
+//If config is not initialized, don't go further
+if (!isset($config))
+{
+    return;
+}
 
 
 
@@ -60,7 +64,7 @@ $user = new user();
 $suggest_handler = new suggest_handler();
 
 
-if ($vanshavali->wp_login) {
+if (vanshavali::$wp_login) {
     $user->setConsumerToken($config['consumer_key'], $config['consumer_key_secret'], $config['end_point'], $config['namespace']);
     $user->oauth->setUrl($config['auth_end_point'], $config['access_end_point']);
 }
@@ -80,8 +84,11 @@ $suggest_handler->register_handler(GAON, "suggest.edit.gaon.tpl", array("suggest
 $suggest_handler->register_handler(RELATIONSHIP, "suggest.edit.relationship.tpl", array("suggested_by", "suggested_to", "oldvalue", "newvalue", "sod"), MODIFY);
 $suggest_handler->register_handler(ALIVE, "suggest.edit.alive.tpl", array("suggested_by", "suggested_to", "oldvalue", "newvalue", "sod"), MODIFY);
 $suggest_handler->register_handler(GENDER, "suggest.edit.gender.tpl", array("suggested_by", "suggested_to", "oldvalue", "newvalue", "sod"), MODIFY);
-$suggest_handler->register_handler(DELMEMBER, "suggest.del.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue", "sod"), MODIFY);
+$suggest_handler->register_handler(DELMEMBER, "suggest.del.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue", "sod"), DEL);
 $suggest_handler->register_handler(ADDSPOUSE, "suggest.add.spouse.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue", "sod"), ADD);
+$suggest_handler->register_handler(ADDPARENTS, "suggest.add.parents.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue"), ADD);
+$suggest_handler->register_handler(REMOVEPARENTS, "suggest.remove.parent.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue"), DEL);
+$suggest_handler->register_handler(REMOVESPOUSE, "suggest.remove.spouse.tpl", array("suggested_by", "suggested_to", "newvalue", "oldvalue"), DEL);
 
 //Initialize custom error handler
 function vanshavali_error($level, $message, $file, $line, $context) {

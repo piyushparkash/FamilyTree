@@ -1,7 +1,7 @@
 <?php
 
 require 'header.php';
-global $template, $vanshavali, $user, $db;
+global $template, $user, $db;
 
 //If there is submitted data
 if (isset($_POST['register_submit'])) {
@@ -27,22 +27,22 @@ if (isset($_POST['register_submit'])) {
     $about = $_POST['register_about'];
     $familyid = $_POST['familyid'];
 
-    if ($vanshavali->wp_login) {
+    if (vanshavali::$wp_login) {
         $wp_id = $_SESSION['wpid']; //Current wordpress user
     }
     
-    if ($vanshavali->register(array(
+    if (vanshavali::register(array(
                 $username, $password, $dob, $gender, $relation, $gaon, $email, $about, $id, $membername, $familyid,
                 $wp_id
             ))) {
         if ($_POST['is_admin']) {
 
             //Make the just added user admin
-            $vanshavali->makeAdmin($db->last_id()) or trigger_error("Member registered but cannot make member admin. Fatal Error!", E_USER_ERROR);
+            vanshavali::makeAdmin($db->last_id()) or trigger_error("Member registered but cannot make member admin. Fatal Error!", E_USER_ERROR);
         }
 
         //Drop a mail to admin regarding this
-        $vanshavali->mailAdmin('mail.admin.newuserregister.tpl', array("membername" => $membername), "New User Joined");
+        vanshavali::mailAdmin('mail.admin.newuserregister.tpl', array("membername" => $membername), "New User Joined");
 
         header("Location:welcome.php");
     }
@@ -55,7 +55,7 @@ if ($user->is_authenticated())
 }
 
 //If WP Login then wpid should be set
-if (!$_SESSION['wpid'] && $vanshavali->wp_login)
+if (!$_SESSION['wpid'] && vanshavali::$wp_login)
 {
     $_SESSION['redirect_to'] = "register.php";
     header("Location:oauthlogin.php");
@@ -63,7 +63,7 @@ if (!$_SESSION['wpid'] && $vanshavali->wp_login)
 
 
 $template->header();
-$template->assign("is_wordpress_enabled", $vanshavali->wp_login);
+$template->assign("is_wordpress_enabled", vanshavali::$wp_login);
 $template->display('user.main.tpl');
 $template->display('register.form.tpl');
 $template->footer();
