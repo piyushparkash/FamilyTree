@@ -104,12 +104,12 @@ Vanshavali.Operation.addSpouse = function(name, otherSpouse)
 var is_authenticated = false;
 $(document).ready(function () {
     //Adjust the size of the canvas according to size of the screen
-    var opti_width = .65 * (screen.availWidth);
-    var opti_height = .90 * screen.availHeight;
-    $("#infovis").css({
-        "width": opti_width,
-        "height": opti_height
-    });
+    // var opti_width = .65 * (screen.availWidth);
+    // var opti_height = .90 * screen.availHeight;
+    // $("#infovis").css({
+    //     "width": opti_width,
+    //     "height": opti_height
+    // });
 }
 );
 

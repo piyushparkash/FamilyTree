@@ -5,10 +5,6 @@
 0      135      203
 152    35       149
 */
-body
-{
-    overflow: hidden;
-}
 .title
 {
     text-align: center;
@@ -100,16 +96,6 @@ body
 }
 
 
-#right-container {
-    right:0;
-    border-right:1px solid #ddd;
-    overflow: auto;
-    position:absolute;
-    top:10%;
-    width: 30%;
-    height: 88%;
-    padding:5px;
-}
 .single-dialog{
     margin-left: 3%;
     margin-top: 5%;
@@ -127,35 +113,10 @@ body
 
 #display_image
 {
-    width: 50px;
-    height: 50px;
+    width: 200px;
+    height: 200px;
     vertical-align: middle;
 }
-
-#display_name
-{
-
-    font-family: Geneva,Arial,Helvetica,sans-serif;
-    background-color: #d4d7d7;
-    vertical-align: middle;
-    font-size: 1.5em;
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    border-right-color: #cbcbcb;
-    border-left-color: #cbcbcb;
-    border-bottom-color: #cbcbcb;
-    border-top-color: #cbcbcb;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    border-bottom-width: 1px;
-    border-top-width: 1px;
-    border-right-style: solid;
-    border-left-style: solid;
-    border-bottom-style: solid;
-    border-top-style: solid;
-}
-
 .suggest_quest
 {
     font-weight: bold;

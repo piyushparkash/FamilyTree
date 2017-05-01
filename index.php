@@ -47,8 +47,8 @@ $template->assign(array(
     'membername' => $_SESSION['membername']
 ));
 
-$template->display("user.main.tpl");
-$template->display("infovis.tpl");
+$template->display("user.main.new.tpl");
+//$template->display("infovis.tpl");
 $template->assign(array(
     'authenticated' => $user->is_authenticated()
 ));
@@ -72,7 +72,7 @@ if ($_GET['passwordchanged']) {
 }
 
 
-$template->display("right-container.tpl");
+$template->display("newlayout.tpl");
 //Check if all the members have wordpress ID
 if ($user::check_all_wordpress()) {
     $template->assign("wp_login", vanshavali::$wp_login);
@@ -86,7 +86,6 @@ $template->display("login.form.tpl");
 $template->display('forgotpassword.modal.tpl');
 $template->display('search.form.tpl');
 $template->display("feedback.form.tpl");
-$template->display('operations.tpl');
 if ($user->is_authenticated()) {
     $template->display('operations.add.form.tpl');
     $template->display('operations.remove.tpl');
