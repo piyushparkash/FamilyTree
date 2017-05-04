@@ -3,7 +3,6 @@
         <img src="assets/user_images/{$userimage}" id="display_image" />
         <div class="caption">
             <h3 id="display_name" class="text-center"></h3>
-            <div class="container-fluid">
                 <div class="row-fluid">
                     <div class="span6">
                         Date Of Birth:
@@ -68,7 +67,7 @@
                         </div>
                     </div>
                 {/if}
-            </div>
+            
         </div>
     </div>
 </div>
