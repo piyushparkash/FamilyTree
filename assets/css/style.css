@@ -5,6 +5,14 @@
 0      135      203
 152    35       149
 */
+
+@media screen and (max-width: 360px)
+{
+    #right-container
+    {
+        display: none;
+    }
+}
 .title
 {
     text-align: center;
@@ -87,13 +95,6 @@
     background-color: lightgrey;
 }
 
-#infovis {
-    position:relative;
-    width:600px;
-    height:600px;
-    margin:0px;
-    overflow:hidden;
-}
 
 
 .single-dialog{
@@ -179,4 +180,14 @@
     font-weight: bolder;
     text-align: center;
     vertical-align: middle;
+}
+
+@media screen and (max-wdith: 700px)
+{
+    #right-container
+    {
+        display:none;
+        position:absolute;
+        top:0px;
+    }
 }
