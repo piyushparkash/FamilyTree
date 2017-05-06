@@ -8,9 +8,17 @@
 
 @media screen and (max-width: 360px)
 {
-    #right-container
+    #rightcontainerheader
     {
         display: none;
+        position: absolute;
+        right: 0px;
+        top: 8%;
+        background-color: white;
+    }
+    #infovis
+    {
+        height: 510px;
     }
 }
 .title

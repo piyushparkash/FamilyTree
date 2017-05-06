@@ -27,7 +27,7 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li href="logout.php"><a href="#">Logout</a></li>
+                            <li onclick="alert('piyush')"><a href="logout.php">Logout</a></li>
                         </ul>
                     </li>
                     <li><a href="#" onclick="suggest()">Complete Family!</a></li>

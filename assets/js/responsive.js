@@ -15,21 +15,28 @@ $(window).load(function () {
         $("#leftcontainerheader").removeClass('span8').addClass('span12');
         $('#rightcontainerheader').removeClass('span4').addClass('span12');
 
+        $("#rightcontainerheader").on('swiperight', function () {
+            $("#rightcontainerheader").hide('slide', {
+                direction: 'right',
+                easing: 'easeInOutExpo'
+            }, 1000);
+        });
+
         //Height according to screen size
-        infovisHeight = 450;
+        // infovisHeight = 450;
 
         //Resize the canvas to fit in window
         //tree.canvas.resize($(window).width() - 40, $(window).height() - 62);
 
     }
-    
+
     //Since it is fluid let it adjust and then calculate the height and width and document be ready
     var infovisWidth = $("#infovis").width();
 
     //Set this manually.
     $("#infovis").css({
         width: infovisWidth,
-        height: infovisHeight
+        // height: infovisHeight
     });
 
     //Check if to show the sidebar or not
