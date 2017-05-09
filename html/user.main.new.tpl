@@ -9,11 +9,10 @@
             <a class="brand" href="#">Vanshavali</a>
 
             <div class="nav-collapse collapse">
-
                 <ul class="nav">
                     <li class="active"><a href="#">Home</a></li>
                     {if $authenticated eq False}
-                    <li><i class="icon-user icon-white"></i><a href="#" onclick="login()">Login</a></li>
+                    <li><a href="#" onclick="login()"><i class="icon-user"></i>Login</a></li>
                     {/if}
                     <li><a href="#" onclick="introJs().start()">How to use?</a></li>
                     <li><a href="#" onclick="search()">Search</a></li>
