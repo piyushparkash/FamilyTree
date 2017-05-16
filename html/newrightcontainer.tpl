@@ -1,4 +1,4 @@
-<div id="right-container" data-intro="Here you will see information about the selected member." data-step="3" data-position="left">
+<div id="right-container-something" data-intro="Here you will see information about the selected member." data-step="3" data-position="left">
     <div class="thumbnail">
         <img src="assets/user_images/{$userimage}" id="display_image" />
         <div class="caption">
