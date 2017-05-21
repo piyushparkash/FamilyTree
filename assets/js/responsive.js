@@ -1,8 +1,20 @@
 $(window).load(function () {
     //Set the resize canvas function to resize when window is resized
     $(window).resize(function () {
+        //Reset the width and height set manually 
+        $('#infovis').css({
+            width: ''
+        });
 
+        console.log($('#infovis').width());
 
+        //Set the canvas width to the new width
+        $('#infovis').css({
+            width: $('#infovis').width()
+        });
+        var infovisWidth = $("#infovis").width();
+        var infovisHeight = $("#infovis").height();
+        tree.canvas.resize(infovisWidth, infovisHeight);
     });
 
     screenWidth = $(window).width();
@@ -12,9 +24,6 @@ $(window).load(function () {
 
     if (screenWidth <= 360 && screenHeight <= 640) //Probably mobile
     {
-        $("#leftcontainerheader").removeClass('span8').addClass('span12');
-        $('#rightcontainerheader').removeClass('span4').addClass('span12');
-
         $("#rightcontainerheader").on('swiperight', function () {
             $("#rightcontainerheader").hide('slide', {
                 direction: 'right',
@@ -36,7 +45,7 @@ $(window).load(function () {
     //Set this manually.
     $("#infovis").css({
         width: infovisWidth,
-        // height: infovisHeight
+        height: '80vh'
     });
 
     //Check if to show the sidebar or not

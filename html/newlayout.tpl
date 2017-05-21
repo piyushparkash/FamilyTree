@@ -1,10 +1,10 @@
 <div class="container-fluid">
-<div class="row-fluid">
-    <div class='span8' id='leftcontainerheader'>
+{include file='user.main.new.tpl'}
+<div class="row">
+    <div class='col-xl-10 col-lg-9 col-md-8 col-sm-12 justify-content-center' id='leftcontainerheader'>
         {include file='infovis.tpl'}
     </div>
-    <div class="span4" id='rightcontainerheader'>
+    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12 justify-content-center" id='rightcontainerheader'>
         {include file='newrightcontainer.tpl'}
-    </div>
     </div>
 </div>

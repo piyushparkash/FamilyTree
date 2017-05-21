@@ -6,9 +6,9 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportContent">
         <ul class="navbar-nav mr-auto">
-            <li class="navbar-item active"><a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a></li>
+            <li class="nav-item active"><a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a></li>
             {if $authenticated eq False}
-            <li><a href="#" onclick="login()"><i class="icon-user"></i>Login</a></li>
+            <li class="nav-item"><a href="#" onclick="login()" class="nav-link"><i class="icon-user"></i>Login</a></li>
             {/if}
             <li class="nav-item"><a class="nav-link" href="#" onclick="introJs().start()">How to use?</a></li>
             <li class="nav-item"><a class="nav-link" href="#" onclick="search()">Search</a></li>

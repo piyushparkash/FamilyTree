@@ -242,7 +242,7 @@ function init() {
                         } else {
                             node.data.$color = "#F9C7FF";
                         }
-                        //node.data.$color = ['#aaa', '#baa', '#caa', '#daa', '#eaa', '#faa'][count];                    
+                        console.log('We are plotting the node');                
 
                     }
                 },
@@ -280,7 +280,7 @@ function init() {
                     var tree_root = (st.graph.getNode(st.root));
                     display_clear_data();
                     display_data(tree_root);
-                    showUser(user_id);
+                    if (typeof user_id!== 'undefined') showUser(user_id);
                 }
             });
             //store the selected member id in selected_member

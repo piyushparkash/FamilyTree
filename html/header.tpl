@@ -8,10 +8,9 @@
         </title>
         <!-- CSS Files -->
         <link href="{$basepath}assets/css/jquery-ui.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+        <!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />-->
         <link type="text/css" href="{$basepath}assets/css/Spacetree.css" rel="stylesheet" />
-        <link type="text/css" href="{$basepath}assets/css/bootstrap.min.css" rel="stylesheet" />
-        <link type="text/css" href="{$basepath}assets/css/bootstrap-responsive.min.css" rel="stylesheet" />        
+        <link type="text/css" href="{$basepath}assets/css/bootstrap.min.css" rel="stylesheet" />       
         <link href="{$basepath}assets/css/style.css" rel="stylesheet" type="text/css" />
         <link href="{$basepath}assets/css/introjs.min.css" rel="stylesheet" type="text/css" />
         <link href="{$basepath}assets/css/pace.css" rel="stylesheet" type="text/css">
@@ -25,7 +24,7 @@
         </script>
         <script type="text/javascript" src="{$basepath}ajax/jquery-ui.js">
         </script>
-        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js">
+        <!--<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js">-->
         </script>
         <script type="text/javascript" src="{$basepath}assets/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="{$basepath}ajax/jit.js">

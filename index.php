@@ -47,7 +47,7 @@ $template->assign(array(
     'membername' => $_SESSION['membername']
 ));
 
-$template->display("user.main.new.tpl");
+// $template->display("user.main.new.tpl");
 //$template->display("infovis.tpl");
 $template->assign(array(
     'authenticated' => $user->is_authenticated()
