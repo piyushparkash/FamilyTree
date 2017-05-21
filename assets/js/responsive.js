@@ -1,4 +1,16 @@
 $(window).load(function () {
+    //Action for the right container hidder button
+    $("#rightcontainerhide").click(function ()
+    {
+        //Slide away the right container
+        $("#rightcontainerheader").hide('slide', {
+            direction: 'right',
+            easing: 'easeInOutExpo'
+        }, 1000);
+    });
+
+
+
     //Set the resize canvas function to resize when window is resized
     $(window).resize(function () {
         //Reset the width and height set manually 
