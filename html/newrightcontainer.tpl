@@ -4,7 +4,7 @@
             <h4 class="card-title" id="display_name"></h4>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item visible-sm-down justify-content-center" id='rightcontainerhide'><button class="btn btn-primary">Hide</button>
+            <li class="list-group-item hidden-md-up justify-content-center" id='rightcontainerhide'><button class="btn btn-primary">Hide</button>
             <li class="list-group-item">Date Of Birth <span id="display_dob"></span></li>
             <li class="list-group-item">Relationship Status <span id="display_relationship"></span></li>
             <li class="list-group-item">Living/Deceased <span id="display_alive"></span></li>
