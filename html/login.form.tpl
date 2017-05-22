@@ -1,4 +1,4 @@
-<div id="login" class="modal fade">
+<div id="login" class="modal fade align-items-center">
     <div class="modal-dialog" role="document">
     <div class="modal-content">
     <div class="modal-header">
@@ -14,19 +14,19 @@
         {else}
             <form method="post" onsubmit="return login_submit()">
                     <div class="form-group">
-                        <label for="login_username">Username</label>
-                        <input type="text" id="login_username" />
+                        <label class="col-form-label" for="login_username">Username</label>
+                        <input class="form-control" type="text" id="login_username" />
                     </div>
                     <div class="form-group">
-                        <label for="login_password">Password</label>
-                        <input type="password" id="login_password" />
-                        <span class="form-control-feedback" id="login_error">Wrong Username or Password</p>
+                        <label class="col-form-label" for="login_password">Password</label>
+                        <input class="form-control" type="password" id="login_password" />
+                        <span class="form-control-feedback hidden-xs-up" id="login_error">Wrong Username or Password</p>
                     </div>
                     <div class="form-group">
                         <a href="javascript:forgotPassword()">Forgot Password?</a>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" type="submit">Login</button>
+                        <button class="btn btn-large btn-primary" type="submit">Login</button>
                         <a class="btn btn-success" href="register.php">Join Family</a>
                     </div>
             </form>
