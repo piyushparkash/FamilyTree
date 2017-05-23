@@ -7,7 +7,7 @@
 */
 body
 {
-    padding: 2%;
+    padding: 1% 1% 0% 1%;
 }
 nav
 {
@@ -85,23 +85,6 @@ nav
     border-radius: 3px;
 }
 
-#vanshavali_user
-{
-    padding: 5px;
-    position: fixed;
-    left: 3%;
-    top: 0%;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-left: 3px solid #cacaca;
-    border-right: 3px solid #cacaca;
-    border-bottom: 3px solid #cacaca;
-    z-index: 1002;
-    background-color: lightgrey;
-}
-
-
-
 .single-dialog{
     margin-left: 3%;
     margin-top: 5%;
@@ -138,7 +121,7 @@ nav
 #display_dob, #display_relationship, #display_alive, #display_relation, #display_gaon
 {
     font-weight: bold;
-    text-wrap: normal;
+    /*add here styles to wrap text */
 }
 
 .node
