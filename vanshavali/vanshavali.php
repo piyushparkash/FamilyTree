@@ -625,7 +625,7 @@ class vanshavali
     {
         global $db;
         $finalarray = array();
-        $query      = $db->query("select * from member where sonof=$id and dontshow=0");
+        $query      = $db->query("select * from member where sonof=$id and dontshow=0 order by dob desc");
         while ($row = $db->fetch($query)) {
             $obj             = self::createstruct($row);
             $obj['children'] = self::getwife($row['id']);
@@ -702,7 +702,7 @@ class vanshavali
     {
         global $db;
         $finalarray = array();
-        $query      = $db->query("select * from member where sonof=$id and dontshow=0");
+        $query      = $db->query("select * from member where sonof=$id and dontshow=0 order by dob desc");
         while ($row = $db->fetch($query)) {
             $obj             = self::infovisstruct($row);
             $obj['children'] = self::getwife($row['id']);
