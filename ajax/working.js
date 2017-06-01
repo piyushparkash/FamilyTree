@@ -26,6 +26,45 @@ Vanshavali.makeAJAX = function (URL, data, success, error) {
     });
 }
 
+Vanshavali.errorInput = function(element, errorText)
+{
+    var inputHandle = $(element);
+    //Input Handle
+    inputHandle.addClass('form-control-danger').closest('.form-group').addClass('has-danger');
+
+    if (errorText)
+    {
+        inputHandle.siblings('.form-control-feedback').removeClass("hidden-xs-up")[0].innerHTML = errorText;
+    }
+
+    return inputHandle;
+}
+
+Vanshavali.successInput = function(element, successText)
+{
+    var inputHandle = $(element);
+    //Input Handle
+    inputHandle.addClass('form-control-success').closest('.form-group').addClass('has-success');
+
+    if (successText)
+    {
+        inputHandle.siblings('.form-control-feedback').removeClass("hidden-xs-up")[0].innerHTML = successText;
+    }
+
+    return inputHandle;
+}
+
+Vanshavali.clearInput = function (element)
+{
+    var inputHandle = $(element);
+
+    inputHandle.removeClass('form-control-success').removeClass('form-control-danger');
+    inputHandle.closest('.form-group').removeClass('has-success').removeClass('has-danger');
+    inputHandle.siblings('.form-control-feedback').addClass('hidden-xs-up');
+
+    return inputHandle;
+}
+
 Vanshavali.statusModal = {};
 
 Vanshavali.statusModal.show = function (text, isError) {
@@ -224,12 +263,18 @@ function forgotPassword_submit(ohtml, e) {
 //login Form
 function login() {
     $("#login").modal();
+
+    //Focus the username input field
+    $("#login_username").focus();
 }
 
 function login_submit() {
     //get the username and password
     var username = $("#login_username").attr("disabled", "yes").val();
     var password = $("#login_password").attr("disabled", "yes").val();
+
+    Vanshavali.clearInput("#login_username");
+    Vanshavali.clearInput("#login_password");
 
     //Post username and password to login.php
     $.post("login.php", {
@@ -241,12 +286,11 @@ function login_submit() {
 
         //if not able to login
         if (parseInt(data.error) == 1) {
-            $("#login_error").html("Login Failed! Please check your username and password and try again!");
+
+            Vanshavali.errorInput("#login_username");
+            Vanshavali.errorInput("#login_password", 'Login Failed! Please check your username and password and try again!');
             $("#login_username").removeAttr("disabled").val("");
             $("#login_password").removeAttr("disabled").val("");
-
-            //Show the error block which is hidden
-            $("#login_error").removeClass("hide");
 
             //positon the dialog in the center as #login_error is now visible
             $("#login").modal();
@@ -255,12 +299,11 @@ function login_submit() {
             // if successfull login
         }
         if (parseInt(data.error) == 2) {
-            $("#login_error").html("Please activate your account by with the link sent to you on you email");
-            //$("#login_error").html("Login Failed! Please check your username and password and try again!");
+            Vanshavali.errorInput("#login_username");
+            Vanshavali.errorInput('#login_password', "Please activate your account by with the link sent to you on you email");
+
             $("#login_username").removeAttr("disabled").val("");
             $("#login_password").removeAttr("disabled").val("");
-
-            $("#login_error").removeClass("hide");
 
             //positon the dialog in the center as #login_error is now visible
             $("#login").modal();

@@ -15,12 +15,12 @@
             <form method="post" onsubmit="return login_submit()">
                     <div class="form-group">
                         <label class="col-form-label" for="login_username">Username</label>
-                        <input class="form-control" type="text" id="login_username" />
+                        <input class="form-control" type="text" id="login_username" autocomplete="off" required/>
                     </div>
                     <div class="form-group">
                         <label class="col-form-label" for="login_password">Password</label>
-                        <input class="form-control" type="password" id="login_password" />
-                        <span class="form-control-feedback hidden-xs-up" id="login_error">Wrong Username or Password</p>
+                        <input class="form-control" type="password" id="login_password" autocomplete="off" required/>
+                        <div class="form-control-feedback hidden-xs-up" id="login_error">Wrong Username or Password</div>
                     </div>
                     <div class="form-group">
                         <a href="javascript:forgotPassword()">Forgot Password?</a>
