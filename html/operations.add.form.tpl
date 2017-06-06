@@ -1,40 +1,42 @@
-<div id="operation_add" class="modal hide">
-    <div class="modal-header">
-        Add Member
-        <button type="button" class="close" data-dismiss="modal">×</button>
-    </div>
-    <div class="modal-body">
-        <form method="post" onsubmit="return operation_addmember_submit()" class="form-horizontal" >
-            <fieldset>
-                <div class="control-group">
-                    <label for="operation_add_name" class="control-label">Name:</label>
-                    <div class="controls">
-                        <input type="text" id="operation_add_name" />
+<div id="operation_add" class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Member</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" onsubmit="return operation_addmember_submit()">
+                    <div class="form-group">
+                        <label for="operation_add_name" class="col-form-label">Name:</label>
+                        <input type="text" id="operation_add_name" class="form-control" />
                     </div>
-                </div>
-                <div class="control-group">
-                    <label for="operation_add_sonof_name" class="control-label">Sonof:</label>
-                    <div class="controls">
-                        <input type="hidden" id="operation_add_sonof_id" />
+                    <div class="form-group">
+                        Sonof:
+                        <label for="operation_add_sonof_name" class="col-form-label">
+                            <span id="operation_add_sonof_name"></span>
+                        </label>
+                        <input type="hidden" id="operation_add_sonof_id" class="form-control" />
                     </div>
-                </div>
-                <div class="control-group">
-                    <label for="operation_add_gender" class="control-label">Gender:</label>
-                    <div class="controls">
-                        <select id="operation_add_gender">
+                    <div class="form-group">
+                        <label for="operation_add_gender" class="col-form-label">Gender:</label>
+                        <select id="operation_add_gender" class="form-control">
                             <option value="0">
                                 Male
                             </option>
                             <option value="1">
                                 Female
                             </option>
-                        </select>
+                            </select>
                     </div>
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-primary" type="submit">Add</button>
-                </div>
-            </fieldset>
-        </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">Add</button>
+            </div>
+            </form>
+        </div>
     </div>
+</div>
 </div>

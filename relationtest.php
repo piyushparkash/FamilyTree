@@ -20,7 +20,7 @@ if (empty($from) or empty($to))
 $result = vanshavali::calculateRelation($from, $to);
 if (is_array($result))
 {
-    echo $result[0];
+    //echo $result[0];
 }
 else
 {

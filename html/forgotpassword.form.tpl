@@ -18,7 +18,7 @@
         {if $oldpassworderror}
         <div class="alert alert-error">Please enter correct Old Passwword!</div>
         {/if}
-        <div class="control-group">
+        <div class="form-group">
             <label for="old_password" class="control-label">Your Old Password:</label>
             <div class="controls">
                 <input type="text" id="old_password" name="old_password"/>
@@ -26,14 +26,14 @@
                 <span  class="help-block"></span>
             </div>
         </div>
-        <div class="control-group">
+        <div class="form-group">
             <label for="new_password" class="control-label">Type in your New Password:</label>
             <div class="controls">
                 <input type="password" id="new_password" class="new_password" />
                 <span class="help-block"></span>
             </div>
         </div>
-        <div class="control-group">
+        <div class="form-group">
             <label for="new_password_again" class="control-label">Type again your New Password:</label>
             <div class="controls">
                 <input type="password" id="new_password_again" class="new_password_again" />

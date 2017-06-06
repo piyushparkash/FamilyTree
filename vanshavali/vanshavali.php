@@ -314,7 +314,7 @@ class vanshavali
         if (is_array($result)) {
             return $result;
         } else {
-            return print_r($relationparam); //Just for development purpose
+            return false;//print_r($relationparam); //Just for development purpose
             //            return "Cannot determine relation";
         }
     }

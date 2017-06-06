@@ -13,17 +13,17 @@
             {if $authenticated}
             <div class="card-block">
                 <button class='btn btn-success' onclick='viewfamily(this)' id="girlfamilybutton">View Family</button>
-                <div class="dropdown">
+                <div class="dropdown dropup">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="editMemberOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Edit Member
                     </button>
                     <div class="dropdown-menu" aria-labelledby="editMemberOptions">
-                        <a href="javascript:operation_addmember()">Add Child</a>
-                        <a href="javascript:deletemember()">Remove Member</a>
-                        <a href="javascript:editmember()">Edit Member</a>
-                        <a href="javascript:addwife()" id="wifeoperation" style="display:none">Add Wife</a>
-                        <a href="javascript:addhusband()" id="husbandoperation" style="display:none">Add Husband</a>
-                        <a href="javascript:Vanshavali.addParents.showModal()" id="parentOperation">Add Parents</a>
+                        <a class="dropdown-item" href="javascript:operation_addmember()">Add Child</a>
+                        <a class="dropdown-item" href="javascript:deletemember()">Remove Member</a>
+                        <a class="dropdown-item" href="javascript:editmember()">Edit Member</a>
+                        <a class="dropdown-item" href="javascript:addwife()" id="wifeoperation" style="display:none">Add Wife</a>
+                        <a class="dropdown-item" href="javascript:addhusband()" id="husbandoperation" style="display:none">Add Husband</a>
+                        <a class="dropdown-item" href="javascript:Vanshavali.addParents.showModal()" id="parentOperation">Add Parents</a>
                     </div>
             </div>
             {/if}

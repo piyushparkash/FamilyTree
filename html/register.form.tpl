@@ -17,7 +17,7 @@
                 overflow: scroll;
             }
         </style>
-        <div class="control-group">
+        <div class="form-group">
             <label for="register_name" class="control-label">Your Name:</label>
             <div class="controls">
                 <input type="text" id="register_name" name="register_name" validated="no"/>
@@ -26,20 +26,20 @@
             </div>
         </div>
         {if !$is_wordpress_enabled}
-        <div class="control-group">
+        <div class="form-group">
             <label for="register_username" class="control-label">Username</label>
             <div class="controls">
                 <input type="text" id="register_username" name="register_username" validated="no"/>
                 <span class="help-block" ></span>
             </div>
         </div>
-        <div class="control-group">
+        <div class="form-group">
             <label for="register_password" class="control-label">Password</label>
             <div class="controls">
                 <input type="password" id="register_password" name="register_password" validated="no"/>
             </div>
         </div>
-        <div class="control-group">
+        <div class="form-group">
             <label for="register_confirmpassword" class="control-label">Confirm Password</label>
             <div class="controls">
                 <input type="password" id="register_confirmpassword" validated="no"/>
@@ -48,14 +48,14 @@
         </div>
         {/if}
     </fieldset>
-    <div class="control-group">
+    <div class="form-group">
         <label class="control-label" for="register_dob">Date Of Birth</label>
         <div class="controls">
             <input type="text" id="register_dob" name="register_dob" validated="no"/>
             <span class="help-block">Format: dd-mm-yyyy</span>
         </div>
     </div>
-    <div class="control-group">
+    <div class="form-group">
         <label for="register_gender" class="control-label">Gender</label>
         <div class="controls">
             <select id="register_gender" name="register_gender">
@@ -68,7 +68,7 @@
             </select>
         </div>
     </div>
-    <div class="control-group">
+    <div class="form-group">
         <label class="control-label" for="register_relationship">Relationship Status</label>
         <div class="controls">
             <select id="register_relationship" name="register_relationship">
@@ -82,21 +82,21 @@
         </div>
 
     </div>
-    <div class="control-group">
+    <div class="form-group">
         <label for="register_gaon" class="control-label">Village ( gaon )</label>
         <div class="controls">
             <input type="text" id="register_gaon" name="register_gaon"/>
         </div>
     </div>
 
-    <div class="control-group">
+    <div class="form-group">
         <label for="register_email" class="control-label">Email Id:</label>
         <div class="controls">
             <input type="text" id="register_email" name="register_email" validated="no"/>
             <span class="help-block" ></span>
         </div>
     </div>
-    <div class="control-group">
+    <div class="form-group">
         <label class="control-label" for="register_about">Little about you</label>
         <div class="controls">
             <textarea placeholder="Tell us something..." name="register_about" ></textarea>
@@ -116,7 +116,7 @@
     function success_display(id, display_text)
     {
         //hide the element, insert the text and the tick, and then show
-        $("#" + id).parents(".control-group").addClass("success");
+        $("#" + id).parents(".form-group").addClass("success");
         $("#" + id).siblings(".help-block").css("display", "none").text(display_text)
                 .fadeIn(500);
     }
@@ -125,20 +125,20 @@
     function success_hide(id)
     {
         $("#" + id).siblings("span.help-block").fadeIn("medium").fadeOut(500).text("");
-        $("#" + id).parents("div.control-group").removeClass("success");
+        $("#" + id).parents("div.form-group").removeClass("success");
     }
 
     //Function to show error
     function error_display(id, display_text)
     {       
-        $("#" + id).parents(".control-group").addClass('error');
+        $("#" + id).parents(".form-group").addClass('error');
         $("#" + id).siblings('.help-block').css("display", "none").text(display_text).fadeIn(500);
     }
 
     function error_hide(id)
     {
         $("#" + id).siblings('span.help-block').fadeIn("medium").fadeOut(500).text("");
-        $("#" + id).siblings('div.control-group').removeClass('error');
+        $("#" + id).siblings('div.form-group').removeClass('error');
     }
 
     function validated(id)

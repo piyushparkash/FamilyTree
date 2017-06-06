@@ -26,36 +26,31 @@ Vanshavali.makeAJAX = function (URL, data, success, error) {
     });
 }
 
-Vanshavali.errorInput = function(element, errorText)
-{
+Vanshavali.errorInput = function (element, errorText) {
     var inputHandle = $(element);
     //Input Handle
     inputHandle.addClass('form-control-danger').closest('.form-group').addClass('has-danger');
 
-    if (errorText)
-    {
+    if (errorText) {
         inputHandle.siblings('.form-control-feedback').removeClass("hidden-xs-up")[0].innerHTML = errorText;
     }
 
     return inputHandle;
 }
 
-Vanshavali.successInput = function(element, successText)
-{
+Vanshavali.successInput = function (element, successText) {
     var inputHandle = $(element);
     //Input Handle
     inputHandle.addClass('form-control-success').closest('.form-group').addClass('has-success');
 
-    if (successText)
-    {
+    if (successText) {
         inputHandle.siblings('.form-control-feedback').removeClass("hidden-xs-up")[0].innerHTML = successText;
     }
 
     return inputHandle;
 }
 
-Vanshavali.clearInput = function (element)
-{
+Vanshavali.clearInput = function (element) {
     var inputHandle = $(element);
 
     inputHandle.removeClass('form-control-success').removeClass('form-control-danger');
@@ -264,8 +259,12 @@ function forgotPassword_submit(ohtml, e) {
 function login() {
     $("#login").modal();
 
-    //Focus the username input field
-    $("#login_username").focus();
+
+    $('#myModal').on('shown.bs.modal', function () {
+        //Focus the username input field
+        $("#login_username").focus();
+    })
+
 }
 
 function login_submit() {
@@ -345,7 +344,8 @@ function submit_feedback() {
 ////////////////////////////////////////////////////////
 // Member Operation functions
 function operation_addmember() {
-    $("#operation_add").slideDown();
+    $("#operation_add").modal();
+    debugger;
 
     //name and id of parent from tree.graph instance
     father_name = (tree.graph.getNode(selected_member)).name;
@@ -376,7 +376,7 @@ function operation_addmember_submit() {
             alert("Some Error Occured. Please try again");
             $("#operation_add_name").removeAttr("disabled").val("");
             $("#operation_add_gender").removeAttr("disabled");
-            $("#operation_add").slideUp();
+            $("#operation_add").modal("hide");
             return false;
         } else if (ajaxSuccess(data)) {
             //enable the controls and set the value to ""
@@ -388,7 +388,7 @@ function operation_addmember_submit() {
 
 
             alert("The changes will be viewed permanently in the Family Tree once it is confirmed by other members. Thankyou for your contribution");
-            $("#operation_add").slideUp();
+            $("#operation_add").modal("hide");
         }
 
 
