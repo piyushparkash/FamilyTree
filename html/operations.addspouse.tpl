@@ -1,4 +1,4 @@
-<div id="operation_addSpouse" class="modal hide">
+<div id="operation_addSpouse" class="modal fade">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,26 +7,22 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-        </div>
-        <div class="modal-body">
+            <div class="modal-body">
             <form method="post" onsubmit="return Vanshavali.addSpouse.submit()" class="form-horizontal" >
                     <div class="form-group">
-                        <label for="operation_addSpouse_name" class="control-label">Spouse Name:</label>
-                        <div class="controls">
-                            <input type="text" id="operation_addSpouse_name" />
-                        </div>
+                        <label for="operation_addSpouse_name" class="col-form-label">Spouse Name:</label>
+                        <input type="text" id="operation_addSpouse_name" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label for="operation_addSpouse_otherSpousename" class="control-label">Spouse Of:</label>
-                        <div class="controls">
-                            <input type="text" disabled id="operation_addSpouse_otherSpousename" />
-                            <input type="hidden" id="operation_addSpouse_otherSpouseID" />
-                        </div>
+                        <label for="operation_addSpouse_otherSpousename" class="col-form-label">Spouse Of:</label>
+                        <input type="text" disabled id="operation_addSpouse_otherSpousename" class="form-control" />
+                        <input type="hidden" id="operation_addSpouse_otherSpouseID" />
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary" type="submit">Add</button>
                     </div>
             </form>
+        </div>
         </div>
     </div>
 </div>

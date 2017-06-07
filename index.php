@@ -90,5 +90,7 @@ if ($user->is_authenticated()) {
     $template->display('operations.add.form.tpl');
     $template->display('operations.remove.tpl');
     $template->display('operations.edit.tpl');
+    $template->display('operations.addspouse.tpl');
+    $template->display('operations.addparents.form.tpl');
     $template->display("suggest.tpl");
 }

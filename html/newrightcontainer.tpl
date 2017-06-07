@@ -21,8 +21,8 @@
                         <a class="dropdown-item" href="javascript:operation_addmember()">Add Child</a>
                         <a class="dropdown-item" href="javascript:deletemember()">Remove Member</a>
                         <a class="dropdown-item" href="javascript:editmember()">Edit Member</a>
-                        <a class="dropdown-item" href="javascript:addwife()" id="wifeoperation" style="display:none">Add Wife</a>
-                        <a class="dropdown-item" href="javascript:addhusband()" id="husbandoperation" style="display:none">Add Husband</a>
+                        <a class="dropdown-item" href="javascript:Vanshavali.addSpouse.showModal()" id="wifeoperation" style="display:none">Add Wife</a>
+                        <a class="dropdown-item" href="javascript:Vanshavali.addSpouse.showModal()" id="husbandoperation" style="display:none">Add Husband</a>
                         <a class="dropdown-item" href="javascript:Vanshavali.addParents.showModal()" id="parentOperation">Add Parents</a>
                     </div>
             </div>

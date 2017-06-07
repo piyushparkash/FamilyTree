@@ -345,7 +345,6 @@ function submit_feedback() {
 // Member Operation functions
 function operation_addmember() {
     $("#operation_add").modal();
-    debugger;
 
     //name and id of parent from tree.graph instance
     father_name = (tree.graph.getNode(selected_member)).name;
@@ -697,12 +696,12 @@ Vanshavali.addSpouse.showModal = function () {
     //Fill in the details of the husband
     $("#operation_addSpouse_otherSpousename").text(member.name);
     $("#operation_addSpouse_otherSpouseID").val(member.id);
-    $("#operation_addSpouse").slideDown();
+    $("#operation_addSpouse").modal();
 }
 
 Vanshavali.addSpouse.hideModal = function () {
     //Code to hide the modal
-    $("#operation_addSpouse").slideUp();
+    $("#operation_addSpouse").modal('hide');
 
     //Remove values from the field
     $("#operation_addSpouse_otherSpousename").val('');
@@ -723,7 +722,7 @@ Vanshavali.addSpouse.submit = function () {
 //Add Parent Code
 
 Vanshavali.addParents.showModal = function () {
-    $("#operation_addParents").slideDown();
+    $("#operation_addParents").modal();
 
     //Set the parents of value of the field
     var currentMember = tree.graph.getNode(selected_member);
@@ -750,7 +749,7 @@ Vanshavali.addParents.submit = function (e) {
 }
 
 Vanshavali.addParents.hideModal = function () {
-    $("#operation_addParents").slideUp();
+    $("#operation_addParents").modal('hide');
 
     //Remove previous parents of values from the field
     $("#operation_addParents_parentsof").val('');
