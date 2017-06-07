@@ -11,7 +11,7 @@
             <li class="nav-item"><a href="#" onclick="login()" class="nav-link"><i class="icon-user"></i>Login</a></li>
             {/if}
             <li class="nav-item"><a class="nav-link" href="#" onclick="introJs().start()">How to use?</a></li>
-            <li class="nav-item"><a class="nav-link" onclick="search()">Search</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" onclick="window.search()">Search</a></li>
             <li class="nav-item"><a class="nav-link" href="#" onclick="feedback()">Feedback</a></li>
         </ul>
         {if $authenticated}
