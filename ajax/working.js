@@ -437,7 +437,7 @@ function editmember() {
     }
 
     $("#operation_edit_id").val(parseInt(member.id));
-    $("#operation_edit").slideDown();
+    $("#operation_edit").modal();
 }
 
 function editmember_submit() {
@@ -497,7 +497,7 @@ function editmember_submit() {
                 display_data(member);
 
                 //hide the form
-                $("#operation_edit").slideUp();
+                $("#operation_edit").modal('hide');
 
                 alert("This information will be displayed once it is accepted by other members.");
 

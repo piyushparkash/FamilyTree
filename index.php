@@ -89,5 +89,6 @@ $template->display("feedback.form.tpl");
 if ($user->is_authenticated()) {
     $template->display('operations.add.form.tpl');
     $template->display('operations.remove.tpl');
+    $template->display('operations.edit.tpl');
     $template->display("suggest.tpl");
 }
