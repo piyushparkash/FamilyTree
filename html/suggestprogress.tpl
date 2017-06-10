@@ -1,31 +1,4 @@
-<div class="card" suggest-id="{$suggestid}">
-    <div class="card-block">
-        <h5 class="card-text"><span class='membername_mention'>{$suggested_by->data['membername']}</span> said <span
-                    class='membername_mention'>{$newvalue}</span> is
-            {if $sod}
-                Wife
-            {else}
-                Husband
-            {/if}
-            of <span class='membername_mention'>{$suggested_to->data['membername']}</span>
-        </h5>
-        {if $approvedonly}
-            <div class="row">
-                <div class="col d-flex justify-content-end">
-                    <span class="suggest_quest">Your Action:</span>
-                </div>
-                <div class="col d-flex justify-content-start">
-                    <span class="badge badge-default"> {$userAction}</span>
-                </div>
-                <div class="col d-flex justify-content-center">
-                    <span class="suggest_quest">Suggestion Result:</span>
-                </div>
-                <div class="col d-flex justify-content-start">
-                    <span class="badge badge-default">{$suggestionResult}</span>
-                </div>
-            </div>
-        {else}
-            <div class="row">
+<div class="row">
                 <div class="col-10">
                     <div class="progress">
                         <div class="progress-bar bg-success" style="width: {$yespercent}%;" role="progressbar"
@@ -57,7 +30,4 @@
                 <div class="col-2">
                     <button class="btn" onclick="suggest_action(this, 2);">Don't Know</button>
                 </div>
-            </div>
-        {/if}
-    </div>
-</div>
+            </div></div>
