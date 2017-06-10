@@ -169,10 +169,10 @@
         <label for="operation_edit_alive" class="control-label">Alive</label>
         <select id="operation_edit_alive">
             <option value="1">
-                Yes
+                Living
             </option>
             <option value="0">
-                No
+                Deceased
             </option>
         </select>
         <br>
