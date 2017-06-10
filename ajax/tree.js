@@ -210,8 +210,8 @@ function init() {
                     };
                     //set label styles
                     var style = label.style;
-                    style.width = node.data.$width + 'px';
-                    style.height = node.data.$height + 'px';
+                    style.width = node.data.$width - 1 + 'px'; // -1 is drop shadow fix
+                    style.height = node.data.$height-1 + 'px';
                     style.cursor = 'pointer';
                     style.fontSize = '0.9em';
                     style.textAlign = 'center';
@@ -230,7 +230,12 @@ function init() {
                     //add some color to the nodes in the path between the
                     //root node and the selected node.
                     if (node.selected) {
-                        node.data.$color = "#fcff00";
+                        if (node.data.gender == "0")
+                        {
+                            node.data.$color = '#bbdefb';
+                        } else {
+                            node.data.$color = "#f8bbd0";
+                        }
 
                     } else {
 
@@ -238,9 +243,9 @@ function init() {
                         //if the node belongs to the last plotted level
 
                         if (node.data.gender == "0") {
-                            node.data.$color = "#C7E9FF";
+                            node.data.$color = "#e3f2fd";
                         } else {
-                            node.data.$color = "#F9C7FF";
+                            node.data.$color = "#fce4ec";
                         }
                         console.log('We are plotting the node');                
 

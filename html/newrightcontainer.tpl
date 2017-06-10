@@ -9,7 +9,7 @@
             <li class="list-group-item">Relationship Status <span id="display_relationship"></span></li>
             <li class="list-group-item">Living/Deceased <span id="display_alive"></span></li>
             <li class="list-group-item">Village <span id="display_gaon"></span></li>
-            <li class="list-group-item">Relation With You<span id="display_relation"></span></li>
+            <li class="list-group-item">Relation With You <span id="display_relation"></span></li>
             {if $authenticated}
             <div class="card-block">
                 <button class='btn btn-success' onclick='viewfamily(this)' id="girlfamilybutton">View Family</button>
