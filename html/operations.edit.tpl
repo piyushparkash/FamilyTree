@@ -60,7 +60,7 @@
                     </div>
 
 
-                    <button class="btn btn-success" type="submit">Add</button>
+                    <button class="btn btn-success" type="submit">Update</button>
                     <button class="btn" onclick="$('#operation_edit').modal('hide')" type="button">Cancel</button>
                 </form>
             </div>

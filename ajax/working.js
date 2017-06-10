@@ -135,7 +135,8 @@ function search() {
     $("#search_term").autocomplete({
         source: function (request, response) {
             var newarray = new Array() //This array will hold all the results
-            var helpblock = $("#search").children(".modal-body").children("form").children(".help-block")[0];
+            debugger;
+            helpblock = $("#searchhelper");
 
             $.getJSON("register_username.php?action=search&pt=" + request.term, "", function (data) {
                 $.each(data, function (key, value) {

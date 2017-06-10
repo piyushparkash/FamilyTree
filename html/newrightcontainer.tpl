@@ -1,5 +1,5 @@
 <div id="right-container" class="card text-center" data-intro="Here you will see information about the selected member." data-step="3" data-position="left">
-        <img src="assets/user_images/{$userimage}" id="display_image" class="card-img img-fluid rounded" />
+        <img src="assets/user_images/common.png" id="display_image" class="card-img img-fluid rounded" />
         <div class="card-block">
             <h4 class="card-title" id="display_name"></h4>
         </div>
