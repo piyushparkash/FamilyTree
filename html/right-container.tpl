@@ -176,7 +176,7 @@
             </option>
         </select>
         <br>
-        <button class="btn btn-success" type="submit">Add</button>
+        <button class="btn btn-success" type="submit">Update</button>
         <button class="btn" onclick="$('#operation_edit').slideUp()" type="button">Cancel</button>
     </form>
 
