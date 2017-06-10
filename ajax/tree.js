@@ -137,6 +137,7 @@ function display_data(node) {
 
 }
 
+
 function init() {
     var json;
     //init data

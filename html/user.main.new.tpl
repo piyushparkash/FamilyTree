@@ -18,7 +18,7 @@
         <ul class="navbar-nav pull-xs-right">
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="icon-user icon-white"></i> {$membername}
+                    <i class="icon-user icon-white"></i> <strong>{$membername}</strong>
                     <b class="caret"></b>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -26,7 +26,7 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link" onclick="suggest(this)">Complete Family!</a>
+                <a href="#" class="nav-link" onclick="suggest(this)"><strong>Complete Family!</strong></a>
             </li>
             <script type="text/javascript">
                 is_authenticated = true;
