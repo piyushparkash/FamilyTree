@@ -33,8 +33,6 @@
         </script>
         <script type="text/javascript" src="{$basepath}ajax/tree.js">
         </script>
-        <script type="text/javascript" src="{$basepath}ajax/intro.min.js">
-        </script>
         <script type="text/javascript" src="{$basepath}assets/js/pace.min.js">
         </script>
         <script type="text/javascript" src="{$basepath}assets/js/responsive.js">

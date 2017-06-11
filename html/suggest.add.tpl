@@ -1,4 +1,4 @@
-<div class="card" suggest-id="{$suggestid}">
+<div class="card-deck" suggest-id="{$suggestid}">
     <div class="card-block">
         <h5 class="card-text">Is <span class='membername_mention'>{$newvalue}</span> {if !$sod}son{else}daughter{/if} of <span class='membername_mention'>{$suggested_to->data['membername']}</span>?</h5>
         {if $approvedonly}

@@ -14,13 +14,13 @@
 
                     <div class="form-group">
                         <label for="operation_edit_name" class="col-form-label">Name:</label>
-                        <input type="text" id="operation_edit_name" class="form-control" />
+                        <input type="text" id="operation_edit_name" class="form-control" required />
                         <input type="hidden" id="operation_edit_id" />
                     </div>
 
                     <div class="form-group">
                         <label for="operation_edit_gender" class="col-form-label">Gender:</label>
-                        <select id="operation_edit_gender" class="form-control">
+                        <select id="operation_edit_gender" class="form-control" required>
                             <option value="0">
                                 Male
                             </option>
@@ -32,7 +32,7 @@
 
                     <div class="form-group">
                         <label for="operation_edit_relationship" class="col-form-label">Relationship Status:</label>
-                        <select id="operation_edit_relationship" class="form-control">
+                        <select id="operation_edit_relationship" class="form-control" required>
                             <option value="0">
                                 Single
                             </option>
@@ -44,7 +44,7 @@
 
                     <div class="form-group">
                         <label for="operation_edit_dob" class="col-form-label">Date of Birth</label>
-                        <input type="text" id="operation_edit_dob" class="form-control" />
+                        <input type="text" id="operation_edit_dob" class="form-control"/>
                     </div>
 
                     <div class="form-group">

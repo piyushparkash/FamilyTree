@@ -84,7 +84,7 @@ else
 
 $template->display("login.form.tpl");
 $template->display('forgotpassword.modal.tpl');
-$template->display('search.form.tpl');
+//$template->display('search.form.tpl');
 $template->display("feedback.form.tpl");
 if ($user->is_authenticated()) {
     $template->display('operations.add.form.tpl');

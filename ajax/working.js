@@ -60,6 +60,10 @@ Vanshavali.clearInput = function (element) {
     return inputHandle;
 }
 
+Vanshavali.isLoggedIn = function () {
+    return is_authenticated;
+}
+
 Vanshavali.statusModal = {};
 
 Vanshavali.statusModal.show = function (text, isError) {
@@ -120,25 +124,17 @@ Vanshavali.Operation.addSpouse = function (name, otherSpouse) {
 
 var is_authenticated = false;
 
-//Search Functions
-function search() {
 
-    //Show the dialog
-    $("#search").modal();
-
-    $("#search").children(".modal-body").children("form").submit(function (e) {
-        e.preventDefault();
-        return false;
-    });
-
+$(document).ready(function () {
     //Initialize the autocomplete widget
     $("#search_term").autocomplete({
         source: function (request, response) {
             var newarray = new Array() //This array will hold all the results
             debugger;
-            helpblock = $("#searchhelper");
+            // helpblock = $("#searchhelper");
 
             $.getJSON("register_username.php?action=search&pt=" + request.term, "", function (data) {
+                console.log('Search file has been called');
                 $.each(data, function (key, value) {
                     //Convert to jquery-ui obect
                     var obj = {
@@ -151,13 +147,13 @@ function search() {
                 });
 
                 //if newarray is empty
-                if (newarray.length === 0) {
-                    //Tell user there is no one with this name
-                    helpblock.innerHTML = "No User found with this name";
-                    console.log("We got empty response. No user with this name");
-                } else {
-                    helpblock.innerHTML = "Type the name and click search";
-                }
+                // if (newarray.length === 0) {
+                //     //Tell user there is no one with this name
+                //     helpblock.innerHTML = "No User found with this name";
+                //     console.log("We got empty response. No user with this name");
+                // } else {
+                //     helpblock.innerHTML = "Type the name and click search";
+                // }
 
                 response(newarray);
             });
@@ -179,6 +175,20 @@ function search() {
             return false;
         }
     });
+});
+
+//Search Functions
+function search() {
+
+    //Show the dialog
+    $("#search").modal();
+
+    $("#search").children(".modal-body").children("form").submit(function (e) {
+        e.preventDefault();
+        return false;
+    });
+
+
 }
 //End of search related functions
 
@@ -399,6 +409,11 @@ function operation_addmember_submit() {
 }
 
 function editmember() {
+
+    if (!Vanshavali.isLoggedIn()) {
+        //Trigger the login modal
+        login();
+    }
     //get the member from the tree to retreive data
     member = tree.graph.getNode(selected_member);
 
@@ -503,7 +518,6 @@ function editmember_submit() {
 
             }
         }
-
     );
 
     //Stop redirect
@@ -560,24 +574,22 @@ function deletemember_submit() {
 
 function suggest() {
     $.post("getdata.php", {
-            action: "getsuggestions"
-        }, function (data)
+        action: "getsuggestions"
+    }, function (data) {
+        //Update the modal with data first
+        $("#suggest-data").html(data);
 
-        {
-            //Update the modal with data first
-            $("#suggest-data").html(data);
+        //Check if we have datato show
 
-            //Check if we have datato show
+        if (!data.trim()) {
+            $("#suggest-data").html("<div class='alert alert-success'>Wohoo! You have completed all your suggestions</div>")
+        }
 
-            if (!data.trim()) {
-                $("#suggest-data").html("<div class='alert alert-success'>Wohoo! You have completed all your suggestions</div>")
-            }
-
-            //Show the modal now
-            $("#suggest").modal();
+        //Show the modal now
+        $("#suggest").modal();
 
 
-        });
+    });
 
 }
 
@@ -608,22 +620,20 @@ function suggest_action(e, actionid) {
 
     //perform the suggestion ajax action
     $.post("getdata.php", {
-            action: "suggestionapproval",
-            suggestid: id,
-            suggest_action: actionid
-        }, function (data)
-
-        {
-            //Check for Ajax error
-            if (ajaxError(data)) {
-                alert("Some error occured. Please try again");
-                return false;
-            } else if (ajaxSuccess(data)) {
-                data = $.parseJSON(data);
-                //Success now hide the suggestion
-                $("[suggest-id=" + data.data.suggestid + "]").hide("medium");
-            }
-        });
+        action: "suggestionapproval",
+        suggestid: id,
+        suggest_action: actionid
+    }, function (data) {
+        //Check for Ajax error
+        if (ajaxError(data)) {
+            alert("Some error occured. Please try again");
+            return false;
+        } else if (ajaxSuccess(data)) {
+            data = $.parseJSON(data);
+            //Success now hide the suggestion
+            $("[suggest-id=" + data.data.suggestid + "]").hide("medium");
+        }
+    });
 
 
 }
