@@ -238,6 +238,9 @@ class suggest extends member_operation_suggest {
         //$this->approval_delete();
         //Now mark the suggestion as applied So that it can be used in future
         $db->get("update suggested_info set approved=1 where id=$this->id");
+
+        //Require the create json file so that the structure can be generated again
+        vanshavali::genTreeJSON($this->data['family_id'], true);
     }
 
     /**
