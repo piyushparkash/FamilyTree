@@ -20,7 +20,7 @@ switch ($_GET['action']) {
         echo json_encode($usernames);
         break;
     case "search":
-        $query = $db->query("select * from member where membername like '%$partial%'");
+        $query = $db->query("select * from member where membername like '%$partial%' and membername not IN ('Mother', 'Father', 'Wife')");
         $usernames = array();
         while ($row = $db->fetch($query)) {
             $usernames[$row["id"]] = $row['membername'];
