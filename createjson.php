@@ -4,14 +4,8 @@ require "header.php";
 
 global $db, $user;
 
+error_reporting(E_ALL);
+ini_set("display_errors", "On");
 $familyid = $_GET['familyid'];
 
-$head = vanshavali::getHeadofFamily($familyid);
-$head = new member($head);
-
-//Create a infovis struct
-$finalkey = vanshavali::createstruct($head->data);
-$finalkey['children'] = vanshavali::getwife($head->data['id']);
-
-echo json_encode($finalkey);
-?>
+echo vanshavali::genTreeJSON($familyid);

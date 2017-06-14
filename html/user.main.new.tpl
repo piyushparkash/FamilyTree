@@ -11,17 +11,17 @@
             <li class="nav-item active"><a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
             {if $authenticated eq False}
+                <ul class="navbar-nav pull-xs-right">
+                    <form class="form-inline mr-2 mb-sm-2 mb-2 mb-lg-0 mb-xl-0" onsubmit="login(); return false;">
+                        <button class="btn btn-primary">Login</button>
+                    </form>
+                    <form class="form-inline mr-2 mr-2 mb-sm-2 mb-2 mb-lg-0 mb-xl-0" action="register.php">
+                        <button class="btn btn-success">Register</button>
+                    </form>
+                </ul>
             {/if}
             <form class="form-inline mr-2 mb-sm-2 mb-2 mb-lg-0 mb-xl-0">
                 <input type="text" placeholder="Search" id="search_term" class="form-control mr-sm-2"/>
-            </form>
-        </ul>
-        <ul class="navbar-nav pull-xs-right">
-            <form class="form-inline mr-2 mb-sm-2 mb-2 mb-lg-0 mb-xl-0" onsubmit="login(); return false;">
-                <button class="btn btn-primary">Login</button>
-            </form>
-            <form class="form-inline mr-2 mr-2 mb-sm-2 mb-2 mb-lg-0 mb-xl-0" action="register.php">
-                <button class="btn btn-success">Register</button>
             </form>
         </ul>
         {if $authenticated}

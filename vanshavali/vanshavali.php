@@ -295,15 +295,11 @@ class vanshavali
     public static function calculateRelation($from, $to)
     {
         if ($from === $to) {
-            return false;
+            return array("Friend");
         }
 
         if ($from == null or $to == null) {
             return false;
-        }
-
-        if ($to == $from) {
-            return array("Friend");
         }
 
         $from = self::getmember($from);
@@ -313,7 +309,7 @@ class vanshavali
         $relationparam = self::memberDistance($to, $from);
 
         //If the Level distance is more than 2 than everyone is GrandFather only
-        if ($relationparam['levelDistance'] > 1 || $relationparam['diffsex']) {
+        if ($relationparam['levelDistance'] > 4 && $relationparam['diffsex']) {
             return array('Grand Mother');
         } else if (!$relationparam['diffsex']) {
             return array("Grand Father");

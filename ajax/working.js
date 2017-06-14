@@ -128,9 +128,9 @@ var is_authenticated = false;
 $(document).ready(function () {
     //Initialize the autocomplete widget
     $("#search_term").autocomplete({
+        minLength: 3,
         source: function (request, response) {
             var newarray = new Array() //This array will hold all the results
-            debugger;
             // helpblock = $("#searchhelper");
 
             $.getJSON("register_username.php?action=search&pt=" + request.term, "", function (data) {
@@ -155,7 +155,7 @@ $(document).ready(function () {
                 //     helpblock.innerHTML = "Type the name and click search";
                 // }
 
-                response(newarray);
+                response(newarray.slice(0, 15));
             });
         },
         select: function (e, ui) {

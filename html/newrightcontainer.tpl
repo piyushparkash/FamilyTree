@@ -5,11 +5,11 @@
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item hidden-md-up justify-content-center" id='rightcontainerhide'><button class="btn btn-primary">Hide</button>
-            <li class="list-group-item justify-content-center list-group-item-action" onclick="editmember()">Born on&nbsp;&nbsp;<span id="display_dob"></span></li>
-            <li class="list-group-item justify-content-center list-group-item-action" onclick="editmember()">Is&nbsp;&nbsp;<span id="display_relationship"></span></li>
-            <li class="list-group-item justify-content-center list-group-item-action" onclick="editmember()">Is&nbsp;&nbsp;<span id="display_alive"></span></li>
-            <li class="list-group-item justify-content-center list-group-item-action" onclick="editmember()">Lives in&nbsp;&nbsp;<span id="display_gaon"></span></li>
-            <li class="list-group-item justify-content-center list-group-item-action" onclick="editmember()">He is your&nbsp;&nbsp;<span id="display_relation"></span></li>
+            <li class="list-group-item justify-content-center list-group-item-action" onclick="editmember()"><span id="display_dob"></span></li>
+            <li class="list-group-item justify-content-center list-group-item-action" onclick="editmember()"><span id="display_relationship"></span></li>
+            <li class="list-group-item justify-content-center list-group-item-action" onclick="editmember()"><span id="display_alive"></span></li>
+            <li class="list-group-item justify-content-center list-group-item-action" onclick="editmember()"><span id="display_gaon"></span></li>
+            <li class="list-group-item justify-content-center list-group-item-action" onclick="editmember()"><span id="display_relation"></span></li>
             {if $authenticated}
             <div class="card-block">
                 <div class="btn-group">
