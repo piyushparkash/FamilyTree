@@ -116,7 +116,15 @@ function display_data(node) {
             "to": node.id,
             dataType : 'json'
         }, function (data) {
-            data = JSON.parse(data);
+
+            try {
+                data = JSON.parse(data);
+            }
+            catch (e)
+            {
+                $("#display_relation").html("Unable to Calculate Relation");
+                return;
+            }
             //Check for error
             if (parseInt(data.error) == 1)
             {
