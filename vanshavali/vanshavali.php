@@ -311,7 +311,7 @@ class vanshavali
         //If the Level distance is more than 2 than everyone is GrandFather only
         if ($relationparam['levelDistance'] > 4 && $relationparam['diffsex']) {
             return array('Grand Mother');
-        } else if (!$relationparam['diffsex']) {
+        } else if ($relationparam['levelDistance'] > 4 && !$relationparam['diffsex']) {
             return array("Grand Father");
         }
 
