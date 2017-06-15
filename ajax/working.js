@@ -723,7 +723,7 @@ Vanshavali.addSpouse.hideModal = function () {
 Vanshavali.addSpouse.submit = function () {
     //Code to read from the form and submit
     var name = $("#operation_addSpouse_name").val();
-    var otherSpouse = $("#operation_addSpouse_otherSpouseID").val('');
+    var otherSpouse = $("#operation_addSpouse_otherSpouseID");
     Vanshavali.Operation.addSpouse(name, otherSpouse);
     Vanshavali.Operation.hideModal();
 }
