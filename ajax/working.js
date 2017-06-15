@@ -703,9 +703,9 @@ Vanshavali.modifyMember = {};
 Vanshavali.addSpouse.showModal = function () {
     //Get the member whose wife is to be added
     var member = tree.graph.getNode(selected_member);
-
+    debugger;
     //Fill in the details of the husband
-    $("#operation_addSpouse_otherSpousename").text(member.name);
+    $("#operation_addSpouse_otherSpousename").val(member.name);
     $("#operation_addSpouse_otherSpouseID").val(member.id);
     $("#operation_addSpouse").modal();
 }
