@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-            <form method="post" onsubmit="return Vanshavali.addSpouse.submit()" class="form-horizontal" >
+            <form method="post" onsubmit="return Vanshavali.addSpouse.submit(event)" >
                     <div class="form-group">
                         <label for="operation_addSpouse_name" class="col-form-label">Spouse Name:</label>
                         <input type="text" id="operation_addSpouse_name" class="form-control" />
@@ -19,7 +19,7 @@
                         <input type="hidden" id="operation_addSpouse_otherSpouseID" />
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" type="submit">Add</button>
+                        <button class="btn btn-primary" type="submit">Add Spouse</button>
                     </div>
             </form>
         </div>

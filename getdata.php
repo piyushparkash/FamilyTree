@@ -13,24 +13,18 @@ global $db, $user;
 switch ($_POST['action']) {
 
     case "check_wp_login":
-        if (vanshavali::$wp_login)
-        {
+        if (vanshavali::$wp_login) {
             //Check if all the members have wordpressid
             $query = $db->query("select count(*) as membercount from member where username!='' and password!='' and wordpress_user=''");
             $row = mysqli_fetch_array($query);
-            if ($row['membercount'] > 0)
-            {
+            if ($row['membercount'] > 0) {
                 ajaxError();
                 break;
-            }
-            else
-            {
+            } else {
                 ajaxSuccess();
                 break;
             }
-        }
-        else
-        {
+        } else {
             ajaxError();
         }
         break;
@@ -79,13 +73,13 @@ switch ($_POST['action']) {
         }
 
         //If the format of username not correct
-        if(!preg_match('/^\w{5,}$/', $username)) { 
+        if (!preg_match('/^\w{5,}$/', $username)) {
             $arrRet['yes'] = -1;
         }
 
         echo json_encode($arrRet);
 
-        
+
         break;
 
 
@@ -119,7 +113,7 @@ switch ($_POST['action']) {
     case "operationAddSpouse":
 
         //Get the member to be changed
-        $member = vanshavali::getmember($_POST['husband']);
+        $member = vanshavali::getmember($_POST['otherSpouse']);
 
         //Add wife to the member
         if ($member->addSpouse($_POST['name'], TRUE)) {
@@ -135,8 +129,7 @@ switch ($_POST['action']) {
 
         $member = vanshavali::getmember($_POST['parentsof']);
 
-        if ($member->addParents($_POST['fathername'], $_POST['mothername'], true))
-        {
+        if ($member->addParents($_POST['fathername'], $_POST['mothername'], true)) {
             ajaxSuccess();
         } else {
             ajaxError();
@@ -232,7 +225,8 @@ switch ($_POST['action']) {
         $email = $_POST['email'];
         $message = $_POST['message'];
         if (!$db->query("insert into feedback (user_name,user_emailid,feedback_text) 
-                values ('$name','$email','$message')")) {
+                values ('$name','$email','$message')")
+        ) {
             trigger_error("Some error occured with the database query");
         } else {
             ajaxSuccess();
@@ -245,6 +239,16 @@ switch ($_POST['action']) {
         if (empty($res->data['username']) && empty($res->data['password'])) {
             ajaxSuccess();
         } else {
+            ajaxError();
+        }
+        break;
+    case "reportError":
+        if (vanshavali::mailAdmin("mail.apierror.tpl", array("errorText" => $_POST['errorText']), "Report: API Failed"))
+        {
+            ajaxSuccess();
+        }
+        else
+        {
             ajaxError();
         }
         break;

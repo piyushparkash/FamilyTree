@@ -9,21 +9,37 @@ Vanshavali.LIVING = 1;
 Vanshavali.DECEASED = 0;
 
 Vanshavali.makeAJAX = function (URL, data, success, error) {
-    simpleError = function (response) {
-        //Just pass the response text
-        error(response.responseText);
-    }
+    console.log("Make AJax was called");
+    $.post(URL, data,
+        function (data) {
+            var response;
+            //Check what error code we got from the request
+            try {
+                response = JSON.parse(data);
+                if (response.success == 1) {
+                    //Call the success function
+                    success(response);
+                }
+                else if (response.success == 0) {
+                    //Call the error function
+                    error(response);
+                }
+            }
+            catch (e) {
+                //We could not parse the JSON probably
+                Vanshavali.statusModal.show("Something went wrong. Please try again", true);
+                Vanshavali.reportError("Could not parse response from API with data: " + JSON.stringify(data));
+                return;
+            }
+        });
+}
 
-    simpleSuccess = function (response) {
-        //Just pass the response text
-        success(response.responseText);
-    }
-    $.ajax(URL, {
-        data: data,
-        error: simpleError,
-        success: simpleSuccess,
-        method: 'POST'
-    });
+Vanshavali.reportError = function (errorText) {
+    Vanshavali.makeAJAX("getdata.php",
+        {
+            action: "reportError",
+            errorText: errorText
+        });
 }
 
 Vanshavali.errorInput = function (element, errorText) {
@@ -703,7 +719,6 @@ Vanshavali.modifyMember = {};
 Vanshavali.addSpouse.showModal = function () {
     //Get the member whose wife is to be added
     var member = tree.graph.getNode(selected_member);
-    debugger;
     //Fill in the details of the husband
     $("#operation_addSpouse_otherSpousename").val(member.name);
     $("#operation_addSpouse_otherSpouseID").val(member.id);
@@ -720,12 +735,13 @@ Vanshavali.addSpouse.hideModal = function () {
     $("#operation_addSpouse_name").val('');
 }
 
-Vanshavali.addSpouse.submit = function () {
+Vanshavali.addSpouse.submit = function (e) {
     //Code to read from the form and submit
     var name = $("#operation_addSpouse_name").val();
-    var otherSpouse = $("#operation_addSpouse_otherSpouseID");
+    var otherSpouse = $("#operation_addSpouse_otherSpouseID").val();
     Vanshavali.Operation.addSpouse(name, otherSpouse);
-    Vanshavali.Operation.hideModal();
+    Vanshavali.addSpouse.hideModal();
+    return false;
 }
 
 //End of AppSpouse Code
