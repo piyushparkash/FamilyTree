@@ -601,9 +601,10 @@ class vanshavali
         global $user;
 
         $obj = array();
-        $obj['id'] = $row["id"];
         $obj['name'] = trim($row['membername']) == "" ? "unknown" : $row["membername"];
-        $obj['data'] = array(
+        $obj['id'] = $row["id"];
+
+        $obj['extra'] = array(
             "dob" => ($row['dob'] ? strftime("%d/%m/%Y", $row['dob']) : ""),
             "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
                 "Married"),
@@ -614,6 +615,7 @@ class vanshavali
             "gaon" => $row['gaon'],
             'image' => empty($row['profilepic']) ? "common.png" : $row['profilepic'],
             'familyid' => $row['family_id'],
+            'id' => $row["id"]
 //            'relation' => (self::calculateRelation($row["id"], $user->user["id"]) ? $user->is_authenticated() : "Login to view relation")
         );
         return $obj;
@@ -634,7 +636,7 @@ class vanshavali
         $query = $db->query("select * from member where sonof=$id and dontshow=0");
         while ($row = $db->fetch($query)) {
             $obj = self::createstruct($row);
-            $obj['children'] = self::getwife($row['id']);
+            $obj['marriages'] = self::getwife($row['id']);
             array_push($finalarray, $obj);
         }
         return $finalarray;
@@ -656,7 +658,7 @@ class vanshavali
         $obj = array();
         // Space Tree Object if he has a wife
         if ($row) {
-            $obj = self::createstruct($row);
+            $obj['spouse'] = self::createstruct($row);
             $obj['children'] = self::getchild($id);
             array_push($finalarray, $obj);
             return $finalarray;
@@ -774,9 +776,9 @@ class vanshavali
 
             //Create a infovis struct
             $finalkey = vanshavali::createstruct($head->data);
-            $finalkey['children'] = vanshavali::getwife($head->data['id']);
+            $finalkey['marriages'] = vanshavali::getwife($head->data['id']);
 
-            $finalJSON = json_encode($finalkey);
+            $finalJSON = json_encode(array($finalkey));
 
             //Overwrite the file with this structure
             unlink($staticFilename);
