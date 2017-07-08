@@ -627,11 +627,21 @@ class vanshavali
      * @param integer $id Ihe of the member whose children are to be fetched
      * @return array
      */
-    public static function getchild($id)
+    public static function getchild($id, $spouseGender)
     {
         global $db;
         $finalarray = array();
-        $query = $db->query("select * from member where sonof=$id and dontshow=0");
+
+        //Check if spouse is husband
+        if ($spouseGender == MALE)
+        {
+            $sql = "select * from member WHERE sonof in (SELECT related_to from member WHERE id=$id)";
+        }
+        else
+        {
+            $sql = "select * from member where sonof=$id and dontshow=0";
+        }
+        $query = $db->query($sql);
         while ($row = $db->fetch($query)) {
             $obj = self::createstruct($row);
             $obj['children'] = self::getwife($row['id']);
@@ -657,7 +667,7 @@ class vanshavali
         // Space Tree Object if he has a wife
         if ($row) {
             $obj = self::createstruct($row);
-            $obj['children'] = self::getchild($id);
+            $obj['children'] = self::getchild($id, $row[GENDER]);
             array_push($finalarray, $obj);
             return $finalarray;
         } else {
