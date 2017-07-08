@@ -89,7 +89,7 @@ abstract class member_operation extends member_operation_suggest
                 If ($this->data['gender'] == FEMALE) {
                     //Get the family id of father
                     $father = vanshavali::getmember($this->data['related_to']);
-                    $familyID = $father->data['family_id'];
+                    $familyid = $father->data['family_id'];
                 } else {
                     //It is the father, get $this family id
                     $familyid = $this->data['family_id'];
@@ -117,10 +117,20 @@ abstract class member_operation extends member_operation_suggest
                     return false;
                 }
 
-                //regenerate the JSON for tree
-                vanshavali::genTreeJSON($this->data['family_id'], true);
+                $insertedID = $db->last_id();
 
-                return $db->last_id();
+                //regenerate the JSON for tree
+                if ($this->data['gender'] == FEMALE)
+                {
+                    vanshavali::genTreeJSON($father->data['family_id'], true);
+                }
+                else
+                {
+                    vanshavali::genTreeJSON($this->data['family_id'], true);
+                }
+
+
+                return $insertedID;
             } else {
                 return false;
             }
