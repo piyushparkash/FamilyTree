@@ -757,6 +757,7 @@ class vanshavali
     public static function genTreeJSON($familyid, $force = false)
     {
         global $db;
+        $expired = false;
 
         if (empty($familyid))
         {
@@ -765,8 +766,15 @@ class vanshavali
         }
 
         $staticFilename = 'familystruct-' . $familyid . '.json';
+        $fileCreatedTime = filemtime($staticFilename);
+        $diff = time() - $fileCreatedTime;
 
-        if (!$force && file_exists($staticFilename) && !empty($familyid)) {
+        if ($diff > 24*60*60)
+        {
+            $expired = true;
+        }
+
+        if (!$force && file_exists($staticFilename) && !empty($familyid) && !$expired) {
             return file_get_contents($staticFilename);
         } else {
             $head = vanshavali::getHeadofFamily($familyid);
