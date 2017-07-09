@@ -196,11 +196,14 @@ abstract class member_operation extends member_operation_suggest
                     $mother->related_to($fatherid);
                     $father->related_to($motherid);
 
+                    //Add Child to the same father and mother
+
+
                     //Insert Wife in the database
                     if ($toAddWife) {
-                        $wifeID = vanshavali::addmember_explicit($name, FEMALE, $familyid);
+                        $wifeID = $father->addChild($name, FEMALE);
                     } else {
-                        $wifeID = vanshavali::addmember_explicit($name, MALE, $familyid);
+                        $wifeID = $father->addChild($name, MALE);
                     }
 
                     //get the wife member handle
