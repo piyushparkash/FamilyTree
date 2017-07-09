@@ -635,7 +635,7 @@ class vanshavali
         //Check if spouse is husband
         if ($spouseGender == MALE)
         {
-            $sql = "select * from member WHERE sonof in (SELECT related_to from member WHERE id=$id)";
+            $sql = "select * from member WHERE sonof in (SELECT related_to from member WHERE id=$id) and dontshow=0";
         }
         else
         {
