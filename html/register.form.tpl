@@ -1,88 +1,98 @@
-<form method="post" id="register_form" action="register.php" class="single-dialog form-horizontal well well-large">
-    {if $is_admin }
-        Hi Admin, We need some basic information about you
-        <input type="hidden" value="1" id="is_admin" name="is_admin"/>
-    {else}
-        Welcome to Vanshavali! Fill out the form to register.
-    {/if}
-    </legend>
-    {if $familyid}
-        <input type="hidden" value="{$familyid}" name="familyid"/>
-    {/if}
-    <style>
-        body {
-            overflow: scroll;
-        }
-    </style>
-    <div class="form-group">
-        <label for="register_name" class="col-form-label">Your Name:</label>
-        <input type="text" id="register_name" name="register_name" class="form-control" validated="no" required/>
-        <input type="hidden" id="register_id" name="register_id"/>
-        <span class="form-control-feedback"></span>
-    </div>
-    {if !$is_wordpress_enabled}
-        <div class="form-group">
-            <label for="register_username" class="col-form-label">Username</label>
-            <input type="text" id="register_username" name="register_username" validated="no" required
-                   class="form-control"/>
-            <span class="form-control-feedback"></span>
-        </div>
-        <div class="form-group">
-            <label for="register_password" class="col-form-label">Password</label>
-            <input type="password" id="register_password" name="register_password" validated="no" required
-                   class="form-control"/>
-        </div>
-        <div class="form-group">
-            <label for="register_confirmpassword" class="col-form-label">Confirm Password</label>
-            <input type="password" id="register_confirmpassword" validated="no" required class="form-control"/>
-            <span class="form-control-feedback"></span>
-        </div>
-    {/if}
-    <div class="form-group">
-        <label class="col-form-label" for="register_dob">Date Of Birth</label>
-        <input type="text" id="register_dob" name="register_dob" validated="no" required class="form-control"/>
-        <span class="form-control-feedback">Format: dd-mm-yyyy</span>
-    </div>
-    <div class="form-group">
-        <label for="register_gender" class="col-form-label">Gender</label>
-        <select id="register_gender" name="register_gender" class="form-control">
-            <option selected="selected" value="0">
-                Male
-            </option>
-            <option value="1">
-                Female
-            </option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label class="col-form-label" for="register_relationship">Relationship Status</label>
-        <select id="register_relationship" name="register_relationship" class="form-control">
-            <option selected="selected" value="0">
-                Single
-            </option>
-            <option value="1">
-                Married
-            </option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="register_gaon" class="control-label">Village ( Gaon )</label>
-        <input type="text" id="register_gaon" name="register_gaon" required class="form-control"/>
-    </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="offset-3 col-6 offset-3">
+            <form method="post" id="register_form" action="register.php" class="bg-faded p-5">
+                {if $is_admin }
+                    Hi Admin, We need some basic information about you
+                    <input type="hidden" value="1" id="is_admin" name="is_admin"/>
+                {else}
+                    Welcome to Vanshavali! Fill out the form to register.
+                {/if}
+                </legend>
+                {if $familyid}
+                    <input type="hidden" value="{$familyid}" name="familyid"/>
+                {/if}
+                <style>
+                    body {
+                        overflow: scroll;
+                    }
+                </style>
+                <div class="form-group">
+                    <label for="register_name" class="col-form-label">Your Name:</label>
+                    <input type="text" id="register_name" name="register_name" class="form-control" validated="no"
+                           required/>
+                    <input type="hidden" id="register_id" name="register_id"/>
+                    <span class="form-control-feedback"></span>
+                </div>
+                {if !$is_wordpress_enabled}
+                    <div class="form-group">
+                        <label for="register_username" class="col-form-label">Username</label>
+                        <input type="text" id="register_username" name="register_username" validated="no" required
+                               class="form-control"/>
+                        <span class="form-control-feedback"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="register_password" class="col-form-label">Password</label>
+                        <input type="password" id="register_password" name="register_password" validated="no" required
+                               class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="register_confirmpassword" class="col-form-label">Confirm Password</label>
+                        <input type="password" id="register_confirmpassword" validated="no" required
+                               class="form-control"/>
+                        <span class="form-control-feedback"></span>
+                    </div>
+                {/if}
+                <div class="form-group">
+                    <label class="col-form-label" for="register_dob">Date Of Birth</label>
+                    <input type="text" id="register_dob" name="register_dob" validated="no" required
+                           class="form-control"/>
+                    <span class="form-control-feedback">Format: dd-mm-yyyy</span>
+                </div>
+                <div class="form-group">
+                    <label for="register_gender" class="col-form-label">Gender</label>
+                    <select id="register_gender" name="register_gender" class="form-control">
+                        <option selected="selected" value="0">
+                            Male
+                        </option>
+                        <option value="1">
+                            Female
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label" for="register_relationship">Relationship Status</label>
+                    <select id="register_relationship" name="register_relationship" class="form-control">
+                        <option selected="selected" value="0">
+                            Single
+                        </option>
+                        <option value="1">
+                            Married
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="register_gaon" class="control-label">Village ( Gaon )</label>
+                    <input type="text" id="register_gaon" name="register_gaon" required class="form-control"/>
+                </div>
 
-    <div class="form-group">
-        <label for="register_email" class="col-form-label">Email Id:</label>
-        <input type="text" id="register_email" name="register_email" validated="no" class="form-control" required/>
-        <span class="form-control-feedback"></span>
-    </div>
-    <div class="form-group">
-        <label class="col-form-label" for="register_about">Little about you</label>
-        <textarea placeholder="Tell us something..." name="register_about" class="form-control"></textarea>
-    </div>
+                <div class="form-group">
+                    <label for="register_email" class="col-form-label">Email Id:</label>
+                    <input type="text" id="register_email" name="register_email" validated="no" class="form-control"
+                           required/>
+                    <span class="form-control-feedback"></span>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label" for="register_about">Little about you</label>
+                    <textarea placeholder="Tell us something..." name="register_about" class="form-control"></textarea>
+                </div>
 
-    <input type="submit" value="Register" name="register_submit" class="btn btn-large btn-primary"/>
-    <input type="reset" value="Reset" class="btn btn-large"/>
-</form>
+                <input type="submit" value="Register" name="register_submit" class="btn btn-large btn-primary"/>
+                <input type="reset" value="Reset" class="btn btn-large"/>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     //Function to display text with the input controls in the register form
@@ -193,22 +203,20 @@
             var json = $.parseJSON(data);
             if (json.yes === 1) //if reply is yes the username is already used 
             {
-                success_hide("register_username");
-                error_hide("register_username");
-
-                error_display("register_username", "Username already taken");
+                Vanshavali.clearInput("#register_username");
+                Vanshavali.errorInput("#register_username", "Username already taken");
                 notValidated("register_username");
 
 
             } else if (json.yes === 0) //else not used and can be used
             {
                 Vanshavali.clearInput("#register_username");
-                Vanshavali.successInput("register_username", "Valid Username");
+                Vanshavali.successInput("#register_username", "Valid Username");
                 validated("register_username");
             }
             else if (json.yes === -1) {
                 Vanshavali.clearInput("#register_username");
-                Vanshavali.errorInput("register_username", "Username is not in correct format");
+                Vanshavali.errorInput("#register_username", "Username is not in correct format");
                 notValidated("register_username");
             }
         });
@@ -222,13 +230,12 @@
     $("#register_confirmpassword").focusout(function () {
         var password = $("#register_password");
         if (this.value == password.val()) {
-            success_display("register_confirmpassword", "Password Matched");
+            Vanshavali.successInput("#register_confirmpassword", "Password Matched");
             validated("register_confirmpassword");
             validated("register_password");
         } else {
-            error_hide("register_confirmpassword");
-            success_hide("register_confirmpassword");
-            error_display("register_confirmpassword", "Password do not match.");
+            Vanshavali.clearInput("#register_confirmpassword");
+            Vanshavali.errorInput("#register_confirmpassword", "Password do not match.");
             notValidated("register_password");
             notValidated("register_confirmpassword");
         }
@@ -260,9 +267,8 @@
             notValidated("register_email");
         } else {
             //display success text
-            error_hide("register_email");
-            success_hide("register_email");
-            success_display("register_email", "Valid Email Id");
+            Vanshavali.clearInput("#register_email");
+            Vanshavali.successInput("#register_email", "Valid Email Id");
             $.post("getdata.php", {
                 action: "email_check",
                 email: this.value
@@ -270,15 +276,13 @@
                 var json = $.parseJSON(data);
                 if (json.yes) //if reply is yes the email is already used 
                 {
-                    error_hide("register_email");
-                    success_hide("register_email");
-                    error_display("register_email", "Email is already registered. Try Forgot Password!");
+                    Vanshavali.clearInput("#register_email");
+                    Vanshavali.errorInput("#register_email", "Email is already registered. Try Forgot Password!");
                     notValidated("register_email");
                 } else //else not used and can be used
                 {
-                    error_hide("register_email");
-                    success_hide("register_email");
-                    success_display("register_email", "Email is good to go");
+                    Vanshavali.clearInput("#register_email");
+                    Vanshavali.successInput("#register_email", "Email is good to go");
                     validated("register_email");
                 }
             });
