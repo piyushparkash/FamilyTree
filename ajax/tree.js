@@ -55,7 +55,7 @@ function viewfamily(e) {
         //tree.onClick(tree.root);
         tree.select(selected_member);
 
-        $("#girlfamilybutton").children("button").removeAttr("disabled").text("View Family");
+        $("#girlfamilybutton").removeAttr("disabled").text("View Family");
         $("#girlfamilybutton").fadeOut("medium");
     });
 }
@@ -148,27 +148,19 @@ function display_data(node) {
     //Now decide whether to show Girls Family Button or not
 
     if (rootfamily() != node.data.familyid) {
-        $("#girlfamilybutton").fadeIn("medium").removeClass("hide");
+        $("#girlfamilybutton").fadeIn("medium")
     } else {
-        $("#girlfamilybutton").fadeOut("medium").addClass("hide");
+        $("#girlfamilybutton").fadeOut("medium")
     }
 
-    //Firstly check if he already has wife, We don't allow more than 1 wife
-    var memberchild = node.getSubnodes(1);
-    if (memberchild.length != 0) {
-        if (rootfamily() != parseInt(memberchild[0].data.familyid) && parseInt(memberchild[0].data.gender) == 1) {
-            return;
-        }
+    //Check the relationship status of the member
+    if (node.data.relationship_status_id == Vanshavali.MARRIED)
+    {
+        //Add spouse option should be not shown now
+        $("#wifeoperation").hide();
+        $("#husbandoperation").hide();
+        return;
     }
-
-    //Now check if she already has a husband
-    memberchild = node.getParents();
-    if (memberchild.length != 0) {
-        if (node.data.familyid != memberchild[0].data.familyid && parseInt(memberchild[0].data.gender) == 0) {
-            return; // as the person being pointed is a wife
-        }
-    }
-
 
     //Show option to add wife only if the member is not a girl
     if (parseInt(node.data.gender) == 0) {
