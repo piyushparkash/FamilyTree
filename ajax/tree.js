@@ -173,7 +173,7 @@ function display_data(node) {
     //Show option to add wife only if the member is not a girl
     if (parseInt(node.data.gender) == 0) {
         $("#wifeoperation").show();
-        $("husbandoperation").hide();
+        $("#husbandoperation").hide();
     } else {
         $("#wifeoperation").hide();
         $("#husbandoperation").show();
