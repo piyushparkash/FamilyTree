@@ -153,6 +153,18 @@ function display_data(node) {
         $("#girlfamilybutton").fadeOut("medium")
     }
 
+    var currMemberParents = node.getParents();
+
+    if (currMemberParents.length > 0)
+    {
+        //Member already has a parents
+        $("#parentOperation").hide();
+    }
+    else
+    {
+        $("#parentOperation").show();
+    }
+
     //Check the relationship status of the member
     if (node.data.relationship_status_id == Vanshavali.MARRIED)
     {
