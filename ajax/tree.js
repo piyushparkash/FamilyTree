@@ -32,12 +32,8 @@ function showUser(id) {
     display_data(node);
 }
 
-function viewfamily(e) {
-    e.disabled = true;
-    e.innerText = "Loading...";
-    //Get the family id of the current selected member
-    var selectedmember = tree.graph.getNode(selected_member);
-    var url = "createjson.php?familyid=" + selectedmember.data.familyid;
+function loadFamily(familyid, onComplete) {
+    var url = "createjson.php?familyid=" + familyid;
     $.getJSON(url, "", function (data) {
         //Clear the previous Tree
         tree.graph.empty();
@@ -51,13 +47,26 @@ function viewfamily(e) {
         tree.compute();
         tree.plot();
 
-        //Emulate a click on the root element
+        onComplete();
+    });
+}
+
+function viewfamily(e) {
+    e.disabled = true;
+    e.innerText = "Loading...";
+    //Get the family id of the current selected member
+    var selectedmember = tree.graph.getNode(selected_member);
+
+    //Load the family of the given member
+    loadFamily(selectedmember.data.family_id, function () {
+
         //tree.onClick(tree.root);
         tree.select(selected_member);
 
         $("#girlfamilybutton").removeAttr("disabled").text("View Family");
         $("#girlfamilybutton").fadeOut("medium");
     });
+
 }
 //Function to clear previously displayed data by display_data()
 function display_clear_data() {
@@ -90,17 +99,15 @@ function display_data(node) {
     displayRelationship = node.data.gender == Vanshavali.MALE ? "He is " + node.data.relationship_status : "She is " + node.data.relationship_status;
 
     //Try Catch as, for most Village name is not mentioned
-    try
-    {
+    try {
         displayGaon = (node.data.gaon.trim()) ? "Belongs to " + node.data.gaon : "Village not known";
     }
-    catch (e)
-    {
+    catch (e) {
         displayGaon = 'Village not known';
     }
 
-    displayAlive = node.data.alive_id == 0 ? (node.data.gender == 0 ? "He is not with us anymore": "She is not with us anymore") :
-        (node.data.gender == 0 ? "He is alive": "She is alive");
+    displayAlive = node.data.alive_id == 0 ? (node.data.gender == 0 ? "He is not with us anymore" : "She is not with us anymore") :
+        (node.data.gender == 0 ? "He is alive" : "She is alive");
 
     //display the data
     $("#display_name").html(node.name);
@@ -114,30 +121,26 @@ function display_data(node) {
         $.post('relationtest.php', {
             "from": user_id,
             "to": node.id,
-            dataType : 'json'
+            dataType: 'json'
         }, function (data) {
 
             try {
                 data = JSON.parse(data);
             }
-            catch (e)
-            {
+            catch (e) {
                 $("#display_relation").html("Unable to Calculate Relation");
                 return;
             }
             //Check for error
-            if (parseInt(data.error) == 1)
-            {
+            if (parseInt(data.error) == 1) {
                 $("#display_relation").html("Unable to Calculate Relation");
                 return;
             }
 
-            if (node.data.gender == Vanshavali.MALE)
-            {
+            if (node.data.gender == Vanshavali.MALE) {
                 $("#display_relation").html('He is your ' + data.relation);
             }
-            else
-            {
+            else {
                 $("#display_relation").html('She is your ' + data.relation);
             }
         });
@@ -155,19 +158,16 @@ function display_data(node) {
 
     var currMemberParents = node.getParents();
 
-    if (currMemberParents.length > 0)
-    {
+    if (currMemberParents.length > 0) {
         //Member already has a parents
         $("#parentOperation").hide();
     }
-    else
-    {
+    else {
         $("#parentOperation").show();
     }
 
     //Check the relationship status of the member
-    if (node.data.relationship_status_id == Vanshavali.MARRIED)
-    {
+    if (node.data.relationship_status_id == Vanshavali.MARRIED) {
         //Add spouse option should be not shown now
         $("#wifeoperation").hide();
         $("#husbandoperation").hide();
