@@ -3,10 +3,10 @@
         <div class="offset-3 col-6 offset-3">
             <form method="post" id="register_form" action="register.php" class="bg-faded p-5">
                 {if $is_admin }
-                    Hi Admin, We need some basic information about you
+                    <h4>Hi Admin, We need some basic information about you</h4>
                     <input type="hidden" value="1" id="is_admin" name="is_admin"/>
                 {else}
-                    Welcome to Vanshavali! Fill out the form to register.
+                    <h4>Welcome to Vanshavali! Fill out the form to register.</h4>
                 {/if}
                 </legend>
                 {if $familyid}
