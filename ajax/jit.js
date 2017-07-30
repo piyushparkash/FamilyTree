@@ -7667,9 +7667,9 @@
 
          */
         fitsInCanvas: function(pos, canvas) {
-            var size = canvas.getSize();
-            if(pos.x >= size.width || pos.x < 0
-                || pos.y >= size.height || pos.y < 0) return false;
+            // var size = canvas.getSize();
+            // if(pos.x >= size.width || pos.x < 0
+            //     || pos.y >= size.height || pos.y < 0) return false;
             return true;
         }
     });
