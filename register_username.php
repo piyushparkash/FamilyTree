@@ -23,7 +23,7 @@ switch ($_GET['action']) {
         $query = $db->query("select * from member where membername like '%$partial%' and membername not IN ('Mother', 'Father', 'Wife')");
         $usernames = array();
         while ($row = $db->fetch($query)) {
-            $usernames[$row["id"]] = $row['membername'];
+            $usernames[$row["id"]] = array("name" => $row['membername'],"familyid" => $row['family_id']);
 
         }
         //for ($temp=0; $temp<count($usernames))

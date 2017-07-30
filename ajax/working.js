@@ -154,22 +154,14 @@ $(document).ready(function () {
                 $.each(data, function (key, value) {
                     //Convert to jquery-ui obect
                     var obj = {
-                        label: value,
-                        value: key
+                        label: value.name,
+                        value: key,
+                        family_id: value.familyid
                     };
                     //push it in the final array
                     newarray.push(obj);
 
                 });
-
-                //if newarray is empty
-                // if (newarray.length === 0) {
-                //     //Tell user there is no one with this name
-                //     helpblock.innerHTML = "No User found with this name";
-                //     console.log("We got empty response. No user with this name");
-                // } else {
-                //     helpblock.innerHTML = "Type the name and click search";
-                // }
 
                 response(newarray.slice(0, 15));
             });
@@ -178,12 +170,25 @@ $(document).ready(function () {
             //Set the value to the key instead of value
             this.value = ui.item.label;
 
-            //select member on the tree
-            showUser(ui.item.value);
+            //Check the family id of the selected member
+            if (rootfamily() == ui.item.family_id)
+            {
+                //select member on the tree
+                showUser(ui.item.value);
+            }
+            else
+            {
+                //He is from a diff family
+                loadFamily(ui.item.family_id, function () {
+                   //Now select the user on the tree
+                    showUser(ui.item.value);
+                });
+            }
+
+
 
             //reset search value to "" and close the dialog
             $("#search_term").val("");
-            $("#search").modal("hide");
             return false;
 
         },
