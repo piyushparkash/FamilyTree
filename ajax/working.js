@@ -8,6 +8,8 @@ Vanshavali.MARRIED = 1
 Vanshavali.LIVING = 1;
 Vanshavali.DECEASED = 0;
 
+Vanshavali.mainSection = $("#mainSection")
+
 Vanshavali.makeAJAX = function (URL, data, success, error) {
     console.log("Make AJax was called");
     $.post(URL, data,
@@ -82,8 +84,70 @@ Vanshavali.isLoggedIn = function () {
 
 Vanshavali.statusModal = {};
 
-Vanshavali.statusModal.show = function (text, isError) {
-    //function to show alert to the user
+Vanshavali.statusModal.modalCount = 0;
+
+
+
+//Array to hold all the pending modals
+
+Vanshavali.statusModal.pendingArr = [];
+
+Vanshavali.statusModal.show = function (text, isError, autoHide) {
+
+    if (this.modalCount > 0)
+    {
+        //Add this modal to array
+        this.pendingArr.push({text: text, isError: isError, autoHide: autoHide});
+        return;
+    }
+    //Add Success or Warning class
+    if (!isError)
+    {
+        $("#statusModal_message").addClass("alert-success");
+    }
+    else {
+        $("#statusModal_message").addClass("alert-danger");
+    }
+
+    //Update the text of the modal
+    $("#statusModal_message").text(text);
+
+
+    //Show the modal
+    $("#statusModal").modal();
+
+    //Increment the count of modal shown
+    Vanshavali.statusModal.modalCount++;
+
+    //set Autohide if specified
+    if (autoHide)
+    {
+        $("#statusModal").on("shown.bs.modal", function (e) {
+            //Now set the autohide, so that it doesn't interfere with other events
+            setTimeout(Vanshavali.statusModal.hide, 3000);
+        });
+
+    }
+
+    //Decrease the modal count on modal close
+    $("#statusModal").on("hidden.bs.modal", function () {
+        Vanshavali.statusModal.modalCount--;
+        //Show the next modal
+        Vanshavali.statusModal.show(Vanshavali.statusModal.pendingArr[0].text, Vanshavali.statusModal.pendingArr[0].isError, Vanshavali.statusModal.pendingArr[0].autoHide);
+    });
+
+
+}
+
+Vanshavali.statusModal.hide = function () {
+    //Remove the class of text
+    $("#statusModal_message").removeClass('alert-success').removeClass('alert-danger');
+
+    //Remove the text of the modal
+    $("#statusModal_message").text('');
+
+    //Hide the modal
+    $("#statusModal").modal("hide");
 }
 
 //The Basic API's to used all over Vanshavali
@@ -440,11 +504,12 @@ function editmember() {
 
     //Collect all the members
     x = $("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
-        #operation_edit_dob,#operation_edit_alive");
+        #operation_edit_dob,#operation_edit_alive, #operation_edit_gaon");
 
     //Set their default values
     x[0].value = member.name;
     x[3].value = member.data.dob;
+    x[5].value = member.data.gaon;
 
     //Find from values and select the given element
     options = x[1].options;
@@ -479,7 +544,7 @@ function editmember() {
 function editmember_submit() {
     //Collect variables values
     x = $("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
-        #operation_edit_dob,#operation_edit_alive,#operation_edit_id");
+        #operation_edit_dob,#operation_edit_alive,#operation_edit_id,#operation_edit_gaon");
 
     if (x[0].value == "") {
         alert("Name cannot be left blank");
@@ -507,6 +572,7 @@ function editmember_submit() {
             "relationship": x[3].value,
             "dob": x[4].value,
             "alive": x[5].value,
+            "gaon": x[6].value,
             memberid: x[1].value
 
         }, function (data) {
@@ -889,4 +955,24 @@ function operation_addhusband_submit() {
 
     //stop the form from redirecting
     return false;
+}
+
+
+//Browse Section
+Vanshavali.Browse = {
+    element: $("#browseSection"),
+    init: function () {
+        //Hide the main section and enable this section
+        Vanshavali.mainSection.addClass("hidden-xs-up");
+
+        this.show();
+    },
+
+    show: function () {
+        this.element.removeClass('hidden-xs-up');
+    },
+
+    hide: function () {
+        this.element.addClass('hidden-xs-up');
+    }
 }

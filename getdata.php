@@ -212,7 +212,7 @@ switch ($_POST['action']) {
             $member = vanshavali::getmember($_POST['memberid']);
 
             //Now add the suggestion
-            if (!$member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive'], TRUE)) {
+            if (!$member->edit($_POST['name'], $_POST['gender'], $_POST['relationship'], $_POST['dob'], $_POST['alive'], $_POST["gaon"], TRUE)) {
                 trigger_error("Cannot Edit Member. Some error occured");
             } else {
                 ajaxSuccess();
