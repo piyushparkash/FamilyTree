@@ -60,7 +60,7 @@ abstract class member_operation_suggest {
      * @param integer $id The ID of the member to be edited
      * @return boolean
      */
-    function edit_suggest($name, $gender, $relationship, $dob, $alive, $id) {
+    function edit_suggest($name, $gender, $relationship, $dob, $alive, $gaon, $id) {
         global $db, $user, $suggest_handler;
 
         //Check if dob has some value or not
@@ -75,6 +75,7 @@ abstract class member_operation_suggest {
                 $suggest_handler->add_suggest(GENDER, $id, $gender) &&
                 $suggest_handler->add_suggest(RELATIONSHIP, $id, $relationship) &&
                 $suggest_handler->add_suggest(DOB, $id, $dob) &&
+                $suggest_handler->add_suggest(GAON, $id, $gaon) &&
                 $suggest_handler->add_suggest(ALIVE, $id, $alive);
 
     }

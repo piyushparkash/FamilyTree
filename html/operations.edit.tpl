@@ -59,6 +59,11 @@
                         </select>
                     </div>
 
+                    <div class="form-group">
+                        <label for="operation_edit_gaon" class="col-form-label">Gaon</label>
+                        <input id="operation_edit_gaon" class="form-control">
+                    </div>
+
 
                     <button class="btn btn-success" type="submit">Update</button>
                     <button class="btn" onclick="$('#operation_edit').modal('hide')" type="button">Cancel</button>

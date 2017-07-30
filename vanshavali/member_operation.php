@@ -330,14 +330,14 @@ abstract class member_operation extends member_operation_suggest
      * 0 == Deceased
      * 1 == Living
      */
-    function edit($name, $gender, $relationship, $dob, $alive, $suggest = FALSE)
+    function edit($name, $gender, $relationship, $dob, $alive, $gaon, $suggest = FALSE)
     {
         global $user;
 
         $hasAccess = vanshavali::hasAccess($user->user['id'], $this->id);
 
         if ($suggest && !$hasAccess) {
-            return parent::edit_suggest($name, $gender, $relationship, $dob, $alive, $this->data['id']);
+            return parent::edit_suggest($name, $gender, $relationship, $dob, $alive, $gaon, $this->data['id']);
         } else {
             //Change the details directly...
             global $db;
@@ -350,10 +350,11 @@ abstract class member_operation extends member_operation_suggest
             $relationship = empty($relationship) ? "NULL" : $relationship;
             $dob = empty($dob) ? "NULL" : $dob;
             $alive = empty($alive) ? "NULL" : $alive;
+            $gaon = empty($gaon) ? "NULL" : $gaon;
 
             //Prepare the sql and execute it...
             if (!$db->get("Update member set membername='$name',gender=$gender,
-            relationship_status=$relationship,dob=$dob, alive=$alive where id=" . $this->data['id'])
+            relationship_status=$relationship,dob=$dob, alive=$alive, gaon=$gaon where id=" . $this->data['id'])
             ) {
                 trigger_error("Error Editing member. Error Executing query");
                 return FALSE;
