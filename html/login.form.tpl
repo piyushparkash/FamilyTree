@@ -1,7 +1,9 @@
-<div id="login" class="modal hide">
+<div id="login" class="modal fade align-items-center">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
     <div class="modal-header">
-        Login
-        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h5 class="modal-title">Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
     </div>
     <div class="modal-body">
         {if $wp_login}
@@ -10,32 +12,26 @@
                 <a href="register.php" class="btn btn-large btn-success">Join Family</a>
             </div>
         {else}
-            <form method="post" onsubmit="return login_submit()" class="form-horizontal well">
-                <fieldset>
-                    <div class="control-group">
-                        <label class="control-label" for="login_username">Username</label>
-                        <div class="controls">
-                            <input type="text" id="login_username" />
-                        </div>
+            <form method="post" onsubmit="return login_submit()">
+                    <div class="form-group">
+                        <label class="col-form-label" for="login_username">Username</label>
+                        <input class="form-control" type="text" id="login_username" autocomplete="off" required/>
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="login_password">Password</label>
-                        <div class="controls">
-                            <input type="password" id="login_password" />
-                            <span class="help-block hide" id="login_error">Wrong Username or Password</p>
-                        </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="login_password">Password</label>
+                        <input class="form-control" type="password" id="login_password" autocomplete="off" required/>
+                        <div class="form-control-feedback hidden-xs-up" id="login_error">Wrong Username or Password</div>
                     </div>
-                    <div class="control-group">
-                        <div class="controls">
-                            <a href="javascript:forgotPassword()">Forgot Password?</a>
-                        </div>
+                    <div class="form-group">
+                        <a href="javascript:forgotPassword()">Forgot Password?</a>
                     </div>
-                    <div class="form-actions">
+                    <div class="modal-footer">
                         <button class="btn btn-primary" type="submit">Login</button>
                         <a class="btn btn-success" href="register.php">Join Family</a>
                     </div>
-                </fieldset>
             </form>
         {/if}
+        </div>
+        </div>
     </div>
 </div>

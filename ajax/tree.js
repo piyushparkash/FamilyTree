@@ -4,11 +4,11 @@ var labelType, useGradients, nativeTextSupport, animate, selected_member, tree;
 
 (function () {
     var ua = navigator.userAgent,
-            iStuff = ua.match(/iPhone/i) || ua.match(/iPad/i),
-            typeOfCanvas = typeof HTMLCanvasElement,
-            nativeCanvasSupport = (typeOfCanvas == 'object' || typeOfCanvas == 'function'),
-            textSupport = nativeCanvasSupport
-            && (typeof document.createElement('canvas').getContext('2d').fillText == 'function');
+        iStuff = ua.match(/iPhone/i) || ua.match(/iPad/i),
+        typeOfCanvas = typeof HTMLCanvasElement,
+        nativeCanvasSupport = (typeOfCanvas == 'object' || typeOfCanvas == 'function'),
+        textSupport = nativeCanvasSupport &&
+            (typeof document.createElement('canvas').getContext('2d').fillText == 'function');
     //I'm setting this based on the fact that ExCanvas provides text support for IE
     //and that as of today iPhone/iPad current text support is lame
     labelType = (!nativeCanvasSupport || (textSupport && !iStuff)) ? 'Native' : 'HTML';
@@ -22,8 +22,7 @@ var labelType, useGradients, nativeTextSupport, animate, selected_member, tree;
  * in the Tree
  * @return null
  */
-function showUser(id)
-{
+function showUser(id) {
     tree.select(id);
     //show the operations toolbar
     selected_member = id;
@@ -33,15 +32,13 @@ function showUser(id)
     display_data(node);
 }
 
-function viewfamily(e)
-{
+function viewfamily(e) {
     e.disabled = true;
     e.innerText = "Loading...";
     //Get the family id of the current selected member
     var selectedmember = tree.graph.getNode(selected_member);
     var url = "createjson.php?familyid=" + selectedmember.data.familyid;
-    $.getJSON(url, "", function (data)
-    {
+    $.getJSON(url, "", function (data) {
         //Clear the previous Tree
         tree.graph.empty();
         tree.labels.clearLabels(true);
@@ -58,13 +55,12 @@ function viewfamily(e)
         //tree.onClick(tree.root);
         tree.select(selected_member);
 
-        $("#girlfamilybutton").children("button").removeAttr("disabled").text("View Family");
+        $("#girlfamilybutton").removeAttr("disabled").text("View Family");
         $("#girlfamilybutton").fadeOut("medium");
     });
 }
 //Function to clear previously displayed data by display_data()
-function display_clear_data()
-{
+function display_clear_data() {
     $("#display_name").html("");
     $("#display_dob").html("");
     $("#display_relationship").html("");
@@ -72,8 +68,7 @@ function display_clear_data()
     $("#display_image").src = "";
 }
 
-function rootfamily()
-{
+function rootfamily() {
     rootnode = tree.graph.getNode(tree.root);
     var rootfamilyid = rootnode.data.familyid;
     return parseInt(rootfamilyid);
@@ -81,79 +76,120 @@ function rootfamily()
 
 //Function to display data in the right container of the current selected_member
 /**
- * 
+ *
  * @param {type} node
  * @returns {undefined}
  */
-function display_data(node)
-{
+function display_data(node) {
     //Remove all previous data
     display_clear_data();
 
+    var displayDOB, displayRelationship, displayAlive, displayGaon;
+
+    displayDOB = (node.data.dob.trim()) ? "Born on " + node.data.dob : "Birth Date not known";
+    displayRelationship = node.data.gender == Vanshavali.MALE ? "He is " + node.data.relationship_status : "She is " + node.data.relationship_status;
+
+    //Try Catch as, for most Village name is not mentioned
+    try
+    {
+        displayGaon = (node.data.gaon.trim()) ? "Belongs to " + node.data.gaon : "Village not known";
+    }
+    catch (e)
+    {
+        displayGaon = 'Village not known';
+    }
+
+    displayAlive = node.data.alive_id == 0 ? (node.data.gender == 0 ? "He is not with us anymore": "She is not with us anymore") :
+        (node.data.gender == 0 ? "He is alive": "She is alive");
+
     //display the data
     $("#display_name").html(node.name);
-    $("#display_dob").html(node.data.dob);
-    $("#display_relationship").html(node.data.relationship_status);
-    $("#display_alive").html(node.data.alive);
+    $("#display_dob").html(displayDOB);
+    $("#display_relationship").html(displayRelationship);
+    $("#display_alive").html(displayAlive);
     $("#display_image")[0].src = "assets/user_images/" + node.data.image;
-    $("#display_gaon").html(node.data.gaon);
+    $("#display_gaon").html(displayGaon);
 
-    if (typeof user_id !== "undefined")
-    {
-        $("#display_relation").html("Calculating relation with you").load('relationtest.php', {"from": user_id, "to": node.id});
-    } else
-    {
+    if (typeof user_id !== "undefined") {
+        $.post('relationtest.php', {
+            "from": user_id,
+            "to": node.id,
+            dataType : 'json'
+        }, function (data) {
+
+            try {
+                data = JSON.parse(data);
+            }
+            catch (e)
+            {
+                $("#display_relation").html("Unable to Calculate Relation");
+                return;
+            }
+            //Check for error
+            if (parseInt(data.error) == 1)
+            {
+                $("#display_relation").html("Unable to Calculate Relation");
+                return;
+            }
+
+            if (node.data.gender == Vanshavali.MALE)
+            {
+                $("#display_relation").html('He is your ' + data.relation);
+            }
+            else
+            {
+                $("#display_relation").html('She is your ' + data.relation);
+            }
+        });
+    } else {
         $("#display_relation").html("Login to view relation");
     }
 
     //Now decide whether to show Girls Family Button or not
 
-    if (rootfamily() != node.data.familyid)
-    {
-        $("#girlfamilybutton").fadeIn("medium").removeClass("hide");
-    } else
-    {
-        $("#girlfamilybutton").fadeOut("medium").addClass("hide");
+    if (rootfamily() != node.data.familyid) {
+        $("#girlfamilybutton").fadeIn("medium")
+    } else {
+        $("#girlfamilybutton").fadeOut("medium")
     }
 
-    //Firstly check if he already has wife, We don't allow more than 1 wife
-    var memberchild = node.getSubnodes(1);
-    if (memberchild.length != 0)
+    var currMemberParents = node.getParents();
+
+    if (currMemberParents.length > 0)
     {
-        if (rootfamily() != parseInt(memberchild[0].data.familyid) && parseInt(memberchild[0].data.gender) == 1)
-        {
-            return;
-        }
+        //Member already has a parents
+        $("#parentOperation").hide();
+    }
+    else
+    {
+        $("#parentOperation").show();
     }
 
-    //Now check if she already has a husband
-    memberchild = node.getParents();
-    if (memberchild.length != 0)
+    //Check the relationship status of the member
+    if (node.data.relationship_status_id == Vanshavali.MARRIED)
     {
-        if (node.data.familyid != memberchild[0].data.familyid && parseInt(memberchild[0].data.gender) == 0)
-        {
-            return; // as the person being pointed is a wife
-        }
+        //Add spouse option should be not shown now
+        $("#wifeoperation").hide();
+        $("#husbandoperation").hide();
+        return;
     }
-
 
     //Show option to add wife only if the member is not a girl
-    if (parseInt(node.data.gender) == 0)
-    {
+    if (parseInt(node.data.gender) == 0) {
         $("#wifeoperation").show();
-        $("husbandoperation").hide();
-    } else
-    {
+        $("#husbandoperation").hide();
+    } else {
         $("#wifeoperation").hide();
         $("#husbandoperation").show();
     }
 
 }
+
+
 function init() {
     var json;
     //init data
-    $.getJSON("createjson.php", "", function (data)
-    {
+    $.getJSON("createjson.php", "", function (data) {
         json = data;
         //init Spacetree
         //Create a new ST instance
@@ -163,7 +199,7 @@ function init() {
             //set duration for the animation
             duration: 500,
             //set animation transition type
-            transition: $jit.Trans.Quart.easeInOut,
+            transition: $jit.Trans.Expo.easeInOut,
             //set distance between node and its children
             levelDistance: 20,
             //Top to bottom orientation
@@ -171,7 +207,8 @@ function init() {
             //enable panning
             Navigation: {
                 enable: true,
-                panning: true
+                panning: true,
+                zooming: 50
             },
             //set node and edge styles
             //set overridable=true for styling individual
@@ -186,6 +223,13 @@ function init() {
                 color: '#aaa',
                 overridable: true
             },
+            // NodeStyles: {
+            //     enable: true,
+            //     type: 'rectangle',
+            //     stylesHover: {
+            //         alpha: 0.5
+            //     }
+            // },
             Edge: {
                 type: 'bezier',
                 overridable: true
@@ -200,10 +244,21 @@ function init() {
             //Use this method to add event handlers and styles to
             //your node.
             onCreateLabel: function (label, node) {
+                console.log("Creating Lable for node : " + node.name);
                 label.id = node.id;
                 label.innerHTML = node.name;
-                label.onclick = function ()
-                {
+                label.onclick = function () {
+                    //Check if the user has clicked twice
+                    if (selected_member == node.id) {
+                        console.log("Double Click");
+                        //Now we have to show right container
+                        $("#rightcontainerheader").show('slide', {
+                            direction: 'right',
+                            easing: 'easeInOutExpo'
+                        }, 1000);
+                    }
+
+
                     //show the operations toolbar
                     selected_member = node.id;
                     st.onClick(node.id);
@@ -213,16 +268,15 @@ function init() {
                 };
                 //set label styles
                 var style = label.style;
-                style.width = node.data.$width + 'px';
-                style.height = node.data.$height + 'px';
+                style.width = node.data.$width - 1 + 'px'; // -1 is drop shadow fix
+                style.height = node.data.$height - 1 + 'px';
                 style.cursor = 'pointer';
                 style.fontSize = '0.9em';
                 style.textAlign = 'center';
                 style.paddingTop = '15px';
             },
-            onComplete: function ()
-            {
-                //alert(selected_member);  
+            onComplete: function () {
+                //alert(selected_member);
             },
             levelsToShow: 2,
             //This method is called right before plotting
@@ -234,21 +288,23 @@ function init() {
                 //add some color to the nodes in the path between the
                 //root node and the selected node.
                 if (node.selected) {
-                    node.data.$color = "#fcff00";
+                    if (node.data.gender == "0") {
+                        node.data.$color = '#bbdefb';
+                    } else {
+                        node.data.$color = "#f8bbd0";
+                    }
 
                 } else {
 
                     delete node.data.$color;
                     //if the node belongs to the last plotted level
 
-                    if (node.data.gender == "0")
-                    {
-                        node.data.$color = "#C7E9FF";
-                    } else
-                    {
-                        node.data.$color = "#F9C7FF";
+                    if (node.data.gender == "0") {
+                        node.data.$color = "#e3f2fd";
+                    } else {
+                        node.data.$color = "#fce4ec";
                     }
-                    //node.data.$color = ['#aaa', '#baa', '#caa', '#daa', '#eaa', '#faa'][count];                    
+                    console.log('We are plotting the node');
 
                 }
             },
@@ -272,12 +328,11 @@ function init() {
         //compute node positions and layout
         st.compute();
         //optional: make a translation of the tree
-        st.geom.translate(new $jit.Complex(-200, 0), "current");
+        // st.geom.translate(new $jit.Complex(-200, 0), "current");
         //emulate a click on the root node.
         st.onClick(st.root, {
             onComplete: function () { // When the onlick animation on root is over the perform select
-                if (window.location.hash)
-                {
+                if (window.location.hash) {
                     var window_hash = window.location.hash;
                     var split = window_hash.split("#");
                     st.select(split[1]);
@@ -287,12 +342,11 @@ function init() {
                 var tree_root = (st.graph.getNode(st.root));
                 display_clear_data();
                 display_data(tree_root);
-                showUser(user_id);
+                if (typeof user_id !== 'undefined') showUser(user_id);
             }
         });
         //store the selected member id in selected_member
         selected_member = st.root;
-
 
 
         //end
@@ -302,11 +356,9 @@ function init() {
 
         //end
     })
-            //Callbacks, if we are unable to get desired reponse
-            .fail(function
-                    (data, textstatus, error)
-            {
-                alert(data.responseText);
-            });
+    //Callbacks, if we are unable to get desired reponse
+        .fail(function (data, textstatus, error) {
+            alert(data.responseText);
+        });
 
 }

@@ -64,6 +64,6 @@ if (!$_SESSION['wpid'] && vanshavali::$wp_login)
 
 $template->header();
 $template->assign("is_wordpress_enabled", vanshavali::$wp_login);
-$template->display('user.main.tpl');
+$template->display('user.main.new.tpl');
 $template->display('register.form.tpl');
 $template->footer();

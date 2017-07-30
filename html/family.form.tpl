@@ -3,7 +3,7 @@
         <legend>
             Add name of you Family:
         </legend>
-        <div class="control-group">
+        <div class="form-group">
             <label for="family_name" class="control-label">Enter your family name:</label>
             <div class="controls">
                 <input type="text" id="register_name" name="family_name" required/>
@@ -24,7 +24,7 @@
     function success_display(id, display_text)
     {
         //hide the element, insert the text and the tick, and then show
-        $("#" + id).parents(".control-group").addClass("success");
+        $("#" + id).parents(".form-group").addClass("success");
         $("#" + id).siblings(".help-text").css("display", "none").text(display_text)
                 .fadeIn(500);
     }
@@ -33,7 +33,7 @@
     function success_hide(id)
     {
         $("#" + id).siblings("span.help-text").fadeIn("medium");
-        $("#" + id).parents("div.control-group").removeClass("success");
+        $("#" + id).parents("div.form-group").removeClass("success");
     }
 
     //All checks performed now we can submit the form

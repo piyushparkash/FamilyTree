@@ -8,129 +8,149 @@ Vanshavali.MARRIED = 1
 Vanshavali.LIVING = 1;
 Vanshavali.DECEASED = 0;
 
-Vanshavali.makeAJAX = function (URL, data, success, error)
-{
-    simpleError = function (response)
-    {
-        //Just pass the response text
-        error(response.responseText);
+Vanshavali.makeAJAX = function (URL, data, success, error) {
+    console.log("Make AJax was called");
+    $.post(URL, data,
+        function (data) {
+            var response;
+            //Check what error code we got from the request
+            try {
+                response = JSON.parse(data);
+                if (response.success == 1) {
+                    //Call the success function
+                    success(response);
+                }
+                else if (response.success == 0) {
+                    //Call the error function
+                    error(response);
+                }
+            }
+            catch (e) {
+                //We could not parse the JSON probably
+                Vanshavali.statusModal.show("Something went wrong. Please try again", true);
+                Vanshavali.reportError("Could not parse response from API with data: " + JSON.stringify(data));
+                return;
+            }
+        });
+}
+
+Vanshavali.reportError = function (errorText) {
+    Vanshavali.makeAJAX("getdata.php",
+        {
+            action: "reportError",
+            errorText: errorText
+        });
+}
+
+Vanshavali.errorInput = function (element, errorText) {
+    var inputHandle = $(element);
+    //Input Handle
+    inputHandle.addClass('form-control-danger').closest('.form-group').addClass('has-danger');
+
+    if (errorText) {
+        inputHandle.siblings('.form-control-feedback').removeClass("hidden-xs-up")[0].innerHTML = errorText;
     }
 
-    simpleSuccess = function (response)
-    {
-        //Just pass the response text
-        success(response.responseText);
+    return inputHandle;
+}
+
+Vanshavali.successInput = function (element, successText) {
+    var inputHandle = $(element);
+    //Input Handle
+    inputHandle.addClass('form-control-success').closest('.form-group').addClass('has-success');
+
+    if (successText) {
+        inputHandle.siblings('.form-control-feedback').removeClass("hidden-xs-up")[0].innerHTML = successText;
     }
-    $.ajax(URL,
-    {
-        data: data,
-        error: simpleError,
-        success: simpleSuccess,
-        method:'POST'
-    });
+
+    return inputHandle;
+}
+
+Vanshavali.clearInput = function (element) {
+    var inputHandle = $(element);
+
+    inputHandle.removeClass('form-control-success').removeClass('form-control-danger');
+    inputHandle.closest('.form-group').removeClass('has-success').removeClass('has-danger');
+    inputHandle.siblings('.form-control-feedback').addClass('hidden-xs-up');
+
+    return inputHandle;
+}
+
+Vanshavali.isLoggedIn = function () {
+    return is_authenticated;
 }
 
 Vanshavali.statusModal = {};
 
-Vanshavali.statusModal.show = function (text, isError)
-{
+Vanshavali.statusModal.show = function (text, isError) {
     //function to show alert to the user
 }
 
 //The Basic API's to used all over Vanshavali
 Vanshavali.Operation = {};
 
-Vanshavali.Operation.addChild = function(name, gender, father, success, error)
-{
+Vanshavali.Operation.addChild = function (name, gender, father, success, error) {
     //We have parameters, send Ajax Call
-    Vanshavali.makeAJAX('getdata.php',
-    {
-        action:"operationAdd",
-        name:name,
-        gender:gender,
-        sonof: father
-    },
-    function ()
-    {
-        Vanshavali.statusModal.show("Your changes will be permnantly visible on FamilyTree once it is approved by other members. Thank you for your contribution");
-    },
-    function ()
-    {
-        Vanshavali.statusModal.show('Oops! There was an error while adding new member. Please try again.', true)
-    }
+    Vanshavali.makeAJAX('getdata.php', {
+            action: "operationAdd",
+            name: name,
+            gender: gender,
+            sonof: father
+        },
+        function () {
+            Vanshavali.statusModal.show("Your changes will be permnantly visible on FamilyTree once it is approved by other members. Thank you for your contribution");
+        },
+        function () {
+            Vanshavali.statusModal.show('Oops! There was an error while adding new member. Please try again.', true)
+        }
     );
 }
 
-Vanshavali.Operation.addParent = function (fathername, mothername, child)
-{
+Vanshavali.Operation.addParent = function (fathername, mothername, child) {
     //Make the AJAX request
-    Vanshavali.makeAJAX('getdata.php',
-    {
-        action:"operationAddParents",
-        fathername:fathername,
-        mothername: mothername,
-        parentsof: child
-    },
-    function ()
-    {
-        Vanshavali.statusModal.show("Changes will be visible once it approved by other members. Thank you for your contribution");
-    },
-    function()
-    {
-        Vanshavali.statusModal.show("Oops! Something went wrong. Please try again", true);
-    });
+    Vanshavali.makeAJAX('getdata.php', {
+            action: "operationAddParents",
+            fathername: fathername,
+            mothername: mothername,
+            parentsof: child
+        },
+        function () {
+            Vanshavali.statusModal.show("Changes will be visible once it approved by other members. Thank you for your contribution");
+        },
+        function () {
+            Vanshavali.statusModal.show("Oops! Something went wrong. Please try again", true);
+        });
 }
 
-Vanshavali.Operation.addSpouse = function(name, otherSpouse)
-{
+Vanshavali.Operation.addSpouse = function (name, otherSpouse) {
     //Make the AJAX request
-    Vanshavali.makeAJAX('getdata.php',
-    {
-        action:'operationAddSpouse',
-        name:name,
-        otherSpouse:otherSpouse
-    },
-    function ()
-    {
-        Vanshavali.statusModal.show("Changes will be visible once it is approved by other members. Thank you for your contribution");
-    },
-    function()
-    {
-        Vanshavali.statusModal.show("Oops! Something went wrong. Pleae try again");
-    });
+    Vanshavali.makeAJAX('getdata.php', {
+            action: 'operationAddSpouse',
+            name: name,
+            otherSpouse: otherSpouse
+        },
+        function () {
+            Vanshavali.statusModal.show("Changes will be visible once it is approved by other members. Thank you for your contribution");
+        },
+        function () {
+            Vanshavali.statusModal.show("Oops! Something went wrong. Pleae try again");
+        });
 }
 
 
 var is_authenticated = false;
+
+
 $(document).ready(function () {
-    //Adjust the size of the canvas according to size of the screen
-    var opti_width = .65 * (screen.availWidth);
-    var opti_height = .90 * screen.availHeight;
-    $("#infovis").css({
-        "width": opti_width,
-        "height": opti_height
-    });
-}
-);
-
-//Search Functions
-function search() {
-
-    //Show the dialog
-    $("#search").modal();
-
-    $("#search").children(".modal-body").children("form").submit(function (e) {
-        e.preventDefault();
-        return false;
-    });
-
     //Initialize the autocomplete widget
     $("#search_term").autocomplete({
+        minLength: 3,
         source: function (request, response) {
             var newarray = new Array() //This array will hold all the results
-            var helpblock = $("#search").children(".modal-body").children("form").children(".help-block")[0];
+            // helpblock = $("#searchhelper");
 
             $.getJSON("register_username.php?action=search&pt=" + request.term, "", function (data) {
+                console.log('Search file has been called');
                 $.each(data, function (key, value) {
                     //Convert to jquery-ui obect
                     var obj = {
@@ -143,17 +163,15 @@ function search() {
                 });
 
                 //if newarray is empty
-                if (newarray.length === 0)
-                {
-                    //Tell user there is no one with this name
-                    helpblock.innerHTML="No User found with this name";
-                    console.log("We got empty response. No user with this name");
-                } else
-                {
-                    helpblock.innerHTML = "Type the name and click search";
-                }
+                // if (newarray.length === 0) {
+                //     //Tell user there is no one with this name
+                //     helpblock.innerHTML = "No User found with this name";
+                //     console.log("We got empty response. No user with this name");
+                // } else {
+                //     helpblock.innerHTML = "Type the name and click search";
+                // }
 
-                response(newarray);
+                response(newarray.slice(0, 15));
             });
         },
         select: function (e, ui) {
@@ -173,33 +191,42 @@ function search() {
             return false;
         }
     });
+});
+
+//Search Functions
+function search() {
+
+    //Show the dialog
+    $("#search").modal();
+
+    $("#search").children(".modal-body").children("form").submit(function (e) {
+        e.preventDefault();
+        return false;
+    });
+
+
 }
 //End of search related functions
 
-function validateEmail(emailID)
-{
+function validateEmail(emailID) {
     var atpos = emailID.indexOf("@");
     var dotpos = emailID.lastIndexOf(".");
-    if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= emailID.length)
-    {
+    if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= emailID.length) {
         return false;
-    } else
-    {
+    } else {
         return true;
     }
 }
 
 //Forgot Password section
 
-function forgotPassword()
-{
+function forgotPassword() {
     //Hide the Login Modal first
     $("#login").modal('hide');
     $("#forgotPassword").modal();
 }
 
-function forgotPassword_submit(ohtml, e)
-{
+function forgotPassword_submit(ohtml, e) {
 
     //Disable the event from happening first
     e.preventDefault();
@@ -213,47 +240,39 @@ function forgotPassword_submit(ohtml, e)
 
 
     var type;
-    if (isEmail)
-    {
+    if (isEmail) {
         type = "email";
-    } else
-    {
+    } else {
         type = "username";
     }
 
 
     //Send a request to the site for forgotpassword link
-    $.post("getdata.php",
-            {
-                action: "forgotpassword",
-                type: type,
-                data: userInfo
-            },
-            function (data)
-            {
-                if (ajaxSuccess(data))
-                {
-                    //Tell the user, email has been sent.
-                    $("#emailoname").siblings(".help-block").val("Reset Password link has been sent to your Email ID");
-                } else if (ajaxError(data))
-                {
-                    //Oops now what to do
-                    //read out the error cause
+    $.post("getdata.php", {
+            action: "forgotpassword",
+            type: type,
+            data: userInfo
+        },
+        function (data) {
+            if (ajaxSuccess(data)) {
+                //Tell the user, email has been sent.
+                $("#emailoname").siblings(".help-block").val("Reset Password link has been sent to your Email ID");
+            } else if (ajaxError(data)) {
+                //Oops now what to do
+                //read out the error cause
 
-                    var datajson = $.parseJSON(data);
+                var datajson = $.parseJSON(data);
 
 
-                    if (datajson.message == "NO_USER")
-                    {
-                        $("#emailoname").siblings(".help-block").text("No User with given Email/Username");
-                    } else if (datajson.message == "NO_MAIL")
-                    {
-                        alert($("#emailoname").siblings(".help-block").length)
-                        $("#emailoname").siblings(".help-block").text("We could not sent mail. Sorry about that! Please retry");
-                    }
-
+                if (datajson.message == "NO_USER") {
+                    $("#emailoname").siblings(".help-block").text("No User with given Email/Username");
+                } else if (datajson.message == "NO_MAIL") {
+                    alert($("#emailoname").siblings(".help-block").length)
+                    $("#emailoname").siblings(".help-block").text("We could not sent mail. Sorry about that! Please retry");
                 }
-            });
+
+            }
+        });
 
     //All things done. Lets Reenable the controls
     $(ohtml).children("div.form-actions button").removeAttr("disabled");
@@ -266,11 +285,22 @@ function forgotPassword_submit(ohtml, e)
 //login Form
 function login() {
     $("#login").modal();
+
+
+    $('#myModal').on('shown.bs.modal', function () {
+        //Focus the username input field
+        $("#login_username").focus();
+    })
+
 }
+
 function login_submit() {
     //get the username and password
     var username = $("#login_username").attr("disabled", "yes").val();
     var password = $("#login_password").attr("disabled", "yes").val();
+
+    Vanshavali.clearInput("#login_username");
+    Vanshavali.clearInput("#login_password");
 
     //Post username and password to login.php
     $.post("login.php", {
@@ -282,12 +312,11 @@ function login_submit() {
 
         //if not able to login
         if (parseInt(data.error) == 1) {
-            $("#login_error").html("Login Failed! Please check your username and password and try again!");
+
+            Vanshavali.errorInput("#login_username");
+            Vanshavali.errorInput("#login_password", 'Login Failed! Please check your username and password and try again!');
             $("#login_username").removeAttr("disabled").val("");
             $("#login_password").removeAttr("disabled").val("");
-
-            //Show the error block which is hidden
-            $("#login_error").removeClass("hide");
 
             //positon the dialog in the center as #login_error is now visible
             $("#login").modal();
@@ -295,14 +324,12 @@ function login_submit() {
 
             // if successfull login
         }
-        if (parseInt(data.error) == 2)
-        {
-            $("#login_error").html("Please activate your account by with the link sent to you on you email");
-            //$("#login_error").html("Login Failed! Please check your username and password and try again!");
+        if (parseInt(data.error) == 2) {
+            Vanshavali.errorInput("#login_username");
+            Vanshavali.errorInput('#login_password', "Please activate your account by with the link sent to you on you email");
+
             $("#login_username").removeAttr("disabled").val("");
             $("#login_password").removeAttr("disabled").val("");
-
-            $("#login_error").removeClass("hide");
 
             //positon the dialog in the center as #login_error is now visible
             $("#login").modal();
@@ -331,12 +358,10 @@ function submit_feedback() {
         email: email,
         message: message
     }, function (data) {
-        if (ajaxError(data))
-        {
+        if (ajaxError(data)) {
             alert("Some error Occured. Pleae try again");
             window.location.reload();
-        } else if (ajaxSuccess(data))
-        {
+        } else if (ajaxSuccess(data)) {
             $("#feedback_form").modal("hide");
             alert("Thank you for contributing!");
         }
@@ -346,7 +371,7 @@ function submit_feedback() {
 ////////////////////////////////////////////////////////
 // Member Operation functions
 function operation_addmember() {
-    $("#operation_add").slideDown();
+    $("#operation_add").modal();
 
     //name and id of parent from tree.graph instance
     father_name = (tree.graph.getNode(selected_member)).name;
@@ -357,6 +382,7 @@ function operation_addmember() {
     $("#operation_add_sonof_name").html(father_name);
     $("#operation_add_sonof_id").val(father_id);
 }
+
 function operation_addmember_submit() {
     //get the values and disable the controls
     var name = $("#operation_add_name").attr("disabled", "yes");
@@ -372,15 +398,13 @@ function operation_addmember_submit() {
         sonof: sonof.val()
     }, function (data) {
         //Check if AJAX error occured
-        if (ajaxError(data))
-        {
+        if (ajaxError(data)) {
             alert("Some Error Occured. Please try again");
             $("#operation_add_name").removeAttr("disabled").val("");
             $("#operation_add_gender").removeAttr("disabled");
-            $("#operation_add").slideUp();
+            $("#operation_add").modal("hide");
             return false;
-        } else if (ajaxSuccess(data))
-        {
+        } else if (ajaxSuccess(data)) {
             //enable the controls and set the value to ""
             $("#operation_add_name").removeAttr("disabled").val("");
             $("#operation_add_gender").removeAttr("disabled");
@@ -390,7 +414,7 @@ function operation_addmember_submit() {
 
 
             alert("The changes will be viewed permanently in the Family Tree once it is confirmed by other members. Thankyou for your contribution");
-            $("#operation_add").slideUp();
+            $("#operation_add").modal("hide");
         }
 
 
@@ -399,7 +423,13 @@ function operation_addmember_submit() {
     //stop the form from redirecting
     return false;
 }
+
 function editmember() {
+
+    if (!Vanshavali.isLoggedIn()) {
+        //Trigger the login modal
+        login();
+    }
     //get the member from the tree to retreive data
     member = tree.graph.getNode(selected_member);
 
@@ -413,49 +443,40 @@ function editmember() {
 
     //Find from values and select the given element
     options = x[1].options;
-    for (var i = 0; i < x[1].options.length; i++)
-    {
-        if (options[i].value == parseInt(member.data.gender))
-        {
+    for (var i = 0; i < x[1].options.length; i++) {
+        if (options[i].value == parseInt(member.data.gender)) {
             x[1].selectedIndex = i;
         }
     }
     options = x[2].options;
-    for (i = 0; i < x[2].options.length; i++)
-    {
-        if (options[i].value == parseInt(member.data.relationship_status_id))
-        {
+    for (i = 0; i < x[2].options.length; i++) {
+        if (options[i].value == parseInt(member.data.relationship_status_id)) {
             x[2].selectedIndex = i;
         }
     }
 
-    $("#operation_edit_dob").datepicker(
-            {
-                dateFormat: "dd/mm/yy",
-                maxDate: '-10y'
-            });
+    $("#operation_edit_dob").datepicker({
+        dateFormat: "dd/mm/yy",
+        maxDate: '-10y'
+    });
 
     options = x[4].options;
-    for (i = 0; i < x[4].options.length; i++)
-    {
-        if (options[i].value == parseInt(member.data.alive_id))
-        {
+    for (i = 0; i < x[4].options.length; i++) {
+        if (options[i].value == parseInt(member.data.alive_id)) {
             x[4].selectedIndex = i;
         }
     }
 
     $("#operation_edit_id").val(parseInt(member.id));
-    $("#operation_edit").slideDown();
+    $("#operation_edit").modal();
 }
 
-function editmember_submit()
-{
+function editmember_submit() {
     //Collect variables values
     x = $("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
         #operation_edit_dob,#operation_edit_alive,#operation_edit_id");
 
-    if (x[0].value == "")
-    {
+    if (x[0].value == "") {
         alert("Name cannot be left blank");
         x[0].focus();
         return false;
@@ -463,11 +484,9 @@ function editmember_submit()
 
 
     //Validate date of birth only if user has entered any
-    if (x[4].value != "")
-    {
+    if (x[4].value != "") {
         var regex = /([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4,4})/.test(x[4].value);
-        if (!regex)
-        {
+        if (!regex) {
             alert("Please enter a valid Date of Birth");
             x[4].focus();
             return false;
@@ -476,57 +495,52 @@ function editmember_submit()
 
     //post the data
     $.post("getdata.php", {
-        type: "edit",
-        action: "operation_edit",
-        "name": x[0].value,
-        "gender": x[2].value,
-        "relationship": x[3].value,
-        "dob": x[4].value,
-        "alive": x[5].value,
-        memberid: x[1].value
+            type: "edit",
+            action: "operation_edit",
+            "name": x[0].value,
+            "gender": x[2].value,
+            "relationship": x[3].value,
+            "dob": x[4].value,
+            "alive": x[5].value,
+            memberid: x[1].value
 
-    }, function (data)
-    {
-        //Check for AJAX Error
-        if (ajaxError(data))
-        {
-            alert("Some Error Occured. Please try again.");
-            return false;
-        } else if (ajaxSuccess(data))
-        {
-            var x = $("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
+        }, function (data) {
+            //Check for AJAX Error
+            if (ajaxError(data)) {
+                alert("Some Error Occured. Please try again.");
+                return false;
+            } else if (ajaxSuccess(data)) {
+                var x = $("#operation_edit_name,#operation_edit_gender,#operation_edit_relationship,\n\
         #operation_edit_dob,#operation_edit_alive,#operation_edit_id");
 
-            //Set the canvas variables
-            member = tree.graph.getNode($("#operation_edit_id").val());
-            member.name = x[0].value;
-            member.data.relationship_status_id = x[3].value;
-            member.data.alive_id = x[5].value;
-            member.data.gender = x[2].value;
-            member.data.dob = x[4].value;
+                //Set the canvas variables
+                member = tree.graph.getNode($("#operation_edit_id").val());
+                member.name = x[0].value;
+                member.data.relationship_status_id = x[3].value;
+                member.data.alive_id = x[5].value;
+                member.data.gender = x[2].value;
+                member.data.dob = x[4].value;
 
-            //Change the displayed data on the screen
-            member.data.relationship_status = member.data.relationship_status_id == 0 ? "Single" : "Married";
-            member.data.alive = member.data.alive_id == 0 ? "No" : "Yes";
+                //Change the displayed data on the screen
+                member.data.relationship_status = member.data.relationship_status_id == 0 ? "Single" : "Married";
+                member.data.alive = member.data.alive_id == 0 ? "No" : "Yes";
 
-            display_data(member);
+                display_data(member);
 
-            //hide the form
-            $("#operation_edit").slideUp();
+                //hide the form
+                $("#operation_edit").modal('hide');
 
-            alert("This information will be displayed once it is accepted by other members.");
+                alert("This information will be displayed once it is accepted by other members.");
 
+            }
         }
-    }
-
     );
 
     //Stop redirect
     return false;
 }
 
-function modify_details(id, name, dob, gender, relationship, alive)
-{
+function modify_details(id, name, dob, gender, relationship, alive) {
     member = tree.graph.getNode(parseInt(id));
     member.name = name;
     member.data.dob = dob;
@@ -541,8 +555,7 @@ function deletemember() {
     //Details of father
     father = member.getParents();
 
-    if (father.length == 0)
-    {
+    if (father.length == 0) {
         //No Parent huh? I am Root!!
         alert("This member cannot be removed");
         return;
@@ -554,44 +567,37 @@ function deletemember() {
     $("#operation_remove").modal();
 }
 
-function deletemember_submit()
-{
+function deletemember_submit() {
     $("#operation_remove").modal("hide");
     member_id = $("#operation_remove_son_id").val();
     $.post("getdata.php", {
-        action: "operation_remove",
-        type: "remove",
-        "memberid": member_id
-    },
-            function (data) {
-                //Check for Ajax Error
-                if (ajaxError(data))
-                {
-                    alert("Some Error Occured. Please try again");
-                    return false;
-                } else if (ajaxSuccess(data))
-                {
-                    alert("Member will be removed once it is confirmed by other members");
-                    return true;
-                }
+            action: "operation_remove",
+            type: "remove",
+            "memberid": member_id
+        },
+        function (data) {
+            //Check for Ajax Error
+            if (ajaxError(data)) {
+                alert("Some Error Occured. Please try again");
+                return false;
+            } else if (ajaxSuccess(data)) {
+                alert("Member will be removed once it is confirmed by other members");
+                return true;
+            }
 
-            });
+        });
 }
 
-function suggest()
-{
+function suggest() {
     $.post("getdata.php", {
         action: "getsuggestions"
-    }, function (data)
-
-    {
+    }, function (data) {
         //Update the modal with data first
         $("#suggest-data").html(data);
 
         //Check if we have datato show
 
-        if (!data.trim())
-        {
+        if (!data.trim()) {
             $("#suggest-data").html("<div class='alert alert-success'>Wohoo! You have completed all your suggestions</div>")
         }
 
@@ -603,19 +609,17 @@ function suggest()
 
 }
 
-function approvedSuggestion()
-{
+function approvedSuggestion() {
     $("#approvedsuggest-data").html("<div class='alert alert-success'>Loading...</div>");
 
-    $.post("getdata.php",{
+    $.post("getdata.php", {
         action: "getapprovedsuggestion"
-    },function (data) {
+    }, function (data) {
         //Update the modal with the data
         $("#approvedsuggest-data").html(data);
 
         //Check if there is no data to show
-        if (!data.trim())
-        {
+        if (!data.trim()) {
             $("#approvedsuggest-data").html("<div class='alert alert-success'>You have not approved or rejected any suggestion</div>");
         }
 
@@ -624,8 +628,7 @@ function approvedSuggestion()
     });
 }
 
-function suggest_action(e, actionid)
-{
+function suggest_action(e, actionid) {
     var x = $(e).parents("div.suggest-box");
 
     //Get the id of the suggest
@@ -636,16 +639,12 @@ function suggest_action(e, actionid)
         action: "suggestionapproval",
         suggestid: id,
         suggest_action: actionid
-    }, function (data)
-
-    {
+    }, function (data) {
         //Check for Ajax error
-        if (ajaxError(data))
-        {
+        if (ajaxError(data)) {
             alert("Some error occured. Please try again");
             return false;
-        } else if (ajaxSuccess(data))
-        {
+        } else if (ajaxSuccess(data)) {
             data = $.parseJSON(data);
             //Success now hide the suggestion
             $("[suggest-id=" + data.data.suggestid + "]").hide("medium");
@@ -654,67 +653,51 @@ function suggest_action(e, actionid)
 
 
 }
-function ajaxSuccess(response)
-{
+
+function ajaxSuccess(response) {
     var json;
-    if (!(json = $.parseJSON(response)))
-    {
+    if (!(json = $.parseJSON(response))) {
         alert("Error Occured while parsing response JSON");
         return false;
-    } else
-    {
-        if (json.success == 1)
-        {
+    } else {
+        if (json.success == 1) {
             return true;
-        } else
-        {
+        } else {
             return false;
         }
     }
 }
 
-function ajaxError(response)
-{
+function ajaxError(response) {
     var json;
-    if (!(json = $.parseJSON(response)))
-    {
+    if (!(json = $.parseJSON(response))) {
         alert("Error Occured while parsing response JSON");
         return false;
-    } else
-    {
-        if (json.success == 0)
-        {
+    } else {
+        if (json.success == 0) {
             return true;
-        } else
-        {
+        } else {
             return false;
         }
     }
 }
 
 
-function thisisme()
-{
-    if (!selected_member)
-    {
+function thisisme() {
+    if (!selected_member) {
         alert("Please Select a member on the Tree and then clock on This is me.");
         return false;
-    } else
-    {
+    } else {
         var res = confirm("Are you sure?");
-        if (res)
-        {
+        if (res) {
             $.post("getdata.php", {
                 action: "checkregistered",
                 id: selected_member
-            }, function (data)
-            {
-                if (ajaxSuccess(data))
-                {
+            }, function (data) {
+                if (ajaxSuccess(data)) {
                     window.location.assign("thisisme.php?id=" + selected_member);
                     return true;
-                } else if (ajaxError(data))
-                {
+                } else if (ajaxError(data)) {
 
                     alert("Someone is already registered with that name");
                     return false;
@@ -733,21 +716,18 @@ Vanshavali.removeChild = {};
 Vanshavali.modifyMember = {};
 
 //Add Spouse Code
-Vanshavali.addSpouse.showModal = function ()
-{
+Vanshavali.addSpouse.showModal = function () {
     //Get the member whose wife is to be added
     var member = tree.graph.getNode(selected_member);
-
     //Fill in the details of the husband
-    $("#operation_addSpouse_otherSpousename").text(member.name);
+    $("#operation_addSpouse_otherSpousename").val(member.name);
     $("#operation_addSpouse_otherSpouseID").val(member.id);
-    $("#operation_addSpouse").slideDown();
+    $("#operation_addSpouse").modal();
 }
 
-Vanshavali.addSpouse.hideModal = function ()
-{
+Vanshavali.addSpouse.hideModal = function () {
     //Code to hide the modal
-    $("#operation_addSpouse").slideUp();
+    $("#operation_addSpouse").modal('hide');
 
     //Remove values from the field
     $("#operation_addSpouse_otherSpousename").val('');
@@ -755,22 +735,21 @@ Vanshavali.addSpouse.hideModal = function ()
     $("#operation_addSpouse_name").val('');
 }
 
-Vanshavali.addSpouse.submit = function ()
-{
+Vanshavali.addSpouse.submit = function (e) {
     //Code to read from the form and submit
     var name = $("#operation_addSpouse_name").val();
-    var otherSpouse = $("#operation_addSpouse_otherSpouseID").val('');    
+    var otherSpouse = $("#operation_addSpouse_otherSpouseID").val();
     Vanshavali.Operation.addSpouse(name, otherSpouse);
-    Vanshavali.Operation.hideModal();
+    Vanshavali.addSpouse.hideModal();
+    return false;
 }
 
 //End of AppSpouse Code
 
 //Add Parent Code
 
-Vanshavali.addParents.showModal = function ()
-{
-    $("#operation_addParents").slideDown();
+Vanshavali.addParents.showModal = function () {
+    $("#operation_addParents").modal();
 
     //Set the parents of value of the field
     var currentMember = tree.graph.getNode(selected_member);
@@ -778,17 +757,16 @@ Vanshavali.addParents.showModal = function ()
     $("#operation_addParents_parentsofid").val(currentMember.id);
 }
 
-Vanshavali.addParents.submit = function (e)
-{
+Vanshavali.addParents.submit = function (e) {
     //Code to read from the form and submit
     var fathername = $("#operation_addParents_Fathername");
     var mothername = $("#operation_addParents_Mothername");
 
     //Whose parents are they
-    var parentsof = $("#operation_addParents_parentsofid"); 
+    var parentsof = $("#operation_addParents_parentsofid");
 
     //set the request to Vanshavali API
-    Vanshavali.Operation.addParent(fathername.val(),mothername.val(), parentsof.val());
+    Vanshavali.Operation.addParent(fathername.val(), mothername.val(), parentsof.val());
 
     //Hide the modal
     Vanshavali.addParents.hideModal();
@@ -797,9 +775,8 @@ Vanshavali.addParents.submit = function (e)
     return false;
 }
 
-Vanshavali.addParents.hideModal = function ()
-{
-    $("#operation_addParents").slideUp(); 
+Vanshavali.addParents.hideModal = function () {
+    $("#operation_addParents").modal('hide');
 
     //Remove previous parents of values from the field
     $("#operation_addParents_parentsof").val('');
@@ -808,14 +785,12 @@ Vanshavali.addParents.hideModal = function ()
     $("#operation_addParents_Mothername").val('');
 }
 
-function addwife()
-{
+function addwife() {
 
 }
 
 
-function operation_addwife_submit()
-{
+function operation_addwife_submit() {
     var name = $("#operation_addwife_name").attr("disabled", "yes");
     var husband = $("#operation_addwife_husband_id");
 
@@ -828,8 +803,7 @@ function operation_addwife_submit()
         husband: husband.val()
     }, function (data) {
         //Check if AJAX error occured
-        if (ajaxError(data))
-        {
+        if (ajaxError(data)) {
             alert("Some Error Occured. Please try again");
             $("#operation_addwife_name").removeAttr("disabled").val("");
             $("#operation_addwife_dob").removeAttr("disabled");
@@ -837,8 +811,7 @@ function operation_addwife_submit()
             $("#operation_addwife_husband_name").text("");
             $("#operation_addwife").slideUp();
             return false;
-        } else if (ajaxSuccess(data))
-        {
+        } else if (ajaxSuccess(data)) {
             //enable the controls and set the value to ""
             $("#operation_addwife_name").removeAttr("disabled").val("");
             $("#operation_addwife_dob").removeAttr("disabled");
@@ -861,8 +834,7 @@ function operation_addwife_submit()
 
 //Functions to add husband to the daughter
 
-function addhusband()
-{
+function addhusband() {
     //Get the member whose wife is to be added
     var member = tree.graph.getNode(selected_member);
 
@@ -873,8 +845,7 @@ function addhusband()
 }
 
 
-function operation_addhusband_submit()
-{
+function operation_addhusband_submit() {
     var name = $("#operation_addhusband_name").attr("disabled", "yes");
     var wife = $("#operation_addhusband_wife_id");
 
@@ -887,8 +858,7 @@ function operation_addhusband_submit()
         wife: wife.val()
     }, function (data) {
         //Check if AJAX error occured
-        if (ajaxError(data))
-        {
+        if (ajaxError(data)) {
             alert("Some Error Occured. Please try again");
             $("#operation_addhusband_name").removeAttr("disabled").val("");
             $("#operation_addhusband_dob").removeAttr("disabled");
@@ -896,8 +866,7 @@ function operation_addhusband_submit()
             $("#operation_addhusband_wife_name").text("");
             $("#operation_addhusband").slideUp();
             return false;
-        } else if (ajaxSuccess(data))
-        {
+        } else if (ajaxSuccess(data)) {
             //enable the controls and set the value to ""
             $("#operation_addhusband_name").removeAttr("disabled").val("");
             $("#operation_addhusband_dob").removeAttr("disabled");

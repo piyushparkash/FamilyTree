@@ -18,13 +18,14 @@ if (empty($from) or empty($to))
     echo "Login to view relation";
 }
 $result = vanshavali::calculateRelation($from, $to);
+
 if (is_array($result))
 {
-    echo $result[0];
+    echo json_encode(array("relation" => $result[0], "error" => 0));
 }
 else
 {
-    echo "Cannot determine relation";
+    echo json_decode(array("relation" => "unknown", "error" => 1));
 }
 
 //echo $vanshavali->distanceFromTop($vanshavali->getmember(178));

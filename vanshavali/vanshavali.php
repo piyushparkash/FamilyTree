@@ -26,7 +26,7 @@ class vanshavali
     {
         global $db;
         if (is_null($family_id)) {
-            $query = $db->query("select * from member where sonof is null and dontshow = 0 and gender=". MALE ." and family_id in (select family_id from member where admin = 1)");
+            $query = $db->query("select * from member where sonof is null and dontshow = 0 and gender=" . MALE . " and family_id in (select family_id from member where admin = 1)");
         } else {
             $query = $db->query("select id from member where sonof is null and dontshow=0 and gender=" . MALE . " and family_id=$family_id");
         }
@@ -54,7 +54,7 @@ class vanshavali
         } //else we continue with normal execution
 
         $distance = 0;
-        $mother   = true;
+        $mother = true;
         while (1) {
 
             if ($mother) {
@@ -108,10 +108,10 @@ class vanshavali
     {
         $sameFamily = false;
         $sameFather = false;
-        $diffsex    = false;
-        $is_parent  = false;
-        $is_spouse  = false;
-        $is_child   = false;
+        $diffsex = false;
+        $is_parent = false;
+        $is_spouse = false;
+        $is_child = false;
 
         //Check if they are from same family.
         if ($to->data['family_id'] == $from->data['family_id']) {
@@ -137,13 +137,11 @@ class vanshavali
         //Check if the second member is the parent of the first member
         $mother = $from->getMother();
         $father = $from->getFather();
-        
+
         //If there is no mother or father for the given member
-        if (!$mother && !$father)
-        {
+        if (!$mother && !$father) {
             $is_parent = false;
-        } 
-        else if ($to->id == $mother->id or $to->id == $father->id) {
+        } else if ($to->id == $mother->id or $to->id == $father->id) {
             $is_parent = true;
         }
 
@@ -158,13 +156,13 @@ class vanshavali
         $levelDistance = self::distanceFromTop($from) - self::distanceFromTop($to, $sameFamily);
 
         return array("is_child" => $is_child,
-            "is_parent"             => $is_parent,
-            "is_spouse"             => $is_spouse,
-            "gender"                => $from->gender(),
-            "sameFamily"            => $sameFamily,
-            "sameFather"            => $sameFather,
-            "diffsex"               => $diffsex,
-            "levelDistance"         => $levelDistance,
+            "is_parent" => $is_parent,
+            "is_spouse" => $is_spouse,
+            "gender" => $from->gender(),
+            "sameFamily" => $sameFamily,
+            "sameFather" => $sameFather,
+            "diffsex" => $diffsex,
+            "levelDistance" => $levelDistance,
         );
     }
 
@@ -197,19 +195,19 @@ class vanshavali
     private static function comparerelationArray($array)
     {
         //Initialize all the parameters
-        $is_child        = $is_parent        = $is_spouse        = $gender        = $sameFamily        = $sameFather        = $diffsex        = $levelDistance        = false;
-        $result          = array();
+        $is_child = $is_parent = $is_spouse = $gender = $sameFamily = $sameFather = $diffsex = $levelDistance = false;
+        $result = array();
         $approx_relation = false;
 
         //Now compare this array with all options that we have
         foreach (self::$relation_array as $key => $singlerelation) {
-            $is_child      = ($singlerelation[0] == $array['is_child']);
-            $is_parent     = ($singlerelation[1] == $array['is_parent']);
-            $is_spouse     = ($singlerelation[2] == $array['is_spouse']);
-            $gender        = ($singlerelation[3] == null ? true : ($singlerelation[3] == $array['gender']));
-            $sameFamily    = ($singlerelation[4] == $array['sameFamily']);
-            $sameFather    = ($singlerelation[5] == $array['sameFather']);
-            $diffsex       = ($singlerelation[6] == null ? true : ($singlerelation[6] == $array['diffsex']));
+            $is_child = ($singlerelation[0] == $array['is_child']);
+            $is_parent = ($singlerelation[1] == $array['is_parent']);
+            $is_spouse = ($singlerelation[2] == $array['is_spouse']);
+            $gender = ($singlerelation[3] == null ? true : ($singlerelation[3] == $array['gender']));
+            $sameFamily = ($singlerelation[4] == $array['sameFamily']);
+            $sameFather = ($singlerelation[5] == $array['sameFather']);
+            $diffsex = ($singlerelation[6] == null ? true : ($singlerelation[6] == $array['diffsex']));
             $levelDistance = ($singlerelation[7] == $array['levelDistance']);
 
             //Check if this relation was approx relations
@@ -218,7 +216,8 @@ class vanshavali
             }
 
             if ($is_child && $is_parent && $is_spouse && $gender &&
-                $sameFamily && $sameFather && $diffsex && $levelDistance) {
+                $sameFamily && $sameFather && $diffsex && $levelDistance
+            ) {
 
                 $result[] = array($singlerelation[8], $singlerelation[9], $approx_relation);
             }
@@ -296,7 +295,7 @@ class vanshavali
     public static function calculateRelation($from, $to)
     {
         if ($from === $to) {
-            return false;
+            return array("Friend");
         }
 
         if ($from == null or $to == null) {
@@ -304,17 +303,24 @@ class vanshavali
         }
 
         $from = self::getmember($from);
-        $to   = self::getmember($to);
+        $to = self::getmember($to);
 
         //Get the parameters between them
         $relationparam = self::memberDistance($to, $from);
+
+        //If the Level distance is more than 2 than everyone is GrandFather only
+        if ($relationparam['levelDistance'] > 4 && $relationparam['diffsex']) {
+            return array('Grand Mother');
+        } else if ($relationparam['levelDistance'] > 4 && !$relationparam['diffsex']) {
+            return array("Grand Father");
+        }
 
         $result = self::comparerelationArray($relationparam);
 
         if (is_array($result)) {
             return $result;
         } else {
-            return print_r($relationparam); //Just for development purpose
+            return false;//print_r($relationparam); //Just for development purpose
             //            return "Cannot determine relation";
         }
     }
@@ -442,10 +448,10 @@ class vanshavali
     public static function addfamily($name)
     {
         global $db;
-        
+
         //Escape any apostrophe
         $name = $db->real_escape_string($name);
-        
+
         if ($db->query("insert into family (family_name,ts) values('$name Family'," . time() . ")")) {
             return $db->last_id();
         } else {
@@ -469,7 +475,7 @@ class vanshavali
 
         global $db;
         $query = $db->query("select id from member where id=$id");
-        $ret   = $db->fetch($query);
+        $ret = $db->fetch($query);
 
         //Check if we have such member or not
         if ($ret == false) {
@@ -519,7 +525,7 @@ class vanshavali
         } else {
             $sql = "insert into member (membername,username,password,dob,gender,relationship_status,gaon,emailid,alive,aboutme,joined,tokenforact, family_id, wordpress_user)
                 values('$details[9]','$details[0]','$details[1]',$details[2],$details[3],$details[4],'$details[5]','$details[6]',1,'$details[7]',"
-            . time() . ",'$token', $details[10], $details[11])";
+                . time() . ",'$token', $details[10], $details[11])";
         }
 
         //Finally execute the sql
@@ -527,10 +533,10 @@ class vanshavali
 
         //Mail Options
         $mail_options = array(
-            'username'      => $details[0],
-            'email'         => $details[6],
+            'username' => $details[0],
+            'email' => $details[6],
             'not_connected' => !empty($details[8]) ? true : false,
-            'wp_login'      => $vanshavali->wp_login,
+            'wp_login' => $vanshavali->wp_login,
         );
         if ($ret != false) {
             self::mail("mail.register.confirm.tpl", $mail_options, $details[6], 'Welcome to Vanshavali | Email Confirmation');
@@ -594,20 +600,20 @@ class vanshavali
     {
         global $user;
 
-        $obj         = array();
-        $obj['id']   = $row["id"];
+        $obj = array();
+        $obj['id'] = $row["id"];
         $obj['name'] = trim($row['membername']) == "" ? "unknown" : $row["membername"];
         $obj['data'] = array(
-            "dob"                    => ($row['dob'] ? strftime("%d/%m/%Y", $row['dob']) : ""),
-            "relationship_status"    => ($row['relationship_status'] == 0 ? "Single" :
+            "dob" => ($row['dob'] ? strftime("%d/%m/%Y", $row['dob']) : ""),
+            "relationship_status" => ($row['relationship_status'] == 0 ? "Single" :
                 "Married"),
             "relationship_status_id" => $row['relationship_status'],
-            "alive"                  => ($row['alive'] == 0 ? "Deceased" : "Living"),
-            "gender"                 => $row['gender'],
-            "alive_id"               => $row['alive'],
-            "gaon"                   => $row['gaon'],
-            'image'                  => empty($row['profilepic']) ? "common.png" : $row['profilepic'],
-            'familyid'               => $row['family_id'],
+            "alive" => ($row['alive'] == 0 ? "Deceased" : "Living"),
+            "gender" => $row['gender'],
+            "alive_id" => $row['alive'],
+            "gaon" => $row['gaon'],
+            'image' => empty($row['profilepic']) ? "common.png" : $row['profilepic'],
+            'familyid' => $row['family_id'],
 //            'relation' => (self::calculateRelation($row["id"], $user->user["id"]) ? $user->is_authenticated() : "Login to view relation")
         );
         return $obj;
@@ -621,13 +627,23 @@ class vanshavali
      * @param integer $id Ihe of the member whose children are to be fetched
      * @return array
      */
-    public static function getchild($id)
+    public static function getchild($id, $spouseGender)
     {
         global $db;
         $finalarray = array();
-        $query      = $db->query("select * from member where sonof=$id and dontshow=0 order by dob desc");
+
+        //Check if spouse is husband
+        if ($spouseGender == MALE)
+        {
+            $sql = "select * from member WHERE sonof in (SELECT related_to from member WHERE id=$id) and dontshow=0 order by dob desc";
+        }
+        else
+        {
+            $sql = "select * from member where sonof=$id and dontshow=0 order by dob desc";
+        }
+        $query = $db->query($sql);
         while ($row = $db->fetch($query)) {
-            $obj             = self::createstruct($row);
+            $obj = self::createstruct($row);
             $obj['children'] = self::getwife($row['id']);
             array_push($finalarray, $obj);
         }
@@ -646,12 +662,12 @@ class vanshavali
     {
         global $db;
         $finalarray = array();
-        $row        = $db->get("select * from member where id in (select related_to from member where id=$id and dontshow!=1)");
-        $obj        = array();
+        $row = $db->get("select * from member where id in (select related_to from member where id=$id and dontshow!=1)");
+        $obj = array();
         // Space Tree Object if he has a wife
         if ($row) {
-            $obj             = self::createstruct($row);
-            $obj['children'] = self::getchild($id);
+            $obj = self::createstruct($row);
+            $obj['children'] = self::getchild($id, $row[GENDER]);
             array_push($finalarray, $obj);
             return $finalarray;
         } else {
@@ -660,6 +676,7 @@ class vanshavali
     }
 
     //The following function are not working and are to be improved ********
+
     /**
      * This function is used to get the members in JSON format to be used
      * with the JIT
@@ -673,7 +690,7 @@ class vanshavali
 
         global $db;
         $finalarray = array();
-        $query      = $db->query("select * from member where sonof is null and dontshow=0 and gender=0");
+        $query = $db->query("select * from member where sonof is null and dontshow=0 and gender=0");
         //Loop through all the members and feed the row data to a function
         //Loop will filter the data according to the gender and return
         //Keep adding the information to a final array
@@ -704,7 +721,7 @@ class vanshavali
         $finalarray = array();
         $query      = $db->query("select * from member where sonof=$id and dontshow=0 order by dob desc");
         while ($row = $db->fetch($query)) {
-            $obj             = self::infovisstruct($row);
+            $obj = self::infovisstruct($row);
             $obj['children'] = self::getwife($row['id']);
             array_push($finalarray, $obj);
         }
@@ -722,11 +739,11 @@ class vanshavali
     {
         global $db;
         $finalarray = array();
-        $row        = $db->get("select * from member where id in (select related_to from member where id=$id)");
-        $obj        = array();
+        $row = $db->get("select * from member where id in (select related_to from member where id=$id)");
+        $obj = array();
         // Space Tree Object if he has a wife
         if ($row) {
-            $obj             = self::infovisstruct($row);
+            $obj = self::infovisstruct($row);
             $obj['children'] = self::getchild($id);
             array_push($finalarray, $obj);
             return $finalarray;
@@ -739,13 +756,54 @@ class vanshavali
     {
         global $db;
 
-        if ($db->query("delete from member where family_id = $familyid"))
-        {
+        if ($db->query("delete from member where family_id = $familyid")) {
             $db->query("delete from family where id = $familyid");
             return true;
         }
 
         return false;
+    }
+
+    public static function genTreeJSON($familyid, $force = false)
+    {
+        global $db;
+        $expired = false;
+
+        if (empty($familyid))
+        {
+            $defaultFamilyID = $db->get('select family_id from member WHERE admin = 1');
+            $familyid = $defaultFamilyID['family_id'];
+        }
+
+        $staticFilename = 'familystruct-' . $familyid . '.json';
+        $fileCreatedTime = filemtime($staticFilename);
+        $diff = time() - $fileCreatedTime;
+
+        if ($diff > 24*60*60)
+        {
+            $expired = true;
+        }
+
+        if (!$force && file_exists($staticFilename) && !empty($familyid) && !$expired) {
+            return file_get_contents($staticFilename);
+        } else {
+            $head = vanshavali::getHeadofFamily($familyid);
+            $head = new member($head);
+
+            //Create a infovis struct
+            $finalkey = vanshavali::createstruct($head->data);
+            $finalkey['children'] = vanshavali::getwife($head->data['id']);
+
+            $finalJSON = json_encode($finalkey);
+
+            //Overwrite the file with this structure
+            unlink($staticFilename);
+            $jsonfile = fopen($staticFilename, "w+");
+            fwrite($jsonfile, $finalJSON);
+            fclose($jsonfile);
+            
+            return $finalJSON;
+        }
     }
 
 }
