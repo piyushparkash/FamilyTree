@@ -58,7 +58,7 @@ function viewfamily(e) {
     var selectedmember = tree.graph.getNode(selected_member);
 
     //Load the family of the given member
-    loadFamily(selectedmember.data.family_id, function () {
+    loadFamily(selectedmember.data.familyid, function () {
 
         //tree.onClick(tree.root);
         tree.select(selected_member);
