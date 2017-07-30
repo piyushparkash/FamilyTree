@@ -344,7 +344,9 @@ abstract class member_operation extends member_operation_suggest
 
             //Check if any of the variables is empty
             $name = empty($name) ? "NULL" : $name;
-            $gender = empty($gender) ? "NULL" : $gender;
+
+            //Gender can never be empty, as mandatory in form
+            // $gender = empty($gender) ? "NULL" : $gender;
             $relationship = empty($relationship) ? "NULL" : $relationship;
             $dob = empty($dob) ? "NULL" : $dob;
             $alive = empty($alive) ? "NULL" : $alive;
