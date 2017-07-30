@@ -1,78 +1,80 @@
 <style type="text/css">
-    body
-    {
+    body {
         overflow: scroll;
     }
 </style>
-<form name="ask_database_name" method="post" class="single-dialog form-horizontal well" action="index.php?mode=ask_database_name&sub=2">
-    {if isset($error)}
-        {include file="error_low.tpl"}
-    {/if}
-    <legend>Database Details</legend>
-    <div class="form-group">
-        <label for="database_name" class="control-label">Database name*</label>
-        <div class=controls>
-            <input type="text" name="database_name" id="database_name" placeholder="Database Name" required />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col display-4 text-center mb-2">
+            Family Tree Installation
         </div>
     </div>
-    <div class="form-group">
-        <label for="database_host" class="control-label">Hostname*</label>
-        <div class=controls>
-            <input type="text" name="database_host" id="database_host" placeholder="Database Host" required/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="database_username" class="control-label">Database Username*</label>
-        <div class=controls>
-            <input type="text" name="database_username" id="database_username" placeholder="Database Username" required/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="database_password" class="control-label">Database Password*</label>
-        <div class=controls>
-            <input type="password" name="database_password" id="database_name" placeholder="Database Password" required/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="admin_email" class="control-label">Admin Email*</label>
-        <div class="controls">
-            <input type="email" name="admin_email" id="admin_email" placeholder="Admin Email" required/>
-        </div>
-    </div>
+    <div class="row">
+        <div class="offset-3 col-6 offset-3">
+            <form name="ask_database_name" method="post" class="bg-faded p-3"
+                  action="index.php?mode=ask_database_name&sub=2">
+                {if isset($error)}
+                    {include file="error_low.tpl"}
+                {/if}
+                <h4>Database Details</h4>
+                <div class="form-group">
+                    <label for="database_name" class="col-form-label">Database name*</label>
+                    <input type="text" name="database_name" class="form-control" id="database_name"
+                           placeholder="Database Name" required/>
+                </div>
+                <div class="form-group">
+                    <label for="database_host" class="col-form-label">Hostname*</label>
+                    <input type="text" name="database_host" class="form-control" id="database_host"
+                           placeholder="Database Host" required/>
+                </div>
+                <div class="form-group">
+                    <label for="database_username" class="col-form-label">Database Username*</label>
+                    <input type="text" name="database_username" class="form-control" id="database_username"
+                           placeholder="Database Username" required/>
+                </div>
+                <div class="form-group">
+                    <label for="database_password" class="col-form-label">Database Password*</label>
+                    <input type="password" name="database_password" class="form-control" id="database_name"
+                           placeholder="Database Password" required/>
+                </div>
+                <div class="form-group">
+                    <label for="admin_email" class="col-form-labels">Admin Email*</label>
+                    <input type="email" name="admin_email" id="admin_email" class="form-control"
+                           placeholder="Admin Email" required/>
+                </div>
 
-    <legend>Wordpress Details (Optional)</legend>
-    <div class="form-group">
-        <label for="consumer_key" class="control-label">Consumer Key</label>
-        <div class="controls">
-            <input type="text" name="consumer_key" id="consumer_key" placeholder="Wordpress Consumer Key" />
+                <h4>Wordpress Details (Optional)</h4>
+                <div class="form-group">
+                    <label for="consumer_key" class="col-form-label">Consumer Key</label>
+                    <input type="text" name="consumer_key" id="consumer_key" class="form-control"
+                           placeholder="Wordpress Consumer Key"/>
+                </div>
+                <div class="form-group">
+                    <label for="consumer_key_secret" class="col-form-label">Consumer Key Secret</label>
+                    <input type="text" name="consumer_key_secret" id="consumer_key_secret" class="form-control"
+                           placeholder="Wordpress Consumer Key Secret"/>
+                </div>
+                <div class="form-group">
+                    <label for="end_point" class="control-label">Wordpress End Point</label>
+                    <input type="url" name="end_point" id="end_point" class="form-control"
+                           placeholder="Wordpress End Point"/>
+                </div>
+                <div class="form-group">
+                    <label for="auth_end_point" class="col-form-label">Auth End Point</label>
+                    <input type="url" name="auth_end_point" id="auth_end_point" class="form-control"
+                           placeholder="Auth End Point"/>
+                </div>
+                <div class="form-group">
+                    <label for="access_end_point" class="col-form-label">Access End Point</label>
+                    <input type="url" name="access_end_point" id="access_end_point" class="form-control"
+                           placeholder="Access End Point"/>
+                </div>
+
+                <input type="submit" name="ask_database_name" id="submit" class="btn btn-primary"/>
+
+            </form>
         </div>
     </div>
-    <div class="form-group">
-        <label for="consumer_key_secret" class="control-label">Consumer Key Secret</label>
-        <div class="controls">
-            <input type="text" name="consumer_key_secret" id="consumer_key_secret" placeholder="Wordpress Consumer Key Secret" />
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="end_point" class="control-label">Wordpress End Point</label>
-        <div class="controls">
-            <input type="url" name="end_point" id="end_point" placeholder="Wordpress End Point" />
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="auth_end_point" class="control-label">Auth End Point</label>
-        <div class="controls">
-            <input type="url" name="auth_end_point" id="auth_end_point" placeholder="Auth End Point" />
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="access_end_point" class="control-label">Access End Point</label>
-        <div class="controls">
-            <input type="url" name="access_end_point" id="access_end_point" placeholder="Access End Point" />
-        </div>
-    </div>
-    <div class="form-actions">
-        <input type="submit" name="ask_database_name" id="submit" class="btn btn-primary" />
-    </div>
-</form>
+</div>
+
 {include file="footer.tpl"}
