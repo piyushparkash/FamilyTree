@@ -258,6 +258,10 @@ function init() {
                         }, 1000);
                     }
 
+                    //Disable the defailt hashchange event and set hash
+                    Vanshavali.enableHashTrigger = false;
+                    window.location.hash = "#" + node.data.familyid + "/" + node.id;
+
 
                     //show the operations toolbar
                     selected_member = node.id;
@@ -332,17 +336,24 @@ function init() {
         //emulate a click on the root node.
         st.onClick(st.root, {
             onComplete: function () { // When the onlick animation on root is over the perform select
-                if (window.location.hash) {
-                    var window_hash = window.location.hash;
-                    var split = window_hash.split("#");
-                    st.select(split[1]);
-                }
 
                 //Display data of root in the right Container
                 var tree_root = (st.graph.getNode(st.root));
                 display_clear_data();
                 display_data(tree_root);
-                if (typeof user_id !== 'undefined') showUser(user_id);
+                debugger;
+                if (typeof user_id !== 'undefined' && location.hash.length == 0) {
+                    var currMember = tree.graph.getNode(user_id);
+                    //Disable the defailt hashchange event and set hash
+                    Vanshavali.enableHashTrigger = false;
+                    window.location.hash = "#" + currMember.data.familyid + "/" + currMember.id;
+                    showUser(user_id);
+                }
+                else
+                {
+                    //We have a hash in the URL tigger the event
+                    window.onhashchange();
+                }
             }
         });
         //store the selected member id in selected_member
@@ -358,7 +369,7 @@ function init() {
     })
     //Callbacks, if we are unable to get desired reponse
         .fail(function (data, textstatus, error) {
-            alert(data.responseText);
+            Vanshavali.statusModal.show("We are unable to load the tree", true);
         });
 
 }
