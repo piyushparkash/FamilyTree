@@ -8,6 +8,9 @@ Vanshavali.MARRIED = 1
 Vanshavali.LIVING = 1;
 Vanshavali.DECEASED = 0;
 
+//HashTriggeratStart
+Vanshavali.enableHashTrigger = true;
+
 Vanshavali.mainSection = $("#mainSection")
 
 Vanshavali.makeAJAX = function (URL, data, success, error) {
@@ -261,6 +264,40 @@ $(document).ready(function () {
         }
     });
 });
+
+window.onhashchange = function ()
+{
+    //Check if trigger by browser or us
+    if (!Vanshavali.enableHashTrigger)
+    {
+        //reset the flag
+        Vanshavali.enableHashTrigger = true;
+        return false;
+    }
+    else
+    {
+        try
+        {
+            //Read the hash
+            var data = (location.hash.split("#")[1]).split("/");
+
+            if (rootfamily() != data[0])
+            {
+                loadFamily(data[0], function () {
+                    showUser(data[1]);
+                });
+            }
+            else
+            {
+                showUser(data[1]);
+            }
+        }
+        catch (e)
+        {
+            console.log(e);
+        }
+    }
+}
 
 //Search Functions
 function search() {
