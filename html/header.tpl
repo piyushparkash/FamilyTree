@@ -6,6 +6,12 @@
         <title>
             Vanshavali - Place for famliy
         </title>
+        <meta name="description" content="Get to know people of Ratupar. Check your relation with them, Be updated with other members of your village.">
+        <meta name="keywords" content="vanshavali, paira, karn kayastha, ratupar, ancestors, view family, check relations with members">
+        <meta name="author" content="Piyush Parkash">
+        <meta name="rating" content="general">
+        <meta name="application-name" content="FamilyTree">
+
         <!-- CSS Files -->
         <link href="{$basepath}assets/css/jquery-ui.css" rel="stylesheet" type="text/css" />
         <!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />-->
