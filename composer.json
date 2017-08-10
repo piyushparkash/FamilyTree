@@ -16,6 +16,7 @@
         "php": ">=5.6.0",
         "adoy/oauth2": "*",
         "ext-curl": "*",
-        "symfony/event-dispatcher": "*"
+        "symfony/event-dispatcher": "*",
+	    "hybridauth/hybridauth" : "~3.0-beta"
     }
 }
