@@ -40,6 +40,11 @@ Redirect URI will be provided during the installation. Update the URL in Wordpre
 
 6. If everything goes right, It will install FamilyTree  and you will be able to see the Family with the visualization.
 
+Demo
+============
+
+http://familytree.ratupar.in/
+
 Facing Problems?
 -----------------------
 
