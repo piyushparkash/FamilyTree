@@ -98,16 +98,16 @@
         },
         {
             "name": "hybridauth/hybridauth",
-            "version": "3.5.0",
+            "version": "3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hybridauth/hybridauth.git",
-                "reference": "83d74e4f21908a47c9cd0dfc03697af016ed7760"
+                "reference": "222ab4e6ee6ffd81caa77283142f3aa97afa5863"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/83d74e4f21908a47c9cd0dfc03697af016ed7760",
-                "reference": "83d74e4f21908a47c9cd0dfc03697af016ed7760",
+                "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/222ab4e6ee6ffd81caa77283142f3aa97afa5863",
+                "reference": "222ab4e6ee6ffd81caa77283142f3aa97afa5863",
                 "shasum": ""
             },
             "require": {
@@ -149,7 +149,7 @@
                 "social",
                 "twitter"
             ],
-            "time": "2020-09-21T19:57:24+00:00"
+            "time": "2020-10-21T16:32:08+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
