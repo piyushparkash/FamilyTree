@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "adoy/oauth2",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/adoy/PHP-OAuth2.git",
-                "reference": "617d8605955cbb0ca929358fda74eab308c39cfa"
+                "reference": "2f28fc76ad5ad6974333eaf84a3d05164f2ed586"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/adoy/PHP-OAuth2/zipball/617d8605955cbb0ca929358fda74eab308c39cfa",
-                "reference": "617d8605955cbb0ca929358fda74eab308c39cfa",
+                "url": "https://api.github.com/repos/adoy/PHP-OAuth2/zipball/2f28fc76ad5ad6974333eaf84a3d05164f2ed586",
+                "reference": "2f28fc76ad5ad6974333eaf84a3d05164f2ed586",
                 "shasum": ""
             },
             "require": {
@@ -35,16 +35,16 @@
             ],
             "authors": [
                 {
-                    "name": "Berejeb Anis",
-                    "email": "anis.berejeb@gmail.com"
-                },
-                {
                     "name": "Charron Pierrick",
                     "email": "pierrick@webstart.fr"
+                },
+                {
+                    "name": "Berejeb Anis",
+                    "email": "anis.berejeb@gmail.com"
                 }
             ],
             "description": "Light PHP wrapper for the OAuth 2.0 protocol (based on OAuth 2.0 Authorization Protocol draft-ietf-oauth-v2-15)",
-            "time": "2015-08-03T19:57:06+00:00"
+            "time": "2023-03-10T14:58:54+00:00"
         },
         {
             "name": "hybridauth/hybridauth",
@@ -180,7 +180,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "hybridauth/hybridauth": 10
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
