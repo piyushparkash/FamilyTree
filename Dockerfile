@@ -1,5 +1,5 @@
 FROM linode/lamp
-LABEL maintainer "achyutapiyush@gmail.com"
+LABEL maintainer "piyushparkash"
 
 RUN apt-get update
 RUN apt-get install -f -y phpmyadmin lamp-server^
