@@ -42,3 +42,4 @@ Found a bug or have a feature request? [Open an issue](https://github.com/piyush
 ## License
 
 [GPL-3.0](LICENSE)
+
