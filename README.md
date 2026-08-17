@@ -1,5 +1,8 @@
 # FamilyTree (Vanshavali)
 
+![CodeQL](https://github.com/piyushparkash/FamilyTree/actions/workflows/codeql-analysis.yml/badge.svg)
+![License](https://img.shields.io/github/license/piyushparkash/FamilyTree)
+
 A PHP web app for building and visualizing family trees — add and update family members, explore the tree interactively, and let relatives trace their roots.
 
 **Demo:** [familytree.ratupar.in](http://familytree.ratupar.in)
